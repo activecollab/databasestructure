@@ -107,6 +107,29 @@ class Type
         return $this;
     }
 
+    // ---------------------------------------------------
+    //  Associations
+    // ---------------------------------------------------
+
+    public function &hasMany($type)
+    {
+        return $this;
+    }
+
+    public function &belongsTo($type)
+    {
+        return $this;
+    }
+
+    public function &hasAndBelongsToMany($type)
+    {
+        return $this;
+    }
+
+    // ---------------------------------------------------
+    //  Traits
+    // ---------------------------------------------------
+
     /**
      * Traits
      *
