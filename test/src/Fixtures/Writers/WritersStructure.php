@@ -2,12 +2,19 @@
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Writers;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
+use ActiveCollab\DatabaseStructure\Field\Composite\Position;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Date;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
+/**
+ * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Writers
+ */
 class WritersStructure extends Structure
 {
+    /**
+     * Configure the structure
+     */
     public function configure()
     {
         $this->addType('writers')->addFields([

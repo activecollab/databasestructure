@@ -49,4 +49,65 @@ abstract class Structure
             throw new InvalidArgumentException("Type '$type_name' already added");
         }
     }
+
+    /**
+     * @var string
+     */
+    private $namespace = null;
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        if ($this->namespace === null) {
+            $this->namespace = (new \ReflectionClass(get_class($this)))->getNamespaceName();
+        }
+
+        return $this->namespace;
+    }
+
+    /**
+     * @param  string|null $namespace
+     * @return $this
+     */
+    public function &setNamespace($namespace)
+    {
+        if ($namespace === null || is_string($namespace)) {
+            $this->namespace = $namespace;
+        } else {
+            throw new InvalidArgumentException("Namespace '$namespace' is not valid");
+        }
+
+        if ($this->namespace) {
+            $this->namespace = trim($this->namespace, '\\');
+        }
+
+        return $this;
+    }
+
+    // ---------------------------------------------------
+    //  Class Builder
+    // ---------------------------------------------------
+
+    public function build($build_path = null)
+    {
+        if ($build_path && !is_dir($build_path)) {
+            throw new InvalidArgumentException("Directory '$build_path' not found");
+        }
+
+        foreach ($this->types as $type) {
+
+        }
+    }
+
+    private function buildBaseTypeClass(Type $type, $build_path)
+    {
+
+    }
+
+    private function buildTypeClass(Type $type, $build_path)
+    {
+
+    }
 }
