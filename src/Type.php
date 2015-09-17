@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure;
 
 use InvalidArgumentException;
+use ActiveCollab\DatabaseObject\Object;
 
 /**
  * @package ActiveCollab\DatabaseStructure
@@ -26,6 +27,46 @@ class Type
      * @var FieldInterface[]
      */
     private $fields = [];
+
+    /**
+     * @var string
+     */
+    private $base_class_extends;
+
+    /**
+     * Return name of a class that base type class should extend
+     *
+     * @return string
+     */
+    public function getBaseClassExtends()
+    {
+        if (empty($this->base_class_extends)) {
+            $this->base_class_extends = Object::class;
+        }
+
+        return $this->base_class_extends;
+    }
+
+    /**
+     * Set name of a class that base type class should extend
+     *
+     * Note: This class needs to descened from Object class of DatabaseObject package
+     *
+     * @param  string $class_name
+     * @return $this
+     */
+    public function &setBaseClassExtends($class_name)
+    {
+        if ($class_name && class_exists($class_name) && (new \ReflectionClass($class_name))->isSubclassOf(Object::class)) {
+
+        } else {
+            throw new InvalidArgumentException("Class name '$class_name' is not valid");
+        }
+
+        $this->base_class_extends = $class_name;
+
+        return $this;
+    }
 
     /**
      * @return FieldInterface[]

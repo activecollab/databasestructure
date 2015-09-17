@@ -7,7 +7,7 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 /**
  * @package ActiveCollab\DatabaseStructure\Test
  */
-class BuildTest extends TestCase
+class StructureDefinitionTest extends TestCase
 {
     /**
      * Use structure's namespace by default
