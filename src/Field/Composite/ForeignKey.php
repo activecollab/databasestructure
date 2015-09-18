@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Size;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
 use ActiveCollab\DatabaseStructure\Type;
@@ -13,6 +14,8 @@ use InvalidArgumentException;
  */
 class ForeignKey extends Field
 {
+    use Size;
+
     /**
      * @var string
      */
@@ -52,7 +55,7 @@ class ForeignKey extends Field
      */
     public function getFields()
     {
-        return [(new Integer($this->getName(), 0))->setUnsigned(true)];
+        return [(new Integer($this->getName(), 0))->unsigned(true)->size($this->getSize())];
     }
 
     /**

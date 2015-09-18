@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Object;
+use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ObjectClassDescendent;
 use DateTime;
@@ -37,14 +38,30 @@ class TypeDefinitionTest extends TestCase
         (new Type('writers'))->setBaseClassExtends(DateTime::class);
     }
 
+    /**
+     * Test if table name defaults to type name
+     */
     public function testTableNameDefaultsToTypeName()
     {
         $this->assertEquals('writers', (new Type('writers'))->getTableName());
     }
 
+    /**
+     * Test if table name can be changed
+     */
     public function testTableNameCanBeChanged()
     {
         $type = (new Type('writers'))->setTableName('awesome_writers');
         $this->assertEquals('awesome_writers', $type->getTableName());
+    }
+
+    public function testExcepectedDatasetSizeDefaultsToNormal()
+    {
+        $this->assertEquals(FieldInterface::SIZE_NORMAL, (new Type('writers'))->getExpectedDatasetSize());
+    }
+
+    public function testExpectedDatasetSizeCanBeChanged()
+    {
+        $this->assertEquals(FieldInterface::SIZE_BIG, (new Type('writers'))->setExpectedDatasetSize(FieldInterface::SIZE_BIG)->getExpectedDatasetSize());
     }
 }

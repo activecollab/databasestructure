@@ -7,6 +7,12 @@ namespace ActiveCollab\DatabaseStructure;
  */
 interface FieldInterface
 {
+    const SIZE_TINY = 'tiny';
+    const SIZE_SMALL = 'small';
+    const SIZE_MEDIUM = 'medium';
+    const SIZE_NORMAL = 'normal';
+    const SIZE_BIG = 'big';
+
     /**
      * Return field name
      *

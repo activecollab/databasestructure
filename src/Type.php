@@ -112,6 +112,38 @@ class Type
     }
 
     /**
+     * @var string
+     */
+    private $expected_dataset_size = FieldInterface::SIZE_NORMAL;
+
+    /**
+     * Get expected dataset size
+     *
+     * @return string
+     */
+    public function getExpectedDatasetSize()
+    {
+        return $this->expected_dataset_size;
+    }
+
+    /**
+     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG
+     *
+     * @param  string $size
+     * @return $this
+     */
+    public function &setExpectedDatasetSize($size)
+    {
+        if (in_array($size, [FieldInterface::SIZE_TINY, FieldInterface::SIZE_SMALL, FieldInterface::SIZE_MEDIUM, FieldInterface::SIZE_NORMAL, FieldInterface::SIZE_BIG])) {
+            $this->expected_dataset_size = $size;
+        } else {
+            throw new InvalidArgumentException("Value '$size' is not a valid dataset size");
+        }
+
+        return $this;
+    }
+
+    /**
      * @return FieldInterface[]
      */
     public function getFields()
