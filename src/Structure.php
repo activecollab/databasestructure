@@ -118,7 +118,7 @@ abstract class Structure
      */
     private function buildBaseTypeClass(Type $type, array $fields, $build_path, callable $on_class_built = null)
     {
-        $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
+        $base_class_name = 'Base' . Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
         $base_class_build_path = $build_path ? "$build_path/$base_class_name.php" : null;
 
@@ -135,8 +135,6 @@ abstract class Structure
         $interfaces = $traits = [];
 
         foreach ($type->getTraits() as $interface => $implementations) {
-            var_dump($interface);
-
             if ($interface != '--just-paste-trait--') {
                 $interfaces[] = '\\' . ltrim($interface, '\\');
             }
@@ -241,6 +239,37 @@ abstract class Structure
             }
         }
 
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Set value of specific field';
+        $result[] = '     *';
+        $result[] = '     * @param  string                    $name';
+        $result[] = '     * @param  mixed                     $value';
+        $result[] = '     * @return $this';
+        $result[] = '     * @throws \\InvalidArgumentException';
+        $result[] = '     */';
+        $result[] = '    public function &setFieldValue($name, $value)';
+        $result[] = '    {';
+        $result[] = '        if ($value === null) {';
+        $result[] = '            return parent::setFieldValue($name, null);';
+        $result[] = '        } else {';
+        $result[] = '            switch ($name) {';
+        $result[] = '                case ' . var_export('id', true) . ':';
+        $result[] = '                    return parent::setFieldValue($name, (integer) $value);';
+
+        foreach ($fields as $field) {
+            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
+                $result[] = '                case ' . var_export($field->getName(), true) . ':';
+                $result[] = '                    return parent::setFieldValue($name, ' . $field->getCastingCode('value') . ');';
+            }
+        }
+
+        $result[] = '            }';
+        $result[] = '';
+        $result[] = '            throw new \\InvalidArgumentException("Field $name does not exist in this table");';
+        $result[] = '        }';
+        $result[] = '    }';
+
         $result[] = '}';
 
         $result = implode("\n", $result);
@@ -258,6 +287,12 @@ abstract class Structure
         }
     }
 
+    /**
+     * @param Type          $type
+     * @param array         $fields
+     * @param string        $build_path
+     * @param callable|null $on_class_built
+     */
     private function buildTypeClass(Type $type, array $fields, $build_path, callable $on_class_built = null)
     {
 

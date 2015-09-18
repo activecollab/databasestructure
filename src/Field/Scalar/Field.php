@@ -69,6 +69,17 @@ abstract class Field implements FieldInterface
     }
 
     /**
+     * Return value casting code
+     *
+     * @param  string $variable_name
+     * @return string
+     */
+    public function getCastingCode($variable_name)
+    {
+        return '(string) $' . $variable_name;
+    }
+
+    /**
      * Method that is called when field is added to a type
      *
      * @param  Type $type

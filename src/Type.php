@@ -163,6 +163,12 @@ class Type
             $this->fieldToFlatList($field, $result);
         }
 
+        foreach ($this->getAssociations() as $association) {
+            foreach ($association->getFields() as $field) {
+                $this->fieldToFlatList($field, $result);
+            }
+        }
+
         return $result;
     }
 
@@ -173,8 +179,8 @@ class Type
     private function fieldToFlatList(FieldInterface $field, array &$result)
     {
         if ($field instanceof CompositeField) {
-            foreach ($field->getFields() as $subfiled) {
-                $this->fieldToFlatList($subfiled, $result);
+            foreach ($field->getFields() as $subfield) {
+                $this->fieldToFlatList($subfield, $result);
             }
         } else {
             $result[$field->getName()] = $field;
@@ -225,6 +231,47 @@ class Type
     // ---------------------------------------------------
     //  Associations
     // ---------------------------------------------------
+
+    /**
+     * @var AssociationInterface[]
+     */
+    private $associations = [];
+
+    /**
+     * @return AssociationInterface[]
+     */
+    public function getAssociations()
+    {
+        return $this->associations;
+    }
+
+    /**
+     * @param  AssociationInterface[] $associations
+     * @return $this
+     */
+    public function &addAssociations(array $associations)
+    {
+        foreach ($associations as $association) {
+            $this->addAssociation($association);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  AssociationInterface $association
+     * @return $this
+     */
+    public function &addAssociation(AssociationInterface $association)
+    {
+        if (empty($this->associations[$association->getName()])) {
+            $this->associations[$association->getName()] = $association;
+        } else {
+            throw new InvalidArgumentException("Association '" . $association->getName() . "' already exists in this type");
+        }
+
+        return $this;
+    }
 
     public function &hasMany($type)
     {

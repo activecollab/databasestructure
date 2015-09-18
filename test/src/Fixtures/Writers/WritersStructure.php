@@ -1,6 +1,8 @@
 <?php
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Writers;
 
+use ActiveCollab\DatabaseStructure\Association\BelongsTo;
+use ActiveCollab\DatabaseStructure\Association\HasMany;
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
 use ActiveCollab\DatabaseStructure\Field\Composite\Position;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Date;
@@ -22,15 +24,22 @@ class WritersStructure extends Structure
             (new Date('birthday'))->required(),
         ])->addIndexes([
             new Index('birthday'),
-        ])->hasMany('books');
+        ])->addAssociations([
+            new HasMany('books'),
+        ]);
 
         $this->addType('books')->addFields([
             (new Name('title', '', true))->required()->unique('writer_id'),
-        ])->belongsTo('writers')->hasMany('chapters');
+        ])->addAssociations([
+            new BelongsTo('author', 'writers'),
+            new HasMany('chapters'),
+        ]);
 
         $this->addType('chapters')->addFields([
             (new Name('title', '', true))->required()->unique('book_id'),
             new Position(),
-        ])->belongsTo('books');
+        ])->addAssociations([
+            new BelongsTo('book'),
+        ]);
     }
 }

@@ -1,7 +1,10 @@
 <?php
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-class Integer extends Field
+/**
+ * @package ActiveCollab\DatabaseStructure\Field\Scalar
+ */
+class Integer extends Number
 {
-    
 }

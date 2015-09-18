@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Type;
 use InvalidArgumentException;
@@ -61,6 +63,16 @@ class Position extends Field
     public function getDefaultValue()
     {
         return $this->default_value;
+    }
+
+    /**
+     * Return fields that this field is composed of
+     *
+     * @return FieldInterface[]
+     */
+    public function getFields()
+    {
+        return [(new Integer('position', 0))->setUnsigned(true)];
     }
 
     /**
