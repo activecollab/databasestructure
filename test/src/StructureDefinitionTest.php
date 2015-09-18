@@ -37,4 +37,10 @@ class StructureDefinitionTest extends TestCase
         $structure->setNamespace('\\');
         $this->assertEquals('', $structure->getNamespace());
     }
+
+    public function testBaseClassDump()
+    {
+        $structure = new WritersStructure($this->connection);
+        $structure->build();
+    }
 }

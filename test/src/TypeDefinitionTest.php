@@ -25,9 +25,7 @@ class TypeDefinitionTest extends TestCase
      */
     public function testBaseClassCanExtendObjectClassDescendent()
     {
-        $type = new Type('writers');
-        $type->setBaseClassExtends(ObjectClassDescendent::class);
-
+        $type = (new Type('writers'))->setBaseClassExtends(ObjectClassDescendent::class);
         $this->assertEquals(ObjectClassDescendent::class, $type->getBaseClassExtends());
     }
 
@@ -37,5 +35,16 @@ class TypeDefinitionTest extends TestCase
     public function testBaseClassCantExtendNonObjectClassDescendent()
     {
         (new Type('writers'))->setBaseClassExtends(DateTime::class);
+    }
+
+    public function testTableNameDefaultsToTypeName()
+    {
+        $this->assertEquals('writers', (new Type('writers'))->getTableName());
+    }
+
+    public function testTableNameCanBeChanged()
+    {
+        $type = (new Type('writers'))->setTableName('awesome_writers');
+        $this->assertEquals('awesome_writers', $type->getTableName());
     }
 }

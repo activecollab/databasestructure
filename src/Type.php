@@ -4,6 +4,7 @@ namespace ActiveCollab\DatabaseStructure;
 
 use InvalidArgumentException;
 use ActiveCollab\DatabaseObject\Object;
+use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 
 /**
  * @package ActiveCollab\DatabaseStructure
@@ -21,6 +22,48 @@ class Type
     public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Return type name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @var string
+     */
+    private $table_name;
+
+    /**
+     * @return string
+     */
+    public function getTableName()
+    {
+        if (empty($this->table_name)) {
+            $this->table_name = $this->getName();
+        }
+
+        return $this->table_name;
+    }
+
+    /**
+     * @param  string $table_name
+     * @return $this
+     */
+    public function &setTableName($table_name)
+    {
+        if (empty($table_name)) {
+            throw new InvalidArgumentException("Value '$table_name' is not a valid table name");
+        }
+
+        $this->table_name = $table_name;
+
+        return $this;
     }
 
     /**
@@ -105,6 +148,37 @@ class Type
         }
 
         return $this;
+    }
+
+    /**
+     * Return all fields, flatten to one array
+     *
+     * @return array
+     */
+    public function getAllFields()
+    {
+        $result = [];
+
+        foreach ($this->getFields() as $field) {
+            $this->fieldToFlatList($field, $result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param FieldInterface $field
+     * @param array          $result
+     */
+    private function fieldToFlatList(FieldInterface $field, array &$result)
+    {
+        if ($field instanceof CompositeField) {
+            foreach ($field->getFields() as $subfiled) {
+                $this->fieldToFlatList($subfiled, $result);
+            }
+        } else {
+            $result[$field->getName()] = $field;
+        }
     }
 
     /**

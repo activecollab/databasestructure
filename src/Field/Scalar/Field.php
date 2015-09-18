@@ -59,11 +59,47 @@ abstract class Field implements FieldInterface
     }
 
     /**
+     * Return PHP native type
+     *
+     * @return string
+     */
+    public function getNativeType()
+    {
+        return 'mixed';
+    }
+
+    /**
      * Method that is called when field is added to a type
      *
      * @param  Type $type
      */
     public function onAddedToType(Type &$type)
     {
+    }
+
+    /**
+     * @var boolean
+     */
+    private $should_be_added_to_model = true;
+
+    /**
+     * Return true if this field should be part of the model, or does it do its work in background
+     *
+     * @return boolean
+     */
+    public function getShouldBeAddedToModel()
+    {
+        return $this->should_be_added_to_model;
+    }
+
+    /**
+     * @param  boolean $value
+     * @return $this
+     */
+    public function &setShouldBeAddedToModel($value)
+    {
+        $this->should_be_added_to_model = (boolean) $value;
+
+        return $this;
     }
 }
