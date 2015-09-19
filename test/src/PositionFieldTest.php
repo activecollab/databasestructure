@@ -70,4 +70,39 @@ class PositionFieldTest extends TestCase
         $this->assertArrayHasKey(PositionInterface::class, $type->getTraits());
         $this->assertContains(PositionInterfaceImplementation::class, $type->getTraits()[PositionInterface::class]);
     }
+
+    /**
+     * Test if position context is the entire data set by default
+     */
+    public function testContextIsEmptyByDefault()
+    {
+        $context = (new Position())->getContext();
+
+        $this->assertInternalType('array', $context);
+        $this->assertEmpty($context);
+    }
+
+    /**
+     * Test if position context can be changed
+     */
+    public function testContextCanBeChanged()
+    {
+        $context = (new Position())->context('field_1', 'field_2')->getContext();
+
+        $this->assertInternalType('array', $context);
+        $this->assertCount(2, $context);
+        $this->assertContains('field_1', $context);
+        $this->assertContains('field_2', $context);
+    }
+
+    /**
+     * Test if context can be called with no arguments
+     */
+    public function testContextCanBeCalledWithNoArguments()
+    {
+        $context = (new Position())->context()->getContext();
+
+        $this->assertInternalType('array', $context);
+        $this->assertEmpty($context);
+    }
 }

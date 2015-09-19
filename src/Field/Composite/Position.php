@@ -66,6 +66,34 @@ class Position extends Field
     }
 
     /**
+     * @var string[]
+     */
+    private $context = [];
+
+    /**
+     * Return position context
+     *
+     * @return string[]
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
+     * Set context in which position is calculated and maintained (usually within context of a foreign key)
+     *
+     * @param  string $fields
+     * @return $this
+     */
+    public function &context(...$fields)
+    {
+        $this->context = $fields;
+
+        return $this;
+    }
+
+    /**
      * Return fields that this field is composed of
      *
      * @return FieldInterface[]
