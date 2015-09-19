@@ -257,16 +257,32 @@ abstract class Structure
         $result[] = '                case ' . var_export('id', true) . ':';
         $result[] = '                    return parent::setFieldValue($name, (integer) $value);';
 
+
+        $casters = [];
+
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
-                $result[] = '                case ' . var_export($field->getName(), true) . ':';
-                $result[] = '                    return parent::setFieldValue($name, ' . $field->getCastingCode('value') . ');';
+                $casting_code = $field->getCastingCode('value');
+
+                if (empty($casters[$casting_code])) {
+                    $casters[$casting_code] = [];
+                }
+
+                $casters[$casting_code][] = $field->getName();
             }
         }
 
+        foreach ($casters as $caster_code => $casted_field_names) {
+            foreach ($casted_field_names as $casted_field_name) {
+                $result[] = '                case ' . var_export($casted_field_name, true) . ':';
+            }
+
+            $result[] = '                    return parent::setFieldValue($name, ' . $caster_code . ');';
+        }
+
+        $result[] = '                default:';
+        $result[] = '                    throw new \\InvalidArgumentException("Field $name does not exist in this table");';
         $result[] = '            }';
-        $result[] = '';
-        $result[] = '            throw new \\InvalidArgumentException("Field $name does not exist in this table");';
         $result[] = '        }';
         $result[] = '    }';
 

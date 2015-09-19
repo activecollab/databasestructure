@@ -10,4 +10,15 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Size;
 class Integer extends Number
 {
     use Size;
+
+    /**
+     * Return value casting code
+     *
+     * @param  string $variable_name
+     * @return string
+     */
+    public function getCastingCode($variable_name)
+    {
+        return '(integer) $' . $variable_name;
+    }
 }
