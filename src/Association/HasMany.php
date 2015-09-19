@@ -84,10 +84,24 @@ class HasMany implements AssociationInterface
         }
 
         $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
-        $classified_association_name = Inflector::classify($this->getName());;
+        $classified_association_name = Inflector::classify($this->getName());
 
         $fk_name = Inflector::singularize($source_type->getName()) . '_id';
+        $get_finder_name = "get{$classified_association_name}Finder";
         $get_all_name = "get{$classified_association_name}";
+        $get_ids_name = 'get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids';
+        $count_name = "count{$classified_association_name}";
+
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
+        $result[] = '     *';
+        $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     */';
+        $result[] = '    private function ' . $get_finder_name . '()';
+        $result[] = '    {';
+        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where(["' . $fk_name . ' = ?", $this->getId()]);';
+        $result[] = '    }';
 
         $result[] = '';
         $result[] = '    /**';
@@ -97,14 +111,34 @@ class HasMany implements AssociationInterface
         $result[] = '     */';
         $result[] = '    public function ' . $get_all_name . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where(["' . $fk_name . ' = ?", $this->getId()])->all();';
+        $result[] = '       return $this->' . $get_finder_name . '()->all();';
         $result[] = '    }';
 
-        // getBookIds
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s';
+        $result[] = '     *';
+        $result[] = '     * @return integer[]';
+        $result[] = '     */';
+        $result[] = '    public function ' . $get_ids_name. '()';
+        $result[] = '    {';
+        $result[] = '       return $this->' . $get_finder_name . '()->ids();';
+        $result[] = '    }';
 
-        // countBooks
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     *';
+        $result[] = '     * @return integer';
+        $result[] = '     */';
+        $result[] = '    public function ' . $count_name . '()';
+        $result[] = '    {';
+        $result[] = '       return $this->pool->count(' . var_export($target_instance_class, true) . ', ["' . $fk_name . ' = ?", $this->getId()]);';
+        $result[] = '    }';
 
         // addBook
+
+        // removeBook
 
         // clearBooks
     }

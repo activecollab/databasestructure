@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "9aba6ec8a91011a394b17a8cac666024ffe0a4aa"
+                "reference": "f77f98d48091ce8638e5d9cfaa83d5bc81fc8c7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/9aba6ec8a91011a394b17a8cac666024ffe0a4aa",
-                "reference": "9aba6ec8a91011a394b17a8cac666024ffe0a4aa",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/f77f98d48091ce8638e5d9cfaa83d5bc81fc8c7b",
+                "reference": "f77f98d48091ce8638e5d9cfaa83d5bc81fc8c7b",
                 "shasum": ""
             },
             "require": {
@@ -96,7 +96,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-09-15 22:57:53"
+            "time": "2015-09-19 20:00:51"
         },
         {
             "name": "doctrine/inflector",
@@ -572,16 +572,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.7",
+            "version": "4.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "dab2ada9e9a503d2ec3c32fe0fb59dea9bdd9dfa"
+                "reference": "521720279261e5b14799cf1bb895d4b55e516f26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/dab2ada9e9a503d2ec3c32fe0fb59dea9bdd9dfa",
-                "reference": "dab2ada9e9a503d2ec3c32fe0fb59dea9bdd9dfa",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/521720279261e5b14799cf1bb895d4b55e516f26",
+                "reference": "521720279261e5b14799cf1bb895d4b55e516f26",
                 "shasum": ""
             },
             "require": {
@@ -640,7 +640,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-14 06:57:22"
+            "time": "2015-09-19 05:44:37"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
