@@ -2,7 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseConnection\Connection;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -13,17 +12,10 @@ use InvalidArgumentException;
 abstract class Structure
 {
     /**
-     * @var Connection
+     * Construct a new instance
      */
-    protected $connection;
-
-    /**
-     * @param Connection $connection
-     */
-    public function __construct(Connection $connection)
+    public function __construct()
     {
-        $this->connection = $connection;
-
         $this->configure();
     }
 
@@ -92,7 +84,16 @@ abstract class Structure
     //  Class Builder
     // ---------------------------------------------------
 
-    public function build($build_path = null, callable $on_class_built = null)
+    /**
+     * Build model at the given path
+     *
+     * If $build_path is null, classes will be generated, evaled and loaded into the memory
+     *
+     * @param string|null   $build_path
+     * @param callable|null $on_class_built
+     * @param callable|null $on_class_build_skipped
+     */
+    public function build($build_path = null, callable $on_class_built = null, callable $on_class_build_skipped = null)
     {
         if ($build_path) {
             if (is_dir($build_path)) {
@@ -103,20 +104,17 @@ abstract class Structure
         }
 
         foreach ($this->types as $type) {
-            $fields = $type->getAllFields();
-
-            $this->buildBaseTypeClass($type, $fields, $build_path, $on_class_built);
-            $this->buildTypeClass($type, $fields, $build_path, $on_class_built);
+            $this->buildBaseTypeClass($type, $build_path, $on_class_built);
+            $this->buildTypeClass($type, $build_path, $on_class_built, $on_class_build_skipped);
         }
     }
 
     /**
      * @param Type          $type
-     * @param array         $fields
      * @param string        $build_path
      * @param callable|null $on_class_built
      */
-    private function buildBaseTypeClass(Type $type, array $fields, $build_path, callable $on_class_built = null)
+    private function buildBaseTypeClass(Type $type, $build_path, callable $on_class_built = null)
     {
         $base_class_name = 'Base' . Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
@@ -171,6 +169,8 @@ abstract class Structure
         $result[] = '     * @var string';
         $result[] = '     */';
         $result[] = '    protected $table_name = ' . var_export($type->getTableName(), true) . ';';
+
+        $fields = $type->getAllFields();
 
         $stringified_field_names = [];
         $fields_with_default_value = [];
@@ -302,12 +302,46 @@ abstract class Structure
 
     /**
      * @param Type          $type
-     * @param array         $fields
      * @param string        $build_path
      * @param callable|null $on_class_built
+     * @param callable|null $on_class_build_skipped
      */
-    private function buildTypeClass(Type $type, array $fields, $build_path, callable $on_class_built = null)
+    private function buildTypeClass(Type $type, $build_path, callable $on_class_built = null, callable $on_class_build_skipped = null)
     {
+        $class_name = Inflector::classify(Inflector::singularize($type->getName()));
+        $base_class_name = 'Base' . $class_name;
+        $class_build_path = $build_path ? "$build_path/$class_name.php" : null;
 
+        if ($class_build_path && is_file($class_build_path)) {
+            if (is_callable($on_class_build_skipped)) {
+                call_user_func($on_class_build_skipped, $class_name, $class_build_path);
+            }
+        }
+
+        $result = [];
+
+        $result[] = "<?php";
+        $result[] = '';
+
+        if ($this->getNamespace()) {
+            $result[] = 'namespace ' . $this->getNamespace() . ';';
+            $result[] = '';
+        }
+
+        $result[] = 'class ' . $class_name . ' extends ' . $base_class_name;
+        $result[] = '{';
+        $result[] = '}';
+
+        $result = implode("\n", $result);
+
+        if ($build_path) {
+            file_put_contents($class_build_path, $result);
+        } else {
+            eval(ltrim($result, '<?php'));
+        }
+
+        if (is_callable($on_class_built)) {
+            call_user_func($on_class_built, $class_name, $class_build_path);
+        }
     }
 }

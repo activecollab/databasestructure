@@ -217,14 +217,14 @@ class Type
 
         $this->fieldToFlatList($this->getIdField(), $result);
 
-        foreach ($this->getFields() as $field) {
-            $this->fieldToFlatList($field, $result);
-        }
-
         foreach ($this->getAssociations() as $association) {
             foreach ($association->getFields() as $field) {
                 $this->fieldToFlatList($field, $result);
             }
+        }
+
+        foreach ($this->getFields() as $field) {
+            $this->fieldToFlatList($field, $result);
         }
 
         return $result;

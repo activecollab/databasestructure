@@ -14,7 +14,7 @@ class StructureDefinitionTest extends TestCase
      */
     public function testStructureUsesItsOwnNamespaceByDefault()
     {
-        $structure = new WritersStructure($this->connection);
+        $structure = new WritersStructure();
         $this->assertEquals((new \ReflectionClass(WritersStructure::class))->getNamespaceName(), $structure->getNamespace());
     }
 
@@ -23,7 +23,7 @@ class StructureDefinitionTest extends TestCase
      */
     public function testStructureNamespaceCanBeChanged()
     {
-        $structure = new WritersStructure($this->connection);
+        $structure = new WritersStructure();
         $structure->setNamespace('\\Vendor\\Project\\Model');
         $this->assertEquals('Vendor\\Project\\Model', $structure->getNamespace());
     }
@@ -33,14 +33,8 @@ class StructureDefinitionTest extends TestCase
      */
     public function testGlobalNamespaceDefaultsToEmptyString()
     {
-        $structure = new WritersStructure($this->connection);
+        $structure = new WritersStructure();
         $structure->setNamespace('\\');
         $this->assertEquals('', $structure->getNamespace());
-    }
-
-    public function testBaseClassDump()
-    {
-        $structure = new WritersStructure($this->connection);
-        $structure->build();
     }
 }

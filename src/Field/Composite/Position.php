@@ -72,7 +72,7 @@ class Position extends Field
      */
     public function getFields()
     {
-        return [(new Integer('position', 0))->unsigned(true)];
+        return [(new Integer('position', 0))->unsigned(true)->setShouldBeAddedToModel(false)];
     }
 
     /**
