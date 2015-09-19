@@ -6,6 +6,7 @@ use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use Prophecy\Exception\InvalidArgumentException;
+use Doctrine\Common\Inflector\Inflector;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Association
@@ -13,6 +14,13 @@ use Prophecy\Exception\InvalidArgumentException;
 class HasMany implements AssociationInterface
 {
     use AssociationInterface\Implementation;
+
+    /**
+     * Order releated records by
+     *
+     * @var string
+     */
+    private $order_by = null;
 
     /**
      * @param string $name
@@ -30,6 +38,25 @@ class HasMany implements AssociationInterface
 
         $this->name = $name;
         $this->target_type_name = $target_type_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderBy()
+    {
+        return $this->order_by;
+    }
+
+    /**
+     * @param  string $order_by
+     * @return $this
+     */
+    public function &orderBy($order_by)
+    {
+        $this->order_by = $order_by;
+
+        return $this;
     }
 
     /**
@@ -52,5 +79,33 @@ class HasMany implements AssociationInterface
      */
     public function buildClassMethods($namespace, Type $source_type, Type $target_type, array &$result)
     {
+        if ($namespace) {
+            $namespace = '\\' . ltrim($namespace, '\\');
+        }
+
+        $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
+        $classified_association_name = Inflector::classify($this->getName());;
+
+        $fk_name = Inflector::singularize($source_type->getName()) . '_id';
+        $get_all_name = "get{$classified_association_name}";
+
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     *';
+        $result[] = '     * @return ' . $target_instance_class . '[]';
+        $result[] = '     */';
+        $result[] = '    public function ' . $get_all_name . '()';
+        $result[] = '    {';
+        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where(["' . $fk_name . ' = ?", $this->getId()])->all();';
+        $result[] = '    }';
+
+        // getBookIds
+
+        // countBooks
+
+        // addBook
+
+        // clearBooks
     }
 }
