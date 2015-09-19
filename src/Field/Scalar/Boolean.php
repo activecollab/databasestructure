@@ -11,10 +11,10 @@ class Boolean extends Field
     /**
      * Value of this column needs to be unique (in the given context)
      *
-     * @param  array|string|null $context
+     * @param  string $context
      * @return $this
      */
-    public function &unique($context = null)
+    public function &unique(...$context)
     {
         throw new LogicException('Boolean columns cant be made unique');
     }

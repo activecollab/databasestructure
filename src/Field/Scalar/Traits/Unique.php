@@ -15,21 +15,18 @@ trait Unique
     /**
      * @var array
      */
-    private $uniquness_context = null;
+    private $uniquness_context = [];
 
     /**
      * Value of this column needs to be unique (in the given context)
      *
-     * @param  array|string|null $context
+     * @param  string $context
      * @return $this
      */
-    public function &unique($context = null)
+    public function &unique(...$context)
     {
         $this->is_unique = true;
-
-        if ($context) {
-            $this->uniquness_context = $context;
-        }
+        $this->uniquness_context = $context;
 
         return $this;
     }
