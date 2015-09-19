@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\String;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Required;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Unique;
@@ -66,6 +68,14 @@ class Name extends Field
     public function getDefaultValue()
     {
         return $this->default_value;
+    }
+
+    /**
+     * @return FieldInterface[]
+     */
+    public function getFields()
+    {
+        return [(new String($this->getName(), ''))->modifier('trim')];
     }
 
     /**

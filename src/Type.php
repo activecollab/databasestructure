@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Integer as IntegerField;
 use InvalidArgumentException;
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
@@ -136,6 +137,10 @@ class Type
     {
         if (in_array($size, [FieldInterface::SIZE_TINY, FieldInterface::SIZE_SMALL, FieldInterface::SIZE_MEDIUM, FieldInterface::SIZE_NORMAL, FieldInterface::SIZE_BIG])) {
             $this->expected_dataset_size = $size;
+
+            if ($this->id_field instanceof IntegerField && $this->id_field->getSize() != $this->expected_dataset_size) {
+                $this->id_field = null; // Reset ID field so it can be recreated with the new size
+            }
         } else {
             throw new InvalidArgumentException("Value '$size' is not a valid dataset size");
         }
@@ -149,6 +154,25 @@ class Type
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @var IntegerField
+     */
+    private $id_field;
+
+    /**
+     * Return ID field for this type
+     *
+     * @return IntegerField
+     */
+    public function getIdField()
+    {
+        if (empty($this->id_field)) {
+            $this->id_field = (new IntegerField('id', 0))->unsigned(true)->size($this->getExpectedDatasetSize());
+        }
+
+        return $this->id_field;
     }
 
     /**
@@ -190,6 +214,8 @@ class Type
     public function getAllFields()
     {
         $result = [];
+
+        $this->fieldToFlatList($this->getIdField(), $result);
 
         foreach ($this->getFields() as $field) {
             $this->fieldToFlatList($field, $result);
@@ -302,21 +328,6 @@ class Type
             throw new InvalidArgumentException("Association '" . $association->getName() . "' already exists in this type");
         }
 
-        return $this;
-    }
-
-    public function &hasMany($type)
-    {
-        return $this;
-    }
-
-    public function &belongsTo($type)
-    {
-        return $this;
-    }
-
-    public function &hasAndBelongsToMany($type)
-    {
         return $this;
     }
 

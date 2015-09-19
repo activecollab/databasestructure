@@ -12,6 +12,16 @@ class Integer extends Number
     use Size;
 
     /**
+     * Return PHP native type
+     *
+     * @return string
+     */
+    public function getNativeType()
+    {
+        return 'integer';
+    }
+
+    /**
      * Return value casting code
      *
      * @param  string $variable_name

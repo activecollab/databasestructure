@@ -55,13 +55,32 @@ class TypeDefinitionTest extends TestCase
         $this->assertEquals('awesome_writers', $type->getTableName());
     }
 
+    /**
+     * Check if expected dataset size is normal
+     */
     public function testExcepectedDatasetSizeDefaultsToNormal()
     {
         $this->assertEquals(FieldInterface::SIZE_NORMAL, (new Type('writers'))->getExpectedDatasetSize());
     }
 
+    /**
+     * Check if expected dataset size can be changed
+     */
     public function testExpectedDatasetSizeCanBeChanged()
     {
         $this->assertEquals(FieldInterface::SIZE_BIG, (new Type('writers'))->setExpectedDatasetSize(FieldInterface::SIZE_BIG)->getExpectedDatasetSize());
+    }
+
+    /**
+     * Test if change to expected dataset size changes configuration of ID field
+     */
+    public function testExpectedDatasetSizeChangeChangesIdField()
+    {
+        $type = new Type('writers');
+        $this->assertEquals(FieldInterface::SIZE_NORMAL, $type->getIdField()->getSize());
+
+        $type->setExpectedDatasetSize(FieldInterface::SIZE_BIG);
+
+        $this->assertEquals(FieldInterface::SIZE_BIG, $type->getIdField()->getSize());
     }
 }

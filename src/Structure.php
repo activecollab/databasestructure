@@ -172,14 +172,14 @@ abstract class Structure
         $result[] = '     */';
         $result[] = '    protected $table_name = ' . var_export($type->getTableName(), true) . ';';
 
-        $stringified_field_names = [var_export('id', true)];
+        $stringified_field_names = [];
         $fields_with_default_value = [];
 
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
 
-                if ($field->getDefaultValue() !== null) {
+                if ($field->getName() != 'id' && $field->getDefaultValue() !== null) {
                     $fields_with_default_value[$field->getName()] = $field->getDefaultValue();
                 }
             }
@@ -210,7 +210,7 @@ abstract class Structure
         }
 
         foreach ($fields as $field) {
-            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
+            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
                 $camelized_field_name = Inflector::classify($field->getName());
 
                 $result[] = '';
@@ -254,9 +254,6 @@ abstract class Structure
         $result[] = '            return parent::setFieldValue($name, null);';
         $result[] = '        } else {';
         $result[] = '            switch ($name) {';
-        $result[] = '                case ' . var_export('id', true) . ':';
-        $result[] = '                    return parent::setFieldValue($name, (integer) $value);';
-
 
         $casters = [];
 

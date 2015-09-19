@@ -2,7 +2,6 @@
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
-use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
@@ -10,4 +9,14 @@ use InvalidArgumentException;
 class String extends Field
 {
     use Modifier;
+
+    /**
+     * Return PHP native type
+     *
+     * @return string
+     */
+    public function getNativeType()
+    {
+        return 'string';
+    }
 }
