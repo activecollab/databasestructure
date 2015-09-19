@@ -17,6 +17,9 @@ class CodeBuilderTest extends TestCase
      */
     private $structure;
 
+    /**
+     * @var string
+     */
     private $namespace = '\\ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Writers\\';
 
     /**
@@ -45,6 +48,16 @@ class CodeBuilderTest extends TestCase
 
         $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}BaseChapter");
         $this->chapter_reflection = new ReflectionClass("{$this->namespace}Chapter");
+    }
+
+    /**
+     * Test inheritance
+     */
+    public function testInhritance()
+    {
+        $this->assertTrue($this->writer_reflection->isSubclassOf("{$this->namespace}BaseWriter"));
+        $this->assertTrue($this->book_reflection->isSubclassOf("{$this->namespace}BaseBook"));
+        $this->assertTrue($this->chapter_reflection->isSubclassOf("{$this->namespace}BaseChapter"));
     }
 
     /**
