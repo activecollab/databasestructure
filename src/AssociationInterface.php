@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseStructure\Type;
+
 /**
  * @package ActiveCollab\DatabaseStructure
  */
@@ -28,10 +30,13 @@ interface AssociationInterface
      */
     public function getFields();
 
-//    /**
-//     * Return a connection table definition
-//     *
-//     * @return null
-//     */
-//    public function getConnectionTable();
+    /**
+     * Build class methods
+     *
+     * @param string $namespace
+     * @param Type   $source_type
+     * @param Type   $target_type
+     * @param array  $result
+     */
+    public function buildClassMethods($namespace, Type $source_type, Type $target_type, array &$result);
 }

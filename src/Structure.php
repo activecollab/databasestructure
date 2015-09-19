@@ -30,6 +30,31 @@ abstract class Structure
     private $types = [];
 
     /**
+     * Get all structure type
+     *
+     * @return Type[]
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * Return type by type name
+     *
+     * @param  string $type_name
+     * @return Type
+     */
+    public function getType($type_name)
+    {
+        if (isset($this->types[$type_name])) {
+            return $this->types[$type_name];
+        } else {
+            throw new InvalidArgumentException("Type '$type_name' not found");
+        }
+    }
+
+    /**
      * @param  string $type_name
      * @return Type
      */
@@ -207,6 +232,10 @@ abstract class Structure
             }
 
             $result[] = '     ];';
+        }
+
+        foreach ($type->getAssociations() as $association) {
+            $association->buildClassMethods($this->getNamespace(), $type, $this->getType($association->getTargetTypeName()), $result);
         }
 
         foreach ($fields as $field) {
