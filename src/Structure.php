@@ -159,9 +159,6 @@ abstract class Structure
      */
     private function buildBaseTypeClass(Type $type, $build_path, callable $on_class_built = null)
     {
-//        $base_class_name = 'Base' . Inflector::classify(Inflector::singularize($type->getName()));
-//        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
-
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
 
@@ -340,8 +337,6 @@ abstract class Structure
         $result[] = '}';
 
         $result = implode("\n", $result);
-
-        print $result . "\n\n";
 
         if ($build_path) {
             file_put_contents($base_class_build_path, $result);
