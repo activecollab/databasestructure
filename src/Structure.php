@@ -335,6 +335,7 @@ abstract class Structure
         $result[] = '    }';
 
         $result[] = '}';
+        $result[] = '';
 
         $result = implode("\n", $result);
 
@@ -388,6 +389,7 @@ abstract class Structure
         $result[] = 'class ' . $class_name . ' extends ' . $base_class_name;
         $result[] = '{';
         $result[] = '}';
+        $result[] = '';
 
         $result = implode("\n", $result);
 
