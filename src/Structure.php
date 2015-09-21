@@ -169,13 +169,13 @@ abstract class Structure
         $result[] = "<?php";
         $result[] = '';
 
-        if ($this->getNamespace()) {
-            $result[] = 'namespace ' . $this->getNamespace() . '\\Base;';
-        } else {
-            $result[] = 'namespace Base;';
-        }
+        $base_class_namespace = $this->getNamespace() ? $this->getNamespace() . '\\Base' : 'Base';
 
+        $result[] = 'namespace ' . $base_class_namespace;
         $result[] = '';
+        $result[] = '/**';
+        $result[] = ' * @package ' . $base_class_namespace;
+        $result[] = ' */';
 
         $interfaces = $traits = [];
 
@@ -380,6 +380,9 @@ abstract class Structure
         if ($this->getNamespace()) {
             $result[] = 'namespace ' . $this->getNamespace() . ';';
             $result[] = '';
+            $result[] = '/**';
+            $result[] = ' * @package ' . $this->getNamespace();
+            $result[] = ' */';
         }
 
         $result[] = 'class ' . $class_name . ' extends ' . $base_class_name;
