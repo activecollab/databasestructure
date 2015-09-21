@@ -163,9 +163,9 @@ abstract class Structure
 //        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
 
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
-        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\') . '\\Base';
+        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
 
-        $base_class_build_path = $build_path ? "$build_path/$base_class_name.php" : null;
+        $base_class_build_path = $build_path ? "$build_path/Base/$base_class_name.php" : null;
 
         $result = [];
 
@@ -173,9 +173,12 @@ abstract class Structure
         $result[] = '';
 
         if ($this->getNamespace()) {
-            $result[] = 'namespace ' . $this->getNamespace() . ';';
-            $result[] = '';
+            $result[] = 'namespace ' . $this->getNamespace() . '\\Base;';
+        } else {
+            $result[] = 'namespace Base;';
         }
+
+        $result[] = '';
 
         $interfaces = $traits = [];
 
@@ -363,6 +366,7 @@ abstract class Structure
     {
         $class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_name = 'Base\\' . $class_name;
+
         $class_build_path = $build_path ? "$build_path/$class_name.php" : null;
 
         if ($class_build_path && is_file($class_build_path)) {

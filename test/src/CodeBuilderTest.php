@@ -40,13 +40,13 @@ class CodeBuilderTest extends TestCase
             $this->structure->build();
         }
 
-        $this->base_writer_reflection = new ReflectionClass("{$this->namespace}BaseWriter");
+        $this->base_writer_reflection = new ReflectionClass("{$this->namespace}Base\\Writer");
         $this->writer_reflection = new ReflectionClass("{$this->namespace}Writer");
 
-        $this->base_book_reflection = new ReflectionClass("{$this->namespace}BaseBook");
+        $this->base_book_reflection = new ReflectionClass("{$this->namespace}Base\\Book");
         $this->book_reflection = new ReflectionClass("{$this->namespace}Book");
 
-        $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}BaseChapter");
+        $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}Base\\Chapter");
         $this->chapter_reflection = new ReflectionClass("{$this->namespace}Chapter");
     }
 
@@ -55,9 +55,9 @@ class CodeBuilderTest extends TestCase
      */
     public function testInhritance()
     {
-        $this->assertTrue($this->writer_reflection->isSubclassOf("{$this->namespace}BaseWriter"));
-        $this->assertTrue($this->book_reflection->isSubclassOf("{$this->namespace}BaseBook"));
-        $this->assertTrue($this->chapter_reflection->isSubclassOf("{$this->namespace}BaseChapter"));
+        $this->assertTrue($this->writer_reflection->isSubclassOf("{$this->namespace}Base\\Writer"));
+        $this->assertTrue($this->book_reflection->isSubclassOf("{$this->namespace}Base\\Book"));
+        $this->assertTrue($this->chapter_reflection->isSubclassOf("{$this->namespace}Base\\Chapter"));
     }
 
     /**
