@@ -117,7 +117,7 @@ class BelongsTo implements AssociationInterface
         $result[] = '     */';
         $result[] = '    public function ' . $getter_name . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->get(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+        $result[] = '       return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
         $result[] = '    }';
 
 
