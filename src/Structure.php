@@ -171,7 +171,7 @@ abstract class Structure
 
         $base_class_namespace = $this->getNamespace() ? $this->getNamespace() . '\\Base' : 'Base';
 
-        $result[] = 'namespace ' . $base_class_namespace;
+        $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
         $result[] = '/**';
         $result[] = ' * @package ' . $base_class_namespace;
