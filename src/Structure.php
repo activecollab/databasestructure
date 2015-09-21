@@ -368,6 +368,8 @@ abstract class Structure
             if (is_callable($on_class_build_skipped)) {
                 call_user_func($on_class_build_skipped, $class_name, $class_build_path);
             }
+
+            return;
         }
 
         $result = [];
