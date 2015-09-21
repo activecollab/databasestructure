@@ -5,6 +5,7 @@ namespace ActiveCollab\DatabaseStructure;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * @package ActiveCollab\DatabaseStructure
@@ -115,14 +116,29 @@ abstract class Structure
      * If $build_path is null, classes will be generated, evaled and loaded into the memory
      *
      * @param string|null   $build_path
+     * @param callable|null $on_base_dir_created
      * @param callable|null $on_class_built
      * @param callable|null $on_class_build_skipped
      */
-    public function build($build_path = null, callable $on_class_built = null, callable $on_class_build_skipped = null)
+    public function build($build_path = null, callable $on_base_dir_created = null, callable $on_class_built = null, callable $on_class_build_skipped = null)
     {
         if ($build_path) {
             if (is_dir($build_path)) {
                 $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
+
+                if (!is_dir("$build_path/Base")) {
+                    $old_umask = umask(0);
+                    $dir_created = mkdir("$build_path/Base");
+                    umask($old_umask);
+
+                    if ($dir_created) {
+                        if ($on_base_dir_created && is_callable($on_base_dir_created)) {
+                            call_user_func($on_base_dir_created, "$build_path/Base");
+                        }
+                    } else {
+                        throw new RuntimeException("Failed to create '$build_path/Base' directory");
+                    }
+                }
             } else {
                 throw new InvalidArgumentException("Directory '$build_path' not found");
             }
@@ -135,14 +151,20 @@ abstract class Structure
     }
 
     /**
+     * Build base type class
+     *
      * @param Type          $type
      * @param string        $build_path
      * @param callable|null $on_class_built
      */
     private function buildBaseTypeClass(Type $type, $build_path, callable $on_class_built = null)
     {
-        $base_class_name = 'Base' . Inflector::classify(Inflector::singularize($type->getName()));
-        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
+//        $base_class_name = 'Base' . Inflector::classify(Inflector::singularize($type->getName()));
+//        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
+
+        $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
+        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\') . '\\Base';
+
         $base_class_build_path = $build_path ? "$build_path/$base_class_name.php" : null;
 
         $result = [];
@@ -330,6 +352,8 @@ abstract class Structure
     }
 
     /**
+     * Build type class
+     *
      * @param Type          $type
      * @param string        $build_path
      * @param callable|null $on_class_built
@@ -338,7 +362,7 @@ abstract class Structure
     private function buildTypeClass(Type $type, $build_path, callable $on_class_built = null, callable $on_class_build_skipped = null)
     {
         $class_name = Inflector::classify(Inflector::singularize($type->getName()));
-        $base_class_name = 'Base' . $class_name;
+        $base_class_name = 'Base\\' . $class_name;
         $class_build_path = $build_path ? "$build_path/$class_name.php" : null;
 
         if ($class_build_path && is_file($class_build_path)) {
