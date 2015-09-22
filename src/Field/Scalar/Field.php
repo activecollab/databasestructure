@@ -113,4 +113,9 @@ abstract class Field implements FieldInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+//    abstract public function getCreateFieldStatement();
 }

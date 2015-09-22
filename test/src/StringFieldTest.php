@@ -25,4 +25,36 @@ class StringFieldTest extends TestCase
         $field = (new String('name'))->modifier('trim');
         $this->assertEquals('trim', $field->getModifier());
     }
+
+    /**
+     * Check if length defaults to 191
+     */
+    public function testLengthIs191ByDefault()
+    {
+        $this->assertEquals(191, (new String('some_string'))->getLength());
+    }
+
+    /**
+     * Check if length can be changed
+     */
+    public function testLengthCanBeChanged()
+    {
+        $this->assertEquals(15, (new String('some_string'))->length(15)->getLength());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnLengthToSmall()
+    {
+        (new String('some_string'))->length(-1);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testExceptionOnLengthToLarge()
+    {
+        (new String('some_string'))->length(255);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Field;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Integer as IntegerField;
 use InvalidArgumentException;
 use ActiveCollab\DatabaseObject\Object;
@@ -412,5 +413,20 @@ class Type
         $this->trait_tweaks[] = $tweak;
 
         return $this;
+    }
+
+    // ---------------------------------------------------
+    //  SQL
+    // ---------------------------------------------------
+
+    public function getCreateTableStatement()
+    {
+        $fields_ddl = [];
+
+        foreach ($this->getAllFields() as $field) {
+            if ($field instanceof Field) {
+
+            }
+        }
     }
 }
