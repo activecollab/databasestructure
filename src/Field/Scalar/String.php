@@ -54,9 +54,4 @@ class String extends Field
 
         return $this;
     }
-
-    public function getCreateFieldStatement()
-    {
-
-    }
 }

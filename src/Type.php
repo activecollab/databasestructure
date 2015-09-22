@@ -414,19 +414,4 @@ class Type
 
         return $this;
     }
-
-    // ---------------------------------------------------
-    //  SQL
-    // ---------------------------------------------------
-
-    public function getCreateTableStatement()
-    {
-        $fields_ddl = [];
-
-        foreach ($this->getAllFields() as $field) {
-            if ($field instanceof Field) {
-
-            }
-        }
-    }
 }

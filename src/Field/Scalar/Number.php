@@ -28,7 +28,7 @@ abstract class Number extends Field
      * @param  boolean $value
      * @return $this
      */
-    public function &unsigned($value)
+    public function &unsigned($value = true)
     {
         $this->unsigned = (boolean) $value;
 

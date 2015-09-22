@@ -171,13 +171,4 @@ abstract class Structure
 
         return $this->builders;
     }
-
-//    public function buildDatabaseTables(Connection $connection = null, callable $on_table_added = null, callable $on_foreign_key_added = null)
-//    {
-//        foreach ($this->getTypes() as $type) {
-//            $create_table_statement = $type->getCreateTableStatement();
-//
-//            var_dump($create_table_statement);
-//        }
-//    }
 }
