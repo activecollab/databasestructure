@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f2a544faf3a750aca9a202583134f384",
+    "hash": "6cc6517852bcd244b4f061667166f2c3",
     "packages": [
         {
             "name": "activecollab/databaseconnection",
@@ -97,6 +97,48 @@
                 "persistence"
             ],
             "time": "2015-09-19 20:00:51"
+        },
+        {
+            "name": "activecollab/filesystem",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/activecollab/filesystem.git",
+                "reference": "65ad6ae70af93b97846ff10aca67fda73e661fe4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/65ad6ae70af93b97846ff10aca67fda73e661fe4",
+                "reference": "65ad6ae70af93b97846ff10aca67fda73e661fe4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ActiveCollab\\Filesystem\\": "src",
+                    "ActiveCollab\\Filesystem\\Test\\": "test/src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Ilija Studen",
+                    "email": "ilija.studen@activecollab.com"
+                }
+            ],
+            "description": "Work with local or remote Unix filesystem",
+            "homepage": "https://labs.activecollab.com",
+            "keywords": [
+                "activecollab",
+                "filesystem"
+            ],
+            "time": "2015-08-04 06:17:10"
         },
         {
             "name": "doctrine/inflector",
@@ -572,16 +614,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.8",
+            "version": "4.8.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "521720279261e5b14799cf1bb895d4b55e516f26"
+                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/521720279261e5b14799cf1bb895d4b55e516f26",
-                "reference": "521720279261e5b14799cf1bb895d4b55e516f26",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/73fad41adb5b7bc3a494bb930d90648df1d5e74b",
+                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b",
                 "shasum": ""
             },
             "require": {
@@ -640,7 +682,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-19 05:44:37"
+            "time": "2015-09-20 12:56:44"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1123,7 +1165,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "activecollab/databaseconnection": 20,
-        "activecollab/databaseobject": 20
+        "activecollab/databaseobject": 20,
+        "activecollab/filesystem": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

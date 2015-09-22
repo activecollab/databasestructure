@@ -23,10 +23,13 @@ abstract class Database extends Builder
     }
 
     /**
-     * @param Connection $connection
+     * @param  Connection $connection
+     * @return $this
      */
     public function &setConnection(Connection $connection)
     {
         $this->connection = $connection;
+
+        return $this;
     }
 }

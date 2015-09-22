@@ -2,11 +2,14 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseConnection\Connection;
 use ActiveCollab\DatabaseStructure\Builder\BaseDir;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClass;
+use ActiveCollab\DatabaseStructure\Builder\Database;
 use ActiveCollab\DatabaseStructure\Builder\FileSystem;
 use ActiveCollab\DatabaseStructure\Builder\TypeClass;
 use ActiveCollab\DatabaseStructure\Builder\Types;
+use ActiveCollab\DatabaseStructure\Builder\TypeTable;
 use InvalidArgumentException;
 
 /**
@@ -118,14 +121,15 @@ abstract class Structure
      * If $build_path is null, classes will be generated, evaled and loaded into the memory
      *
      * @param string|null   $build_path
+     * @param Connection    $connection
      * @param array|null    $event_handlers
      * @param callable|null $on_base_dir_created
      * @param callable|null $on_class_built
      * @param callable|null $on_class_build_skipped
      */
-    public function build($build_path = null, array $event_handlers = [], callable $on_base_dir_created = null, callable $on_class_built = null, callable $on_class_build_skipped = null)
+    public function build($build_path = null, Connection $connection = null, array $event_handlers = [], callable $on_base_dir_created = null, callable $on_class_built = null, callable $on_class_build_skipped = null)
     {
-        $builders = $this->getBuilders($build_path, $event_handlers);
+        $builders = $this->getBuilders($build_path, $connection, $event_handlers);
 
         foreach ($this->types as $type) {
             foreach ($builders as $builder) {
@@ -135,7 +139,7 @@ abstract class Structure
     }
 
     /**
-     * @var BuilderInterface[]
+     * @var BuilderInterface[]|FileSystem[]|Database[]
      */
     private $builders = [];
 
@@ -143,21 +147,31 @@ abstract class Structure
      * Return a list of prepared builder instances
      *
      * @param  string|null        $build_path
+     * @param  Connection         $connection
      * @param  array              $event_handlers
      * @return BuilderInterface[]
      */
-    private function getBuilders($build_path = null, array $event_handlers)
+    private function getBuilders($build_path = null, Connection $connection, array $event_handlers)
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDir($this);
             $this->builders[] = new Types($this);
             $this->builders[] = new BaseTypeClass($this);
             $this->builders[] = new TypeClass($this);
+            $this->builders[] = new TypeTable($this);
 
             if ($build_path) {
                 foreach ($this->builders as $k => $v) {
                     if ($v instanceof FileSystem) {
-                        $v->setBuildPath($build_path);
+                        $this->builders[$k]->setBuildPath($build_path);
+                    }
+                }
+            }
+
+            if ($connection) {
+                foreach ($this->builders as $k => $v) {
+                    if ($v instanceof Database) {
+                        $this->builders[$k]->setConnection($connection);
                     }
                 }
             }

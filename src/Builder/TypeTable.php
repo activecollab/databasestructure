@@ -34,9 +34,15 @@ class TypeTable extends Database
             }
         }
 
-
+        var_dump($field_statements);
     }
 
+    /**
+     * Prepare field statement based on the field settings
+     *
+     * @param  ScalarField $field
+     * @return string
+     */
     private function prepareFieldStatement(ScalarField $field)
     {
         $result = $this->getConnection()->escapeFieldName($field->getName()) . ' ' . $this->prepareTypeDefinition($field);
@@ -45,7 +51,7 @@ class TypeTable extends Database
             $result .= ' NOT NULL';
         }
 
-        $result .= ' ' . $this->prepareDefaultValue($field);
+        $result .= ' DEFAULT ' . $this->prepareDefaultValue($field);
 
         return $result;
     }
@@ -135,12 +141,18 @@ class TypeTable extends Database
 
         if ($default_value === null) {
             return 'NULL';
-        } elseif ($default_value === 0) {
-            return '0';
-        } elseif ($default_value === '') {
-            return "''";
-        } else {
-            return $this->getConnection()->escapeValue($default_value);
         }
+
+        if ($field instanceof Date || $field instanceof DateTime) {
+            $timestamp = is_int($default_value) ? $default_value : strtotime($default_value);
+
+            if ($field instanceof DateTime) {
+                return $this->getConnection()->escapeValue(date('Y-m-d H:i:s', $timestamp));
+            } else {
+                return $this->getConnection()->escapeValue(date('Y-m-d', $timestamp));
+            }
+        }
+
+        return $this->getConnection()->escapeValue($default_value);
     }
 }

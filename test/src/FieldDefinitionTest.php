@@ -9,6 +9,9 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\String;
  */
 class FieldDefinitionTest extends TestCase
 {
+    /**
+     * Test if scalar fields are added to the model by default
+     */
     public function testScalarFieldsShouldBeAddedToModelByDefault()
     {
         $this->assertTrue((new String('is_important'))->getShouldBeAddedToModel());
