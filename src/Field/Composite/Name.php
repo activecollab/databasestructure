@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndex;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\String;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
@@ -16,7 +17,7 @@ use InvalidArgumentException;
  */
 class Name extends Field
 {
-    use Required, Unique, Modifier;
+    use Required, Unique, Modifier, AddIndex;
 
     /**
      * @var string
@@ -27,11 +28,6 @@ class Name extends Field
      * @var mixed
      */
     private $default_value;
-
-    /**
-     * @var boolean
-     */
-    private $add_index;
 
     /**
      * @param  string                   $name
@@ -47,7 +43,7 @@ class Name extends Field
 
         $this->name = $name;
         $this->default_value = $default_value;
-        $this->add_index = $add_index;
+        $this->addIndex($add_index);
 
         $this->modifier('trim');
     }
@@ -85,7 +81,7 @@ class Name extends Field
      */
     public function onAddedToType(Type &$type)
     {
-        if ($this->add_index) {
+        if ($this->getAddIndex()) {
             $type->addIndex(new Index($this->name));
         }
     }
