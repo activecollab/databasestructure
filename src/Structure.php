@@ -7,10 +7,7 @@ use ActiveCollab\DatabaseStructure\Builder\BaseTypeClass;
 use ActiveCollab\DatabaseStructure\Builder\FileSystem;
 use ActiveCollab\DatabaseStructure\Builder\TypeClass;
 use ActiveCollab\DatabaseStructure\Builder\Types;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
-use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
-use RuntimeException;
 
 /**
  * @package ActiveCollab\DatabaseStructure
