@@ -63,21 +63,34 @@ class BlogBuilderTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * Test if base type classes are properly build
+     */
     public function testBuildBaseTypes()
     {
-
+        $this->assertFileExists("$this->build_path/Base/Category.php");
+        $this->assertFileExists("$this->build_path/Base/Post.php");
+        $this->assertFileExists("$this->build_path/Base/Comment.php");
     }
 
-//    public function testBuildTypes()
-//    {
-//
-//    }
-//
-//    public function testBuildTypesPhp()
-//    {
-//
-//    }
-//
+    /**
+     * Test if type classes are properly build
+     */
+    public function testBuildTypes()
+    {
+        $this->assertFileExists("$this->build_path/Category.php");
+        $this->assertFileExists("$this->build_path/Post.php");
+        $this->assertFileExists("$this->build_path/Comment.php");
+    }
+
+    /**
+     * Test if types.php is properly generated
+     */
+    public function testBuildTypesPhp()
+    {
+        $this->assertFileExists("$this->build_path/types.php");
+    }
+
 //    public function testBuildStructureSql()
 //    {
 //

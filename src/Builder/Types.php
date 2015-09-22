@@ -38,7 +38,7 @@ class Types extends FileSystem
             $result[] = 'return [';
 
             foreach ($this->getStructure()->getTypes() as $current_type) {
-                $result[] = '    ' . var_export($namespace . '\\' . Inflector::classify(Inflector::singularize($current_type->getName())), true);
+                $result[] = '    ' . var_export($namespace . '\\' . Inflector::classify(Inflector::singularize($current_type->getName())), true) . ',';
             }
 
             $result[] = '];';
