@@ -14,7 +14,7 @@ class BaseTypeClass extends FileSystem
     /**
      * @param Type $type
      */
-    public function build(Type $type)
+    public function buildType(Type $type)
     {
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');

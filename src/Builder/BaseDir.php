@@ -12,9 +12,9 @@ use InvalidArgumentException;
 class BaseDir extends FileSystem
 {
     /**
-     * @param Type $type
+     * Execute prior to type build
      */
-    public function build(Type $type)
+    public function preBuild()
     {
         $build_path = $this->getBuildPath();
 

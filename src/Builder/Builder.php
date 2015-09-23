@@ -4,6 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\BuilderInterface;
+use ActiveCollab\DatabaseStructure\Type;
 use InvalidArgumentException;
 
 /**
@@ -40,6 +41,29 @@ abstract class Builder implements BuilderInterface
      * @var array
      */
     private $event_handlers = [];
+
+    /**
+     * Execute prior to type build
+     */
+    public function preBuild()
+    {
+    }
+
+    /**
+     * Build type
+     *
+     * @param \ActiveCollab\DatabaseStructure\Type $type
+     */
+    public function buildType(Type $type)
+    {
+    }
+
+    /**
+     * Execute after types are built
+     */
+    public function postBuild()
+    {
+    }
 
     /**
      * Register an internal event handler

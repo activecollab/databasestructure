@@ -8,11 +8,21 @@ namespace ActiveCollab\DatabaseStructure;
 interface BuilderInterface
 {
     /**
+     * Execute prior to type build
+     */
+    public function preBuild();
+
+    /**
      * Build type
      *
      * @param \ActiveCollab\DatabaseStructure\Type $type
      */
-    public function build(Type $type);
+    public function buildType(Type $type);
+
+    /**
+     * Execute after types are built
+     */
+    public function postBuild();
 
     /**
      * @return \ActiveCollab\DatabaseStructure\Structure

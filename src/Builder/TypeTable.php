@@ -25,7 +25,7 @@ class TypeTable extends Database
     /**
      * @param Type $type
      */
-    public function build(Type $type)
+    public function buildType(Type $type)
     {
         if ($this->getConnection()->tableExists($type->getName())) {
             $this->triggerEvent('on_table_exists', [$type->getName()]);

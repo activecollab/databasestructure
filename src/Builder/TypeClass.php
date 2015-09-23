@@ -13,7 +13,7 @@ class TypeClass extends FileSystem
     /**
      * @param Type $type
      */
-    public function build(Type $type)
+    public function buildType(Type $type)
     {
         $class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_name = 'Base\\' . $class_name;

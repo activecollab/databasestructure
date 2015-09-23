@@ -131,10 +131,18 @@ abstract class Structure
     {
         $builders = $this->getBuilders($build_path, $connection, $event_handlers);
 
+        foreach ($builders as $builder) {
+            $builder->preBuild();
+        }
+
         foreach ($this->types as $type) {
             foreach ($builders as $builder) {
-                $builder->build($type);
+                $builder->buildType($type);
             }
+        }
+
+        foreach ($builders as $builder) {
+            $builder->postBuild();
         }
     }
 

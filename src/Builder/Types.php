@@ -11,9 +11,9 @@ use Doctrine\Common\Inflector\Inflector;
 class Types extends FileSystem
 {
     /**
-     * @param Type $type
+     * Execute after types are built
      */
-    public function build(Type $type)
+    public function postBuild()
     {
         $types_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/types.php" : null;
 
