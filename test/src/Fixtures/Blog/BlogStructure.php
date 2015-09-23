@@ -7,6 +7,7 @@ use ActiveCollab\DatabaseStructure\Association\HasMany;
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Text;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
 /**
@@ -32,6 +33,8 @@ class BlogStructure extends Structure
             new Text('body'),
             new DateTime('created_at'),
             new DateTime('published_at'),
+        ])->addIndexes([
+            new Index('published_at'),
         ])->addAssociations([
             new BelongsTo('category'),
             new HasMany('comments'),
@@ -39,6 +42,9 @@ class BlogStructure extends Structure
 
         $this->addType('comments')->addFields([
             new Text('body'),
+            new DateTime('created_at'),
+        ])->addIndexes([
+            new Index('created_at'),
         ])->addAssociations([
             new BelongsTo('post'),
         ]);

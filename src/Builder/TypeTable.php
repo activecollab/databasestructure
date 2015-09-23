@@ -27,20 +27,45 @@ class TypeTable extends Database
      */
     public function build(Type $type)
     {
-        $field_statements = $index_statements = [];
+        if ($this->getConnection()->tableExists($type->getName())) {
+            $this->triggerEvent('on_table_exists', [$type->getName()]);
+        } else {
+            $create_table_statement = $this->prepareCreateTableStatement($type);
+
+            $this->getConnection()->execute($create_table_statement);
+
+            $this->triggerEvent('on_table_created', [$type->getName()]);
+        }
+    }
+
+    /**
+     * Prepare CREATE TABLE statement for the given type
+     *
+     * @param  Type   $type
+     * @return string
+     */
+    public function prepareCreateTableStatement(Type $type)
+    {
+        $result = [];
+
+        $result[] = 'CREATE TABLE IF NOT EXISTS ' . $this->getConnection()->escapeTableName($type->getName()) . '(';
 
         foreach ($type->getAllFields() as $field) {
             if ($field instanceof ScalarField) {
-                $field_statements[] = $this->prepareFieldStatement($field);
+                $result[] = '    ' . $this->prepareFieldStatement($field) . ',';
             }
         }
 
         foreach ($type->getAllIndexes() as $index) {
-            $index_statements[] = $this->prepareIndexStatement($index);
+            $result[] = '    ' . $this->prepareIndexStatement($index) . ',';
         }
 
-        var_dump($field_statements);
-        var_dump($index_statements);
+        $last_line = count($result) - 1;
+        $result[$last_line] = rtrim($result[$last_line], ',');
+
+        $result[] = ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
+
+        return implode("\n", $result);
     }
 
     /**
