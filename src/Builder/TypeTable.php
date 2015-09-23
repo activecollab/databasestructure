@@ -24,27 +24,20 @@ use InvalidArgumentException;
 class TypeTable extends Database
 {
     /**
-     * @var array
-     */
-    private $create_table_statements = [];
-
-    /**
      * @param Type $type
      */
     public function buildType(Type $type)
     {
-        $this->create_table_statements[$type->getName()] = $this->prepareCreateTableStatement($type);
+        if ($this->getConnection()) {
+            if ($this->getConnection()->tableExists($type->getName())) {
+                $this->triggerEvent('on_table_exists', [$type->getName()]);
+            } else {
+                $this->getConnection()->execute($this->prepareCreateTableStatement($type));
 
-        if ($this->getConnection()->tableExists($type->getName())) {
-            $this->triggerEvent('on_table_exists', [$type->getName()]);
-        } else {
-            $this->getConnection()->execute($this->create_table_statements[$type->getName()]);
-
-            $this->triggerEvent('on_table_created', [$type->getName()]);
+                $this->triggerEvent('on_table_created', [$type->getName()]);
+            }
         }
     }
-
-
 
     /**
      * Prepare CREATE TABLE statement for the given type

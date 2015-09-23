@@ -160,7 +160,7 @@ abstract class Structure
      * @param  array              $event_handlers
      * @return BuilderInterface[]
      */
-    private function getBuilders($build_path = null, Connection $connection, array $event_handlers)
+    private function getBuilders($build_path = null, Connection $connection = null, array $event_handlers)
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDir($this);

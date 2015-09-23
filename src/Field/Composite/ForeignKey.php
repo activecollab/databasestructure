@@ -55,7 +55,7 @@ class ForeignKey extends Field
      */
     public function getFields()
     {
-        return [(new Integer($this->getName(), 0))->unsigned(true)->size($this->getSize())];
+        return [(new Integer($this->getName()))->unsigned(true)->size($this->getSize())];
     }
 
     /**

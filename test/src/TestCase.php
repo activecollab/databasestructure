@@ -39,6 +39,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->connection = new Connection($this->link);
+
+        $this->connection->execute('SET foreign_key_checks = 0;');
+        foreach ($this->connection->getTableNames() as $table_name) {
+            $this->connection->dropTable($table_name);
+        }
+        $this->connection->execute('SET foreign_key_checks = 1;');
     }
 
     /**
@@ -46,6 +52,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
+        $this->connection->execute('SET foreign_key_checks = 0;');
+        foreach ($this->connection->getTableNames() as $table_name) {
+            $this->connection->dropTable($table_name);
+        }
+        $this->connection->execute('SET foreign_key_checks = 1;');
+
         $this->connection = null;
         $this->link->close();
 

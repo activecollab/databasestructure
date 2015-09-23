@@ -15,11 +15,13 @@ class Associations extends Database
      */
     public function postBuild()
     {
-        foreach ($this->getStructure()->getTypes() as $type) {
-            foreach ($type->getAssociations() as $association) {
-                if ($association instanceof BelongsTo) {
-                    $this->getConnection()->execute($this->prepareBelongsToConstraintStatement($type, $association));
-                    $this->triggerEvent('on_association', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
+        if ($this->getConnection()) {
+            foreach ($this->getStructure()->getTypes() as $type) {
+                foreach ($type->getAssociations() as $association) {
+                    if ($association instanceof BelongsTo) {
+                        $this->getConnection()->execute($this->prepareBelongsToConstraintStatement($type, $association));
+                        $this->triggerEvent('on_association', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
+                    }
                 }
             }
         }
