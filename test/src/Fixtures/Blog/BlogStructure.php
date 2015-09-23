@@ -3,10 +3,12 @@
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Blog;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsTo;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
 use ActiveCollab\DatabaseStructure\Association\HasMany;
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Text;
+use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
@@ -22,10 +24,10 @@ class BlogStructure extends Structure
      */
     public function configure()
     {
-        $this->addType('categories')->addFields([
+        $this->addType('categories')->expectedDatasetSize(FieldInterface::SIZE_SMALL)->addFields([
             (new Name())->unique(),
         ])->addAssociations([
-            new HasMany('posts'),
+            new HasAndBelongsToMany('posts'),
         ]);
 
         $this->addType('posts')->addFields([
@@ -36,7 +38,6 @@ class BlogStructure extends Structure
         ])->addIndexes([
             new Index('published_at'),
         ])->addAssociations([
-            new BelongsTo('category'),
             new HasMany('comments'),
         ]);
 

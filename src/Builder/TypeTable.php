@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Association\BelongsTo;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Boolean;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Date;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
@@ -16,6 +16,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Time;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Type;
+use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
 /**
@@ -36,6 +37,21 @@ class TypeTable extends Database
 
                 $this->triggerEvent('on_table_created', [$type->getName()]);
             }
+
+            foreach ($type->getAssociations() as $association) {
+                if ($association instanceof HasAndBelongsToMany) {
+                    $target_type = $this->getStructure()->getType($association->getTargetTypeName());
+
+                    $connection_table = $this->getConnectionTableName($type, $target_type);
+
+                    if ($this->getConnection()->tableExists($connection_table)) {
+                        $this->triggerEvent('on_table_exists', [$connection_table]);
+                    } else {
+                        $this->getConnection()->execute($this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association));
+                        $this->triggerEvent('on_table_created', [$connection_table]);
+                    }
+                }
+            }
         }
     }
 
@@ -49,7 +65,7 @@ class TypeTable extends Database
     {
         $result = [];
 
-        $result[] = 'CREATE TABLE IF NOT EXISTS ' . $this->getConnection()->escapeTableName($type->getName()) . '(';
+        $result[] = 'CREATE TABLE IF NOT EXISTS ' . $this->getConnection()->escapeTableName($type->getName()) . ' (';
 
         foreach ($type->getAllFields() as $field) {
             if ($field instanceof ScalarField) {
@@ -220,5 +236,47 @@ class TypeTable extends Database
         return $result . ' (' . implode(', ', array_map(function($field_name) {
             return $this->getConnection()->escapeFieldName($field_name);
         }, $index->getFields())) . ')';
+    }
+
+    /**
+     * Return name of the connection that will be created for has and belongs to many association
+     *
+     * @param  Type   $source
+     * @param  Type   $target
+     * @return string
+     */
+    private function getConnectionTableName(Type $source, Type $target)
+    {
+        return $source->getName() . '_' . $target->getName();
+    }
+
+    /**
+     * Prepare create connection table statement
+     *
+     * @param  Type                $source
+     * @param  Type                $target
+     * @param  HasAndBelongsToMany $association
+     * @return string
+     */
+    public function prepareConnectionCreateTableStatement(Type $source, Type $target, HasAndBelongsToMany $association)
+    {
+        $result = [];
+
+        $result[] = 'CREATE TABLE IF NOT EXISTS ' . $association->getConnectionTableName() . ' (';
+
+        $left_field_name = $association->getLeftFieldName();
+        $right_field_name = $association->getRightFieldName();
+
+        $left_field = (new Integer($left_field_name))->unsigned(true)->size($source->getIdField()->getSize());
+        $right_field = (new Integer($right_field_name))->unsigned(true)->size($target->getIdField()->getSize());
+
+        $result[] = '    ' . $this->prepareFieldStatement($left_field) . ',';
+        $result[] = '    ' . $this->prepareFieldStatement($right_field) . ',';
+        $result[] = '    ' . $this->prepareIndexStatement(new Index('PRIMARY', [$left_field->getName(), $right_field->getName()], Index::PRIMARY)) . ',';
+        $result[] = '    ' . $this->prepareIndexStatement(new Index($right_field->getName()));
+
+        $result[] = ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
+
+        return implode("\n", $result);
     }
 }

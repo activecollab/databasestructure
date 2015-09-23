@@ -68,7 +68,7 @@ class TypeDefinitionTest extends TestCase
      */
     public function testExpectedDatasetSizeCanBeChanged()
     {
-        $this->assertEquals(FieldInterface::SIZE_BIG, (new Type('writers'))->setExpectedDatasetSize(FieldInterface::SIZE_BIG)->getExpectedDatasetSize());
+        $this->assertEquals(FieldInterface::SIZE_BIG, (new Type('writers'))->expectedDatasetSize(FieldInterface::SIZE_BIG)->getExpectedDatasetSize());
     }
 
     /**
@@ -79,7 +79,7 @@ class TypeDefinitionTest extends TestCase
         $type = new Type('writers');
         $this->assertEquals(FieldInterface::SIZE_NORMAL, $type->getIdField()->getSize());
 
-        $type->setExpectedDatasetSize(FieldInterface::SIZE_BIG);
+        $type->expectedDatasetSize(FieldInterface::SIZE_BIG);
 
         $this->assertEquals(FieldInterface::SIZE_BIG, $type->getIdField()->getSize());
     }

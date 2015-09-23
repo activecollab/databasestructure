@@ -5,6 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use Prophecy\Exception\InvalidArgumentException;
 use Doctrine\Common\Inflector\Inflector;
 
@@ -67,6 +68,15 @@ class HasMany implements AssociationInterface
     public function getFields()
     {
         return [];
+    }
+
+    /**
+     * Return a list of indexes
+     *
+     * @return Index[]
+     */
+    public function getIndexes()
+    {
     }
 
     /**

@@ -5,7 +5,9 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use Prophecy\Exception\InvalidArgumentException;
+use ActiveCollab\DatabaseStructure\Index;
+use Doctrine\Common\Inflector\Inflector;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Association
@@ -13,13 +15,6 @@ use Prophecy\Exception\InvalidArgumentException;
 class HasAndBelongsToMany implements AssociationInterface
 {
     use AssociationInterface\Implementation;
-
-    /**
-     * Order releated records by
-     *
-     * @var string
-     */
-    private $order_by = null;
 
     /**
      * @param string $name
@@ -38,6 +33,13 @@ class HasAndBelongsToMany implements AssociationInterface
         $this->name = $name;
         $this->target_type_name = $target_type_name;
     }
+
+    /**
+     * Order releated records by
+     *
+     * @var string
+     */
+    private $order_by = null;
 
     /**
      * @return string
@@ -59,6 +61,34 @@ class HasAndBelongsToMany implements AssociationInterface
     }
 
     /**
+     * @var string
+     */
+    private $source_type_name;
+
+    /**
+     * Return source type name
+     *
+     * @return string
+     */
+    public function getSourceTypeName()
+    {
+        return $this->source_type_name;
+    }
+
+    /**
+     * Set source type name
+     *
+     * @param  string $source_type_name
+     * @return $this
+     */
+    public function &setSourceTypeName($source_type_name)
+    {
+        $this->source_type_name = $source_type_name;
+
+        return $this;
+    }
+
+    /**
      * Return a list of fields that are to be added to the source type
      *
      * @return FieldInterface[]
@@ -66,6 +96,45 @@ class HasAndBelongsToMany implements AssociationInterface
     public function getFields()
     {
         return [];
+    }
+
+    /**
+     * Return a list of indexes
+     *
+     * @return Index[]
+     */
+    public function getIndexes()
+    {
+    }
+
+    /**
+     * Return left field name
+     *
+     * @return string
+     */
+    public function getLeftFieldName()
+    {
+        return Inflector::singularize($this->getSourceTypeName()) . '_id';
+    }
+
+    /**
+     * Return right field name
+     *
+     * @return string
+     */
+    public function getRightFieldName()
+    {
+        return Inflector::singularize($this->getTargetTypeName()) . '_id';
+    }
+
+    /**
+     * Return connection table name
+     *
+     * @return string
+     */
+    public function getConnectionTableName()
+    {
+        return $this->getSourceTypeName() . '_' . $this->getTargetTypeName();
     }
 
     /**

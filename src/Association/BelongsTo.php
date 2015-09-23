@@ -5,6 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKey;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -74,6 +75,16 @@ class BelongsTo implements AssociationInterface
     public function getFields()
     {
         return [new ForeignKey($this->getFieldName())];
+    }
+
+    /**
+     * Return a list of indexes
+     *
+     * @return Index[]
+     */
+    public function getIndexes()
+    {
+        return [new Index($this->getFieldName())];
     }
 
     /**

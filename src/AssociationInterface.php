@@ -2,8 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseStructure\Type;
-
 /**
  * @package ActiveCollab\DatabaseStructure
  */
@@ -29,6 +27,13 @@ interface AssociationInterface
      * @return FieldInterface[]
      */
     public function getFields();
+
+    /**
+     * Return a list of indexes
+     *
+     * @return Index[]
+     */
+    public function getIndexes();
 
     /**
      * Build class methods

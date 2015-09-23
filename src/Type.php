@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Integer as IntegerField;
 use InvalidArgumentException;
@@ -134,7 +135,7 @@ class Type
      * @param  string $size
      * @return $this
      */
-    public function &setExpectedDatasetSize($size)
+    public function &expectedDatasetSize($size)
     {
         if (in_array($size, [FieldInterface::SIZE_TINY, FieldInterface::SIZE_SMALL, FieldInterface::SIZE_MEDIUM, FieldInterface::SIZE_NORMAL, FieldInterface::SIZE_BIG])) {
             $this->expected_dataset_size = $size;
@@ -300,6 +301,14 @@ class Type
             $result = array_merge($result, $this->getIndexes());
         }
 
+        foreach ($this->getAssociations() as $assosication) {
+            $association_indexes = $assosication->getIndexes();
+
+            if (!empty($association_indexes)) {
+                $result = array_merge($result, $association_indexes);
+            }
+        }
+
         return $result;
     }
 
@@ -340,6 +349,10 @@ class Type
     public function &addAssociation(AssociationInterface $association)
     {
         if (empty($this->associations[$association->getName()])) {
+            if ($association instanceof HasAndBelongsToMany) {
+                $association->setSourceTypeName($this->getName());
+            }
+
             $this->associations[$association->getName()] = $association;
         } else {
             throw new InvalidArgumentException("Association '" . $association->getName() . "' already exists in this type");
