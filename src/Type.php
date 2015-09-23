@@ -287,6 +287,22 @@ class Type
         return $this;
     }
 
+    /**
+     * Return all indexes
+     *
+     * @return array
+     */
+    public function getAllIndexes()
+    {
+        $result = [new Index('id', ['id'], Index::PRIMARY)];
+
+        if (!empty($this->getIndexes())) {
+            $result = array_merge($result, $this->getIndexes());
+        }
+
+        return $result;
+    }
+
     // ---------------------------------------------------
     //  Associations
     // ---------------------------------------------------

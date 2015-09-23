@@ -83,7 +83,7 @@ class Name extends Field implements AddIndexInterface
     public function onAddedToType(Type &$type)
     {
         if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
+            $type->addIndex(new Index($this->name, $this->getAddIndexContext(), $this->getAddIndexType()));
         }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field;
 
+use ActiveCollab\DatabaseStructure\Index;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Field
  */
@@ -22,9 +24,17 @@ interface AddIndexInterface
     public function getAddIndexContext();
 
     /**
+     * Return add index type
+     *
+     * @return string
+     */
+    public function getAddIndexType();
+
+    /**
      * @param  boolean $add_index
      * @param  array   $context
+     * @param  string  $type
      * @return $this
      */
-    public function &addIndex($add_index = true, array $context = []);
+    public function &addIndex($add_index = true, array $context = [], $type = Index::INDEX);
 }

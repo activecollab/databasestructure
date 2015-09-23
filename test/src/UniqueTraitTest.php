@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
+use ActiveCollab\DatabaseStructure\Index;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -19,6 +20,7 @@ class UniqueTraitTest extends TestCase
 
         $unique = (new Name())->unique();
         $this->assertTrue($unique->getAddIndex());
+        $this->assertEquals(Index::UNIQUE, $unique->getAddIndexType());
     }
 
     /**

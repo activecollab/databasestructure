@@ -13,6 +13,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\String;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Text;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Time;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Type;
 use InvalidArgumentException;
 
@@ -26,7 +27,7 @@ class TypeTable extends Database
      */
     public function build(Type $type)
     {
-        $field_statements = [];
+        $field_statements = $index_statements = [];
 
         foreach ($type->getAllFields() as $field) {
             if ($field instanceof ScalarField) {
@@ -34,7 +35,12 @@ class TypeTable extends Database
             }
         }
 
+        foreach ($type->getAllIndexes() as $index) {
+            $index_statements[] = $this->prepareIndexStatement($index);
+        }
+
         var_dump($field_statements);
+        var_dump($index_statements);
     }
 
     /**
@@ -51,7 +57,9 @@ class TypeTable extends Database
             $result .= ' NOT NULL';
         }
 
-        $result .= ' DEFAULT ' . $this->prepareDefaultValue($field);
+        if (!($field instanceof Integer && $field->getName() == 'id')) {
+            $result .= ' DEFAULT ' . $this->prepareDefaultValue($field);
+        }
 
         return $result;
     }
@@ -84,6 +92,10 @@ class TypeTable extends Database
 
             if ($field->getUnsigned()) {
                 $result .= ' UNSIGNED';
+            }
+
+            if ($field->getName() == 'id') {
+                $result .= ' AUTO_INCREMENT';
             }
 
             return $result;
@@ -154,5 +166,33 @@ class TypeTable extends Database
         }
 
         return $this->getConnection()->escapeValue($default_value);
+    }
+
+    /**
+     * Prepare index statement
+     *
+     * @param  Index  $index
+     * @return string
+     */
+    public function prepareIndexStatement(Index $index)
+    {
+        switch ($index->getIndexType()) {
+            case Index::PRIMARY:
+                $result = 'PRIMARY KEY';
+                break;
+            case Index::UNIQUE:
+                $result = 'UNIQUE ' . $this->getConnection()->escapeFieldName($index->getName());
+                break;
+            case Index::FULLTEXT:
+                $result = 'FULLTEXT ' . $this->getConnection()->escapeFieldName($index->getName());
+                break;
+            default:
+                $result = 'INDEX ' . $this->getConnection()->escapeFieldName($index->getName());
+                break;
+        }
+
+        return $result . ' (' . implode(', ', array_map(function($field_name) {
+            return $this->getConnection()->escapeFieldName($field_name);
+        }, $index->getFields())) . ')';
     }
 }
