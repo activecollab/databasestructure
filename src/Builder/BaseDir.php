@@ -2,7 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Type;
 use RuntimeException;
 use InvalidArgumentException;
 

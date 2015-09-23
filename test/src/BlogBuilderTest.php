@@ -49,6 +49,12 @@ class BlogBuilderTest extends TestCase
         $this->assertEquals(['BlogStructure.php'], $this->filesystem->files('/'));
         $this->assertEquals([], $this->filesystem->subdirs('/'));
 
+        $this->connection->execute('SET foreign_key_checks = 0;');
+        foreach ($this->connection->getTableNames() as $table_name) {
+            $this->connection->dropTable($table_name);
+        }
+        $this->connection->execute('SET foreign_key_checks = 1;');
+
         $this->blog_structure = new BlogStructure();
         $this->blog_structure->build($this->build_path, $this->connection);
     }
@@ -59,6 +65,12 @@ class BlogBuilderTest extends TestCase
     public function tearDown()
     {
         $this->filesystem->emptyDir('/', ['BlogStructure.php']);
+
+        $this->connection->execute('SET foreign_key_checks = 0;');
+        foreach ($this->connection->getTableNames() as $table_name) {
+            $this->connection->dropTable($table_name);
+        }
+        $this->connection->execute('SET foreign_key_checks = 1;');
 
         parent::tearDown();
     }

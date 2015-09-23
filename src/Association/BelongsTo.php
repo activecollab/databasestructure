@@ -81,7 +81,7 @@ class BelongsTo implements AssociationInterface
      *
      * @return string
      */
-    private function getFieldName()
+    public function getFieldName()
     {
         return $this->getName() . '_id';
     }

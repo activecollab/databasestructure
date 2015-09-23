@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\Connection;
+use ActiveCollab\DatabaseStructure\Builder\Associations;
 use ActiveCollab\DatabaseStructure\Builder\BaseDir;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClass;
 use ActiveCollab\DatabaseStructure\Builder\Database;
@@ -167,6 +168,7 @@ abstract class Structure
             $this->builders[] = new BaseTypeClass($this);
             $this->builders[] = new TypeClass($this);
             $this->builders[] = new TypeTable($this);
+            $this->builders[] = new Associations($this);
 
             if ($build_path) {
                 foreach ($this->builders as $k => $v) {
