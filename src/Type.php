@@ -2,8 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Integer as IntegerField;
 use InvalidArgumentException;
 use ActiveCollab\DatabaseObject\Object;

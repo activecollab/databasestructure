@@ -17,13 +17,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Time;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Type;
-use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class TypeTable extends Database
+class TypeTableBuilder extends DatabaseBuilder
 {
     /**
      * @param Type $type

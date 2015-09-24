@@ -8,7 +8,7 @@ use Doctrine\Common\Inflector\Inflector;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class TypeClass extends FileSystem
+class TypeClassBuilder extends FileSystemBuilder
 {
     /**
      * @param Type $type

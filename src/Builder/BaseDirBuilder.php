@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class BaseDir extends FileSystem
+class BaseDirBuilder extends FileSystemBuilder
 {
     /**
      * Execute prior to type build

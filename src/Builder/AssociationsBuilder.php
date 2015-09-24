@@ -10,7 +10,7 @@ use Doctrine\Common\Inflector\Inflector;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class Associations extends Database
+class AssociationsBuilder extends DatabaseBuilder
 {
     /**
      * Execute after types are built

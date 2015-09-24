@@ -3,14 +3,14 @@
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\Connection;
-use ActiveCollab\DatabaseStructure\Builder\Associations;
-use ActiveCollab\DatabaseStructure\Builder\BaseDir;
-use ActiveCollab\DatabaseStructure\Builder\BaseTypeClass;
-use ActiveCollab\DatabaseStructure\Builder\Database;
-use ActiveCollab\DatabaseStructure\Builder\FileSystem;
-use ActiveCollab\DatabaseStructure\Builder\TypeClass;
-use ActiveCollab\DatabaseStructure\Builder\Types;
-use ActiveCollab\DatabaseStructure\Builder\TypeTable;
+use ActiveCollab\DatabaseStructure\Builder\AssociationsBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
+use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilder;
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
+use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
+use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
+use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use InvalidArgumentException;
 
 /**
@@ -148,7 +148,7 @@ abstract class Structure
     }
 
     /**
-     * @var BuilderInterface[]|FileSystem[]|Database[]
+     * @var BuilderInterface[]|FileSystemBuilder[]|DatabaseBuilder[]
      */
     private $builders = [];
 
@@ -163,16 +163,16 @@ abstract class Structure
     private function getBuilders($build_path = null, Connection $connection = null, array $event_handlers)
     {
         if (empty($this->builders)) {
-            $this->builders[] = new BaseDir($this);
-            $this->builders[] = new Types($this);
-            $this->builders[] = new BaseTypeClass($this);
-            $this->builders[] = new TypeClass($this);
-            $this->builders[] = new TypeTable($this);
-            $this->builders[] = new Associations($this);
+            $this->builders[] = new BaseDirBuilder($this);
+            $this->builders[] = new TypesBuilder($this);
+            $this->builders[] = new BaseTypeClassBuilder($this);
+            $this->builders[] = new TypeClassBuilder($this);
+            $this->builders[] = new TypeTableBuilder($this);
+            $this->builders[] = new AssociationsBuilder($this);
 
             if ($build_path) {
                 foreach ($this->builders as $k => $v) {
-                    if ($v instanceof FileSystem) {
+                    if ($v instanceof FileSystemBuilder) {
                         $this->builders[$k]->setBuildPath($build_path);
                     }
                 }
@@ -180,7 +180,7 @@ abstract class Structure
 
             if ($connection) {
                 foreach ($this->builders as $k => $v) {
-                    if ($v instanceof Database) {
+                    if ($v instanceof DatabaseBuilder) {
                         $this->builders[$k]->setConnection($connection);
                     }
                 }

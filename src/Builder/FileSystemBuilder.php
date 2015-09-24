@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-abstract class FileSystem extends Builder
+abstract class FileSystemBuilder extends Builder
 {
     /**
      * Build path. If empty, class will be built to memory
