@@ -5,6 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Association\BelongsTo;
+use Doctrine\Common\Inflector\Inflector;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
@@ -29,11 +30,21 @@ class Associations extends Database
                     } elseif ($association instanceof HasAndBelongsToMany) {
                         $connection_table = $association->getConnectionTableName();
 
-                        $left_field_name = $association->getLeftFieldName();
-                        $right_field_name = $association->getRightFieldName();
+                        if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
+                            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
+                        } else {
+                            $left_field_name = $association->getLeftFieldName();
+                            $this->getConnection()->execute($this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $association->getLeftConstraintName(), $left_field_name));
+                            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
+                        }
 
-                        $this->getConnection()->execute($this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $left_field_name));
-                        $this->getConnection()->execute($this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $right_field_name));
+                        if ($this->constraintExists($association->getRightConstraintName(), $association->getTargetTypeName())) {
+                            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
+                        } else {
+                            $right_field_name = $association->getRightFieldName();
+                            $this->getConnection()->execute($this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $association->getRightConstraintName(), $right_field_name));
+                            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
+                        }
                     }
                 }
             }
@@ -70,14 +81,13 @@ class Associations extends Database
      *
      * @param  string $type_name
      * @param  string $connection_table
+     * @param  string $constraint_name
      * @param  string $field_name
      * @return string
      */
-    public function prepareHasAndBelongsToManyConstraintStatement($type_name, $connection_table, $field_name)
+    public function prepareHasAndBelongsToManyConstraintStatement($type_name, $connection_table, $constraint_name, $field_name)
     {
         $result = [];
-
-        $constraint_name = "{$field_name}_constraint";
 
         $result[] = 'ALTER TABLE ' . $this->getConnection()->escapeTableName($connection_table);
         $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($constraint_name);
@@ -87,6 +97,13 @@ class Associations extends Database
         return implode("\n", $result);
     }
 
+    /**
+     * Check if constraint exists at referenced table
+     *
+     * @param  string $constraint_name
+     * @param  string $referencing_table
+     * @return bool
+     */
     private function constraintExists($constraint_name, $referencing_table)
     {
         return (boolean) $this->getConnection()->executeFirstCell('select

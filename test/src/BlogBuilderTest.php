@@ -218,9 +218,9 @@ class BlogBuilderTest extends TestCase
         $this->assertEquals('posts', $to_table);
         $this->assertEquals('id', $to_field);
 
-        $this->assertArrayHasKey('post_comments_constraint', $posts_constraints);
+        $this->assertArrayHasKey('comment_post_constraint', $posts_constraints);
 
-        list ($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_comments_constraint'];
+        list ($from_table, $from_field, $to_table, $to_field) = $posts_constraints['comment_post_constraint'];
 
         $this->assertEquals('comments', $from_table);
         $this->assertEquals('post_id', $from_field);
