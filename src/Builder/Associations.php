@@ -20,8 +20,12 @@ class Associations extends Database
             foreach ($this->getStructure()->getTypes() as $type) {
                 foreach ($type->getAssociations() as $association) {
                     if ($association instanceof BelongsTo) {
-                        $this->getConnection()->execute($this->prepareBelongsToConstraintStatement($type, $association));
-                        $this->triggerEvent('on_association', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
+                        if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
+                            $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
+                        } else {
+                            $this->getConnection()->execute($this->prepareBelongsToConstraintStatement($type, $association));
+                            $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
+                        }
                     } elseif ($association instanceof HasAndBelongsToMany) {
                         $connection_table = $association->getConnectionTableName();
 
@@ -47,10 +51,8 @@ class Associations extends Database
     {
         $result = [];
 
-        $constraint_name = $association->getName() . '_' . $type->getName() . '_constraint';
-
         $result[] = 'ALTER TABLE ' . $this->getConnection()->escapeTableName($type->getName());
-        $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($constraint_name);
+        $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($association->getConstraintName());
         $result[] = '    FOREIGN KEY (' . $this->getConnection()->escapeFieldName($association->getFieldName()) . ') REFERENCES ' . $this->getConnection()->escapeTableName($association->getTargetTypeName()) . '(`id`)';
 
         if ($association->getOptional()) {
@@ -83,5 +85,14 @@ class Associations extends Database
         $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE';
 
         return implode("\n", $result);
+    }
+
+    private function constraintExists($constraint_name, $referencing_table)
+    {
+        return (boolean) $this->getConnection()->executeFirstCell('select
+            COUNT(*) AS "row_count"
+        from INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+        where
+            CONSTRAINT_NAME = ? AND REFERENCED_TABLE_NAME = ?;', $constraint_name, $referencing_table);
     }
 }

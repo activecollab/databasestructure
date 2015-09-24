@@ -3,6 +3,8 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsTo;
+use ActiveCollab\DatabaseStructure\Association\HasMany;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -23,5 +25,20 @@ class BelongsToAssociationTest extends TestCase
     public function testBelongsToCanBeSetAsOptiona()
     {
         $this->assertTrue((new BelongsTo('book'))->optional(true)->getOptional());
+    }
+
+    /**
+     * Test constraint name for belongs to association
+     */
+    public function testConstraintName()
+    {
+        $writers = new Type('writers');
+        $writers->addAssociation(new HasMany('books'));
+
+        $books = new Type('books');
+        $book_writer = new BelongsTo('writer');
+        $books->addAssociation($book_writer);
+
+        $this->assertEquals('book_writer_constraint', $book_writer->getConstraintName());
     }
 }

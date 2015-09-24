@@ -100,6 +100,26 @@ class HasAndBelongsToMany extends Association implements AssociationInterface
     }
 
     /**
+     * Return left constraint name
+     *
+     * @return string
+     */
+    public function getLeftConstraintName()
+    {
+        return $this->getLeftFieldName() . '_constraint';
+    }
+
+    /**
+     * Return right constraint name
+     *
+     * @return string
+     */
+    public function getRightConstraintName()
+    {
+        return $this->getRightFieldName() . '_constraint';
+    }
+
+    /**
      * Return connection table name
      *
      * @return string

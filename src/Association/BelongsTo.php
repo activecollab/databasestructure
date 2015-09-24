@@ -97,9 +97,14 @@ class BelongsTo extends Association implements AssociationInterface
         return $this->getName() . '_id';
     }
 
+    /**
+     * Return association name
+     *
+     * @return string
+     */
     public function getConstraintName()
     {
-
+        return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
     }
 
     /**
