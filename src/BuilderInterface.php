@@ -15,9 +15,9 @@ interface BuilderInterface
     /**
      * Build type
      *
-     * @param \ActiveCollab\DatabaseStructure\Type $type
+     * @param \ActiveCollab\DatabaseStructure\TypeInterface $type
      */
-    public function buildType(Type $type);
+    public function buildType(TypeInterface $type);
 
     /**
      * Execute after types are built

@@ -3,7 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Type;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
@@ -23,9 +23,9 @@ abstract class Field implements FieldInterface
     /**
      * Method that is called when field is added to a type
      *
-     * @param  Type $type
+     * @param TypeInterface $type
      */
-    public function onAddedToType(Type &$type)
+    public function onAddedToType(TypeInterface &$type)
     {
     }
 }

@@ -23,7 +23,7 @@ interface FieldInterface
     /**
      * Method that is called when field is added to a type
      *
-     * @param  Type $type
+     * @param TypeInterface $type
      */
-    public function onAddedToType(Type &$type);
+    public function onAddedToType(TypeInterface &$type);
 }

@@ -8,6 +8,7 @@ use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
@@ -111,12 +112,12 @@ class BelongsToAssociation extends Association implements AssociationInterface
     /**
      * Build class methods
      *
-     * @param string $namespace
-     * @param Type   $source_type
-     * @param Type   $target_type
-     * @param array  $result
+     * @param string        $namespace
+     * @param TypeInterface $source_type
+     * @param TypeInterface $target_type
+     * @param array         $result
      */
-    public function buildClassMethods($namespace, Type $source_type, Type $target_type, array &$result)
+    public function buildClassMethods($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
     {
         if ($namespace) {
             $namespace = '\\' . ltrim($namespace, '\\');

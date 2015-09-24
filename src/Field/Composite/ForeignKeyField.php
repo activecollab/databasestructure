@@ -5,8 +5,8 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Size;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -61,9 +61,9 @@ class ForeignKeyField extends Field
     /**
      * Method that is called when field is added to a type
      *
-     * @param  Type $type
+     * @param TypeInterface $type
      */
-    public function onAddedToType(Type &$type)
+    public function onAddedToType(TypeInterface &$type)
     {
         if ($this->add_index) {
             $type->addIndex(new Index($this->getName()));

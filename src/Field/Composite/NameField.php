@@ -10,7 +10,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Required;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Unique;
 use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\Type;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -78,9 +78,9 @@ class NameField extends Field implements AddIndexInterface
     /**
      * Method that is called when field is added to a type
      *
-     * @param  Type $type
+     * @param TypeInterface $type
      */
-    public function onAddedToType(Type &$type)
+    public function onAddedToType(TypeInterface &$type)
     {
         if ($this->getAddIndex()) {
             $type->addIndex(new Index($this->name, $this->getAddIndexContext(), $this->getAddIndexType()));

@@ -5,6 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -54,11 +55,11 @@ class AssociationsBuilder extends DatabaseBuilder
     /**
      * Prepare belongs to constraint statement
      *
-     * @param  Type      $type
+     * @param  TypeInterface        $type
      * @param  BelongsToAssociation $association
      * @return string
      */
-    public function prepareBelongsToConstraintStatement(Type $type, BelongsToAssociation $association)
+    public function prepareBelongsToConstraintStatement(TypeInterface $type, BelongsToAssociation $association)
     {
         $result = [];
 

@@ -2,9 +2,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\BuilderInterface;
-use ActiveCollab\DatabaseStructure\Type;
+use ActiveCollab\DatabaseStructure\StructureInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -13,22 +13,22 @@ use InvalidArgumentException;
 abstract class Builder implements BuilderInterface
 {
     /**
-     * @var Structure
+     * @var StructureInterface
      */
     private $structure;
 
     /**
      * Construct a new builder instance
      *
-     * @param Structure $structure
+     * @param StructureInterface $structure
      */
-    public function __construct(Structure $structure)
+    public function __construct(StructureInterface $structure)
     {
         $this->structure = $structure;
     }
 
     /**
-     * @return Structure
+     * @return StructureInterface
      */
     public function getStructure()
     {
@@ -52,9 +52,9 @@ abstract class Builder implements BuilderInterface
     /**
      * Build type
      *
-     * @param \ActiveCollab\DatabaseStructure\Type $type
+     * @param \ActiveCollab\DatabaseStructure\TypeInterface $type
      */
-    public function buildType(Type $type)
+    public function buildType(TypeInterface $type)
     {
     }
 

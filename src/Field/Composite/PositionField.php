@@ -5,10 +5,10 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\Type;
-use InvalidArgumentException;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
@@ -106,9 +106,9 @@ class PositionField extends Field
     /**
      * Method that is called when field is added to a type
      *
-     * @param  Type $type
+     * @param TypeInterface $type
      */
-    public function onAddedToType(Type &$type)
+    public function onAddedToType(TypeInterface &$type)
     {
         if ($this->add_index) {
             $type->addIndex(new Index($this->name));

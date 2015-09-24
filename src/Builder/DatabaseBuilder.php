@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseConnection\Connection;
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
@@ -10,12 +10,12 @@ use ActiveCollab\DatabaseConnection\Connection;
 abstract class DatabaseBuilder extends Builder
 {
     /**
-     * @var Connection
+     * @var ConnectionInterface
      */
     private $connection;
 
     /**
-     * @return Connection
+     * @return ConnectionInterface
      */
     public function getConnection()
     {
@@ -23,10 +23,10 @@ abstract class DatabaseBuilder extends Builder
     }
 
     /**
-     * @param  Connection $connection
+     * @param  ConnectionInterface $connection
      * @return $this
      */
-    public function &setConnection(Connection $connection)
+    public function &setConnection(ConnectionInterface $connection)
     {
         $this->connection = $connection;
 

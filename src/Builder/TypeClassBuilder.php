@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Type;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -11,9 +11,9 @@ use Doctrine\Common\Inflector\Inflector;
 class TypeClassBuilder extends FileSystemBuilder
 {
     /**
-     * @param Type $type
+     * @param TypeInterface $type
      */
-    public function buildType(Type $type)
+    public function buildType(TypeInterface $type)
     {
         $class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_name = 'Base\\' . $class_name;

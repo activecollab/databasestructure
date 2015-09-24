@@ -2,8 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -12,9 +12,9 @@ use Doctrine\Common\Inflector\Inflector;
 class BaseTypeClassBuilder extends FileSystemBuilder
 {
     /**
-     * @param Type $type
+     * @param TypeInterface $type
      */
-    public function buildType(Type $type)
+    public function buildType(TypeInterface $type)
     {
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');

@@ -17,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
-use ActiveCollab\DatabaseStructure\Type;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -26,9 +26,9 @@ use InvalidArgumentException;
 class TypeTableBuilder extends DatabaseBuilder
 {
     /**
-     * @param Type $type
+     * @param TypeInterface $type
      */
-    public function buildType(Type $type)
+    public function buildType(TypeInterface $type)
     {
         if ($this->getConnection()) {
             if ($this->getConnection()->tableExists($type->getName())) {
@@ -59,10 +59,10 @@ class TypeTableBuilder extends DatabaseBuilder
     /**
      * Prepare CREATE TABLE statement for the given type
      *
-     * @param  Type   $type
+     * @param  TypeInterface $type
      * @return string
      */
-    public function prepareCreateTableStatement(Type $type)
+    public function prepareCreateTableStatement(TypeInterface $type)
     {
         $result = [];
 
@@ -246,11 +246,11 @@ class TypeTableBuilder extends DatabaseBuilder
     /**
      * Return name of the connection that will be created for has and belongs to many association
      *
-     * @param  Type   $source
-     * @param  Type   $target
+     * @param  TypeInterface $source
+     * @param  TypeInterface $target
      * @return string
      */
-    private function getConnectionTableName(Type $source, Type $target)
+    private function getConnectionTableName(TypeInterface $source, TypeInterface $target)
     {
         return $source->getName() . '_' . $target->getName();
     }
@@ -258,12 +258,12 @@ class TypeTableBuilder extends DatabaseBuilder
     /**
      * Prepare create connection table statement
      *
-     * @param  Type                $source
-     * @param  Type                $target
+     * @param  TypeInterface                  $source
+     * @param  TypeInterface                  $target
      * @param  HasAndBelongsToManyAssociation $association
      * @return string
      */
-    public function prepareConnectionCreateTableStatement(Type $source, Type $target, HasAndBelongsToManyAssociation $association)
+    public function prepareConnectionCreateTableStatement(TypeInterface $source, TypeInterface $target, HasAndBelongsToManyAssociation $association)
     {
         $result = [];
 

@@ -10,7 +10,7 @@ use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 /**
  * @package ActiveCollab\DatabaseStructure
  */
-class Type
+class Type implements TypeInterface
 {
     /**
      * @var string
