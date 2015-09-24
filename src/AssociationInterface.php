@@ -31,7 +31,7 @@ interface AssociationInterface
     /**
      * Return a list of indexes
      *
-     * @return Index[]
+     * @return IndexInterface[]
      */
     public function getIndexes();
 

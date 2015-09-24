@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
+use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
@@ -47,7 +48,7 @@ class PositionFieldTest extends TestCase
         $type = (new Type('chapters'))->addField(new PositionField('position'));
 
         $this->assertArrayHasKey('position', $type->getIndexes());
-        $this->assertInstanceOf(Index::class, $type->getIndexes()['position']);
+        $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['position']);
     }
 
     /**

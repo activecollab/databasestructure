@@ -7,16 +7,8 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure
  */
-class Index
+class Index implements IndexInterface
 {
-    /**
-     * Index types
-     */
-    const INDEX = 'INDEX';
-    const PRIMARY = 'PRIMARY';
-    const UNIQUE = 'UNIQUE';
-    const FULLTEXT = 'FULLTEXT';
-
     /**
      * @var string
      */

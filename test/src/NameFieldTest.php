@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
+use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Index;
@@ -64,6 +65,6 @@ class NameFieldTest extends TestCase
         $type = (new Type('writers'))->addField(new NameField('name', null, true));
 
         $this->assertArrayHasKey('name', $type->getIndexes());
-        $this->assertInstanceOf(Index::class, $type->getIndexes()['name']);
+        $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['name']);
     }
 }

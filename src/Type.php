@@ -251,7 +251,7 @@ class Type
     private $indexes = [];
 
     /**
-     * @return Index[]
+     * @return IndexInterface[]
      */
     public function getIndexes()
     {
@@ -259,7 +259,7 @@ class Type
     }
 
     /**
-     * @param  Index[] $indexes
+     * @param  IndexInterface[] $indexes
      * @return $this
      */
     public function &addIndexes(array $indexes)
@@ -272,10 +272,10 @@ class Type
     }
 
     /**
-     * @param  Index $index
+     * @param  IndexInterface $index
      * @return $this
      */
-    public function &addIndex(Index $index)
+    public function &addIndex(IndexInterface $index)
     {
         if (empty($this->indexes[$index->getName()])) {
             $this->indexes[$index->getName()] = $index;
@@ -289,11 +289,11 @@ class Type
     /**
      * Return all indexes
      *
-     * @return array
+     * @return IndexInterface[]
      */
     public function getAllIndexes()
     {
-        $result = [new Index('id', ['id'], Index::PRIMARY)];
+        $result = [new Index('id', ['id'], IndexInterface::PRIMARY)];
 
         if (!empty($this->getIndexes())) {
             $result = array_merge($result, $this->getIndexes());

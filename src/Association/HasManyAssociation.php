@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\IndexInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
@@ -73,7 +73,7 @@ class HasManyAssociation extends Association implements AssociationInterface
     /**
      * Return a list of indexes
      *
-     * @return Index[]
+     * @return IndexInterface[]
      */
     public function getIndexes()
     {

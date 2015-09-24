@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\IndexInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -44,7 +45,7 @@ class IndexTest extends TestCase
     public function testDefaultIndexType()
     {
         $index = new Index('is_awesome');
-        $this->assertEquals(Index::INDEX, $index->getIndexType());
+        $this->assertEquals(IndexInterface::INDEX, $index->getIndexType());
     }
 
     /**
@@ -52,8 +53,8 @@ class IndexTest extends TestCase
      */
     public function testIndexTypeCanBeSet()
     {
-        $index = new Index('id', null, Index::PRIMARY);
-        $this->assertEquals(Index::PRIMARY, $index->getIndexType());
+        $index = new Index('id', null, IndexInterface::PRIMARY);
+        $this->assertEquals(IndexInterface::PRIMARY, $index->getIndexType());
     }
 
     /**

@@ -4,6 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 use ActiveCollab\DatabaseStructure\Field\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\IndexInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
@@ -32,7 +33,7 @@ trait Unique
         $this->uniquness_context = $context;
 
         if ($this instanceof AddIndexInterface) {
-            $this->addIndex(true, $context, Index::UNIQUE);
+            $this->addIndex(true, $context, IndexInterface::UNIQUE);
         }
 
         return $this;

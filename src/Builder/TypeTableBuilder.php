@@ -16,6 +16,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Type;
 use InvalidArgumentException;
 
@@ -217,19 +218,19 @@ class TypeTableBuilder extends DatabaseBuilder
     /**
      * Prepare index statement
      *
-     * @param  Index  $index
+     * @param  IndexInterface $index
      * @return string
      */
-    public function prepareIndexStatement(Index $index)
+    public function prepareIndexStatement(IndexInterface $index)
     {
         switch ($index->getIndexType()) {
-            case Index::PRIMARY:
+            case IndexInterface::PRIMARY:
                 $result = 'PRIMARY KEY';
                 break;
-            case Index::UNIQUE:
+            case IndexInterface::UNIQUE:
                 $result = 'UNIQUE ' . $this->getConnection()->escapeFieldName($index->getName());
                 break;
-            case Index::FULLTEXT:
+            case IndexInterface::FULLTEXT:
                 $result = 'FULLTEXT ' . $this->getConnection()->escapeFieldName($index->getName());
                 break;
             default:
@@ -276,7 +277,7 @@ class TypeTableBuilder extends DatabaseBuilder
 
         $result[] = '    ' . $this->prepareFieldStatement($left_field) . ',';
         $result[] = '    ' . $this->prepareFieldStatement($right_field) . ',';
-        $result[] = '    ' . $this->prepareIndexStatement(new Index('PRIMARY', [$left_field->getName(), $right_field->getName()], Index::PRIMARY)) . ',';
+        $result[] = '    ' . $this->prepareIndexStatement(new Index('PRIMARY', [$left_field->getName(), $right_field->getName()], IndexInterface::PRIMARY)) . ',';
         $result[] = '    ' . $this->prepareIndexStatement(new Index($right_field->getName()));
 
         $result[] = ') ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';

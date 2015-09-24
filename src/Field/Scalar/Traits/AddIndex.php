@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\IndexInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
@@ -58,7 +59,7 @@ trait AddIndex
      * @param  string     $type
      * @return $this
      */
-    public function &addIndex($add_index = true, array $context = [], $type = Index::INDEX)
+    public function &addIndex($add_index = true, array $context = [], $type = IndexInterface::INDEX)
     {
         $this->add_index = (boolean) $add_index;
         $this->add_index_context = $context;
