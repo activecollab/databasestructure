@@ -2,8 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Association\BelongsTo;
-use ActiveCollab\DatabaseStructure\Association\HasMany;
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
@@ -16,7 +16,7 @@ class BelongsToAssociationTest extends TestCase
      */
     public function testBelongsToIsNotOptionalByDefault()
     {
-        $this->assertFalse((new BelongsTo('book'))->getOptional());
+        $this->assertFalse((new BelongsToAssociation('book'))->getOptional());
     }
 
     /**
@@ -24,7 +24,7 @@ class BelongsToAssociationTest extends TestCase
      */
     public function testBelongsToCanBeSetAsOptiona()
     {
-        $this->assertTrue((new BelongsTo('book'))->optional(true)->getOptional());
+        $this->assertTrue((new BelongsToAssociation('book'))->optional(true)->getOptional());
     }
 
     /**
@@ -33,10 +33,10 @@ class BelongsToAssociationTest extends TestCase
     public function testConstraintName()
     {
         $writers = new Type('writers');
-        $writers->addAssociation(new HasMany('books'));
+        $writers->addAssociation(new HasManyAssociation('books'));
 
         $books = new Type('books');
-        $book_writer = new BelongsTo('writer');
+        $book_writer = new BelongsToAssociation('writer');
         $books->addAssociation($book_writer);
 
         $this->assertEquals('book_writer_constraint', $book_writer->getConstraintName());

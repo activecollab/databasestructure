@@ -12,7 +12,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class HasAndBelongsToMany extends Association implements AssociationInterface
+class HasAndBelongsToManyAssociation extends Association implements AssociationInterface
 {
     use AssociationInterface\Implementation;
 

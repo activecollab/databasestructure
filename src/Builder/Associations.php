@@ -2,9 +2,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Type;
-use ActiveCollab\DatabaseStructure\Association\BelongsTo;
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -20,14 +20,14 @@ class Associations extends Database
         if ($this->getConnection()) {
             foreach ($this->getStructure()->getTypes() as $type) {
                 foreach ($type->getAssociations() as $association) {
-                    if ($association instanceof BelongsTo) {
+                    if ($association instanceof BelongsToAssociation) {
                         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
                             $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
                         } else {
                             $this->getConnection()->execute($this->prepareBelongsToConstraintStatement($type, $association));
                             $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
                         }
-                    } elseif ($association instanceof HasAndBelongsToMany) {
+                    } elseif ($association instanceof HasAndBelongsToManyAssociation) {
                         $connection_table = $association->getConnectionTableName();
 
                         if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
@@ -55,10 +55,10 @@ class Associations extends Database
      * Prepare belongs to constraint statement
      *
      * @param  Type      $type
-     * @param  BelongsTo $association
+     * @param  BelongsToAssociation $association
      * @return string
      */
-    public function prepareBelongsToConstraintStatement(Type $type, BelongsTo $association)
+    public function prepareBelongsToConstraintStatement(Type $type, BelongsToAssociation $association)
     {
         $result = [];
 

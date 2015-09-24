@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
@@ -17,7 +17,7 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     {
         $writers = new Type('writers');
         $books = new Type('books');
-        $book_writers = new HasAndBelongsToMany('writers');
+        $book_writers = new HasAndBelongsToManyAssociation('writers');
         $books->addAssociation($book_writers);
 
         $this->assertEquals('book_id', $book_writers->getLeftFieldName());
@@ -31,7 +31,7 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     {
         $writers = new Type('writers');
         $books = new Type('books');
-        $book_writers = new HasAndBelongsToMany('writers');
+        $book_writers = new HasAndBelongsToManyAssociation('writers');
         $books->addAssociation($book_writers);
 
         $this->assertEquals('book_id_constraint', $book_writers->getLeftConstraintName());

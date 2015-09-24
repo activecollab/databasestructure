@@ -13,7 +13,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsTo extends Association implements AssociationInterface
+class BelongsToAssociation extends Association implements AssociationInterface
 {
     use AssociationInterface\Implementation;
 
@@ -25,7 +25,7 @@ class BelongsTo extends Association implements AssociationInterface
     /**
      * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:
      *
-     * new BelongsTo('author')
+     * new BelongsToAssociation('author')
      *
      * will result in $target_type_name pointing at 'authors' type
      *

@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Boolean;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Date;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
@@ -40,7 +40,7 @@ class TypeTable extends Database
             }
 
             foreach ($type->getAssociations() as $association) {
-                if ($association instanceof HasAndBelongsToMany) {
+                if ($association instanceof HasAndBelongsToManyAssociation) {
                     $target_type = $this->getStructure()->getType($association->getTargetTypeName());
 
                     $connection_table = $this->getConnectionTableName($type, $target_type);
@@ -260,10 +260,10 @@ class TypeTable extends Database
      *
      * @param  Type                $source
      * @param  Type                $target
-     * @param  HasAndBelongsToMany $association
+     * @param  HasAndBelongsToManyAssociation $association
      * @return string
      */
-    public function prepareConnectionCreateTableStatement(Type $source, Type $target, HasAndBelongsToMany $association)
+    public function prepareConnectionCreateTableStatement(Type $source, Type $target, HasAndBelongsToManyAssociation $association)
     {
         $result = [];
 

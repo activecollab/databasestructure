@@ -2,9 +2,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Blog;
 
-use ActiveCollab\DatabaseStructure\Association\BelongsTo;
-use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
-use ActiveCollab\DatabaseStructure\Association\HasMany;
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Enum;
@@ -28,7 +28,7 @@ class BlogStructure extends Structure
         $this->addType('categories')->expectedDatasetSize(FieldInterface::SIZE_SMALL)->addFields([
             (new Name())->unique(),
         ])->addAssociations([
-            new HasAndBelongsToMany('posts'),
+            new HasAndBelongsToManyAssociation('posts'),
         ]);
 
         $this->addType('posts')->addFields([
@@ -40,7 +40,7 @@ class BlogStructure extends Structure
         ])->addIndexes([
             new Index('published_at'),
         ])->addAssociations([
-            new HasMany('comments'),
+            new HasManyAssociation('comments'),
         ]);
 
         $this->addType('comments')->addFields([
@@ -49,7 +49,7 @@ class BlogStructure extends Structure
         ])->addIndexes([
             new Index('created_at'),
         ])->addAssociations([
-            new BelongsTo('post'),
+            new BelongsToAssociation('post'),
         ]);
     }
 }
