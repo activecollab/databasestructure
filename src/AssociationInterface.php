@@ -36,6 +36,21 @@ interface AssociationInterface
     public function getIndexes();
 
     /**
+     * Return source type name
+     *
+     * @return string
+     */
+    public function getSourceTypeName();
+
+    /**
+     * Set source type name
+     *
+     * @param  string $source_type_name
+     * @return $this
+     */
+    public function &setSourceTypeName($source_type_name);
+
+    /**
      * Build class methods
      *
      * @param string $namespace

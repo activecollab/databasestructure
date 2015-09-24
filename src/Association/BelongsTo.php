@@ -13,7 +13,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsTo implements AssociationInterface
+class BelongsTo extends Association implements AssociationInterface
 {
     use AssociationInterface\Implementation;
 
@@ -95,6 +95,11 @@ class BelongsTo implements AssociationInterface
     public function getFieldName()
     {
         return $this->getName() . '_id';
+    }
+
+    public function getConstraintName()
+    {
+
     }
 
     /**

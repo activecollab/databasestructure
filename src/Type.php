@@ -349,9 +349,7 @@ class Type
     public function &addAssociation(AssociationInterface $association)
     {
         if (empty($this->associations[$association->getName()])) {
-            if ($association instanceof HasAndBelongsToMany) {
-                $association->setSourceTypeName($this->getName());
-            }
+            $association->setSourceTypeName($this->getName());
 
             $this->associations[$association->getName()] = $association;
         } else {

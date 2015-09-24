@@ -6,13 +6,13 @@ use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
-use Prophecy\Exception\InvalidArgumentException;
 use Doctrine\Common\Inflector\Inflector;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class HasMany implements AssociationInterface
+class HasMany extends Association implements AssociationInterface
 {
     use AssociationInterface\Implementation;
 

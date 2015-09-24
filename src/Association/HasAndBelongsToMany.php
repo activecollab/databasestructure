@@ -12,7 +12,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class HasAndBelongsToMany implements AssociationInterface
+class HasAndBelongsToMany extends Association implements AssociationInterface
 {
     use AssociationInterface\Implementation;
 
@@ -56,34 +56,6 @@ class HasAndBelongsToMany implements AssociationInterface
     public function &orderBy($order_by)
     {
         $this->order_by = $order_by;
-
-        return $this;
-    }
-
-    /**
-     * @var string
-     */
-    private $source_type_name;
-
-    /**
-     * Return source type name
-     *
-     * @return string
-     */
-    public function getSourceTypeName()
-    {
-        return $this->source_type_name;
-    }
-
-    /**
-     * Set source type name
-     *
-     * @param  string $source_type_name
-     * @return $this
-     */
-    public function &setSourceTypeName($source_type_name)
-    {
-        $this->source_type_name = $source_type_name;
 
         return $this;
     }
