@@ -7,6 +7,7 @@ use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToMany;
 use ActiveCollab\DatabaseStructure\Association\HasMany;
 use ActiveCollab\DatabaseStructure\Field\Composite\Name;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Enum;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Text;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
@@ -35,6 +36,7 @@ class BlogStructure extends Structure
             new Text('body'),
             new DateTime('created_at'),
             new DateTime('published_at'),
+            (new Enum('is_featured', 'no'))->possibilities('yes', 'no'),
         ])->addIndexes([
             new Index('published_at'),
         ])->addAssociations([

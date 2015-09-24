@@ -7,6 +7,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Boolean;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Date;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Decimal;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Enum;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Float;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
@@ -155,6 +156,10 @@ class TypeTable extends Database
             }
 
             return $result;
+        } elseif ($field instanceof Enum) {
+            return 'ENUM(' . implode(',', array_map(function($possibility) {
+                return $this->getConnection()->escapeValue($possibility);
+            }, $field->getPossibilities())) . ')';
         } elseif ($field instanceof Float) {
             $result = 'FLOAT(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
