@@ -6,7 +6,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class Enum extends Field
+class EnumField extends Field
 {
     /**
      * @var string[]

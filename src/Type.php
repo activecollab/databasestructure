@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Integer as IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use InvalidArgumentException;
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;

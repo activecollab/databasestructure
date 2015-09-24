@@ -3,7 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Type;
 use InvalidArgumentException;
@@ -13,7 +13,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class Position extends Field
+class PositionField extends Field
 {
     /**
      * @var string
@@ -100,7 +100,7 @@ class Position extends Field
      */
     public function getFields()
     {
-        return [(new Integer('position', 0))->unsigned(true)->setShouldBeAddedToModel(false)];
+        return [(new IntegerField('position', 0))->unsigned(true)->setShouldBeAddedToModel(false)];
     }
 
     /**

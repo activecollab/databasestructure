@@ -4,7 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Size;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Index;
 use InvalidArgumentException;
@@ -12,7 +12,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ForeignKey extends Field
+class ForeignKeyField extends Field
 {
     use Size;
 
@@ -55,7 +55,7 @@ class ForeignKey extends Field
      */
     public function getFields()
     {
-        return [(new Integer($this->getName()))->unsigned(true)->size($this->getSize())];
+        return [(new IntegerField($this->getName()))->unsigned(true)->size($this->getSize())];
     }
 
     /**

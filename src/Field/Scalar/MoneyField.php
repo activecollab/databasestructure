@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class Money extends Decimal
+class MoneyField extends DecimalField
 {
     /**
      * @param string $name

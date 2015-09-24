@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class Decimal extends Number
+class DecimalField extends NumberField
 {
     /**
      * @var int

@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Field\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndex;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\String;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Required;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Unique;
@@ -16,7 +16,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class Name extends Field implements AddIndexInterface
+class NameField extends Field implements AddIndexInterface
 {
     use Required, Unique, Modifier, AddIndex;
 
@@ -72,7 +72,7 @@ class Name extends Field implements AddIndexInterface
      */
     public function getFields()
     {
-        return [(new String($this->getName(), ''))->modifier('trim')];
+        return [(new StringField($this->getName(), ''))->modifier('trim')];
     }
 
     /**

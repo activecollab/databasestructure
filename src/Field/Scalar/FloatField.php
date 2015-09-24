@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class Float extends Number
+class FloatField extends NumberField
 {
     /**
      * @var int

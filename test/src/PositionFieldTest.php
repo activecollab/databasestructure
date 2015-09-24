@@ -4,7 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\Field\Composite\Position;
+use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
 
@@ -18,7 +18,7 @@ class PositionFieldTest extends TestCase
      */
     public function testDefaultName()
     {
-        $this->assertEquals('position', (new Position())->getName());
+        $this->assertEquals('position', (new PositionField())->getName());
     }
 
     /**
@@ -26,17 +26,17 @@ class PositionFieldTest extends TestCase
      */
     public function testNullIsDefaultValue()
     {
-        $this->assertSame(0, (new Position())->getDefaultValue());
+        $this->assertSame(0, (new PositionField())->getDefaultValue());
     }
     /**
      * Test if position can be added to a type
      */
     public function testPositionCanBeAddedToType()
     {
-        $type = (new Type('chapters'))->addField(new Position());
+        $type = (new Type('chapters'))->addField(new PositionField());
 
         $this->assertArrayHasKey('position', $type->getFields());
-        $this->assertInstanceOf(Position::class, $type->getFields()['position']);
+        $this->assertInstanceOf(PositionField::class, $type->getFields()['position']);
     }
 
     /**
@@ -44,7 +44,7 @@ class PositionFieldTest extends TestCase
      */
     public function testPositionFieldAddsIndexByDefault()
     {
-        $type = (new Type('chapters'))->addField(new Position('position'));
+        $type = (new Type('chapters'))->addField(new PositionField('position'));
 
         $this->assertArrayHasKey('position', $type->getIndexes());
         $this->assertInstanceOf(Index::class, $type->getIndexes()['position']);
@@ -55,7 +55,7 @@ class PositionFieldTest extends TestCase
      */
     public function testPositionFieldDoesNotAddIndexWhenRequested()
     {
-        $type = (new Type('chapters'))->addField(new Position('position', 0, false));
+        $type = (new Type('chapters'))->addField(new PositionField('position', 0, false));
 
         $this->assertCount(0, $type->getIndexes());
     }
@@ -65,7 +65,7 @@ class PositionFieldTest extends TestCase
      */
     public function testPositionFieldAddsBehaviourToType()
     {
-        $type = (new Type('chapters'))->addField(new Position('position'));
+        $type = (new Type('chapters'))->addField(new PositionField('position'));
 
         $this->assertArrayHasKey(PositionInterface::class, $type->getTraits());
         $this->assertContains(PositionInterfaceImplementation::class, $type->getTraits()[PositionInterface::class]);
@@ -76,7 +76,7 @@ class PositionFieldTest extends TestCase
      */
     public function testContextIsEmptyByDefault()
     {
-        $context = (new Position())->getContext();
+        $context = (new PositionField())->getContext();
 
         $this->assertInternalType('array', $context);
         $this->assertEmpty($context);
@@ -87,7 +87,7 @@ class PositionFieldTest extends TestCase
      */
     public function testContextCanBeChanged()
     {
-        $context = (new Position())->context('field_1', 'field_2')->getContext();
+        $context = (new PositionField())->context('field_1', 'field_2')->getContext();
 
         $this->assertInternalType('array', $context);
         $this->assertCount(2, $context);
@@ -100,7 +100,7 @@ class PositionFieldTest extends TestCase
      */
     public function testContextCanBeCalledWithNoArguments()
     {
-        $context = (new Position())->context()->getContext();
+        $context = (new PositionField())->context()->getContext();
 
         $this->assertInternalType('array', $context);
         $this->assertEmpty($context);

@@ -3,7 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Type;
-use ActiveCollab\DatabaseStructure\Field\Composite\Name;
+use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Index;
 
 /**
@@ -16,7 +16,7 @@ class NameFieldTest extends TestCase
      */
     public function testDefaultName()
     {
-        $this->assertEquals('name', (new Name())->getName());
+        $this->assertEquals('name', (new NameField())->getName());
     }
 
     /**
@@ -24,7 +24,7 @@ class NameFieldTest extends TestCase
      */
     public function testNullIsDefaultValue()
     {
-        $this->assertNull((new Name())->getDefaultValue());
+        $this->assertNull((new NameField())->getDefaultValue());
     }
 
     /**
@@ -32,7 +32,7 @@ class NameFieldTest extends TestCase
      */
     public function testNameIsTrimmedByDefault()
     {
-        $this->assertEquals('trim', (new Name())->getModifier());
+        $this->assertEquals('trim', (new NameField())->getModifier());
     }
 
     /**
@@ -40,10 +40,10 @@ class NameFieldTest extends TestCase
      */
     public function testNameCanBeAddedToType()
     {
-        $type = (new Type('writers'))->addField(new Name());
+        $type = (new Type('writers'))->addField(new NameField());
 
         $this->assertArrayHasKey('name', $type->getFields());
-        $this->assertInstanceOf(Name::class, $type->getFields()['name']);
+        $this->assertInstanceOf(NameField::class, $type->getFields()['name']);
     }
 
     /**
@@ -51,7 +51,7 @@ class NameFieldTest extends TestCase
      */
     public function testNameFieldDoesNotAddIndexByDefault()
     {
-        $type = (new Type('writers'))->addField(new Name());
+        $type = (new Type('writers'))->addField(new NameField());
 
         $this->assertCount(0, $type->getIndexes());
     }
@@ -61,7 +61,7 @@ class NameFieldTest extends TestCase
      */
     public function testNameFieldAddsIndexWhenRequested()
     {
-        $type = (new Type('writers'))->addField(new Name('name', null, true));
+        $type = (new Type('writers'))->addField(new NameField('name', null, true));
 
         $this->assertArrayHasKey('name', $type->getIndexes());
         $this->assertInstanceOf(Index::class, $type->getIndexes()['name']);

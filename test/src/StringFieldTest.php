@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\String;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -14,7 +14,7 @@ class StringFieldTest extends TestCase
      */
     public function testExceptionWhenModifierFunctionDoesNotExist()
     {
-        (new String('name'))->modifier('this function does not exist');
+        (new StringField('name'))->modifier('this function does not exist');
     }
 
     /**
@@ -22,7 +22,7 @@ class StringFieldTest extends TestCase
      */
     public function testModifierCanBeSet()
     {
-        $field = (new String('name'))->modifier('trim');
+        $field = (new StringField('name'))->modifier('trim');
         $this->assertEquals('trim', $field->getModifier());
     }
 
@@ -31,7 +31,7 @@ class StringFieldTest extends TestCase
      */
     public function testLengthIs191ByDefault()
     {
-        $this->assertEquals(191, (new String('some_string'))->getLength());
+        $this->assertEquals(191, (new StringField('some_string'))->getLength());
     }
 
     /**
@@ -39,7 +39,7 @@ class StringFieldTest extends TestCase
      */
     public function testLengthCanBeChanged()
     {
-        $this->assertEquals(15, (new String('some_string'))->length(15)->getLength());
+        $this->assertEquals(15, (new StringField('some_string'))->length(15)->getLength());
     }
 
     /**
@@ -47,7 +47,7 @@ class StringFieldTest extends TestCase
      */
     public function testExceptionOnLengthToSmall()
     {
-        (new String('some_string'))->length(-1);
+        (new StringField('some_string'))->length(-1);
     }
 
     /**
@@ -55,6 +55,6 @@ class StringFieldTest extends TestCase
      */
     public function testExceptionOnLengthToLarge()
     {
-        (new String('some_string'))->length(255);
+        (new StringField('some_string'))->length(255);
     }
 }

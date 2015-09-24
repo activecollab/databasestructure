@@ -7,7 +7,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class String extends Field
+class StringField extends Field
 {
     use Modifier;
 

@@ -2,8 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Number;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\NumberField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
 /**
@@ -16,7 +16,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testIntegerExtendsNumber()
     {
-        $this->assertTrue((new \ReflectionClass(Integer::class))->isSubclassOf(Number::class));
+        $this->assertTrue((new \ReflectionClass(IntegerField::class))->isSubclassOf(NumberField::class));
     }
 
     /**
@@ -24,7 +24,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testNotUnsignedByDefault()
     {
-        $this->assertFalse((new Integer('int'))->getUnsigned());
+        $this->assertFalse((new IntegerField('int'))->getUnsigned());
     }
 
     /**
@@ -32,7 +32,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testFieldCanBeSetToBeUnsigned()
     {
-        $this->assertTrue((new Integer('int'))->unsigned(true)->getUnsigned());
+        $this->assertTrue((new IntegerField('int'))->unsigned(true)->getUnsigned());
     }
 
     /**
@@ -40,7 +40,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testSizeIsNormalByDefault()
     {
-        $this->assertEquals(FieldInterface::SIZE_NORMAL, (new Integer('int'))->getSize());
+        $this->assertEquals(FieldInterface::SIZE_NORMAL, (new IntegerField('int'))->getSize());
     }
 
     /**
@@ -48,7 +48,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testSizeCanBeChanged()
     {
-        $this->assertEquals(FieldInterface::SIZE_TINY, (new Integer('int'))->size(FieldInterface::SIZE_TINY)->getSize());
+        $this->assertEquals(FieldInterface::SIZE_TINY, (new IntegerField('int'))->size(FieldInterface::SIZE_TINY)->getSize());
     }
 
     /**
@@ -56,6 +56,6 @@ class IntegerFieldTest extends TestCase
      */
     public function testExceptionOnIncorrectSize()
     {
-        (new Integer('int'))->size('Invalid Value');
+        (new IntegerField('int'))->size('Invalid Value');
     }
 }

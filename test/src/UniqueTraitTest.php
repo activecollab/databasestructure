@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Field\Composite\Name;
+use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Index;
 
 /**
@@ -15,10 +15,10 @@ class UniqueTraitTest extends TestCase
      */
     public function testUniqueAutomaticallyAddsIndex()
     {
-        $non_unique = new Name();
+        $non_unique = new NameField();
         $this->assertFalse($non_unique->getAddIndex());
 
-        $unique = (new Name())->unique();
+        $unique = (new NameField())->unique();
         $this->assertTrue($unique->getAddIndex());
         $this->assertEquals(Index::UNIQUE, $unique->getAddIndexType());
     }
@@ -28,11 +28,11 @@ class UniqueTraitTest extends TestCase
      */
     public function testIndexUsesUniqueContext()
     {
-        $unique = (new Name())->unique();
+        $unique = (new NameField())->unique();
         $this->assertTrue($unique->getAddIndex());
         $this->assertSame([], $unique->getAddIndexContext());
 
-        $unique = (new Name())->unique('one', 'two', 'three');
+        $unique = (new NameField())->unique('one', 'two', 'three');
         $this->assertTrue($unique->getAddIndex());
         $this->assertSame(['one', 'two', 'three'], $unique->getAddIndexContext());
     }

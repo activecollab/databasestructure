@@ -3,17 +3,17 @@
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Boolean;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Date;
-use ActiveCollab\DatabaseStructure\Field\Scalar\DateTime;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Decimal;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Enum;
+use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Float;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Integer;
-use ActiveCollab\DatabaseStructure\Field\Scalar\String;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Text;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Time;
+use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Type;
@@ -99,7 +99,7 @@ class TypeTableBuilder extends DatabaseBuilder
             $result .= ' NOT NULL';
         }
 
-        if (!($field instanceof Integer && $field->getName() == 'id')) {
+        if (!($field instanceof IntegerField && $field->getName() == 'id')) {
             $result .= ' DEFAULT ' . $this->prepareDefaultValue($field);
         }
 
@@ -114,7 +114,7 @@ class TypeTableBuilder extends DatabaseBuilder
      */
     private function prepareTypeDefinition(ScalarField $field)
     {
-        if ($field instanceof Integer) {
+        if ($field instanceof IntegerField) {
             switch ($field->getSize()) {
                 case FieldInterface::SIZE_TINY:
                     $result = 'TINYINT';
@@ -141,13 +141,13 @@ class TypeTableBuilder extends DatabaseBuilder
             }
 
             return $result;
-        } elseif ($field instanceof Boolean) {
+        } elseif ($field instanceof BooleanField) {
             return 'TINYINT(1) UNSIGNED';
-        } elseif ($field instanceof Date) {
+        } elseif ($field instanceof DateField) {
             return 'DATE';
-        } elseif ($field instanceof DateTime) {
+        } elseif ($field instanceof DateTimeField) {
             return 'DATETIME';
-        } elseif ($field instanceof Decimal) {
+        } elseif ($field instanceof DecimalField) {
             $result = 'DECIMAL(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
             if ($field->getUnsigned()) {
@@ -155,11 +155,11 @@ class TypeTableBuilder extends DatabaseBuilder
             }
 
             return $result;
-        } elseif ($field instanceof Enum) {
+        } elseif ($field instanceof EnumField) {
             return 'ENUM(' . implode(',', array_map(function($possibility) {
                 return $this->getConnection()->escapeValue($possibility);
             }, $field->getPossibilities())) . ')';
-        } elseif ($field instanceof Float) {
+        } elseif ($field instanceof FloatField) {
             $result = 'FLOAT(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
             if ($field->getUnsigned()) {
@@ -167,9 +167,9 @@ class TypeTableBuilder extends DatabaseBuilder
             }
 
             return $result;
-        } elseif ($field instanceof String) {
+        } elseif ($field instanceof StringField) {
             return 'VARCHAR(' . $field->getLength() . ')';
-        } elseif ($field instanceof Text) {
+        } elseif ($field instanceof TextField) {
             switch ($field->getSize()) {
                 case FieldInterface::SIZE_TINY:
                     return 'TINYTEXT';
@@ -180,7 +180,7 @@ class TypeTableBuilder extends DatabaseBuilder
                 default:
                     return 'LONGTEXT';
             }
-        } elseif ($field instanceof Time) {
+        } elseif ($field instanceof TimeField) {
             return 'TIME';
         } else {
             throw new InvalidArgumentException('Field ' . get_class($field) . ' is not a support scalar field');
@@ -201,10 +201,10 @@ class TypeTableBuilder extends DatabaseBuilder
             return 'NULL';
         }
 
-        if ($field instanceof Date || $field instanceof DateTime) {
+        if ($field instanceof DateField || $field instanceof DateTimeField) {
             $timestamp = is_int($default_value) ? $default_value : strtotime($default_value);
 
-            if ($field instanceof DateTime) {
+            if ($field instanceof DateTimeField) {
                 return $this->getConnection()->escapeValue(date('Y-m-d H:i:s', $timestamp));
             } else {
                 return $this->getConnection()->escapeValue(date('Y-m-d', $timestamp));
@@ -271,8 +271,8 @@ class TypeTableBuilder extends DatabaseBuilder
         $left_field_name = $association->getLeftFieldName();
         $right_field_name = $association->getRightFieldName();
 
-        $left_field = (new Integer($left_field_name))->unsigned(true)->size($source->getIdField()->getSize());
-        $right_field = (new Integer($right_field_name))->unsigned(true)->size($target->getIdField()->getSize());
+        $left_field = (new IntegerField($left_field_name))->unsigned(true)->size($source->getIdField()->getSize());
+        $right_field = (new IntegerField($right_field_name))->unsigned(true)->size($target->getIdField()->getSize());
 
         $result[] = '    ' . $this->prepareFieldStatement($left_field) . ',';
         $result[] = '    ' . $this->prepareFieldStatement($right_field) . ',';

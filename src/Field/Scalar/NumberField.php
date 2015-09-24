@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-abstract class Number extends Field
+abstract class NumberField extends Field
 {
     /**
      * @var boolean

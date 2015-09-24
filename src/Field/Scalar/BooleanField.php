@@ -6,7 +6,7 @@ use LogicException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class Boolean extends Field
+class BooleanField extends Field
 {
     /**
      * Value of this column needs to be unique (in the given context)

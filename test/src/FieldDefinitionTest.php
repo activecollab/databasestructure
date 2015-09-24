@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\String;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -14,7 +14,7 @@ class FieldDefinitionTest extends TestCase
      */
     public function testScalarFieldsShouldBeAddedToModelByDefault()
     {
-        $this->assertTrue((new String('is_important'))->getShouldBeAddedToModel());
+        $this->assertTrue((new StringField('is_important'))->getShouldBeAddedToModel());
     }
 
     /**
@@ -22,6 +22,6 @@ class FieldDefinitionTest extends TestCase
      */
     public function testScalarFieldsCanBeOmittedFromModel()
     {
-        $this->assertFalse((new String('is_important'))->setShouldBeAddedToModel(false)->getShouldBeAddedToModel());
+        $this->assertFalse((new StringField('is_important'))->setShouldBeAddedToModel(false)->getShouldBeAddedToModel());
     }
 }
