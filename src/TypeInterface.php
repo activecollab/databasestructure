@@ -46,6 +46,19 @@ interface TypeInterface
     public function &setBaseClassExtends($class_name);
 
     /**
+     * @return boolean
+     */
+    public function getPolymorph();
+
+    /**
+     * Set this model to be polymorph (type field is added and used to store instance's class name)
+     *
+     * @param  boolean $value
+     * @return $this
+     */
+    public function &polymorph($value = true);
+
+    /**
      * Get expected dataset size
      *
      * @return string
@@ -89,7 +102,7 @@ interface TypeInterface
     /**
      * Return all fields, flatten to one array
      *
-     * @return array
+     * @return FieldInterface[]
      */
     public function getAllFields();
 

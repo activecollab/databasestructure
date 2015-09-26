@@ -3,9 +3,11 @@
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
-use InvalidArgumentException;
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use InvalidArgumentException;
+use BadMethodCallException;
 
 /**
  * @package ActiveCollab\DatabaseStructure
@@ -63,6 +65,32 @@ class Type implements TypeInterface
         }
 
         $this->table_name = $table_name;
+
+        return $this;
+    }
+
+    /**
+     * @var boolean
+     */
+    private $polymorph = false;
+
+    /**
+     * @return boolean
+     */
+    public function getPolymorph()
+    {
+        return $this->polymorph;
+    }
+
+    /**
+     * Set this model to be polymorph (type field is added and used to store instance's class name)
+     *
+     * @param  boolean $value
+     * @return $this
+     */
+    public function &polymorph($value = true)
+    {
+        $this->polymorph = (boolean) $value;
 
         return $this;
     }
@@ -176,6 +204,27 @@ class Type implements TypeInterface
     }
 
     /**
+     * @var StringField
+     */
+    private $type_field;
+
+    /**
+     * @return StringField
+     */
+    public function getTypeField()
+    {
+        if ($this->getPolymorph()) {
+            if (empty($this->type_field)) {
+                $this->type_field = new StringField('type', '');
+            }
+
+            return $this->type_field;
+        } else {
+            throw new BadMethodCallException(__METHOD__ . ' is available only for polymorph types');
+        }
+    }
+
+    /**
      * @param  FieldInterface[] $fields
      * @return $this
      */
@@ -209,13 +258,17 @@ class Type implements TypeInterface
     /**
      * Return all fields, flatten to one array
      *
-     * @return array
+     * @return FieldInterface[]
      */
     public function getAllFields()
     {
         $result = [];
 
         $this->fieldToFlatList($this->getIdField(), $result);
+
+        if ($this->getPolymorph()) {
+            $this->fieldToFlatList($this->getTypeField(), $result);
+        }
 
         foreach ($this->getAssociations() as $association) {
             foreach ($association->getFields() as $field) {
@@ -294,6 +347,10 @@ class Type implements TypeInterface
     public function getAllIndexes()
     {
         $result = [new Index('id', ['id'], IndexInterface::PRIMARY)];
+
+        if ($this->getPolymorph()) {
+            $result[] = new Index('type');
+        }
 
         if (!empty($this->getIndexes())) {
             $result = array_merge($result, $this->getIndexes());
