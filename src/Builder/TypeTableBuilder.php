@@ -23,8 +23,51 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class TypeTableBuilder extends DatabaseBuilder
+class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
+    use StructureSql;
+
+    /**
+     * Build path. If empty, class will be built to memory
+     *
+     * @var string
+     */
+    private $build_path;
+
+    /**
+     * Return build path
+     *
+     * @return string
+     */
+    public function getBuildPath()
+    {
+        return $this->build_path;
+    }
+
+    /**
+     * Set build path. If empty, class will be built in memory
+     *
+     * @param  string $value
+     * @return $this
+     */
+    public function &setBuildPath($value)
+    {
+        $this->build_path = $value;
+
+        return $this;
+    }
+
+    /**
+     * Execute prior to type build
+     */
+    public function preBuild()
+    {
+        if ($structure_sql_path = $this->getStructureSqlPath()) {
+            file_put_contents($structure_sql_path, '');
+            $this->triggerEvent('on_structure_sql_built', [$structure_sql_path]);
+        }
+    }
+
     /**
      * @param TypeInterface $type
      */
@@ -34,7 +77,10 @@ class TypeTableBuilder extends DatabaseBuilder
             if ($this->getConnection()->tableExists($type->getName())) {
                 $this->triggerEvent('on_table_exists', [$type->getName()]);
             } else {
-                $this->getConnection()->execute($this->prepareCreateTableStatement($type));
+                $create_table_statement = $this->prepareCreateTableStatement($type);
+
+                $this->getConnection()->execute($create_table_statement);
+                $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($type->getName()) . ' table');
 
                 $this->triggerEvent('on_table_created', [$type->getName()]);
             }
@@ -48,7 +94,11 @@ class TypeTableBuilder extends DatabaseBuilder
                     if ($this->getConnection()->tableExists($connection_table)) {
                         $this->triggerEvent('on_table_exists', [$connection_table]);
                     } else {
-                        $this->getConnection()->execute($this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association));
+                        $create_table_statement = $this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association);
+
+                        $this->getConnection()->execute($create_table_statement);
+                        $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table');
+
                         $this->triggerEvent('on_table_created', [$connection_table]);
                     }
                 }
@@ -267,7 +317,7 @@ class TypeTableBuilder extends DatabaseBuilder
     {
         $result = [];
 
-        $result[] = 'CREATE TABLE IF NOT EXISTS ' . $association->getConnectionTableName() . ' (';
+        $result[] = 'CREATE TABLE IF NOT EXISTS ' . $this->getConnection()->escapeTableName($association->getConnectionTableName()) . ' (';
 
         $left_field_name = $association->getLeftFieldName();
         $right_field_name = $association->getRightFieldName();

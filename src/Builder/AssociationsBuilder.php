@@ -3,7 +3,6 @@
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
@@ -11,8 +10,40 @@ use Doctrine\Common\Inflector\Inflector;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class AssociationsBuilder extends DatabaseBuilder
+class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
+    use StructureSql;
+
+    /**
+     * Build path. If empty, class will be built to memory
+     *
+     * @var string
+     */
+    private $build_path;
+
+    /**
+     * Return build path
+     *
+     * @return string
+     */
+    public function getBuildPath()
+    {
+        return $this->build_path;
+    }
+
+    /**
+     * Set build path. If empty, class will be built in memory
+     *
+     * @param  string $value
+     * @return $this
+     */
+    public function &setBuildPath($value)
+    {
+        $this->build_path = $value;
+
+        return $this;
+    }
+
     /**
      * Execute after types are built
      */
@@ -25,7 +56,11 @@ class AssociationsBuilder extends DatabaseBuilder
                         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
                             $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
                         } else {
-                            $this->getConnection()->execute($this->prepareBelongsToConstraintStatement($type, $association));
+                            $create_constraint_statement = $this->prepareBelongsToConstraintStatement($type, $association);
+
+                            $this->getConnection()->execute($create_constraint_statement);
+                            $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
+
                             $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
                         }
                     } elseif ($association instanceof HasAndBelongsToManyAssociation) {
@@ -35,7 +70,11 @@ class AssociationsBuilder extends DatabaseBuilder
                             $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
                         } else {
                             $left_field_name = $association->getLeftFieldName();
-                            $this->getConnection()->execute($this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $association->getLeftConstraintName(), $left_field_name));
+                            $create_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $association->getLeftConstraintName(), $left_field_name);
+
+                            $this->getConnection()->execute($create_constraint_statement);
+                            $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getLeftConstraintName()) . ' constraint');
+
                             $this->triggerEvent('on_association_created', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
                         }
 
@@ -43,7 +82,11 @@ class AssociationsBuilder extends DatabaseBuilder
                             $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
                         } else {
                             $right_field_name = $association->getRightFieldName();
-                            $this->getConnection()->execute($this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $association->getRightConstraintName(), $right_field_name));
+                            $create_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $association->getRightConstraintName(), $right_field_name);
+
+                            $this->getConnection()->execute($create_constraint_statement);
+                            $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint');
+
                             $this->triggerEvent('on_association_created', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
                         }
                     }
@@ -68,9 +111,9 @@ class AssociationsBuilder extends DatabaseBuilder
         $result[] = '    FOREIGN KEY (' . $this->getConnection()->escapeFieldName($association->getFieldName()) . ') REFERENCES ' . $this->getConnection()->escapeTableName($association->getTargetTypeName()) . '(`id`)';
 
         if ($association->getOptional()) {
-            $result[] = '    ON UPDATE SET NULL ON DELETE SET NULL';
+            $result[] = '    ON UPDATE SET NULL ON DELETE SET NULL;';
         } else {
-            $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE';
+            $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE;';
         }
 
         return implode("\n", $result);
@@ -93,7 +136,7 @@ class AssociationsBuilder extends DatabaseBuilder
         $result[] = 'ALTER TABLE ' . $this->getConnection()->escapeTableName($connection_table);
         $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($constraint_name);
         $result[] = '    FOREIGN KEY (' . $field_name . ') REFERENCES ' . $this->getConnection()->escapeTableName($type_name) . '(`id`)';
-        $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE';
+        $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE;';
 
         return implode("\n", $result);
     }

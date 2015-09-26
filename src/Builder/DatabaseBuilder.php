@@ -7,7 +7,7 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-abstract class DatabaseBuilder extends Builder
+abstract class DatabaseBuilder extends Builder implements DatabaseBuilderInterface
 {
     /**
      * @var ConnectionInterface

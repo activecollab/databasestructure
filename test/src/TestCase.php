@@ -7,7 +7,7 @@ use ActiveCollab\DatabaseConnection\Connection;
 use RuntimeException;
 
 /**
- * @package ActiveCollab\JobsQueue\Test
+ * @package ActiveCollab\DatabaseStructure\Test
  */
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {

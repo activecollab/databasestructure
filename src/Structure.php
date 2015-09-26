@@ -6,8 +6,8 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\AssociationsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
-use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilder;
-use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
+use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
@@ -145,7 +145,7 @@ abstract class Structure implements StructureInterface
     }
 
     /**
-     * @var BuilderInterface[]|FileSystemBuilder[]|DatabaseBuilder[]
+     * @var BuilderInterface[]|FileSystemBuilderInterface[]|DatabaseBuilderInterface[]
      */
     private $builders = [];
 
@@ -169,7 +169,7 @@ abstract class Structure implements StructureInterface
 
             if ($build_path) {
                 foreach ($this->builders as $k => $v) {
-                    if ($v instanceof FileSystemBuilder) {
+                    if ($v instanceof FileSystemBuilderInterface) {
                         $this->builders[$k]->setBuildPath($build_path);
                     }
                 }
@@ -177,7 +177,7 @@ abstract class Structure implements StructureInterface
 
             if ($connection) {
                 foreach ($this->builders as $k => $v) {
-                    if ($v instanceof DatabaseBuilder) {
+                    if ($v instanceof DatabaseBuilderInterface) {
                         $this->builders[$k]->setConnection($connection);
                     }
                 }
