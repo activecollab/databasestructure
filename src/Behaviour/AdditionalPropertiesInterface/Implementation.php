@@ -19,7 +19,7 @@ trait Implementation
      *
      * @return array
      */
-    public function getDecodedAdditionalProperties()
+    public function getAdditionalProperties()
     {
         if ($this->decoded_additional_properties === false) {
             $raw = trim($this->getRawAdditionalProperties());
@@ -39,7 +39,7 @@ trait Implementation
      * @param  array|null $value
      * @return $this
      */
-    public function &setDecodedAdditionalProperties(array $value = null)
+    public function &setAdditionalProperties(array $value = null)
     {
         $this->decoded_additional_properties = false; // Reset...
 
@@ -57,7 +57,7 @@ trait Implementation
      */
     public function getAdditionalProperty($name, $default = null)
     {
-        $additional_properties = $this->getDecodedAdditionalProperties();
+        $additional_properties = $this->getAdditionalProperties();
 
         return $additional_properties && isset($additional_properties[$name]) ? $additional_properties[$name] : $default;
     }
@@ -71,7 +71,7 @@ trait Implementation
      */
     public function &setAdditionalProperty($name, $value)
     {
-        $additional_properties = $this->getDecodedAdditionalProperties();
+        $additional_properties = $this->getAdditionalProperties();
 
         if ($value === null) {
             if (isset($additional_properties[$name])) {
@@ -81,7 +81,7 @@ trait Implementation
             $additional_properties[$name] = $value;
         }
 
-        $this->setDecodedAdditionalProperties($additional_properties);
+        $this->setAdditionalProperties($additional_properties);
 
         return $this;
     }
