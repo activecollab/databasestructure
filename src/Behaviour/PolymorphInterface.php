@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour
  */
-interface TypeInterface
+interface PolymorphInterface
 {
     /**
      * @return string

@@ -1,16 +1,16 @@
 <?php
 
-namespace ActiveCollab\DatabaseStructure\Behaviour\TypeInterface;
+namespace ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 
 /**
- * @package ActiveCollab\DatabaseStructure\Behaviour\TypeInterface
+ * @package ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface
  */
 trait Implementation
 {
     /**
      * Say hello to the parent class
      */
-    public function ActiveCollabDatabaseStructureBehaviourTypeInterfaceImplementation()
+    public function ActiveCollabDatabaseStructureBehaviourPolymorphInterfaceImplementation()
     {
         $this->registerEventHandler('on_before_save', function() {
             if (!$this->getType()) {
