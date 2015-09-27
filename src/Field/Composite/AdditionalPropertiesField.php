@@ -28,7 +28,7 @@ class AdditionalPropertiesField extends Field
      */
     public function getDefaultValue()
     {
-        return '{}';
+        return null;
     }
 
     /**

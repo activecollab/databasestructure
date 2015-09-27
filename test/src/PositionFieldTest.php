@@ -4,7 +4,6 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Type;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
@@ -29,6 +28,7 @@ class PositionFieldTest extends TestCase
     {
         $this->assertSame(0, (new PositionField())->getDefaultValue());
     }
+
     /**
      * Test if position can be added to a type
      */
