@@ -6,6 +6,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Behaviour\TypeInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\TypeInterface\Implementation as TypeInterfaceImplementation;
 use InvalidArgumentException;
 use BadMethodCallException;
 
@@ -91,6 +93,10 @@ class Type implements TypeInterface
     public function &polymorph($value = true)
     {
         $this->polymorph = (boolean) $value;
+
+        if ($this->polymorph) {
+            $this->addTrait(TypeInterface::class, TypeInterfaceImplementation::class);
+        }
 
         return $this;
     }
