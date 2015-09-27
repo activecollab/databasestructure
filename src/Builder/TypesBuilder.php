@@ -26,7 +26,7 @@ class TypesBuilder extends FileSystemBuilder
             $namespace = $this->getStructure()->getNamespace();
 
             if ($namespace) {
-                $namespace = '\\' . ltrim($namespace, '\\');
+                $namespace = ltrim($namespace, '\\');
             }
 
             if ($this->getStructure()->getNamespace()) {
