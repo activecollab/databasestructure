@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "0401bfe6108a42e27e75418b0c48fb4d58fce6cc"
+                "reference": "c343477a007fe50791e980a96358c99741bb8fdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/0401bfe6108a42e27e75418b0c48fb4d58fce6cc",
-                "reference": "0401bfe6108a42e27e75418b0c48fb4d58fce6cc",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/c343477a007fe50791e980a96358c99741bb8fdc",
+                "reference": "c343477a007fe50791e980a96358c99741bb8fdc",
                 "shasum": ""
             },
             "require": {
@@ -96,7 +96,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-09-24 19:50:24"
+            "time": "2015-09-27 10:55:12"
         },
         {
             "name": "activecollab/filesystem",
@@ -1113,16 +1113,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.7.4",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Yaml.git",
-                "reference": "2dc7b06c065df96cc686c66da2705e5e18aef661"
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/2dc7b06c065df96cc686c66da2705e5e18aef661",
-                "reference": "2dc7b06c065df96cc686c66da2705e5e18aef661",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
+                "reference": "31cb2ad0155c95b88ee55fe12bc7ff92232c1770",
                 "shasum": ""
             },
             "require": {
@@ -1158,7 +1158,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-08-24 07:13:45"
+            "time": "2015-09-14 14:14:09"
         }
     ],
     "aliases": [],
