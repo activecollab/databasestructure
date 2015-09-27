@@ -159,7 +159,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '    public function &setFieldValue($name, $value)';
         $result[] = '    {';
         $result[] = '        if ($value === null) {';
-        $result[] = '            return parent::setFieldValue($name, null);';
+        $result[] = '            parent::setFieldValue($name, null);';
         $result[] = '        } else {';
         $result[] = '            switch ($name) {';
 
@@ -189,6 +189,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '                    throw new \\InvalidArgumentException("Field $name does not exist in this table");';
         $result[] = '            }';
         $result[] = '        }';
+        $result[] = '';
+        $result[] = '        return $this;';
         $result[] = '    }';
 
         $result[] = '}';
