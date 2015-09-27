@@ -74,14 +74,13 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     public function buildType(TypeInterface $type)
     {
         if ($this->getConnection()) {
+            $create_table_statement = $this->prepareCreateTableStatement($type);
+            $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($type->getName()) . ' table');
+
             if ($this->getConnection()->tableExists($type->getName())) {
                 $this->triggerEvent('on_table_exists', [$type->getName()]);
             } else {
-                $create_table_statement = $this->prepareCreateTableStatement($type);
-
                 $this->getConnection()->execute($create_table_statement);
-                $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($type->getName()) . ' table');
-
                 $this->triggerEvent('on_table_created', [$type->getName()]);
             }
 
@@ -91,14 +90,13 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
                     $connection_table = $this->getConnectionTableName($type, $target_type);
 
+                    $create_table_statement = $this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association);
+                    $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table');
+
                     if ($this->getConnection()->tableExists($connection_table)) {
                         $this->triggerEvent('on_table_exists', [$connection_table]);
                     } else {
-                        $create_table_statement = $this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association);
-
                         $this->getConnection()->execute($create_table_statement);
-                        $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table');
-
                         $this->triggerEvent('on_table_created', [$connection_table]);
                     }
                 }
