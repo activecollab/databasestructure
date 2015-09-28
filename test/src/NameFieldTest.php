@@ -6,6 +6,7 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -66,5 +67,22 @@ class NameFieldTest extends TestCase
 
         $this->assertArrayHasKey('name', $type->getIndexes());
         $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['name']);
+    }
+
+    /**
+     * Make sure that resulting string field is required and / or unique when name is required and / or unique
+     */
+    public function testNameProducesRequiredAndUniqueStringWhenRequiredAndUnique()
+    {
+        $name_field = (new NameField('name'))->required()->unique('context_filed_1');
+
+        /** @var StringField $string_field */
+        $string_field = $name_field->getFields()[0];
+
+        $this->assertInstanceOf(StringField::class, $string_field);
+
+        $this->assertTrue($string_field->isRequired());
+        $this->assertTrue($string_field->isUnique());
+        $this->assertEquals(['context_filed_1'], $string_field->getUniquenessContext());
     }
 }

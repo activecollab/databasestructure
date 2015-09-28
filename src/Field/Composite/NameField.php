@@ -75,7 +75,17 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
      */
     public function getFields()
     {
-        return [(new StringField($this->getName(), ''))->modifier('trim')];
+        $name_field = (new StringField($this->getName(), ''))->modifier($this->getModifier());
+
+        if ($this->isRequired()) {
+            $name_field->required();
+        }
+
+        if ($this->isUnique()) {
+            $name_field->unique(...$this->getUniquenessContext());
+        }
+
+        return [$name_field];
     }
 
     /**
