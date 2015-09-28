@@ -70,6 +70,23 @@ class NameFieldTest extends TestCase
     }
 
     /**
+     * Test if unique index properly alters index added by the name field
+     */
+    public function testUniqueContextAddsFieldsToTheIndex()
+    {
+        $type = (new Type('applications'))->addField((new NameField('name', null, true))->unique('application_id', 'shard_id'));
+
+        $this->assertArrayHasKey('name', $type->getIndexes());
+
+        $name_index = $type->getIndexes()['name'];
+
+        $this->assertInstanceOf(IndexInterface::class, $name_index);
+
+        $this->assertEquals('name', $name_index->getName());
+        $this->assertEquals(['name', 'application_id', 'shard_id'], $name_index->getFields());
+    }
+
+    /**
      * Make sure that resulting string field is required and / or unique when name is required and / or unique
      */
     public function testNameProducesRequiredAndUniqueStringWhenRequiredAndUnique()

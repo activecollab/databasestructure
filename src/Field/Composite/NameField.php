@@ -2,6 +2,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
@@ -12,8 +15,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -71,6 +72,24 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
     }
 
     /**
+     * Value of this column needs to be unique (in the given context)
+     *
+     * @param  string $context
+     * @return $this
+     */
+    public function &unique(...$context)
+    {
+        $this->is_unique = true;
+        $this->uniquness_context = $context;
+
+        if ($this instanceof AddIndexInterface) {
+            $this->addIndex(true, $context, IndexInterface::UNIQUE);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return FieldInterface[]
      */
     public function getFields()
@@ -96,7 +115,13 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
     public function onAddedToType(TypeInterface &$type)
     {
         if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name, $this->getAddIndexContext(), $this->getAddIndexType()));
+            $index_fields = [$this->name];
+
+            if (count($this->getAddIndexContext())) {
+                $index_fields = array_merge($index_fields, $this->getAddIndexContext());
+            }
+
+            $type->addIndex(new Index($this->name, $index_fields, $this->getAddIndexType()));
         }
     }
 }
