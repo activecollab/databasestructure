@@ -3,8 +3,8 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Blog\BlogStructure;
-use ActiveCollab\Filesystem\Adapter\Local;
-use ActiveCollab\Filesystem\Filesystem;
+use ActiveCollab\FileSystem\Adapter\LocalAdapter;
+use ActiveCollab\FileSystem\FileSystem;
 
 /**
  * Purpose of this test is to see if files and tables are properly build from BlogStructure
@@ -49,7 +49,7 @@ class BlogBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->filesystem = new Filesystem(new Local($this->build_path));
+        $this->filesystem = new FileSystem(new LocalAdapter($this->build_path));
         $this->filesystem->emptyDir('/', ['BlogStructure.php']);
 
         $this->assertEquals(['BlogStructure.php'], $this->filesystem->files('/'));

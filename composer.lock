@@ -104,12 +104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/filesystem.git",
-                "reference": "65ad6ae70af93b97846ff10aca67fda73e661fe4"
+                "reference": "1254025b423dc9a51dd440d35f3360c0f6e4ebfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/65ad6ae70af93b97846ff10aca67fda73e661fe4",
-                "reference": "65ad6ae70af93b97846ff10aca67fda73e661fe4",
+                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/1254025b423dc9a51dd440d35f3360c0f6e4ebfa",
+                "reference": "1254025b423dc9a51dd440d35f3360c0f6e4ebfa",
                 "shasum": ""
             },
             "require": {
@@ -121,8 +121,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "ActiveCollab\\Filesystem\\": "src",
-                    "ActiveCollab\\Filesystem\\Test\\": "test/src"
+                    "ActiveCollab\\FileSystem\\": "src",
+                    "ActiveCollab\\FileSystem\\Test\\": "test/src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -138,7 +138,7 @@
                 "activecollab",
                 "filesystem"
             ],
-            "time": "2015-08-04 06:17:10"
+            "time": "2015-09-28 14:32:30"
         },
         {
             "name": "doctrine/inflector",
