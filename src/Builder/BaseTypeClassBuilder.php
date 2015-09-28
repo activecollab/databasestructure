@@ -244,9 +244,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = $indent . '/**';
             $result[] = $indent . ' * Validate object properties before object is saved';
             $result[] = $indent . ' *';
-            $result[] = $indent . ' * @param ValidatorInterface $validator';
+            $result[] = $indent . ' * @param \ActiveCollab\DatabaseObject\ValidatorInterface $validator';
             $result[] = $indent . ' */';
-            $result[] = $indent . 'public function validate(ValidatorInterface &$validator)';
+            $result[] = $indent . 'public function validate(\ActiveCollab\DatabaseObject\ValidatorInterface &$validator)';
             $result[] = $indent . '{';
 
             $result = array_merge($result, $validator_lines);
