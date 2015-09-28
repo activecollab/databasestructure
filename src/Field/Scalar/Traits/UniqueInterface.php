@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-interface UniqueInterface
+interface UniqueInterface extends FieldTraitInterface
 {
     /**
      * Return true if this field should be unique

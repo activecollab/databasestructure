@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-interface RequiredInterface
+interface RequiredInterface extends FieldTraitInterface
 {
     /**
      * Return true if this field is required

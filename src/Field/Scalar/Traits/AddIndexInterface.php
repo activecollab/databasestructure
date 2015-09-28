@@ -7,7 +7,7 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-interface AddIndexInterface
+interface AddIndexInterface extends FieldTraitInterface
 {
     /**
      * Return whether we should add an index for this field or not, defualt is FALSE

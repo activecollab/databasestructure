@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-interface ModifierInterface
+interface ModifierInterface extends FieldTraitInterface
 {
     /**
      * Return name of the modifier, if set

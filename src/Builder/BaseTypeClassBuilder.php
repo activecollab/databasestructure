@@ -3,6 +3,8 @@
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use Doctrine\Common\Inflector\Inflector;
@@ -217,10 +219,88 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      */
     private function buildValidate($fields, $indent, array &$result)
     {
+        $validator_lines = [];
+
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
-
+                if ($field instanceof RequiredInterface && $field instanceof UniqueInterface) {
+                    if ($field->isRequired() && $field->isUnique()) {
+                        $validator_lines[] = $indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
+                    } elseif ($field->isRequired()) {
+                        $validator_lines[] = $indent . $this->buildValidatePresenceLine($field->getName());
+                    } elseif ($field->isUnique()) {
+                        $validator_lines[] = $indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+                    }
+                } elseif($field instanceof RequiredInterface && $field->isRequired()) {
+                    $validator_lines[] = $indent . $this->buildValidatePresenceLine($field->getName());
+                } elseif($field instanceof UniqueInterface && $field->isUnique()) {
+                    $validator_lines[] = $indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+                }
             }
         }
+
+        if (count($validator_lines)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * Validate object properties before object is saved';
+            $result[] = $indent . ' *';
+            $result[] = $indent . ' * @param ValidatorInterface $validator';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'public function validate(ValidatorInterface &$validator)';
+            $result[] = $indent . '{';
+
+            $result = array_merge($result, $validator_lines);
+
+            $result[] = '';
+            $result[] = $indent . '    parent::validate($validator);';
+            $result[] = $indent . '}';
+        }
+    }
+
+    /**
+     * Build validator value presence line
+     *
+     * @param  string $field_name
+     * @return string
+     */
+    private function buildValidatePresenceLine($field_name)
+    {
+        return '$validator->present(' . var_export($field_name, true) . ');';
+    }
+
+    /**
+     * Build validator uniqueness line
+     *
+     * @param  string $field_name
+     * @param  array  $context
+     * @return string
+     */
+    private function buildValidateUniquenessLine($field_name, array $context)
+    {
+        $field_names = [var_export($field_name, true)];
+
+        foreach ($context as $v) {
+            $field_names[] = var_export($v, true);
+        }
+
+        return '$validator->unique(' . implode(', ', $field_names) . ');';
+    }
+
+    /**
+     * Build validator uniqueness line
+     *
+     * @param  string $field_name
+     * @param  array  $context
+     * @return string
+     */
+    private function buildValidatePresenceAndUniquenessLine($field_name, array $context)
+    {
+        $field_names = [var_export($field_name, true)];
+
+        foreach ($context as $v) {
+            $field_names[] = var_export($v, true);
+        }
+
+        return '$validator->presentAndUnique(' . implode(', ', $field_names) . ');';
     }
 }

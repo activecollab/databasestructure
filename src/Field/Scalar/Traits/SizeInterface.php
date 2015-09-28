@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-interface SizeInterface
+interface SizeInterface extends FieldTraitInterface
 {
     /**
      * Return size of the field, if set
