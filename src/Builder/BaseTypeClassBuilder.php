@@ -221,20 +221,22 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     {
         $validator_lines = [];
 
+        $line_indent = $indent  . '    ';
+
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 if ($field instanceof RequiredInterface && $field instanceof UniqueInterface) {
                     if ($field->isRequired() && $field->isUnique()) {
-                        $validator_lines[] = $indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
+                        $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
                     } elseif ($field->isRequired()) {
-                        $validator_lines[] = $indent . $this->buildValidatePresenceLine($field->getName());
+                        $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
                     } elseif ($field->isUnique()) {
-                        $validator_lines[] = $indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+                        $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
                     }
                 } elseif($field instanceof RequiredInterface && $field->isRequired()) {
-                    $validator_lines[] = $indent . $this->buildValidatePresenceLine($field->getName());
+                    $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
                 } elseif($field instanceof UniqueInterface && $field->isUnique()) {
-                    $validator_lines[] = $indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+                    $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
                 }
             }
         }
