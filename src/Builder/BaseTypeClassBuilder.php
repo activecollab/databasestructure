@@ -4,6 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\TypeInterface;
+use ActiveCollab\DatabaseStructure\FieldInterface;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -193,6 +194,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '        return $this;';
         $result[] = '    }';
 
+        $this->buildValidate($fields, '    ', $result);
+
         $result[] = '}';
         $result[] = '';
 
@@ -205,5 +208,19 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
+    }
+
+    /**
+     * @param FieldInterface[] $fields
+     * @param string           $indent
+     * @param array            $result
+     */
+    private function buildValidate($fields, $indent, array &$result)
+    {
+        foreach ($fields as $field) {
+            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
+
+            }
+        }
     }
 }

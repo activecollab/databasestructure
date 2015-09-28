@@ -2,8 +2,10 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Required;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Unique;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -11,9 +13,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-abstract class Field implements FieldInterface
+abstract class Field implements FieldInterface, RequiredInterface, UniqueInterface
 {
-    use Required, Unique;
+    use RequiredInterfaceImplementation, UniqueInterfaceImplementation;
 
     /**
      * @var string

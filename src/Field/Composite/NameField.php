@@ -7,8 +7,10 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndex;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Required;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Unique;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -16,9 +18,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class NameField extends Field implements AddIndexInterface
+class NameField extends Field implements AddIndexInterface, RequiredInterface, UniqueInterface
 {
-    use Required, Unique, Modifier, AddIndex;
+    use RequiredInterfaceImplementation, UniqueInterfaceImplementation, Modifier, AddIndex;
 
     /**
      * @var string

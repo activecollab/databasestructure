@@ -5,22 +5,19 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-trait Required
+interface RequiredInterface
 {
     /**
-     * @var bool
+     * Return true if this field is required
+     *
+     * @return boolean
      */
-    private $is_required = false;
+    public function isRequired();
 
     /**
      * Value of this column is required
      *
      * @return $this
      */
-    public function &required()
-    {
-        $this->is_required = true;
-
-        return $this;
-    }
+    public function &required();
 }
