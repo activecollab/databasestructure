@@ -2,7 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 
-use ActiveCollab\DatabaseStructure\Field\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 
 /**

@@ -2,14 +2,15 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Size;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class IntegerField extends NumberField
+class IntegerField extends NumberField implements SizeInterface
 {
-    use Size;
+    use SizeInterfaceImplementation;
 
     /**
      * Return PHP native type

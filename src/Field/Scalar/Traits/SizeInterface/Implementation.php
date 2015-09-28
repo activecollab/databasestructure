@@ -1,6 +1,6 @@
 <?php
 
-namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
+namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use InvalidArgumentException;
@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-trait Size
+trait Implementation
 {
     /**
      * @var string

@@ -1,15 +1,16 @@
 <?php
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class StringField extends Field
+class StringField extends Field implements ModifierInterface
 {
-    use Modifier;
+    use ModifierInterfaceImplementation;
 
     /**
      * Return PHP native type

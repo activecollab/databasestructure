@@ -1,25 +1,22 @@
 <?php
 
-namespace ActiveCollab\DatabaseStructure\Field;
+namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 
 /**
- * @package ActiveCollab\DatabaseStructure\Field
+ * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
 interface AddIndexInterface
 {
     /**
-     * Return true if field that implements this interface should add an index or not
+     * Return whether we should add an index for this field or not, defualt is FALSE
      *
-     * @return boolean
+     * @return string
      */
     public function getAddIndex();
 
     /**
-     * Return additional index fields
-     *
      * @return array|null
      */
     public function getAddIndexContext();
@@ -32,9 +29,9 @@ interface AddIndexInterface
     public function getAddIndexType();
 
     /**
-     * @param  boolean $add_index
-     * @param  array   $context
-     * @param  string  $type
+     * @param  boolean    $add_index
+     * @param  array|null $context
+     * @param  string     $type
      * @return $this
      */
     public function &addIndex($add_index = true, array $context = [], $type = IndexInterface::INDEX);

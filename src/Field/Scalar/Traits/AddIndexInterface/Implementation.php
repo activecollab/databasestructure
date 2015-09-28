@@ -1,14 +1,13 @@
 <?php
 
-namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
+namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-trait AddIndex
+trait Implementation
 {
     /**
      * @var boolean

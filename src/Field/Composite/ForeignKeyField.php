@@ -2,7 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Size;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Index;
@@ -12,9 +13,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ForeignKeyField extends Field
+class ForeignKeyField extends Field implements SizeInterface
 {
-    use Size;
+    use SizeInterfaceImplementation;
 
     /**
      * @var string

@@ -1,13 +1,13 @@
 <?php
 
-namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
+namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
 
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
-trait Modifier
+trait Implementation
 {
     /**
      * @var string

@@ -2,15 +2,16 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\Field\AddIndexInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndex;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\Modifier;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -18,9 +19,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class NameField extends Field implements AddIndexInterface, RequiredInterface, UniqueInterface
+class NameField extends Field implements ModifierInterface, RequiredInterface, UniqueInterface, AddIndexInterface
 {
-    use RequiredInterfaceImplementation, UniqueInterfaceImplementation, Modifier, AddIndex;
+    use ModifierInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation, AddIndexInterfaceImplementation;
 
     /**
      * @var string
