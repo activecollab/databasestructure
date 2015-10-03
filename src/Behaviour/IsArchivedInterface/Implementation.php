@@ -77,8 +77,10 @@ trait Implementation
 
     /**
      * Save to database
+     *
+     * @return $this
      */
-    abstract public function save();
+    abstract public function &save();
 
     /**
      * Register an internal event handler
