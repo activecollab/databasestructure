@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "hash": "a87e8035f91881617047bf2062f36535",
+    "content-hash": "0647bbdcac0b812adb6c71aa738724be",
     "packages": [
         {
             "name": "activecollab/databaseconnection",
@@ -57,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "1fbb70445ed2d1840d7c0c9c17d44fb9e4cdeb50"
+                "reference": "4e03ffcc7e5ec3cc5243e2b8816d3994d06c1003"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/1fbb70445ed2d1840d7c0c9c17d44fb9e4cdeb50",
-                "reference": "1fbb70445ed2d1840d7c0c9c17d44fb9e4cdeb50",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/4e03ffcc7e5ec3cc5243e2b8816d3994d06c1003",
+                "reference": "4e03ffcc7e5ec3cc5243e2b8816d3994d06c1003",
                 "shasum": ""
             },
             "require": {
@@ -96,7 +97,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-09-28 12:05:42"
+            "time": "2015-09-29 16:47:28"
         },
         {
             "name": "activecollab/filesystem",
@@ -104,16 +105,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/filesystem.git",
-                "reference": "1254025b423dc9a51dd440d35f3360c0f6e4ebfa"
+                "reference": "201995d9bfbf310a706577b5fcfcbd8146232b18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/1254025b423dc9a51dd440d35f3360c0f6e4ebfa",
-                "reference": "1254025b423dc9a51dd440d35f3360c0f6e4ebfa",
+                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/201995d9bfbf310a706577b5fcfcbd8146232b18",
+                "reference": "201995d9bfbf310a706577b5fcfcbd8146232b18",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "herzult/php-ssh": "~1.1",
+                "php": ">=5.5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.7"
@@ -126,6 +128,9 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Ilija Studen",
@@ -138,7 +143,7 @@
                 "activecollab",
                 "filesystem"
             ],
-            "time": "2015-09-28 14:32:30"
+            "time": "2015-09-29 10:56:22"
         },
         {
             "name": "doctrine/inflector",
@@ -206,6 +211,60 @@
                 "string"
             ],
             "time": "2014-12-20 21:24:13"
+        },
+        {
+            "name": "herzult/php-ssh",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Herzult/php-ssh.git",
+                "reference": "d569d15483a5f9218700313cd21c50090aa93351"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Herzult/php-ssh/zipball/d569d15483a5f9218700313cd21c50090aa93351",
+                "reference": "d569d15483a5f9218700313cd21c50090aa93351",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ssh2": "*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "symfony/filesystem": "~2.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Ssh": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "The contributors",
+                    "homepage": "http://github.com/Herzult/php-ssh/contributors"
+                },
+                {
+                    "name": "Antoine Hérault",
+                    "homepage": "https://github.com/Herzult"
+                }
+            ],
+            "description": "Provides an object-oriented wrapper for the php ssh2 extension.",
+            "keywords": [
+                "ssh",
+                "ssh2"
+            ],
+            "time": "2015-03-17 22:03:22"
         }
     ],
     "packages-dev": [
@@ -614,16 +673,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.9",
+            "version": "4.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b"
+                "reference": "463163747474815c5ccd4ae12b5b355ec12158e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/73fad41adb5b7bc3a494bb930d90648df1d5e74b",
-                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/463163747474815c5ccd4ae12b5b355ec12158e8",
+                "reference": "463163747474815c5ccd4ae12b5b355ec12158e8",
                 "shasum": ""
             },
             "require": {
@@ -682,20 +741,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-20 12:56:44"
+            "time": "2015-10-01 09:14:30"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "2.3.7",
+            "version": "2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "5e2645ad49d196e020b85598d7c97e482725786a"
+                "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5e2645ad49d196e020b85598d7c97e482725786a",
-                "reference": "5e2645ad49d196e020b85598d7c97e482725786a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/ac8e7a3db35738d56ee9a76e78a4e03d97628983",
+                "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983",
                 "shasum": ""
             },
             "require": {
@@ -738,7 +797,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-08-19 09:14:08"
+            "time": "2015-10-02 06:51:40"
         },
         {
             "name": "sebastian/comparator",
