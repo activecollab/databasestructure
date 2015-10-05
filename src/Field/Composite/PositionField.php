@@ -100,7 +100,7 @@ class PositionField extends Field
      */
     public function getFields()
     {
-        return [(new IntegerField('position', 0))->unsigned(true)->setShouldBeAddedToModel(false)];
+        return [(new IntegerField('position', 0))->unsigned(true)];
     }
 
     /**

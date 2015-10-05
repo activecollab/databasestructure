@@ -119,7 +119,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testChapterClassFields()
     {
-        $this->assertEquals(['id', 'book_id', 'title'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'book_id', 'title','position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setId'));
@@ -162,9 +162,11 @@ class CodeBuilderTest extends TestCase
     {
         $default_field_values = $this->base_chapter_reflection->getDefaultProperties()['default_field_values'];
 
-        $this->assertCount(1, $default_field_values);
+        $this->assertCount(2, $default_field_values);
 
         $this->assertArrayHasKey('title', $default_field_values);
         $this->assertSame('', $default_field_values['title']);
+        $this->assertArrayHasKey('position', $default_field_values);
+        $this->assertSame(0, $default_field_values['position']);
     }
 }
