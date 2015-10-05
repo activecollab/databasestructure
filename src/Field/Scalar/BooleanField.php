@@ -18,4 +18,15 @@ class BooleanField extends Field
     {
         throw new LogicException('Boolean columns cant be made unique');
     }
+
+    /**
+     * Return value casting code
+     *
+     * @param  string $variable_name
+     * @return string
+     */
+    public function getCastingCode($variable_name)
+    {
+        return '(boolean) $' . $variable_name;
+    }
 }
