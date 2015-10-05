@@ -2,11 +2,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 
-use ActiveCollab\DatabaseConnection\ConnectionInterface;
-
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface
- * @property ConnectionInterface $connection
+ * @property \ActiveCollab\DatabaseConnection\ConnectionInterface $connection
  */
 trait Implementation
 {
