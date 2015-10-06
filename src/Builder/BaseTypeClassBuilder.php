@@ -197,6 +197,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '        return $this;';
         $result[] = '    }';
 
+        $this->buildCompositeFieldMethods($type->getFields(), '    ', $result);
         $this->buildValidate($fields, '    ', $result);
 
         $result[] = '}';

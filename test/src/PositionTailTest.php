@@ -4,7 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
-use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionHead\PositionHeadStructure;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail\PositionTailStructure;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseObject\PoolInterface;
 
@@ -13,12 +13,12 @@ use ActiveCollab\DatabaseObject\PoolInterface;
  *
  * @package ActiveCollab\DatabaseStructure\Test
  */
-class PositionHeadTest extends TestCase
+class PositionTailTest extends TestCase
 {
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionHead\\PositionHeadEntry';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionTail\\PositionTailEntry';
 
     /**
      * @var PoolInterface
@@ -26,9 +26,9 @@ class PositionHeadTest extends TestCase
     private $pool;
 
     /**
-     * @var PositionHeadStructure
+     * @var PositionTailStructure
      */
-    private $position_head_structure;
+    private $position_tail_structure;
 
     /**
      * Set up test environment.
@@ -38,21 +38,21 @@ class PositionHeadTest extends TestCase
         parent::setUp();
 
         $this->pool = new Pool($this->connection);
-        $this->position_head_structure = new PositionHeadStructure();
+        $this->position_tail_structure = new PositionTailStructure();
 
         if (!class_exists($this->type_class_name, false)) {
-            $this->position_head_structure->build(null, $this->connection);
+            $this->position_tail_structure->build(null, $this->connection);
         }
 
-        if ($this->connection->tableExists('position_head_entries')) {
-            $this->connection->dropTable('position_head_entries');
+        if ($this->connection->tableExists('position_tail_entries')) {
+            $this->connection->dropTable('position_tail_entries');
         }
 
-        $type_table_builder = new TypeTableBuilder($this->position_head_structure);
+        $type_table_builder = new TypeTableBuilder($this->position_tail_structure);
         $type_table_builder->setConnection($this->connection);
-        $type_table_builder->buildType($this->position_head_structure->getType('position_head_entries'));
+        $type_table_builder->buildType($this->position_tail_structure->getType('position_tail_entries'));
 
-        $this->assertTrue($this->connection->tableExists('position_head_entries'));
+        $this->assertTrue($this->connection->tableExists('position_tail_entries'));
 
         $this->pool->registerType($this->type_class_name);
 
@@ -64,22 +64,22 @@ class PositionHeadTest extends TestCase
      */
     public function tearDown()
     {
-        if ($this->connection->tableExists('position_head_entries')) {
-            $this->connection->dropTable('position_head_entries');
+        if ($this->connection->tableExists('position_tail_entries')) {
+            $this->connection->dropTable('position_tail_entries');
         }
 
         parent::tearDown();
     }
 
     /**
-     * Test if position mode is head
+     * Test if position mode is tail
      */
-    public function testPositionModeIsHead()
+    public function testPositionModeIsTail()
     {
         /** @var PositionInterface $entry */
         $entry = $this->pool->produce($this->type_class_name);
 
-        $this->assertEquals(PositionInterface::POSITION_MODE_HEAD, $entry->getPositionMode());
+        $this->assertEquals(PositionInterface::POSITION_MODE_TAIL, $entry->getPositionMode());
     }
 
     /**
@@ -109,7 +109,7 @@ class PositionHeadTest extends TestCase
     /**
      * Test if all new records go to the begining of the list
      */
-    public function testNewRecordsGoToHead()
+    public function testNewRecordsGoToTail()
     {
         /** @var PositionInterface $entry1 */
         /** @var PositionInterface $entry2 */
@@ -123,15 +123,7 @@ class PositionHeadTest extends TestCase
         $this->assertInstanceOf($this->type_class_name, $entry3);
 
         $this->assertEquals(1, $entry1->getPosition());
-        $this->assertEquals(1, $entry2->getPosition());
-        $this->assertEquals(1, $entry3->getPosition());
-
-        $reloaded_entry_1 = $this->pool->reload($this->type_class_name, $entry1->getId());
-        $reloaded_entry_2 = $this->pool->reload($this->type_class_name, $entry2->getId());
-        $reloaded_entry_3 = $this->pool->reload($this->type_class_name, $entry3->getId());
-
-        $this->assertEquals(3, $reloaded_entry_1->getPosition());
-        $this->assertEquals(2, $reloaded_entry_2->getPosition());
-        $this->assertEquals(1, $reloaded_entry_3->getPosition());
+        $this->assertEquals(2, $entry2->getPosition());
+        $this->assertEquals(3, $entry3->getPosition());
     }
 }
