@@ -69,6 +69,12 @@ class TriggersTest extends TestCase
      */
     public function tearDown()
     {
+        if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
+            foreach ($triggers as $trigger) {
+                $this->connection->execute('DROP TRIGGER ' . $this->connection->escapeFieldName($trigger['Trigger']));
+            }
+        }
+
         if ($this->connection->tableExists('triggers')) {
             $this->connection->dropTable('triggers');
         }

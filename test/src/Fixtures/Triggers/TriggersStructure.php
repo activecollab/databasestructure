@@ -21,7 +21,10 @@ class TriggersStructure extends Structure
             new IntegerField('num'),
         ])->addTriggers([
             new BeforeInsertTrigger('num_plus_two', 'SET NEW.`num` = NEW.`num` + 2;'),
-            new BeforeUpdateTrigger('num_plus_three', 'SET NEW.`num` = NEW.`num` + 3;'),
+            new BeforeUpdateTrigger('num_plus_three', '
+              SET @inc = 3;
+              SET NEW.`num` = NEW.`num` + @inc;
+            '),
         ]);
     }
 }

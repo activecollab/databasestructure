@@ -57,7 +57,6 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
                 $this->triggerEvent('on_trigger_exists', [$trigger->getName()]);
             } else {
                 $this->getConnection()->execute($create_trigger_statement);
-
                 $this->triggerEvent('on_trigger_created', [$trigger->getName()]);
             }
         }

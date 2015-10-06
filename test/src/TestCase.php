@@ -40,6 +40,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
         $this->connection = new Connection($this->link);
 
+        if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
+            foreach ($triggers as $trigger) {
+                $this->connection->execute('DROP TRIGGER ' . $this->connection->escapeFieldName($trigger['Trigger']));
+            }
+        }
+
         $this->connection->execute('SET foreign_key_checks = 0;');
         foreach ($this->connection->getTableNames() as $table_name) {
             $this->connection->dropTable($table_name);
@@ -58,6 +64,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
+        if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
+            foreach ($triggers as $trigger) {
+                $this->connection->execute('DROP TRIGGER ' . $this->connection->escapeFieldName($trigger['Trigger']));
+            }
+        }
+
         $this->connection->execute('SET foreign_key_checks = 0;');
         foreach ($this->connection->getTableNames() as $table_name) {
             $this->connection->dropTable($table_name);
