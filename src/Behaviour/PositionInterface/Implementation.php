@@ -46,7 +46,7 @@ trait Implementation
             $conditions[] = $this->connection->prepare($this->connection->escapeFieldName($field_name) . ' = ?', $this->getFieldValue($field_name));
         }
 
-        return count($conditions) ? implode(' AND ', $conditions) : '';
+        return count($conditions) ? 'WHERE ' . implode(' AND ', $conditions) : '';
     }
 
     /**
