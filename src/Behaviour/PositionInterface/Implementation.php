@@ -7,6 +7,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\PositionInterface
  * @property \ActiveCollab\DatabaseConnection\ConnectionInterface $connection
+ * @property \ActiveCollab\DatabaseObject\PoolInterface $pool
  */
 trait Implementation
 {
@@ -40,13 +41,27 @@ trait Implementation
      */
     private function getPositionContextConditions()
     {
-        $conditions = [];
+        $pattern = $this->pool->getTypeProperty(get_class($this), 'position_context_conditions_pattern', function() {
+            $conditions = [];
 
-        foreach ($this->getPositionContext() as $field_name) {
-            $conditions[] = $this->connection->prepare($this->connection->escapeFieldName($field_name) . ' = ?', $this->getFieldValue($field_name));
+            foreach ($this->getPositionContext() as $field_name) {
+                $conditions[] = $this->connection->escapeFieldName($field_name) . ' = ?';
+            }
+
+            return count($conditions) ? implode(' AND ', $conditions) : '';
+        });
+
+        if ($pattern) {
+            $to_prepare = [$pattern];
+
+            foreach ($this->getPositionContext() as $field_name) {
+                $to_prepare[] = $this->getFieldValue($field_name);
+            }
+
+            return 'WHERE ' . call_user_func_array([&$this->connection, 'prepare'], $to_prepare);
         }
 
-        return count($conditions) ? 'WHERE ' . implode(' AND ', $conditions) : '';
+        return '';
     }
 
     /**
