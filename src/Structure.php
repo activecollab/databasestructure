@@ -8,6 +8,7 @@ use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
@@ -166,6 +167,7 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new TypeClassBuilder($this);
             $this->builders[] = new TypeTableBuilder($this);
             $this->builders[] = new AssociationsBuilder($this);
+            $this->builders[] = new TriggersBuilder($this);
 
             if ($build_path) {
                 foreach ($this->builders as $k => $v) {

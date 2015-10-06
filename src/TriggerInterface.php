@@ -10,7 +10,7 @@ interface TriggerInterface
     const BEFORE = 'before';
     const AFTER = 'after';
 
-    const INSERT = 'inser';
+    const INSERT = 'insert';
     const UPDATE = 'update';
     const DELETE = 'delete';
 
@@ -18,6 +18,11 @@ interface TriggerInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @return string
+     */
+    public function getBody();
 
     /**
      * Return trigger time (before or after)

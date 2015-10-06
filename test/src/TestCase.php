@@ -45,6 +45,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $this->connection->dropTable($table_name);
         }
         $this->connection->execute('SET foreign_key_checks = 1;');
+
+        if ($rows = $this->connection->execute('SHOW TRIGGERS')) {
+            foreach ($rows as $row) {
+                var_dump($row);
+            }
+        }
     }
 
     /**
@@ -57,6 +63,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $this->connection->dropTable($table_name);
         }
         $this->connection->execute('SET foreign_key_checks = 1;');
+
+        if ($rows = $this->connection->execute('SHOW TRIGGERS')) {
+            foreach ($rows as $row) {
+                var_dump($row);
+            }
+        }
 
         $this->connection = null;
         $this->link->close();

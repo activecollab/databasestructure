@@ -9,8 +9,6 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseObject\PoolInterface;
 
 /**
- * Purpose of this test is to see if files and tables are properly build from BlogStructure
- *
  * @package ActiveCollab\DatabaseStructure\Test
  */
 class PositionTailTest extends TestCase
