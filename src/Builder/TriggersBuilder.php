@@ -79,7 +79,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
             $result[] = 'CREATE TRIGGER ' . $this->getConnection()->escapeFieldName($trigger->getName()) . ' ' . strtoupper($trigger->getTime()) . ' ' . strtoupper($trigger->getEvent()) . ' ON ' . $this->getConnection()->escapeTableName($type->getName());
             $result[] = 'FOR EACH ROW BEGIN';
             $result[] = $trigger->getBody();
-            $result[] = 'END';
+            $result[] = 'END;';
 
             return implode("\n", $result);
         }
