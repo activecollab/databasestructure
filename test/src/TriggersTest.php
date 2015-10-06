@@ -62,13 +62,6 @@ class TriggersTest extends TestCase
         $this->pool->registerType($this->type_class_name);
 
         $this->assertTrue($this->pool->isTypeRegistered($this->type_class_name));
-
-//        $triggers = $this->connection->execute('SHOW TRIGGERS LIKE ?', 'num_plus_two');
-//        $triggers = $this->connection->execute('SHOW TRIGGERS LIKE ?', 'num_plus_three');
-//
-//        $this->assertInstanceOf(Result::class, $triggers);
-//
-//        var_dump($triggers->toArray());
     }
 
     /**
@@ -84,6 +77,17 @@ class TriggersTest extends TestCase
     }
 
     /**
+     * Test if triggers are created
+     */
+    public function testTriggersAreCreated()
+    {
+        $triggers = $this->connection->execute('SHOW TRIGGERS');
+
+        $this->assertInstanceOf(Result::class, $triggers);
+        $this->assertCount(2, $triggers);
+    }
+
+    /**
      * Test before insert trigger
      */
     public function testBeforeInsertTrigger()
@@ -94,7 +98,7 @@ class TriggersTest extends TestCase
 
         $this->assertEquals(3, $entry->getNum());
 
-        var_dump($this->connection->execute('SELECT * FROM `triggers`')->toArray());
+//        var_dump($this->connection->execute('SELECT * FROM `triggers`')->toArray());
 
         $reloaded_entry = $this->pool->reload($this->type_class_name, $entry->getId());
 
