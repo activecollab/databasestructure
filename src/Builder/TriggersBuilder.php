@@ -50,8 +50,9 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     {
         foreach ($type->getTriggers() as $trigger) {
             $create_trigger_statement = $this->prepareCreateTriggerStatement($type, $trigger);
+            $drop_trigger_statement = $this->prepareDropTriggerStatement($trigger);
 
-            $this->appendToStructureSql('DROP TRIGGER IF EXISTS ' . $this->getConnection()->escapeFieldName($trigger->getName()), 'Drop trigger if it already exists');
+            $this->appendToStructureSql($drop_trigger_statement, 'Drop trigger if it already exists');
             $this->appendToStructureSql($create_trigger_statement, 'Create ' . $this->getConnection()->escapeTableName($trigger->getName()) . ' trigger');
 
             if ($this->triggerExists($trigger->getName())) {
@@ -84,6 +85,17 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
 
             return implode("\n", $result);
         }
+    }
+
+    /**
+     * Prepare drop trigger statement
+     *
+     * @param  TriggerInterface $trigger
+     * @return string
+     */
+    public function prepareDropTriggerStatement(TriggerInterface $trigger)
+    {
+        return 'DROP TRIGGER IF EXISTS ' . $this->getConnection()->escapeFieldName($trigger->getName()) . ';';
     }
 
     /**
