@@ -373,6 +373,47 @@ class Type implements TypeInterface
         return $result;
     }
 
+    /**
+     * @var TriggerInterface[]
+     */
+    private $triggers = [];
+
+    /**
+     * @return TriggerInterface[]
+     */
+    public function getTriggers()
+    {
+        return $this->triggers;
+    }
+
+    /**
+     * @param  TriggerInterface[] $triggers
+     * @return $this
+     */
+    public function &addTriggers(array $triggers)
+    {
+        foreach ($triggers as $trigger) {
+            $this->addTrigger($trigger);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  TriggerInterface $trigger
+     * @return $this
+     */
+    public function &addTrigger(TriggerInterface $trigger)
+    {
+        if (empty($this->triggers[$trigger->getName()])) {
+            $this->triggers[$trigger->getName()] = $trigger;
+        } else {
+            throw new InvalidArgumentException("Trigger '" . $trigger->getName() . "' already exists in this type");
+        }
+
+        return $this;
+    }
+
     // ---------------------------------------------------
     //  Associations
     // ---------------------------------------------------

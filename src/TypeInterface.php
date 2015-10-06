@@ -124,6 +124,23 @@ interface TypeInterface
     public function &addIndex(IndexInterface $index);
 
     /**
+     * @return TriggerInterface[]
+     */
+    public function getTriggers();
+
+    /**
+     * @param  TriggerInterface[] $triggers
+     * @return $this
+     */
+    public function &addTriggers(array $triggers);
+
+    /**
+     * @param  TriggerInterface $trigger
+     * @return $this
+     */
+    public function &addTrigger(TriggerInterface $trigger);
+
+    /**
      * Return all indexes
      *
      * @return IndexInterface[]
