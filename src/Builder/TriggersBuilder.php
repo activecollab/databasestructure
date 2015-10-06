@@ -106,8 +106,12 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
      */
     private function triggerExists($trigger_name)
     {
-        if ($triggers = $this->getConnection()->execute('SHOW TRIGGERS LIKE ?', $trigger_name)) {
-            return $triggers instanceof Result && $triggers->count();
+        if ($triggers = $this->getConnection()->execute('SHOW TRIGGERS', $trigger_name)) {
+            foreach ($triggers as $trigger) {
+                if ($trigger['Trigger'] == $trigger_name) {
+                    return true;
+                }
+            }
         }
 
         return false;
