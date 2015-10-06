@@ -51,6 +51,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
         foreach ($type->getTriggers() as $trigger) {
             $create_trigger_statement = $this->prepareCreateTriggerStatement($type, $trigger);
 
+            $this->appendToStructureSql('DROP TRIGGER IF EXISTS ' . $this->getConnection()->escapeFieldName($trigger->getName()), 'Drop trigger if it already exists');
             $this->appendToStructureSql($create_trigger_statement, 'Create ' . $this->getConnection()->escapeTableName($trigger->getName()) . ' trigger');
 
             if ($this->triggerExists($trigger->getName())) {
