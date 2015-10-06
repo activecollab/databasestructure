@@ -95,13 +95,29 @@ class TriggersTest extends TestCase
         $entry = $this->pool->produce($this->type_class_name, ['num' => 3]);
 
         $this->assertInstanceOf($this->type_class_name, $entry);
-
         $this->assertEquals(3, $entry->getNum());
 
-//        var_dump($this->connection->execute('SELECT * FROM `triggers`')->toArray());
+        $reloaded_entry = $this->pool->reload($this->type_class_name, $entry->getId());
+        $this->assertEquals(5, $reloaded_entry->getNum());
+    }
+
+    /**
+     * Test before update trigger
+     */
+    public function testBeforeUpdateTrigger()
+    {
+        $entry = $this->pool->produce($this->type_class_name, ['num' => 3]);
+
+        $this->assertInstanceOf($this->type_class_name, $entry);
+        $this->assertEquals(3, $entry->getNum());
 
         $reloaded_entry = $this->pool->reload($this->type_class_name, $entry->getId());
-
         $this->assertEquals(5, $reloaded_entry->getNum());
+
+        $reloaded_entry->setNum(12)->save();
+        $this->assertEquals(12, $reloaded_entry->getNum());
+
+        $reloaded_entry_2 = $this->pool->reload($this->type_class_name, $entry->getId());
+        $this->assertEquals(15, $reloaded_entry_2->getNum());
     }
 }

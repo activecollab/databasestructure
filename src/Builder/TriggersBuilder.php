@@ -44,25 +44,21 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     }
 
     /**
-     * Execute after types are built
+     * @param TypeInterface $type
      */
-    public function postBuild()
+    public function buildType(TypeInterface $type)
     {
-        if ($this->getConnection()) {
-            foreach ($this->getStructure()->getTypes() as $type) {
-                foreach ($type->getTriggers() as $trigger) {
-                    $create_trigger_statement = $this->prepareCreateTriggerStatement($type, $trigger);
+        foreach ($type->getTriggers() as $trigger) {
+            $create_trigger_statement = $this->prepareCreateTriggerStatement($type, $trigger);
 
-                    $this->appendToStructureSql($create_trigger_statement, 'Create ' . $this->getConnection()->escapeTableName($trigger->getName()) . ' trigger');
+            $this->appendToStructureSql($create_trigger_statement, 'Create ' . $this->getConnection()->escapeTableName($trigger->getName()) . ' trigger');
 
-                    if ($this->triggerExists($trigger->getName())) {
-                        $this->triggerEvent('on_trigger_exists', [$trigger->getName()]);
-                    } else {
-                        $this->getConnection()->execute($create_trigger_statement);
+            if ($this->triggerExists($trigger->getName())) {
+                $this->triggerEvent('on_trigger_exists', [$trigger->getName()]);
+            } else {
+                $this->getConnection()->execute($create_trigger_statement);
 
-                        $this->triggerEvent('on_trigger_created', [$trigger->getName()]);
-                    }
-                }
+                $this->triggerEvent('on_trigger_created', [$trigger->getName()]);
             }
         }
     }
