@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -210,6 +211,20 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
+    }
+
+    /**
+     * @param FieldInterface[] $fields
+     * @param string           $indent
+     * @param array            $result
+     */
+    public function buildCompositeFieldMethods($fields, $indent, array &$result)
+    {
+        foreach ($fields as $field) {
+            if ($field instanceof CompositeField) {
+                $field->getBaseClassMethods($indent, $result);
+            }
+        }
     }
 
     /**

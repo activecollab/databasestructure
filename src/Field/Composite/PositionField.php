@@ -31,6 +31,11 @@ class PositionField extends Field
     private $add_index;
 
     /**
+     * @var string
+     */
+    private $mode = PositionInterface::POSITION_MODE_TAIL;
+
+    /**
      * @param  string                   $name
      * @param  mixed                    $default_value
      * @param  bool|false               $add_index
@@ -94,6 +99,40 @@ class PositionField extends Field
     }
 
     /**
+     * Return position mode
+     *
+     * @return string
+     */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * Switch position mode to head
+     *
+     * @return $this
+     */
+    public function &head()
+    {
+        $this->mode = PositionInterface::POSITION_MODE_HEAD;
+
+        return $this;
+    }
+
+    /**
+     * Switch position mode to tail
+     *
+     * @return $this
+     */
+    public function &tail()
+    {
+        $this->mode = PositionInterface::POSITION_MODE_TAIL;
+
+        return $this;
+    }
+
+    /**
      * Return fields that this field is composed of
      *
      * @return FieldInterface[]
@@ -101,6 +140,48 @@ class PositionField extends Field
     public function getFields()
     {
         return [(new IntegerField('position', 0))->unsigned(true)];
+    }
+
+    /**
+     * Return methods that this field needs to inject in base class
+     *
+     * @param string $indent
+     * @param array  $result
+     */
+    public function getBaseClassMethods($indent, array &$result)
+    {
+        $methods = [];
+        
+        $methods[] = '/**';
+        $methods[] = ' * Return position mode';
+        $methods[] = ' *';
+        $methods[] = ' * There are two modes:';
+        $methods[] = ' *';
+        $methods[] = ' * * head for new records to be added in front of the other records, or';
+        $methods[] = ' * * tail when new records are added after existing records.';
+        $methods[] = ' *';
+        $methods[] = ' * @return string';
+        $methods[] = ' */';
+        $methods[] = 'public function getPositionMode()';
+        $methods[] = '{';
+        $methods[] = '   return ' . var_export($this->mode, true) . ';';
+        $methods[] = '}';
+        $methods[] = '';
+        $methods[] = '/**';
+        $methods[] = ' * Return context in which position should be set';
+        $methods[] = ' *';
+        $methods[] = ' * @return array';
+        $methods[] = ' */';
+        $methods[] = 'public function getPositionContext()';
+        $methods[] = '{';
+        $methods[] = '    return [' . implode(', ', array_map(function($field_name) {
+            return var_export($field_name, true);
+        }, $this->getContext())) . '];';
+        $methods[] = '}';
+
+        foreach ($methods as $line) {
+            $result[] = "$indent$line";
+        }
     }
 
     /**

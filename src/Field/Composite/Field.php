@@ -21,6 +21,16 @@ abstract class Field implements FieldInterface
     }
 
     /**
+     * Return methods that this field needs to inject in base class
+     *
+     * @param string $indent
+     * @param array  $result
+     */
+    public function getBaseClassMethods($indent, array &$result)
+    {
+    }
+
+    /**
      * Method that is called when field is added to a type
      *
      * @param TypeInterface $type
