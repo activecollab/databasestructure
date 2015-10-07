@@ -2,17 +2,16 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\IndexInterface;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use InvalidArgumentException;
@@ -20,9 +19,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class NameField extends Field implements ModifierInterface, RequiredInterface, UniqueInterface, AddIndexInterface
+class EmailField extends Field implements RequiredInterface, UniqueInterface, ModifierInterface, AddIndexInterface
 {
-    use ModifierInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation, AddIndexInterfaceImplementation;
+    use RequiredInterfaceImplementation, UniqueInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
 
     /**
      * @var string
@@ -30,27 +29,28 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
     private $name;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     private $default_value;
 
     /**
-     * @param  string                   $name
-     * @param  mixed                    $default_value
-     * @param  bool|false               $add_index
-     * @throws InvalidArgumentException
+     * @param string      $name
+     * @param string|null $default_value
+     * @param boolean     $add_index = false
      */
-    public function __construct($name = 'name', $default_value = null, $add_index = false)
+    public function __construct($name, $default_value = null, $add_index = false)
     {
         if (empty($name)) {
-            throw new InvalidArgumentException("Value '$name' is not a valid field name");
+            throw new InvalidArgumentException("Value '$name' is not a valid foreign key name");
         }
 
         $this->name = $name;
         $this->default_value = $default_value;
         $this->addIndex($add_index);
 
-        $this->modifier('trim');
+        if ($this->default_value !== null) {
+            $this->modifier('trim');
+        }
     }
 
     /**
@@ -64,7 +64,7 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
     /**
      * Return default field value
      *
-     * @return mixed
+     * @return string|null
      */
     public function getDefaultValue()
     {
@@ -76,17 +76,21 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
      */
     public function getFields()
     {
-        $name_field = (new StringField($this->getName(), ''))->modifier($this->getModifier());
+        $email_field = new StringField($this->getName(), $this->getDefaultValue());
+
+        if ($this->getDefaultValue() !== null) {
+            $email_field->modifier('trim');
+        }
 
         if ($this->isRequired()) {
-            $name_field->required();
+            $email_field->required();
         }
 
         if ($this->isUnique()) {
-            $name_field->unique(...$this->getUniquenessContext());
+            $email_field->unique(...$this->getUniquenessContext());
         }
 
-        return [$name_field];
+        return [$email_field];
     }
 
     /**

@@ -5,7 +5,6 @@ namespace ActiveCollab\DatabaseStructure\Test;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 
 /**
@@ -66,7 +65,26 @@ class NameFieldTest extends TestCase
         $type = (new Type('writers'))->addField(new NameField('name', null, true));
 
         $this->assertArrayHasKey('name', $type->getIndexes());
-        $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['name']);
+
+        $name_index = $type->getIndexes()['name'];
+
+        $this->assertInstanceOf(IndexInterface::class, $name_index);
+        $this->assertEquals(IndexInterface::INDEX, $name_index->getIndexType());
+    }
+
+    /**
+     * Test if unique name index is added to the type when requested
+     */
+    public function testNameFieldAddsUniqueIndexWhenRequested()
+    {
+        $type = (new Type('writers'))->addField((new NameField('name', null, true))->unique());
+
+        $this->assertArrayHasKey('name', $type->getIndexes());
+
+        $name_index = $type->getIndexes()['name'];
+
+        $this->assertInstanceOf(IndexInterface::class, $name_index);
+        $this->assertEquals(IndexInterface::UNIQUE, $name_index->getIndexType());
     }
 
     /**

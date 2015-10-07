@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "317fce3216c18088d4b115055813f07a",
-    "content-hash": "815f882ef5c11a3ff2a422cc62ff3a22",
+    "hash": "d4abd07924cab8e822b6cde0bda7bbc9",
+    "content-hash": "0020147ca6c7380d962b0985426de0cc",
     "packages": [
         {
             "name": "activecollab/databaseconnection",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseconnection.git",
-                "reference": "1c8a66d5dfdca7be44e3e9d47014d47177c96e4c"
+                "reference": "33588d1e012abc26242312f432ee08676e30138a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/1c8a66d5dfdca7be44e3e9d47014d47177c96e4c",
-                "reference": "1c8a66d5dfdca7be44e3e9d47014d47177c96e4c",
+                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/33588d1e012abc26242312f432ee08676e30138a",
+                "reference": "33588d1e012abc26242312f432ee08676e30138a",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "activecollab",
                 "mysql"
             ],
-            "time": "2015-10-07 08:33:19"
+            "time": "2015-10-07 15:58:28"
         },
         {
             "name": "activecollab/databaseobject",
@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "39a87429d73cd7b0fba020b117445e98118f9d26"
+                "reference": "c9c849f26c979b59a0559cce2ed1ec7ff3f347f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/39a87429d73cd7b0fba020b117445e98118f9d26",
-                "reference": "39a87429d73cd7b0fba020b117445e98118f9d26",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/c9c849f26c979b59a0559cce2ed1ec7ff3f347f9",
+                "reference": "c9c849f26c979b59a0559cce2ed1ec7ff3f347f9",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-10-07 08:34:04"
+            "time": "2015-10-07 18:59:07"
         },
         {
             "name": "activecollab/filesystem",
@@ -434,16 +434,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.2.3",
+            "version": "2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "ef1ca6835468857944d5c3b48fa503d5554cff2f"
+                "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ef1ca6835468857944d5c3b48fa503d5554cff2f",
-                "reference": "ef1ca6835468857944d5c3b48fa503d5554cff2f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/eabf68b476ac7d0f73793aada060f1c1a9bf8979",
+                "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979",
                 "shasum": ""
             },
             "require": {
@@ -492,7 +492,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-14 06:51:16"
+            "time": "2015-10-06 15:47:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -674,16 +674,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.10",
+            "version": "4.8.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "463163747474815c5ccd4ae12b5b355ec12158e8"
+                "reference": "bdd199472410fd7e32751f9c814c7e06f2c21bd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/463163747474815c5ccd4ae12b5b355ec12158e8",
-                "reference": "463163747474815c5ccd4ae12b5b355ec12158e8",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bdd199472410fd7e32751f9c814c7e06f2c21bd5",
+                "reference": "bdd199472410fd7e32751f9c814c7e06f2c21bd5",
                 "shasum": ""
             },
             "require": {
@@ -742,7 +742,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-01 09:14:30"
+            "time": "2015-10-07 10:39:46"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1231,7 +1231,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.0"
+        "php": ">=5.6.0"
     },
     "platform-dev": []
 }
