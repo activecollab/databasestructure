@@ -14,7 +14,7 @@
   ],
   "require" : {
     "php": ">=5.5.0",
-    "activecollab/databaseconnection" : "dev-master",
+    "activecollab/databaseconnection" : "dev-next",
     "activecollab/databaseobject" : "dev-master",
     "activecollab/filesystem" : "dev-master",
     "doctrine/inflector" : "~1.0"

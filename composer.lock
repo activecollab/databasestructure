@@ -4,25 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a87e8035f91881617047bf2062f36535",
-    "content-hash": "0647bbdcac0b812adb6c71aa738724be",
+    "hash": "317fce3216c18088d4b115055813f07a",
+    "content-hash": "815f882ef5c11a3ff2a422cc62ff3a22",
     "packages": [
         {
             "name": "activecollab/databaseconnection",
-            "version": "dev-master",
+            "version": "dev-next",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseconnection.git",
-                "reference": "1bc578b72d76224772b6fce24f0dc1f48ed4439c"
+                "reference": "1c8a66d5dfdca7be44e3e9d47014d47177c96e4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/1bc578b72d76224772b6fce24f0dc1f48ed4439c",
-                "reference": "1bc578b72d76224772b6fce24f0dc1f48ed4439c",
+                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/1c8a66d5dfdca7be44e3e9d47014d47177c96e4c",
+                "reference": "1c8a66d5dfdca7be44e3e9d47014d47177c96e4c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "ext-mysqli": "*",
+                "php": ">=5.6.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.8"
@@ -50,7 +51,7 @@
                 "activecollab",
                 "mysql"
             ],
-            "time": "2015-09-24 19:27:40"
+            "time": "2015-10-07 08:33:19"
         },
         {
             "name": "activecollab/databaseobject",
@@ -58,16 +59,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "5437b1c78f719a50b25d9665f8a902ca8b424290"
+                "reference": "39a87429d73cd7b0fba020b117445e98118f9d26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/5437b1c78f719a50b25d9665f8a902ca8b424290",
-                "reference": "5437b1c78f719a50b25d9665f8a902ca8b424290",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/39a87429d73cd7b0fba020b117445e98118f9d26",
+                "reference": "39a87429d73cd7b0fba020b117445e98118f9d26",
                 "shasum": ""
             },
             "require": {
-                "activecollab/databaseconnection": "dev-master",
+                "activecollab/databaseconnection": "dev-next",
                 "php": ">=5.6.0"
             },
             "require-dev": {
@@ -97,7 +98,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-10-06 15:12:32"
+            "time": "2015-10-07 08:34:04"
         },
         {
             "name": "activecollab/filesystem",
