@@ -31,6 +31,14 @@ abstract class Field implements FieldInterface
     }
 
     /**
+     * @param       $indent
+     * @param array $result
+     */
+    public function getValidatorLines($indent, array &$result)
+    {
+    }
+
+    /**
      * Method that is called when field is added to a type
      *
      * @param TypeInterface $type

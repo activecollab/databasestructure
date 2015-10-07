@@ -198,7 +198,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '    }';
 
         $this->buildCompositeFieldMethods($type->getFields(), '    ', $result);
-        $this->buildValidate($fields, '    ', $result);
+        $this->buildValidate($type->getFields(), '    ', $result);
 
         $result[] = '}';
         $result[] = '';
@@ -240,20 +240,16 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $line_indent = $indent  . '    ';
 
         foreach ($fields as $field) {
-            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
-                if ($field instanceof RequiredInterface && $field instanceof UniqueInterface) {
-                    if ($field->isRequired() && $field->isUnique()) {
-                        $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
-                    } elseif ($field->isRequired()) {
-                        $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
-                    } elseif ($field->isUnique()) {
-                        $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+            if ($field instanceof CompositeField) {
+                $field->getValidatorLines($line_indent, $validator_lines);
+
+                foreach ($field->getFields() as $subfield) {
+                    if ($subfield instanceof ScalarField && $subfield->getShouldBeAddedToModel()) {
+                        $this->buildValidatePresenceLinesForScalarField($subfield, $line_indent, $validator_lines);
                     }
-                } elseif($field instanceof RequiredInterface && $field->isRequired()) {
-                    $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
-                } elseif($field instanceof UniqueInterface && $field->isUnique()) {
-                    $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
                 }
+            } elseif ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
+                $this->buildValidatePresenceLinesForScalarField($field, $line_indent, $validator_lines);
             }
         }
 
@@ -272,6 +268,30 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '';
             $result[] = $indent . '    parent::validate($validator);';
             $result[] = $indent . '}';
+        }
+    }
+
+    /**
+     * Build validate lines for scalar fields
+     *
+     * @param ScalarField $field
+     * @param string      $line_indent
+     * @param array       $validator_lines
+     */
+    private function buildValidatePresenceLinesForScalarField(ScalarField $field, $line_indent, array &$validator_lines)
+    {
+        if ($field instanceof RequiredInterface && $field instanceof UniqueInterface) {
+            if ($field->isRequired() && $field->isUnique()) {
+                $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
+            } elseif ($field->isRequired()) {
+                $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
+            } elseif ($field->isUnique()) {
+                $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+            }
+        } elseif($field instanceof RequiredInterface && $field->isRequired()) {
+            $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
+        } elseif($field instanceof UniqueInterface && $field->isUnique()) {
+            $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
         }
     }
 

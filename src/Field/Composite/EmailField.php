@@ -94,6 +94,17 @@ class EmailField extends Field implements RequiredInterface, UniqueInterface, Mo
     }
 
     /**
+     * Prepare validator lines
+     *
+     * @param string $indent
+     * @param array  $result
+     */
+    public function getValidatorLines($indent, array &$result)
+    {
+        $result[] = $indent . '$validator->email(' . var_export($this->getName(), true) . ', ' . ($this->getDefaultValue() === null ? 'true' : 'false') . ');';
+    }
+
+    /**
      * Method that is called when field is added to a type
      *
      * @param TypeInterface $type
