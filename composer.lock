@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseconnection.git",
-                "reference": "33588d1e012abc26242312f432ee08676e30138a"
+                "reference": "f73b6ec42662cd668a1dd974a4449b57e18848b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/33588d1e012abc26242312f432ee08676e30138a",
-                "reference": "33588d1e012abc26242312f432ee08676e30138a",
+                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/f73b6ec42662cd668a1dd974a4449b57e18848b9",
+                "reference": "f73b6ec42662cd668a1dd974a4449b57e18848b9",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "activecollab",
                 "mysql"
             ],
-            "time": "2015-10-07 15:58:28"
+            "time": "2015-10-08 10:09:50"
         },
         {
             "name": "activecollab/databaseobject",
@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "c9c849f26c979b59a0559cce2ed1ec7ff3f347f9"
+                "reference": "2615b39fd85890040ee6cbc4455e7ed12830ab81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/c9c849f26c979b59a0559cce2ed1ec7ff3f347f9",
-                "reference": "c9c849f26c979b59a0559cce2ed1ec7ff3f347f9",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/2615b39fd85890040ee6cbc4455e7ed12830ab81",
+                "reference": "2615b39fd85890040ee6cbc4455e7ed12830ab81",
                 "shasum": ""
             },
             "require": {
@@ -98,7 +98,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-10-07 18:59:07"
+            "time": "2015-10-08 12:24:21"
         },
         {
             "name": "activecollab/filesystem",
@@ -106,12 +106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/filesystem.git",
-                "reference": "9160ab87e3649fab1cc6ca6d49058e6ca2ffe1be"
+                "reference": "5d3d65327a7d3157ea57b8703b1c10695163868f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/9160ab87e3649fab1cc6ca6d49058e6ca2ffe1be",
-                "reference": "9160ab87e3649fab1cc6ca6d49058e6ca2ffe1be",
+                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/5d3d65327a7d3157ea57b8703b1c10695163868f",
+                "reference": "5d3d65327a7d3157ea57b8703b1c10695163868f",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
                 "activecollab",
                 "filesystem"
             ],
-            "time": "2015-10-07 20:31:24"
+            "time": "2015-10-07 20:33:22"
         },
         {
             "name": "doctrine/inflector",
