@@ -8,6 +8,16 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 class DateField extends Field
 {
     /**
+     * Return PHP native type
+     *
+     * @return string
+     */
+    public function getNativeType()
+    {
+        return '\\ActiveCollab\\DateValue\\DateValue' . ($this->getDefaultValue() === null ? '|null' : '');
+    }
+
+    /**
      * Return value casting code
      *
      * @param  string $variable_name
