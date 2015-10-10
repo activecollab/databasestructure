@@ -60,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "824f27ef044540aa74c8eab69a88967e06165a12"
+                "reference": "612e69074f5b7fb8c5efcee9746e65cd0cd1e59c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/824f27ef044540aa74c8eab69a88967e06165a12",
-                "reference": "824f27ef044540aa74c8eab69a88967e06165a12",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/612e69074f5b7fb8c5efcee9746e65cd0cd1e59c",
+                "reference": "612e69074f5b7fb8c5efcee9746e65cd0cd1e59c",
                 "shasum": ""
             },
             "require": {
@@ -99,7 +99,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-10-10 13:20:28"
+            "time": "2015-10-10 15:39:21"
         },
         {
             "name": "activecollab/datevalue",

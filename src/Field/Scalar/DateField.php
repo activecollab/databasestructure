@@ -25,6 +25,6 @@ class DateField extends Field
      */
     public function getCastingCode($variable_name)
     {
-        return 'new \\ActiveCollab\\DateValue\\DateValue($' . $variable_name . ')';
+        return '$this->getDateValueInstanceFrom($' . $variable_name . ')';
     }
 }

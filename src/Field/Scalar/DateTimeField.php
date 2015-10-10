@@ -25,6 +25,6 @@ class DateTimeField extends Field
      */
     public function getCastingCode($variable_name)
     {
-        return 'new \\ActiveCollab\\DateValue\\DateTimeValue($' . $variable_name . ', \'UTC\')';
+        return '$this->getDateTimeValueInstanceFrom($' . $variable_name . ')';
     }
 }
