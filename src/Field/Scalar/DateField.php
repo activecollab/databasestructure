@@ -14,7 +14,7 @@ class DateField extends Field
      */
     public function getNativeType()
     {
-        return '\\ActiveCollab\\DateValue\\DateValue' . ($this->getDefaultValue() === null ? '|null' : '');
+        return '\\ActiveCollab\\DateValue\\DateValueInterface' . ($this->getDefaultValue() === null ? '|null' : '');
     }
 
     /**
