@@ -29,7 +29,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
         if ($this->getStructure()->getNamespace()) {
             $base_class_namespace = $this->getStructure()->getNamespace() . '\\Collection\\Base';
-            $type_class_name = $this->getStructure()->getNamespace() . '\\' . $type_class_name;
+            $type_class_name = '\\' . ltrim($this->getStructure()->getNamespace(), '\\') . '\\' . $type_class_name;
         } else {
             $base_class_namespace = 'Collection\\Base';
         }
@@ -63,7 +63,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         $result[] = '     */';
         $result[] = '    public function getType()';
         $result[] = '    {';
-        $result[] = '        return ' . $type_class_name . '::class;';
+        $result[] = '        return ' . var_export($type_class_name, true) . ';';
         $result[] = '    }';
         $result[] = '}';
         $result[] = '';
