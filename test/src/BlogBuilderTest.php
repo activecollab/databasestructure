@@ -70,6 +70,16 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
+     * Test if all structure directories are added
+     */
+    public function testDirectories()
+    {
+        $this->assertFileExists("$this->build_path/Base");
+        $this->assertFileExists("$this->build_path/Collection");
+        $this->assertFileExists("$this->build_path/Collection/Base");
+    }
+
+    /**
      * Test if base type classes are properly build
      */
     public function testBuildBaseTypes()
@@ -87,6 +97,26 @@ class BlogBuilderTest extends TestCase
         $this->assertFileExists("$this->build_path/Category.php");
         $this->assertFileExists("$this->build_path/Post.php");
         $this->assertFileExists("$this->build_path/Comment.php");
+    }
+
+    /**
+     * Test if base type collections are properly build
+     */
+    public function testBuildBaseTypeCollections()
+    {
+        $this->assertFileExists("$this->build_path/Collection/Base/Categories.php");
+        $this->assertFileExists("$this->build_path/Collection/Base/Posts.php");
+        $this->assertFileExists("$this->build_path/Collection/Base/Comments.php");
+    }
+
+    /**
+     * Test if type collections are properly build
+     */
+    public function testBuildTypeCollections()
+    {
+        $this->assertFileExists("$this->build_path/Collection/Categories.php");
+        $this->assertFileExists("$this->build_path/Collection/Posts.php");
+        $this->assertFileExists("$this->build_path/Collection/Comments.php");
     }
 
     /**

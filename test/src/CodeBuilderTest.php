@@ -25,6 +25,11 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_writers_collection_reflection, $writers_collection_reflection, $base_books_collection_reflection, $books_collection_reflection, $base_chapters_collection_reflection, $chapters_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $base_writer_reflection, $writer_reflection, $base_book_reflection, $book_reflection, $base_chapter_reflection, $chapter_reflection;
 
     /**
@@ -40,6 +45,17 @@ class CodeBuilderTest extends TestCase
             $this->structure->build();
         }
 
+        // Collections
+        $this->base_writers_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Base\\Writers");
+        $this->writers_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Writers");
+
+        $this->base_books_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Base\\Books");
+        $this->books_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Books");
+
+        $this->base_chapters_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Base\\Chapters");
+        $this->chapters_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Chapters");
+
+        // Types
         $this->base_writer_reflection = new ReflectionClass("{$this->namespace}Base\\Writer");
         $this->writer_reflection = new ReflectionClass("{$this->namespace}Writer");
 
@@ -51,9 +67,59 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
+     * Test base collection classes are abstract
+     */
+    public function testBaseCollectionClassesAreAbstract()
+    {
+        $this->assertTrue($this->base_writers_collection_reflection->isAbstract());
+        $this->assertTrue($this->base_books_collection_reflection->isAbstract());
+        $this->assertTrue($this->base_chapters_collection_reflection->isAbstract());
+    }
+
+    /**
+     * Test collection classes are not abstract
+     */
+    public function testCollectionClassesAreNotAbstract()
+    {
+        $this->assertFalse($this->writers_collection_reflection->isAbstract());
+        $this->assertFalse($this->books_collection_reflection->isAbstract());
+        $this->assertFalse($this->chapters_collection_reflection->isAbstract());
+    }
+
+    /**
+     * Test if collection classes extend base collection classes
+     */
+    public function testCollectionClassInheritance()
+    {
+        $this->assertTrue($this->writers_collection_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Writers"));
+        $this->assertTrue($this->books_collection_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Books"));
+        $this->assertTrue($this->chapters_collection_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Chapters"));
+    }
+
+    /**
+     * Test if base type classes are abstract
+     */
+    public function testBaseTypeClassesAreAbstract()
+    {
+        $this->assertTrue($this->base_writer_reflection->isAbstract());
+        $this->assertTrue($this->base_book_reflection->isAbstract());
+        $this->assertTrue($this->base_chapter_reflection->isAbstract());
+    }
+
+    /**
+     * Test if type classes are not abstract
+     */
+    public function testTypeClassesAreNotAbstract()
+    {
+        $this->assertFalse($this->writer_reflection->isAbstract());
+        $this->assertFalse($this->book_reflection->isAbstract());
+        $this->assertFalse($this->chapter_reflection->isAbstract());
+    }
+
+    /**
      * Test inheritance
      */
-    public function testInhritance()
+    public function testTypeClassInhritance()
     {
         $this->assertTrue($this->writer_reflection->isSubclassOf("{$this->namespace}Base\\Writer"));
         $this->assertTrue($this->book_reflection->isSubclassOf("{$this->namespace}Base\\Book"));

@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class BaseDirBuilder extends FileSystemBuilder
+class CollectionDirBuilder extends FileSystemBuilder
 {
     /**
      * Execute prior to type build
@@ -21,15 +21,15 @@ class BaseDirBuilder extends FileSystemBuilder
             if (is_dir($build_path)) {
                 $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
 
-                if (!is_dir("$build_path/Base")) {
+                if (!is_dir("$build_path/Collection")) {
                     $old_umask = umask(0);
-                    $dir_created = mkdir("$build_path/Base");
+                    $dir_created = mkdir("$build_path/Collection");
                     umask($old_umask);
 
                     if ($dir_created) {
-                        $this->triggerEvent('on_dir_created', ["$build_path/Base"]);
+                        $this->triggerEvent('on_dir_created', ["$build_path/Collection"]);
                     } else {
-                        throw new RuntimeException("Failed to create '$build_path/Base' directory");
+                        throw new RuntimeException("Failed to create '$build_path/Collection' directory");
                     }
                 }
             } else {

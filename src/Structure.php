@@ -5,11 +5,15 @@ namespace ActiveCollab\DatabaseStructure;
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\AssociationsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseTypeCollectionBuilder;
+use ActiveCollab\DatabaseStructure\Builder\CollectionDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseCollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
+use ActiveCollab\DatabaseStructure\Builder\TypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use InvalidArgumentException;
@@ -162,10 +166,14 @@ abstract class Structure implements StructureInterface
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDirBuilder($this);
+            $this->builders[] = new CollectionDirBuilder($this);
+            $this->builders[] = new BaseCollectionDirBuilder($this);
             $this->builders[] = new TypesBuilder($this);
             $this->builders[] = new BaseTypeClassBuilder($this);
             $this->builders[] = new TypeClassBuilder($this);
             $this->builders[] = new TypeTableBuilder($this);
+            $this->builders[] = new BaseTypeCollectionBuilder($this);
+            $this->builders[] = new TypeCollectionBuilder($this);
             $this->builders[] = new AssociationsBuilder($this);
             $this->builders[] = new TriggersBuilder($this);
 
