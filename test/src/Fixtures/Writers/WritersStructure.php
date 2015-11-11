@@ -26,7 +26,7 @@ class WritersStructure extends Structure
             new Index('birthday'),
         ])->addAssociations([
             new HasManyAssociation('books'),
-        ]);
+        ])->orderBy('name');
 
         $this->addType('books')->addFields([
             (new NameField('title', '', true))->required()->unique('writer_id'),
@@ -40,6 +40,6 @@ class WritersStructure extends Structure
             new PositionField(),
         ])->addAssociations([
             new BelongsToAssociation('book'),
-        ]);
+        ])->orderBy('position');
     }
 }

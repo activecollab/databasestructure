@@ -83,4 +83,36 @@ class TypeDefinitionTest extends TestCase
 
         $this->assertEquals(FieldInterface::SIZE_BIG, $type->getIdField()->getSize());
     }
+
+    /**
+     * Test default order by value
+     */
+    public function testDefaultOrderBy()
+    {
+        $this->assertEquals(['id'], (new Type('writers'))->getOrderBy());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testOrderByNeedsToBeAnArray()
+    {
+        (new Type('writers'))->orderBy(false);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testOrderByCantBeEmpty()
+    {
+        (new Type('writers'))->orderBy([]);
+    }
+
+    /**
+     * Test if order by can be changed
+     */
+    public function testOrderByCanBeChanged()
+    {
+        $this->assertEquals(['!name', 'id'], (new Type('writers'))->orderBy(['!name', 'id'])->getOrderBy());
+    }
 }

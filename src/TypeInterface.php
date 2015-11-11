@@ -195,4 +195,19 @@ interface TypeInterface
      * @return $this
      */
     public function &addTraitTweak($tweak);
+
+    /**
+     * Return how records of this type should be ordered by default
+     *
+     * @return string|array
+     */
+    public function getOrderBy();
+
+    /**
+     * Set how records of this type should be ordered by default
+     *
+     * @param  string|array $order_by
+     * @return $this
+     */
+    public function &orderBy($order_by);
 }

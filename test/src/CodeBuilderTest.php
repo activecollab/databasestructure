@@ -169,4 +169,40 @@ class CodeBuilderTest extends TestCase
         $this->assertArrayHasKey('position', $default_field_values);
         $this->assertSame(0, $default_field_values['position']);
     }
+
+    /**
+     * Test writers type order by
+     */
+    public function testWritersOrderBy()
+    {
+        $order_by = $this->base_writer_reflection->getDefaultProperties()['order_by'];
+
+        $this->assertInternalType('array', $order_by);
+        $this->assertCount(1, $order_by);
+        $this->assertEquals('name', $order_by[0]);
+    }
+
+    /**
+     * Test books type order by
+     */
+    public function testBooksOrderBy()
+    {
+        $order_by = $this->base_book_reflection->getDefaultProperties()['order_by'];
+
+        $this->assertInternalType('array', $order_by);
+        $this->assertCount(1, $order_by);
+        $this->assertEquals('id', $order_by[0]);
+    }
+
+    /**
+     * Test chapters type order by
+     */
+    public function testChaptersOrderBy()
+    {
+        $order_by = $this->base_chapter_reflection->getDefaultProperties()['order_by'];
+
+        $this->assertInternalType('array', $order_by);
+        $this->assertCount(1, $order_by);
+        $this->assertEquals('position', $order_by[0]);
+    }
 }

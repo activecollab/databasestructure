@@ -543,4 +543,38 @@ class Type implements TypeInterface
 
         return $this;
     }
+
+    /**
+     * @var array|string
+     */
+    private $order_by = ['id'];
+
+    /**
+     * Return how records of this type should be ordered by default
+     *
+     * @return string|array
+     */
+    public function getOrderBy()
+    {
+        return $this->order_by;
+    }
+
+    /**
+     * Set how records of this type should be ordered by default
+     *
+     * @param  string|array $order_by
+     * @return $this
+     */
+    public function &orderBy($order_by)
+    {
+        if (empty($order_by)) {
+            throw new InvalidArgumentException('Order by value is required');
+        } elseif (!is_string($order_by) && !is_array($order_by)) {
+            throw new InvalidArgumentException('Order by can be string or array');
+        }
+
+        $this->order_by = (array) $order_by;
+
+        return $this;
+    }
 }

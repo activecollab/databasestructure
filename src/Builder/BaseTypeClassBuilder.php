@@ -108,13 +108,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '     *';
             $result[] = '     * @var array';
             $result[] = '     */';
-            $result[] = '     protected $default_field_values = [';
+            $result[] = '    protected $default_field_values = [';
 
             foreach ($fields_with_default_value as $field_name => $default_value) {
                 $result[] = '       ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
             }
 
             $result[] = '     ];';
+        }
+
+        if ($type->getOrderBy() != ['id']) {
+            $result[] = '';
+            $result[] = '    /**';
+            $result[] = '     * @var string[]';
+            $result[] = '     */';
+            $result[] = '    protected $order_by = [' . implode(', ', array_map(function($value) {
+                return var_export($value, true);
+            }, $type->getOrderBy())) . '];';
         }
 
         foreach ($type->getAssociations() as $association) {
