@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
+use ActiveCollab\DatabaseConnection\Test\Fixture\Writer;
 use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 use ReflectionClass;
@@ -270,5 +271,20 @@ class CodeBuilderTest extends TestCase
         $this->assertInternalType('array', $order_by);
         $this->assertCount(1, $order_by);
         $this->assertEquals('position', $order_by[0]);
+    }
+
+    /**
+     * Test if JSON serialize is properly defined in writer class
+     */
+    public function testJsonSerializeIsDefinedInBookClass()
+    {
+        $json_serialize = $this->base_writer_reflection->getMethod('jsonSerialize');
+        $this->assertEquals($this->base_writer_reflection->getName(), $json_serialize->getDeclaringClass()->getName());
+
+        $json_serialize = $this->base_book_reflection->getMethod('jsonSerialize');
+        $this->assertEquals('ActiveCollab\DatabaseObject\Object', $json_serialize->getDeclaringClass()->getName());
+
+        $json_serialize = $this->base_chapter_reflection->getMethod('jsonSerialize');
+        $this->assertEquals('ActiveCollab\DatabaseObject\Object', $json_serialize->getDeclaringClass()->getName());
     }
 }

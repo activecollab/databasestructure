@@ -133,15 +133,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
-                $camelized_field_name = Inflector::classify($field->getName());
-
                 $result[] = '';
                 $result[] = '    /**';
                 $result[] = '     * Return value of ' . $field->getName() . ' field';
                 $result[] = '     *';
                 $result[] = '     * @return ' . $field->getNativeType();
                 $result[] = '     */';
-                $result[] = '    public function get' . $camelized_field_name . '()';
+                $result[] = '    public function ' . $this->getGetterName($field->getName()) . '()';
                 $result[] = '    {';
                 $result[] = '        return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
                 $result[] = '    }';
@@ -152,7 +150,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $result[] = '     * @param  ' . $field->getNativeType() . ' $value';
                 $result[] = '     * @return $this';
                 $result[] = '     */';
-                $result[] = '    public function &set' . $camelized_field_name . '($value)';
+                $result[] = '    public function &' . $this->getSetterName($field->getName()) . '($value)';
                 $result[] = '    {';
                 $result[] = '        $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
                 $result[] = '';
@@ -207,6 +205,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '        return $this;';
         $result[] = '    }';
 
+        $this->buildJsonSerialize($type->getSerialize(), '    ', $result);
         $this->buildCompositeFieldMethods($type->getFields(), '    ', $result);
         $this->buildValidate($type->getFields(), '    ', $result);
 
@@ -235,6 +234,35 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             if ($field instanceof CompositeField) {
                 $field->getBaseClassMethods($indent, $result);
             }
+        }
+    }
+
+    /**
+     * Build JSON serialize method, if we need to serialize extra fields
+     *
+     * @param array  $serialize
+     * @param string $indent
+     * @param array  $result
+     */
+    public function buildJsonSerialize(array $serialize, $indent, array &$result)
+    {
+        if (count($serialize)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * Prepare object properties so they can be serialized to JSON';
+            $result[] = $indent . ' *';
+            $result[] = $indent . ' * @return array';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'public function jsonSerialize()';
+            $result[] = $indent . '{';
+            $result[] = $indent . '    return array_merge(parent::jsonSerialize(), [';
+
+            foreach ($serialize as $field) {
+                $result[] = $indent . '        ' . var_export($field, true) . ' => $this->' . $this->getGetterName($field) . '(), ';
+            }
+
+            $result[] = $indent . '    ]);';
+            $result[] = $indent . '}';
         }
     }
 
@@ -350,5 +378,42 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         return '$validator->presentAndUnique(' . implode(', ', $field_names) . ');';
+    }
+
+    /**
+     * @var array
+     */
+    private $getter_names = [], $setter_names = [];
+
+    /**
+     * @param  string $field_name
+     * @return string
+     */
+    private function getGetterName($field_name)
+    {
+        if (empty($this->getter_names[$field_name])) {
+            $camelized_field_name = Inflector::classify($field_name);
+
+            $this->getter_names[$field_name] = "get{$camelized_field_name}";
+            $this->setter_names[$field_name] = "set{$camelized_field_name}";
+        }
+
+        return $this->getter_names[$field_name];
+    }
+
+    /**
+     * @param  string $field_name
+     * @return string
+     */
+    private function getSetterName($field_name)
+    {
+        if (empty($this->setter_names[$field_name])) {
+            $camelized_field_name = Inflector::classify($field_name);
+
+            $this->getter_names[$field_name] = "get{$camelized_field_name}";
+            $this->setter_names[$field_name] = "set{$camelized_field_name}";
+        }
+
+        return $this->setter_names[$field_name];
     }
 }

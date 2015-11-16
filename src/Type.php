@@ -577,4 +577,32 @@ class Type implements TypeInterface
 
         return $this;
     }
+
+    /**
+     * @var array
+     */
+    private $serialize = [];
+
+    /**
+     * Return a list of additional fields that will be included during object serialization
+     *
+     * @return array
+     */
+    public function getSerialize()
+    {
+        return $this->serialize;
+    }
+
+    /**
+     * Set a list of fields that will be included during object serialization
+     *
+     * @param  string ...$fields
+     * @return $this
+     */
+    public function &serialize(...$fields)
+    {
+        $this->serialize = $fields;
+
+        return $this;
+    }
 }

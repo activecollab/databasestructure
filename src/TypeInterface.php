@@ -210,4 +210,19 @@ interface TypeInterface
      * @return $this
      */
     public function &orderBy($order_by);
+
+    /**
+     * Return a list of additional fields that will be included during object serialization
+     *
+     * @return array
+     */
+    public function getSerialize();
+
+    /**
+     * Set a list of fields that will be included during object serialization
+     *
+     * @param  string ...$fields
+     * @return $this
+     */
+    public function &serialize(...$fields);
 }

@@ -26,7 +26,7 @@ class WritersStructure extends Structure
             new Index('birthday'),
         ])->addAssociations([
             new HasManyAssociation('books'),
-        ])->orderBy('name');
+        ])->orderBy('name')->serialize('name', 'birthday');
 
         $this->addType('books')->addFields([
             (new NameField('title', '', true))->required()->unique('writer_id'),
