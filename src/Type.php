@@ -505,7 +505,9 @@ class Type implements TypeInterface
                     $this->traits[$interface] = [];
                 }
 
-                $this->traits[$interface][] = $implementation;
+                if ($implementation) {
+                    $this->traits[$interface][] = $implementation;
+                }
             } else {
                 throw new InvalidArgumentException('Interface or implementation are required');
             }
