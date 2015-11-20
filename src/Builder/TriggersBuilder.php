@@ -58,7 +58,11 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
             if ($this->triggerExists($trigger->getName())) {
                 $this->triggerEvent('on_trigger_exists', [$trigger->getName()]);
             } else {
-                $this->getConnection()->execute($create_trigger_statement);
+                if (strpos($create_trigger_statement, "\n") === false) {
+                    $this->getConnection()->execute($create_trigger_statement);
+                } else {
+                    $this->getConnection()->execute($this->unwrapDelimiter($create_trigger_statement));
+                }
                 $this->triggerEvent('on_trigger_created', [$trigger->getName()]);
             }
         }
@@ -77,15 +81,32 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
             return 'CREATE TRIGGER ' . $this->getConnection()->escapeFieldName($trigger->getName()) . ' ' . strtoupper($trigger->getTime()) . ' ' . strtoupper($trigger->getEvent()) . ' ON ' . $this->getConnection()->escapeTableName($type->getName()) . ' FOR EACH ROW ' . $trigger->getBody();
         } else {
             $result = [];
-            $result[] = 'delimiter //';
+
             $result[] = 'CREATE TRIGGER ' . $this->getConnection()->escapeFieldName($trigger->getName()) . ' ' . strtoupper($trigger->getTime()) . ' ' . strtoupper($trigger->getEvent()) . ' ON ' . $this->getConnection()->escapeTableName($type->getName());
             $result[] = 'FOR EACH ROW BEGIN';
             $result[] = $trigger->getBody();
-            $result[] = 'END;//';
-            $result[] = 'delimiter ;';
+            $result[] = 'END;';
 
-            return implode("\n", $result);
+            return $this->wrapDelimiter(implode("\n", $result));
         }
+    }
+
+    /**
+     * @param  string $statement
+     * @return string
+     */
+    private function wrapDelimiter($statement)
+    {
+        return "delimiter //\n$statement//\ndelimiter ;";
+    }
+
+    /**
+     * @param  string $statement
+     * @return string
+     */
+    private function unwrapDelimiter($statement)
+    {
+        return str_replace(["delimiter //\n", "//\ndelimiter ;"], ['', ''], $statement);
     }
 
     /**
