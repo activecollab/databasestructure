@@ -5,7 +5,7 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour
  */
-interface CreatedAtInterface
+interface UpdatedAtInterface
 {
     /**
      * Return object ID
@@ -15,15 +15,15 @@ interface CreatedAtInterface
     public function getId();
 
     /**
-     * Return value of created_at field
+     * Return value of updated_at field
      *
      * @return \ActiveCollab\DateValue\DateTimeValueInterface|null
      */
-    public function getCreatedAt();
+    public function getUpdatedAt();
 
     /**
      * @param  \ActiveCollab\DateValue\DateTimeValueInterface|null $value
      * @return $this
      */
-    public function &setCreatedAt($value);
+    public function &setUpdatedAt($value);
 }
