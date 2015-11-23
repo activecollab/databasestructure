@@ -14,10 +14,6 @@ trait Implementation
      */
     public function ActiveCollabDatabaseStructureBehaviourUpdatedAtInterfaceImplementation()
     {
-        $this->registerEventHandler('on_json_serialize', function (array &$result) {
-            $result['updated_at'] = $this->getUpdatedAt();
-        });
-
         $this->registerEventHandler('on_before_save', function () {
             $this->setUpdatedAt(new DateTimeValue());
         });
