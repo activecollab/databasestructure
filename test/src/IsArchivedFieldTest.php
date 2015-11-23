@@ -90,7 +90,7 @@ class IsArchivedFieldTest extends TestCase
     /**
      * Test if is_archived field adds behaviour to the type
      */
-    public function testPositionFieldAddsBehaviourToType()
+    public function testIsArchivedFieldAddsBehaviourToType()
     {
         $type = (new Type('chapters'))->addField(new IsArchivedField());
 

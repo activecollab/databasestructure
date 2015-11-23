@@ -9,6 +9,16 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 trait Implementation
 {
     /**
+     * Say hello to the parent class
+     */
+    public function ActiveCollabDatabaseStructureBehaviourIsArchivedInterfaceImplementation()
+    {
+        $this->registerEventHandler('on_json_serialize', function (array &$result) {
+            $result['is_archived'] = $this->getIsArchived();
+        });
+    }
+
+    /**
      * Move to archive
      *
      * @param boolean $bulk

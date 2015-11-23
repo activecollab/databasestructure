@@ -41,7 +41,7 @@ class EmailField extends Field implements RequiredInterface, UniqueInterface, Mo
     public function __construct($name, $default_value = null, $add_index = false)
     {
         if (empty($name)) {
-            throw new InvalidArgumentException("Value '$name' is not a valid foreign key name");
+            throw new InvalidArgumentException("Value '$name' is not a valid field name");
         }
 
         $this->name = $name;

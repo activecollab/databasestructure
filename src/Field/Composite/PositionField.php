@@ -2,12 +2,13 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -15,6 +16,8 @@ use InvalidArgumentException;
  */
 class PositionField extends Field
 {
+    use AddIndexInterfaceImplementation;
+
     /**
      * @var string
      */
@@ -24,11 +27,6 @@ class PositionField extends Field
      * @var mixed
      */
     private $default_value;
-
-    /**
-     * @var boolean
-     */
-    private $add_index;
 
     /**
      * @var string
@@ -49,7 +47,7 @@ class PositionField extends Field
 
         $this->name = $name;
         $this->default_value = $default_value;
-        $this->add_index = $add_index;
+        $this->addIndex($add_index);
     }
 
     /**
@@ -191,7 +189,7 @@ class PositionField extends Field
      */
     public function onAddedToType(TypeInterface &$type)
     {
-        if ($this->add_index) {
+        if ($this->getAddIndex()) {
             $type->addIndex(new Index($this->name));
         }
 
