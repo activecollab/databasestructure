@@ -6,6 +6,7 @@ use ActiveCollab\DatabaseStructure\Field\Composite\ActionByField;
 use ActiveCollab\DatabaseStructure\Field\Composite\EmailField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
@@ -138,5 +139,34 @@ class ActionByFieldTest extends TestCase
 
         $this->assertInstanceOf(IntegerField::class, $created_by_id);
         $this->assertTrue($created_by_id->isRequired());
+    }
+
+    /**
+     * Test if index is automatically added to the type
+     */
+    public function testActionByAddsIndexByDefault()
+    {
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'));
+
+        $this->assertArrayHasKey('created_by_id', $type->getIndexes());
+        $this->assertInstanceOf(Index::class, $type->getIndexes()['created_by_id']);
+    }
+
+    /**
+     * Test if we can skip index creation
+     */
+    public function testIndexCreationCanBeSkipped()
+    {
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser', false));
+
+        $this->assertArrayNotHasKey('created_by_id', $type->getIndexes());
+    }
+
+    /**
+     * Test if created by ID is automatically added to serialization list
+     */
+    public function testIfIdFieldsIsSerialized()
+    {
+        $this->assertContains('created_by_id', (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'))->getSerialize());
     }
 }
