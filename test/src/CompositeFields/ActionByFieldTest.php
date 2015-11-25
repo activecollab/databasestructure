@@ -165,7 +165,7 @@ class ActionByFieldTest extends TestCase
     /**
      * Test if created by ID is automatically added to serialization list
      */
-    public function testIfIdFieldsIsSerialized()
+    public function testFieldShouldSerializeId()
     {
         $this->assertContains('created_by_id', (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'))->getSerialize());
     }

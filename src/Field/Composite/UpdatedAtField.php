@@ -61,6 +61,6 @@ class UpdatedAtField extends Field
             $type->addIndex(new Index($this->name));
         }
 
-        $type->addTrait(UpdatedAtInterface::class, UpdatedAtInterfaceImplementation::class);
+        $type->addTrait(UpdatedAtInterface::class, UpdatedAtInterfaceImplementation::class)->serialize($this->name);
     }
 }

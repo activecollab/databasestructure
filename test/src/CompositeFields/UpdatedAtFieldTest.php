@@ -64,4 +64,12 @@ class UpdatedAtFieldTest extends TestCase
         $this->assertArrayHasKey(UpdatedAtInterface::class, $type->getTraits());
         $this->assertContains(UpdatedAtInterfaceImplementation::class, $type->getTraits()[UpdatedAtInterface::class]);
     }
+
+    /**
+     * Test if field is automatically added to serialization list
+     */
+    public function testFieldShouldBeSerialized()
+    {
+        $this->assertContains('updated_at', (new Type('chapters'))->addField(new UpdatedAtField())->getSerialize());
+    }
 }

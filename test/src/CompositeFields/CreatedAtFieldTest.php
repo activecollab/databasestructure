@@ -64,4 +64,12 @@ class CreatedAtFieldTest extends TestCase
         $this->assertArrayHasKey(CreatedAtInterface::class, $type->getTraits());
         $this->assertContains(CreatedAtInterfaceImplementation::class, $type->getTraits()[CreatedAtInterface::class]);
     }
+
+    /**
+     * Test if field is automatically added to serialization list
+     */
+    public function testFieldShouldBeSerialized()
+    {
+        $this->assertContains('created_at', (new Type('chapters'))->addField(new CreatedAtField())->getSerialize());
+    }
 }

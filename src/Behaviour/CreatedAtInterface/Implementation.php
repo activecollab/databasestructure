@@ -14,10 +14,6 @@ trait Implementation
      */
     public function ActiveCollabDatabaseStructureBehaviourCreatedAtInterfaceImplementation()
     {
-        $this->registerEventHandler('on_json_serialize', function (array &$result) {
-            $result['created_at'] = $this->getCreatedAt();
-        });
-
         $this->registerEventHandler('on_before_save', function () {
             if (empty($this->getCreatedAt())) {
                 $this->setCreatedAt(new DateTimeValue());
