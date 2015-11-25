@@ -78,6 +78,22 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     }
 
     /**
+     * @return string
+     */
+    public function getUserClassName()
+    {
+        return $this->user_class_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnonymousUserClassName()
+    {
+        return $this->anonymous_user_class_name;
+    }
+
+    /**
      * @return FieldInterface[]
      */
     public function getFields()
