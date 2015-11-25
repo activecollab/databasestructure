@@ -10,7 +10,7 @@ use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
- * @package ActiveCollab\DatabaseStructure\Test
+ * @package ActiveCollab\DatabaseStructure\Test\CompositeFields
  */
 class UpdatedAtFieldTest extends TestCase
 {
