@@ -66,13 +66,43 @@ class ActionByFieldTest extends TestCase
         $this->assertInstanceOf(StringField::class, $type->getAllFields()['created_by_email']);
     }
 
-    public function testActionByIdFieldIsRequiredByDefault()
+    /**
+     * Test if action_by_id field is required by default
+     */
+    public function testActionByIdFieldIsNotRequiredByDefault()
     {
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id'));
 
+        /** @var ActionByField $action_by */
+        $action_by = $type->getFields()['created_by_id'];
+
+        $this->assertInstanceOf(ActionByField::class, $action_by);
+        $this->assertFalse($action_by->isRequired());
+
+        /** @var IntegerField $created_by_id */
+        $created_by_id = $type->getAllFields()['created_by_id'];
+
+        $this->assertInstanceOf(IntegerField::class, $created_by_id);
+        $this->assertFalse($created_by_id->isRequired());
     }
 
-    public function testActionByIdFieldCanBeOptional()
+    /**
+     * Test if action by field can be set as required
+     */
+    public function testActionByIdFieldCanBeSetAsRequired()
     {
+        $type = (new Type('chapters'))->addField((new ActionByField('created_by_id'))->required());
 
+        /** @var ActionByField $action_by */
+        $action_by = $type->getFields()['created_by_id'];
+
+        $this->assertInstanceOf(ActionByField::class, $action_by);
+        $this->assertTrue($action_by->isRequired());
+
+        /** @var IntegerField $created_by_id */
+        $created_by_id = $type->getAllFields()['created_by_id'];
+
+        $this->assertInstanceOf(IntegerField::class, $created_by_id);
+        $this->assertTrue($created_by_id->isRequired());
     }
 }

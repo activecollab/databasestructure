@@ -4,16 +4,19 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use InvalidArgumentException;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ActionByField extends Field
+class ActionByField extends Field implements AddIndexInterface, RequiredInterface
 {
-    use AddIndexInterfaceImplementation;
+    use AddIndexInterfaceImplementation, RequiredInterfaceImplementation;
 
     /**
      * @var string
@@ -53,8 +56,14 @@ class ActionByField extends Field
      */
     public function getFields()
     {
+        $id_field = (new IntegerField($this->getName(), 0))->unsigned();
+
+        if ($this->isRequired()) {
+            $id_field->required();
+        }
+
         return [
-            (new IntegerField($this->getName(), 0))->unsigned(),
+            $id_field,
             new StringField($this->getActionName() . '_by_name'),
             new EmailField($this->getActionName() . '_by_email'),
         ];
