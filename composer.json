@@ -17,6 +17,7 @@
     "activecollab/databaseconnection" : "dev-next",
     "activecollab/databaseobject" : "dev-master",
     "activecollab/filesystem" : "dev-master",
+    "activecollab/user" : "~1.0",
     "doctrine/inflector" : "~1.0"
   },
   "require-dev" : {
