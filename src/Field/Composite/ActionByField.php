@@ -128,18 +128,16 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $name_getter_name = 'get' . Inflector::classify($this->getActionName() . '_by_name');
         $name_setter_name = 'set' . Inflector::classify($this->getActionName() . '_by_name');
 
-        $action_name = Inflector::classify(substr($this->name, 0, strlen($this->name) - 6));
+        $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
+        $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
 
-        $instance_getter_name = "get{$action_name}";
-        $instance_setter_name = "set{$action_name}";
-
-
+        $type_hint = $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
 
         $methods = [];
 
         $methods[] = '/**';
-        $methods[] = ' * @param boolean $use_cache';
-        $methods[] = ' * @return ' . $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
+        $methods[] = ' * @param  boolean' . str_pad('$use_cache', strlen($type_hint) - 7, ' ');
+        $methods[] = ' * @return ' . $type_hint;
         $methods[] = ' */';
         $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';
         $methods[] = '{';
@@ -148,7 +146,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $methods[] = '    } elseif ($email = $this->' . $email_getter_name . '()) {';
         $methods[] = '        return new ' . $this->anonymous_user_class_name . '($this->' . $name_getter_name . '(), $email);';
         $methods[] = '    } else {';
-        $methods[] = '        return null';
+        $methods[] = '        return null;';
         $methods[] = '    }';
         $methods[] = '}';
         $methods[] = '';
@@ -176,14 +174,14 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = '/**';
             $methods[] = ' * Return context in which position should be set';
             $methods[] = ' *';
-            $methods[] = ' * @param  ' . $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null $value';
+            $methods[] = ' * @param  ' . $type_hint . ' $value';
             $methods[] = ' * @return $this';
             $methods[] = ' */';
             $methods[] = 'public function &' . $instance_setter_name . '($value = null)';
             $methods[] = '{';
             $methods[] = '    if ($value instanceof ' . $this->user_class_name . ') {';
             $methods[] = '        if ($value->isLoaded()) {';
-            $methods[] = '            $this->' . $id_setter_name . '($value_>getId());';
+            $methods[] = '            $this->' . $id_setter_name . '($value->getId());';
             $methods[] = '            $this->' . $name_setter_name . '($value->getFullName());';;
             $methods[] = '            $this->' . $email_setter_name . '($value->getEmail());';
             $methods[] = '        } else {';
