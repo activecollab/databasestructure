@@ -2,6 +2,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Behaviour\CreatedByOptionalInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\CreatedByRequiredInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\AnonymousUser;
 
 /**
@@ -17,5 +20,19 @@ class CreatedByField extends ActionByField
     public function __construct($user_class_name, $anonymous_user_class_name = AnonymousUser::class, $add_index = true)
     {
         parent::__construct('created_by_id', $user_class_name, $anonymous_user_class_name, $add_index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onAddedToType(TypeInterface &$type)
+    {
+        parent::onAddedToType($type);
+
+        if ($this->isRequired()) {
+            $type->addTrait(CreatedByRequiredInterface::class);
+        } else {
+            $type->addTrait(CreatedByOptionalInterface::class);
+        }
     }
 }

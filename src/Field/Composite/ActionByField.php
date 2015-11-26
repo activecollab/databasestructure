@@ -12,6 +12,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Impleme
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\AnonymousUser;
+use ActiveCollab\User\UserInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
@@ -131,7 +132,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
         $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
 
-        $type_hint = $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
+        $type_hint = UserInterface::class . '|' . $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
 
         $methods = [];
 
@@ -158,7 +159,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = ' * @param  ' . $this->user_class_name . ' $value';
             $methods[] = ' * @return $this';
             $methods[] = ' */';
-            $methods[] = 'public function &' . $instance_setter_name . '(' . $this->user_class_name . ' $value)';
+            $methods[] = 'public function &' . $instance_setter_name . '(\\' . UserInterface::class . ' ' . $this->user_class_name . ' $value)';
             $methods[] = '{';
             $methods[] = '    if ($value->isLoaded()) {';
             $methods[] = '        $this->' . $id_setter_name . '($value_>getId());';
@@ -177,7 +178,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = ' * @param  ' . $type_hint . ' $value';
             $methods[] = ' * @return $this';
             $methods[] = ' */';
-            $methods[] = 'public function &' . $instance_setter_name . '($value = null)';
+            $methods[] = 'public function &' . $instance_setter_name . '(\\' . UserInterface::class . ' $value = null)';
             $methods[] = '{';
             $methods[] = '    if ($value instanceof ' . $this->user_class_name . ') {';
             $methods[] = '        if ($value->isLoaded()) {';
@@ -226,9 +227,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     }
 
     /**
-     * Method that is called when field is added to a type
-     *
-     * @param TypeInterface $type
+     * {@inheritdoc}
      */
     public function onAddedToType(TypeInterface &$type)
     {
@@ -237,7 +236,5 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         }
 
         $type->serialize($this->name);
-
-//        $type->addTrait(CreatedAtInterface::class, CreatedAtInterfaceImplementation::class);
     }
 }
