@@ -132,7 +132,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
         $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
 
-        $type_hint = '\\' . UserInterface::class . '|' . $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
+        $type_hint = '\\' . UserInterface::class . '|' . $this->anonymous_user_class_name . '|' . $this->user_class_name . '|null';
 
         $methods = [];
 
