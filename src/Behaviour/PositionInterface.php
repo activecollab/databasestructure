@@ -11,13 +11,6 @@ interface PositionInterface
     const POSITION_MODE_TAIL = 'tail';
 
     /**
-     * Return object ID
-     *
-     * @return integer
-     */
-    public function getId();
-
-    /**
      * Get position value
      *
      * @return integer

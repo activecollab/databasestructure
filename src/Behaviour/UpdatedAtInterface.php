@@ -8,13 +8,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 interface UpdatedAtInterface
 {
     /**
-     * Return object ID
-     *
-     * @return integer
-     */
-    public function getId();
-
-    /**
      * Return value of updated_at field
      *
      * @return \ActiveCollab\DateValue\DateTimeValueInterface|null

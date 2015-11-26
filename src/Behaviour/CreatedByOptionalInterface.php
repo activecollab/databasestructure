@@ -10,11 +10,6 @@ use ActiveCollab\User\UserInterface;
 interface CreatedByOptionalInterface
 {
     /**
-     * @return integer
-     */
-    public function getId();
-
-    /**
      * @param  boolean       $use_cache
      * @return UserInterface
      */
