@@ -151,7 +151,7 @@ class BelongsToAssociation extends Association implements AssociationInterface
         $result[] = '     * @param  ' . $target_instance_class  . ' $value';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function ' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->getOptional() ? ' = null' : '') . ')';
+        $result[] = '    public function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->getOptional() ? ' = null' : '') . ')';
         $result[] = '    {';
 
         if ($this->getOptional()) {
