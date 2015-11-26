@@ -132,12 +132,12 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
         $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
 
-        $type_hint = UserInterface::class . '|' . $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
+        $type_hint = '\\' . UserInterface::class . '|' . $this->user_class_name . '|' . $this->anonymous_user_class_name . '|null';
 
         $methods = [];
 
         $methods[] = '/**';
-        $methods[] = ' * @param  boolean' . str_pad('$use_cache', strlen($type_hint) - 7, ' ', STR_PAD_LEFT);
+        $methods[] = ' * @param  boolean' . str_pad('$use_cache', strlen($type_hint), ' ', STR_PAD_LEFT);
         $methods[] = ' * @return ' . $type_hint;
         $methods[] = ' */';
         $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';
