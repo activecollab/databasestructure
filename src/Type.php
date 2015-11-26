@@ -603,7 +603,9 @@ class Type implements TypeInterface
      */
     public function &serialize(...$fields)
     {
-        $this->serialize = $fields;
+        if (!empty($fields)) {
+            $this->serialize = array_unique(array_merge($this->serialize, $fields));
+        }
 
         return $this;
     }
