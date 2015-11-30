@@ -27,7 +27,7 @@ class HasOneAssociation extends Association implements AssociationInterface
         }
 
         if (empty($target_type_name)) {
-            $target_type_name = $name;
+            $target_type_name = Inflector::pluralize($name);
         }
 
         $this->name = $name;
