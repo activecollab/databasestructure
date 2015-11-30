@@ -110,7 +110,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     */';
         $result[] = '    private function ' . $get_finder_name . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where(["' . $fk_name . ' = ?", $this->getId()]);';
+        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where("`' . $fk_name . '` = ?", $this->getId());';
         $result[] = '    }';
 
         $result[] = '';
