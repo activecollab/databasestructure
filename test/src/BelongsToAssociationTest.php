@@ -12,6 +12,22 @@ use ActiveCollab\DatabaseStructure\Type;
 class BelongsToAssociationTest extends TestCase
 {
     /**
+     * Test if target type name is pluralized association name by default
+     */
+    public function testTargetTypeNameIsPluralizedByDefault()
+    {
+        $this->assertEquals('books', (new BelongsToAssociation('book'))->getTargetTypeName());
+    }
+
+    /**
+     * Test if target type name can be specified
+     */
+    public function testTargetTypeNameCanBeSpecified()
+    {
+        $this->assertEquals('awesome_books', (new BelongsToAssociation('book', 'awesome_books'))->getTargetTypeName());
+    }
+
+    /**
      * Test if belongs to associations are not optional by default
      */
     public function testBelongsToIsNotOptionalByDefault()
