@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0daab8d4ed249465fda57995ad7f0250",
-    "content-hash": "df1d037fb18b2c0b25f77caaf654143b",
+    "hash": "2b82a1c7755c4393e1855fa01adf9403",
+    "content-hash": "fd183b87806a6a1f22cb03a6eb1193e4",
     "packages": [
         {
             "name": "activecollab/databaseconnection",
@@ -60,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "f93ef7c98dad5c6120da8781e52d799b71aed256"
+                "reference": "fe575fb4985548fd13478ea39164e57f4d6bf073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/f93ef7c98dad5c6120da8781e52d799b71aed256",
-                "reference": "f93ef7c98dad5c6120da8781e52d799b71aed256",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/fe575fb4985548fd13478ea39164e57f4d6bf073",
+                "reference": "fe575fb4985548fd13478ea39164e57f4d6bf073",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2015-11-21 01:36:04"
+            "time": "2015-11-28 23:42:33"
         },
         {
             "name": "activecollab/datevalue",
@@ -109,12 +109,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/datevalue.git",
-                "reference": "9e03ee588fd558175baf63a30666fdf6ed69bdce"
+                "reference": "1c2a1d7b2704315d8cb0462f7a9dbd9bf5eb9ba4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/datevalue/zipball/9e03ee588fd558175baf63a30666fdf6ed69bdce",
-                "reference": "9e03ee588fd558175baf63a30666fdf6ed69bdce",
+                "url": "https://api.github.com/repos/activecollab/datevalue/zipball/1c2a1d7b2704315d8cb0462f7a9dbd9bf5eb9ba4",
+                "reference": "1c2a1d7b2704315d8cb0462f7a9dbd9bf5eb9ba4",
                 "shasum": ""
             },
             "require": {
@@ -148,7 +148,7 @@
                 "date",
                 "datetime"
             ],
-            "time": "2015-11-24 21:18:14"
+            "time": "2015-11-26 14:01:05"
         },
         {
             "name": "activecollab/etag",
@@ -197,7 +197,7 @@
         },
         {
             "name": "activecollab/filesystem",
-            "version": "dev-master",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/filesystem.git",
@@ -425,30 +425,87 @@
             "time": "2015-11-04 20:07:17"
         },
         {
-            "name": "symfony/translation",
-            "version": "v2.7.7",
+            "name": "symfony/polyfill-mbstring",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/translation.git",
-                "reference": "e4ecb9c3ba1304eaf24de15c2d7a428101c1982f"
+                "url": "https://github.com/symfony/polyfill-mbstring.git",
+                "reference": "0b6a8940385311a24e060ec1fe35680e17c74497"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/e4ecb9c3ba1304eaf24de15c2d7a428101c1982f",
-                "reference": "e4ecb9c3ba1304eaf24de15c2d7a428101c1982f",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/0b6a8940385311a24e060ec1fe35680e17c74497",
+                "reference": "0b6a8940385311a24e060ec1fe35680e17c74497",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for the Mbstring extension",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "mbstring",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2015-11-04 20:28:58"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "7f14717150a7445f8475864d1235875dd04061fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/7f14717150a7445f8475864d1235875dd04061fb",
+                "reference": "7f14717150a7445f8475864d1235875dd04061fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "symfony/polyfill-mbstring": "~1.0"
             },
             "conflict": {
-                "symfony/config": "<2.7"
+                "symfony/config": "<2.8"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "~2.7",
-                "symfony/intl": "~2.4",
-                "symfony/yaml": "~2.2"
+                "symfony/config": "~2.8|~3.0",
+                "symfony/intl": "~2.8|~3.0",
+                "symfony/yaml": "~2.8|~3.0"
             },
             "suggest": {
                 "psr/log": "To use logging capability in translator",
@@ -458,7 +515,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -485,7 +542,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-11-18 13:41:01"
+            "time": "2015-11-18 13:48:51"
         }
     ],
     "packages-dev": [
@@ -894,16 +951,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.18",
+            "version": "4.8.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fa33d4ad96481b91df343d83e8c8aabed6b1dfd3"
+                "reference": "b2caaf8947aba5e002d42126723e9d69795f32b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fa33d4ad96481b91df343d83e8c8aabed6b1dfd3",
-                "reference": "fa33d4ad96481b91df343d83e8c8aabed6b1dfd3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b2caaf8947aba5e002d42126723e9d69795f32b4",
+                "reference": "b2caaf8947aba5e002d42126723e9d69795f32b4",
                 "shasum": ""
             },
             "require": {
@@ -962,7 +1019,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-11-11 11:32:49"
+            "time": "2015-11-30 08:18:59"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1393,25 +1450,25 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.7.7",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c"
+                "reference": "177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
-                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002",
+                "reference": "177a015cb0e19ff4a49e0e2e2c5fc1c1bee07002",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
+                "php": ">=5.5.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -1438,15 +1495,14 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-11-18 13:41:01"
+            "time": "2015-11-30 12:36:17"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "activecollab/databaseconnection": 20,
-        "activecollab/databaseobject": 20,
-        "activecollab/filesystem": 20
+        "activecollab/databaseobject": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

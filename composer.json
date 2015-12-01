@@ -16,7 +16,7 @@
     "php": ">=5.6.0",
     "activecollab/databaseconnection" : "dev-next",
     "activecollab/databaseobject" : "dev-master",
-    "activecollab/filesystem" : "dev-master",
+    "activecollab/filesystem" : "~0.1.0",
     "activecollab/user" : "~1.0",
     "doctrine/inflector" : "~1.0"
   },
