@@ -231,6 +231,8 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        parent::onAddedToType($type);
+
         if ($this->getAddIndex()) {
             $type->addIndex(new Index($this->name));
         }

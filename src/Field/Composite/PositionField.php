@@ -189,6 +189,8 @@ class PositionField extends Field
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        parent::onAddedToType($type);
+
         if ($this->getAddIndex()) {
             $type->addIndex(new Index($this->name));
         }

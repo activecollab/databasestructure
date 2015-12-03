@@ -46,6 +46,8 @@ class AdditionalPropertiesField extends Field
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        parent::onAddedToType($type);
+
         $type->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class);
     }
 }

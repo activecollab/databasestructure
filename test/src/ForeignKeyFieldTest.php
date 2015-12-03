@@ -5,6 +5,8 @@ namespace ActiveCollab\DatabaseStructure\Test;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -71,5 +73,31 @@ class ForeignKeyFieldTest extends TestCase
 
         $this->assertInstanceOf(IntegerField::class, $fk_field);
         $this->assertEquals(FieldInterface::SIZE_BIG, $fk_field->getSize());
+    }
+
+    /**
+     * Test if FK field adds index by default
+     */
+    public function testForeignKeyAddsIndexByDefault()
+    {
+        $type = (new Type('writers'))->addField(new ForeignKeyField('country_id'));
+
+        $this->assertCount(1, $type->getIndexes());
+
+        /** @var IndexInterface $index */
+        $index = $type->getIndexes()['country_id'];
+
+        $this->assertInstanceOf(IndexInterface::class, $index);
+        $this->assertEquals('country_id', $index->getName());
+    }
+
+    /**
+     * Test if we can skip index creation using FK field
+     */
+    public function testIndexCreationCanBeSkipped()
+    {
+        $type = (new Type('writers'))->addField(new ForeignKeyField('country_id', false));
+
+        $this->assertCount(0, $type->getIndexes());
     }
 }

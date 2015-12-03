@@ -111,6 +111,8 @@ class UrlField extends Field implements RequiredInterface, UniqueInterface, Modi
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        parent::onAddedToType($type);
+
         if ($this->getAddIndex()) {
             $index_fields = [$this->name];
 

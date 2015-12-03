@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
@@ -15,9 +17,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ForeignKeyField extends Field implements RequiredInterface, SizeInterface
+class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterface, SizeInterface
 {
-    use RequiredInterfaceImplementation, SizeInterfaceImplementation;
+    use AddIndexInterfaceImplementation, RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
     /**
      * @var string
@@ -40,8 +42,7 @@ class ForeignKeyField extends Field implements RequiredInterface, SizeInterface
         }
 
         $this->name = $name;
-        $this->add_index = (boolean) $add_index;
-
+        $this->addIndex($add_index);
         $this->required();
     }
 
@@ -70,8 +71,10 @@ class ForeignKeyField extends Field implements RequiredInterface, SizeInterface
      */
     public function onAddedToType(TypeInterface &$type)
     {
-        if ($this->add_index) {
-            $type->addIndex(new Index($this->getName()));
+        parent::onAddedToType($type);
+
+        if ($this->getAddIndex()) {
+            $type->addIndex(new Index($this->name));
         }
     }
 }
