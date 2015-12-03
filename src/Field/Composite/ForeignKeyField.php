@@ -27,11 +27,6 @@ class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterf
     private $name;
 
     /**
-     * @var bool
-     */
-    private $add_index;
-
-    /**
      * @param string    $name
      * @param bool|true $add_index
      */
