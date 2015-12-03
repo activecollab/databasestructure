@@ -32,7 +32,7 @@ class BelongsToAssociationTest extends TestCase
      */
     public function testBelongsToIsRequiredByDefault()
     {
-        $this->assertFalse((new BelongsToAssociation('book'))->isRequired());
+        $this->assertTrue((new BelongsToAssociation('book'))->isRequired());
     }
 
     /**
