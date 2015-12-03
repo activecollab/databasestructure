@@ -41,6 +41,8 @@ class ForeignKeyField extends Field implements RequiredInterface, SizeInterface
 
         $this->name = $name;
         $this->add_index = (boolean) $add_index;
+
+        $this->required();
     }
 
     /**
@@ -58,7 +60,7 @@ class ForeignKeyField extends Field implements RequiredInterface, SizeInterface
      */
     public function getFields()
     {
-        return [(new IntegerField($this->getName()))->unsigned(true)->size($this->getSize())];
+        return [(new IntegerField($this->getName()))->unsigned(true)->size($this->getSize())->required($this->isRequired())];
     }
 
     /**
