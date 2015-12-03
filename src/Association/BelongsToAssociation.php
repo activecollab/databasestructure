@@ -46,7 +46,7 @@ class BelongsToAssociation extends Association implements AssociationInterface
     /**
      * @var bool
      */
-    private $is_required = false;
+    private $is_required = true;
 
     /**
      * Return true if this field is required
