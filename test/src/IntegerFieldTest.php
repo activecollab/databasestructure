@@ -24,7 +24,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testNotUnsignedByDefault()
     {
-        $this->assertFalse((new IntegerField('int'))->getUnsigned());
+        $this->assertFalse((new IntegerField('int'))->isUnsigned());
     }
 
     /**
@@ -32,7 +32,7 @@ class IntegerFieldTest extends TestCase
      */
     public function testFieldCanBeSetToBeUnsigned()
     {
-        $this->assertTrue((new IntegerField('int'))->unsigned(true)->getUnsigned());
+        $this->assertTrue((new IntegerField('int'))->unsigned(true)->isUnsigned());
     }
 
     /**

@@ -47,7 +47,7 @@ class ForeignKeyFieldTest extends TestCase
         $this->assertInstanceOf(IntegerField::class, $fk_field);
         $this->assertEquals('application_id', $fk_field->getName());
         $this->assertTrue($fk_field->isRequired());
-        $this->assertTrue($fk_field->getUnsigned());
+        $this->assertTrue($fk_field->isUnsigned());
         $this->assertEquals($fk->getSize(), $fk_field->getSize());
     }
 

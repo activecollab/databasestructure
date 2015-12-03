@@ -17,7 +17,7 @@ abstract class NumberField extends Field
      *
      * @return boolean
      */
-    public function getUnsigned()
+    public function isUnsigned()
     {
         return $this->unsigned;
     }

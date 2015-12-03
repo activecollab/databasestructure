@@ -181,7 +181,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                     $result = 'INT';
             }
 
-            if ($field->getUnsigned()) {
+            if ($field->isUnsigned()) {
                 $result .= ' UNSIGNED';
             }
 
@@ -199,7 +199,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         } elseif ($field instanceof DecimalField) {
             $result = 'DECIMAL(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
-            if ($field->getUnsigned()) {
+            if ($field->isUnsigned()) {
                 $result .= ' UNSIGNED';
             }
 
@@ -211,7 +211,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         } elseif ($field instanceof FloatField) {
             $result = 'FLOAT(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
-            if ($field->getUnsigned()) {
+            if ($field->isUnsigned()) {
                 $result .= ' UNSIGNED';
             }
 
