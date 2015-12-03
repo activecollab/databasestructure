@@ -17,7 +17,8 @@ interface RequiredInterface extends FieldTraitInterface
     /**
      * Value of this column is required
      *
+     * @param  boolean $value
      * @return $this
      */
-    public function &required();
+    public function &required($value = true);
 }
