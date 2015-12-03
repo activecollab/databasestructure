@@ -25,11 +25,12 @@ trait Implementation
     /**
      * Value of this column is required
      *
+     * @param  boolean $value
      * @return $this
      */
-    public function &required()
+    public function &required($value = true)
     {
-        $this->is_required = true;
+        $this->is_required = (boolean) $value;
 
         return $this;
     }

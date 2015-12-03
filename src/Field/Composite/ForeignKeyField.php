@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -13,9 +15,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ForeignKeyField extends Field implements SizeInterface
+class ForeignKeyField extends Field implements RequiredInterface, SizeInterface
 {
-    use SizeInterfaceImplementation;
+    use RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
     /**
      * @var string

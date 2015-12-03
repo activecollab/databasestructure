@@ -20,11 +20,6 @@ class BelongsToAssociation extends Association implements AssociationInterface
     use AssociationInterface\Implementation;
 
     /**
-     * @var bool
-     */
-    private $optional = false;
-
-    /**
      * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:
      *
      * new BelongsToAssociation('author')
@@ -49,22 +44,29 @@ class BelongsToAssociation extends Association implements AssociationInterface
     }
 
     /**
-     * Return true if this association is optional
-     *
-     * @return bool
+     * @var bool
      */
-    public function getOptional()
+    private $is_required = false;
+
+    /**
+     * Return true if this field is required
+     *
+     * @return boolean
+     */
+    public function isRequired()
     {
-        return $this->optional;
+        return $this->is_required;
     }
 
     /**
+     * Value of this column is required
+     *
      * @param  boolean $value
      * @return $this
      */
-    public function &optional($value)
+    public function &required($value = true)
     {
-        $this->optional = (boolean) $value;
+        $this->is_required = (boolean) $value;
 
         return $this;
     }
@@ -76,7 +78,13 @@ class BelongsToAssociation extends Association implements AssociationInterface
      */
     public function getFields()
     {
-        return [new ForeignKeyField($this->getFieldName())];
+        $field = new ForeignKeyField($this->getFieldName());
+
+        if ($this->isRequired()) {
+            $field->required();
+        }
+
+        return [$field];
     }
 
     /**
@@ -151,23 +159,23 @@ class BelongsToAssociation extends Association implements AssociationInterface
         $result[] = '     * @param  ' . $target_instance_class  . ' $value';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->getOptional() ? ' = null' : '') . ')';
+        $result[] = '    public function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
         $result[] = '    {';
 
-        if ($this->getOptional()) {
-            $result[] = '       if (empty($value)) {';
-            $result[] = '           $this->' . $fk_setter_name . '(0);';
-            $result[] = '       } else {';
-            $result[] = '           $this->' . $fk_setter_name . '($value->getId());';
-            $result[] = '       }';
-            $result[] = '';
-            $result[] = '       return $this;';
-        } else {
+        if ($this->isRequired()) {
             $result[] = '       if (empty($value) || !$value->isLoaded()) {';
             $result[] = '           throw new \\InvalidArgumentException(\'Valid related instance is required\');';
             $result[] = '       }';
             $result[] = '';
             $result[] = '       $this->' . $fk_setter_name . '($value->getId());';
+            $result[] = '';
+            $result[] = '       return $this;';
+        } else {
+            $result[] = '       if (empty($value)) {';
+            $result[] = '           $this->' . $fk_setter_name . '(0);';
+            $result[] = '       } else {';
+            $result[] = '           $this->' . $fk_setter_name . '($value->getId());';
+            $result[] = '       }';
             $result[] = '';
             $result[] = '       return $this;';
         }

@@ -109,10 +109,10 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
         $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($association->getConstraintName());
         $result[] = '    FOREIGN KEY (' . $this->getConnection()->escapeFieldName($association->getFieldName()) . ') REFERENCES ' . $this->getConnection()->escapeTableName($association->getTargetTypeName()) . '(`id`)';
 
-        if ($association->getOptional()) {
-            $result[] = '    ON UPDATE SET NULL ON DELETE SET NULL;';
-        } else {
+        if ($association->isRequired()) {
             $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE;';
+        } else {
+            $result[] = '    ON UPDATE SET NULL ON DELETE SET NULL;';
         }
 
         return implode("\n", $result);

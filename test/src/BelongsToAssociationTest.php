@@ -30,9 +30,9 @@ class BelongsToAssociationTest extends TestCase
     /**
      * Test if belongs to associations are not optional by default
      */
-    public function testBelongsToIsNotOptionalByDefault()
+    public function testBelongsToIsRequiredByDefault()
     {
-        $this->assertFalse((new BelongsToAssociation('book'))->getOptional());
+        $this->assertFalse((new BelongsToAssociation('book'))->isRequired());
     }
 
     /**
@@ -40,7 +40,7 @@ class BelongsToAssociationTest extends TestCase
      */
     public function testBelongsToCanBeSetAsOptiona()
     {
-        $this->assertTrue((new BelongsToAssociation('book'))->optional(true)->getOptional());
+        $this->assertFalse((new BelongsToAssociation('book'))->required(false)->isRequired());
     }
 
     /**
