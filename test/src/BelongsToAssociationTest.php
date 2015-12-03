@@ -4,6 +4,7 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
@@ -41,6 +42,24 @@ class BelongsToAssociationTest extends TestCase
     public function testBelongsToCanBeSetAsOptiona()
     {
         $this->assertFalse((new BelongsToAssociation('book'))->required(false)->isRequired());
+    }
+
+    /**
+     * Test if BelongsToAssociation properly passes info whether it is required or not
+     */
+    public function testBelongsToProperlyPassesRequiredToFk()
+    {
+        /** @var ForeignKeyField $fk_should_be_required */
+        $fk_should_be_required = (new BelongsToAssociation('book'))->getFields()[0];
+
+        $this->assertInstanceOf(ForeignKeyField::class, $fk_should_be_required);
+        $this->assertTrue($fk_should_be_required->isRequired());
+
+        /** @var ForeignKeyField $fk_should_not_be_required */
+        $fk_should_not_be_required = (new BelongsToAssociation('book'))->required(false)->getFields()[0];
+
+        $this->assertInstanceOf(ForeignKeyField::class, $fk_should_not_be_required);
+        $this->assertFalse($fk_should_not_be_required->isRequired());
     }
 
     /**
