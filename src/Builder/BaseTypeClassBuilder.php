@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
@@ -207,7 +208,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $this->buildJsonSerialize($type->getSerialize(), '    ', $result);
         $this->buildCompositeFieldMethods($type->getFields(), '    ', $result);
-        $this->buildValidate($type->getFields(), '    ', $result);
+        $this->buildValidate($type->getFields(), $type->getAssociations(), '    ', $result);
 
         $result[] = '}';
         $result[] = '';
@@ -267,17 +268,25 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     }
 
     /**
-     * @param FieldInterface[] $fields
-     * @param string           $indent
-     * @param array            $result
+     * @param FieldInterface[]       $fields
+     * @param AssociationInterface[] $associations
+     * @param string                 $indent
+     * @param array                  $result
      */
-    private function buildValidate($fields, $indent, array &$result)
+    private function buildValidate(array $fields, array $associations, $indent, array &$result)
     {
-        $validator_lines = [];
+        $fields_to_validate = $fields;
 
+        foreach ($associations as $association) {
+            if (count($association->getFields())) {
+                $fields_to_validate = array_merge($fields_to_validate, $association->getFields());
+            }
+        }
+
+        $validator_lines = [];
         $line_indent = $indent  . '    ';
 
-        foreach ($fields as $field) {
+        foreach ($fields_to_validate as $field) {
             if ($field instanceof CompositeField) {
                 $field->getValidatorLines($line_indent, $validator_lines);
 
