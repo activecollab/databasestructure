@@ -207,7 +207,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $this->buildJsonSerialize($type->getSerialize(), '    ', $result);
         $this->buildCompositeFieldMethods($type->getFields(), '    ', $result);
-        $this->buildValidate($fields, '    ', $result);
+        $this->buildValidate($type->getFields(), '    ', $result);
 
         $result[] = '}';
         $result[] = '';
