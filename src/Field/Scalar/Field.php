@@ -61,6 +61,17 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
+     * @param  mixed $value
+     * @return $this
+     */
+    public function &defaultValue($value)
+    {
+        $this->default_value = $value;
+
+        return $this;
+    }
+
+    /**
      * Return PHP native type
      *
      * @return string

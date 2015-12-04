@@ -9,6 +9,15 @@ use LogicException;
 class BooleanField extends Field
 {
     /**
+     * @param  string  $name
+     * @param  boolean $default_value
+     */
+    public function __construct($name, $default_value = false)
+    {
+        parent::__construct($name, $default_value);
+    }
+
+    /**
      * Value of this column needs to be unique (in the given context)
      *
      * @param  string $context
