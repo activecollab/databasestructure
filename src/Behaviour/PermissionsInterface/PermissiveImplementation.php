@@ -12,6 +12,14 @@ trait PermissiveImplementation
     /**
      * {@inheritdoc}
      */
+    public function canCreate(UserInterface $user)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function canView(UserInterface $user)
     {
         return true;

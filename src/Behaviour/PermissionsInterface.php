@@ -10,6 +10,14 @@ use ActiveCollab\User\UserInterface;
 interface PermissionsInterface
 {
     /**
+     * Return true if the given user can persist this object
+     *
+     * @param  UserInterface $user
+     * @return boolean
+     */
+    public function canCreate(UserInterface $user);
+
+    /**
      * Return true if the given user can view this object
      *
      * @param  UserInterface $user

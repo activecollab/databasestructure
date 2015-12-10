@@ -12,6 +12,14 @@ trait RestrictiveImplementation
     /**
      * {@inheritdoc}
      */
+    public function canCreate(UserInterface $user)
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function canView(UserInterface $user)
     {
         return false;
