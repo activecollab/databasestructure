@@ -20,9 +20,10 @@ class MyStructure extends Structure
 
 Following options are available:
 
-1. `add_permissions` tells structure to automatically call `permissions()` method for all types that are added to it. This option is turned off by default, but it can be enabled by setting it to one of the two values: 
-1.1. `StructureInterface::ADD_PERMISSIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `true` by default; 
-1.2. `StructureInterface::ADD_RESTRICTIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `false` by default.
+`add_permissions` tells structure to automatically call `permissions()` method for all types that are added to it. This option is turned off by default, but it can be enabled by setting it to one of the two values: 
+
+1. `StructureInterface::ADD_PERMISSIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `true` by default; 
+2. `StructureInterface::ADD_RESTRICTIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `false` by default.
 
 ## Behaviours
 
