@@ -36,6 +36,24 @@ interface StructureInterface
     public function &setNamespace($namespace);
 
     /**
+     * Return a config option value
+     *
+     * @param  string $name
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function getConfig($name, $default = null);
+
+    /**
+     * Set a config option option value
+     *
+     * @param  string $name
+     * @param  mixed  $value
+     * @return $this
+     */
+    public function &setConfig($name, $value);
+
+    /**
      * Build model at the given path
      *
      * If $build_path is null, classes will be generated, evaled and loaded into the memory

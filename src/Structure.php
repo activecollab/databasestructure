@@ -82,6 +82,37 @@ abstract class Structure implements StructureInterface
     }
 
     /**
+     * @var array
+     */
+    private $config = [];
+
+    /**
+     * Return a config option value
+     *
+     * @param  string $name
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function getConfig($name, $default = null)
+    {
+        return $this->config[$name] ?? $default;
+    }
+
+    /**
+     * Set a config option option value
+     *
+     * @param  string $name
+     * @param  mixed  $value
+     * @return $this
+     */
+    public function &setConfig($name, $value)
+    {
+        $this->config[$name] = $value;
+
+        return $this;
+    }
+
+    /**
      * @var string
      */
     private $namespace = null;
