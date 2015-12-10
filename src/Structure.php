@@ -95,7 +95,7 @@ abstract class Structure implements StructureInterface
      */
     public function getConfig($name, $default = null)
     {
-        return $this->config[$name] ?? $default;
+        return array_key_exists($name, $this->config) ? $this->config[$name] : $default;
     }
 
     /**
