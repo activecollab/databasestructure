@@ -128,6 +128,42 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }, $type->getOrderBy())) . '];';
         }
 
+        if ($this->getStructure()->getConfig('build_permissions')) {
+            $result[] = '';
+            $result[] = '    /**';
+            $result[] = '     * Return true if the given user can view this object';
+            $result[] = '     *';
+            $result[] = '     * @param  \ActiveCollab\User\UserInterface $user';
+            $result[] = '     * @return boolean';
+            $result[] = '     */';
+            $result[] = '    public function canView(\ActiveCollab\User\UserInterface $user)';
+            $result[] = '    {';
+            $result[] = '        return true;';
+            $result[] = '    }';
+            $result[] = '';
+            $result[] = '    /**';
+            $result[] = '     * Return true if the given user can edit this object';
+            $result[] = '     *';
+            $result[] = '     * @param  \ActiveCollab\User\UserInterface $user';
+            $result[] = '     * @return boolean';
+            $result[] = '     */';
+            $result[] = '    public function canEdit(\ActiveCollab\User\UserInterface $user)';
+            $result[] = '    {';
+            $result[] = '        return true;';
+            $result[] = '    }';
+            $result[] = '';
+            $result[] = '    /**';
+            $result[] = '     * Return true if the given user can delete this object';
+            $result[] = '     *';
+            $result[] = '     * @param  \ActiveCollab\User\UserInterface $user';
+            $result[] = '     * @return boolean';
+            $result[] = '     */';
+            $result[] = '    public function canDelete(\ActiveCollab\User\UserInterface $user)';
+            $result[] = '    {';
+            $result[] = '        return true;';
+            $result[] = '    }';
+        }
+
         foreach ($type->getAssociations() as $association) {
             $association->buildClassMethods($this->getStructure()->getNamespace(), $type, $this->getStructure()->getType($association->getTargetTypeName()), $result);
         }
