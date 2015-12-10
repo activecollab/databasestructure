@@ -2,7 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseConnection\Test\Fixture\Writer;
 use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 use ReflectionClass;

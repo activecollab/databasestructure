@@ -6,6 +6,9 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation as PolymorphInterfaceImplementation;
 use InvalidArgumentException;
@@ -96,6 +99,35 @@ class Type implements TypeInterface
 
         if ($this->polymorph) {
             $this->addTrait(PolymorphInterface::class, PolymorphInterfaceImplementation::class);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @var boolean
+     */
+    private $permissions = false;
+
+    /**
+     * @return boolean
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * @param  boolean $value
+     * @param  boolean $permissive
+     * @return $this
+     */
+    public function &permissions($value = true, $permissive = true)
+    {
+        $this->permissions = (boolean) $value;
+
+        if ($this->permissions) {
+            $this->addTrait(PermissionsInterface::class, ($permissive ? PermissiveImplementation::class : RestrictiveImplementation::class));
         }
 
         return $this;

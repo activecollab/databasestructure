@@ -59,6 +59,20 @@ interface TypeInterface
     public function &polymorph($value = true);
 
     /**
+     * @return boolean
+     */
+    public function getPermissions();
+
+    /**
+     * Add permissions interface to this model
+     *
+     * @param  boolean $value
+     * @param  boolean $permissive
+     * @return $this
+     */
+    public function &permissions($value = true, $permissive = true);
+
+    /**
      * Get expected dataset size
      *
      * @return string
