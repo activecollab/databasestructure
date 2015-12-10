@@ -1,4 +1,5 @@
 <?php
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Writers;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
@@ -15,7 +16,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 class WritersStructure extends Structure
 {
     /**
-     * Configure the structure
+     * {@inheritdoc}
      */
     public function configure()
     {
