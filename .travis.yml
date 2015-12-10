@@ -6,8 +6,9 @@ mysql:
   database: activecollab_database_structure_test
   username: root
   encoding: utf8mb4
-install: composer install --dev
+install:
+  - composer install --dev
+  - phpunit --version
 before_script:
   - mysql -e 'create database activecollab_database_structure_test'
-  - phpunit --version
 script: phpunit -c test/phpunit.xml
