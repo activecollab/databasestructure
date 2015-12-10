@@ -46,6 +46,7 @@ There are two default implementations that can be added as implementations of `P
 
 Structure can be configured to apply permissions behaviour to types automatically (see `add_permissions` structure option). In a situation when you have structure set to automatically add permissions behaviour to types, but you want to turn it off for a particular type, just call `permissions(false)` again:
 
+```php
 class MyStructure extends Structure
 {
     public function configure()
@@ -57,5 +58,6 @@ class MyStructure extends Structure
         ])->permissions(false);
     }
 }
+```
 
 **Note:** Generated code does not enforce these checks prior to doing CRUD operations. It’s up to the application that includes DatabaseStructure library to enforce that these restrictions are applied (in ACL or controller layer for example).
