@@ -22,7 +22,7 @@ Following options are available:
 
 1. `add_permissions`
 
-## `add_permissions`
+### `add_permissions`
 
 This option tells structure to automatically call `permissions()` method for all types that are added to it. This option is turned off by default, but it can be enabled by setting it to one of the two values: 
 
