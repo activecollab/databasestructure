@@ -20,9 +20,26 @@ class MyStructure extends Structure
 
 Following options are available:
 
-1. `add_permissions` tells structure to automatically call `permissions()` method for all types that are added to it. This option is turned off by default, but it can be enabled by setting it to one of the two values: 
-1.1. `StructureInterface::ADD_PERMISSIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `true` by default; 
-1.2. `StructureInterface::ADD_RESTRICTIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `false` by default.
+1. `add_permissions` [#](#add_permissions) - Add CRUD permission checks to objects.
+
+### `add_permissions`
+
+This option tells structure to automatically call `permissions()` method for all types that are added to it. This option is turned off by default, but it can be enabled by setting it to one of the two values: 
+
+1. `StructureInterface::ADD_PERMISSIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `true` by default; 
+2. `StructureInterface::ADD_RESTRICTIVE_PERMISSIONS` enables permissions and methods that check permissions are set to return `false` by default.
+
+Example:
+
+```php
+class MyStructure extends Structure
+{
+    public function configure()
+    {
+        $this->setConfig(‘add_permissions’, StructureInterface::ADD_RESTRICTIVE_PERMISSIONS);
+    }
+}
+```
 
 ## Behaviours
 
@@ -41,11 +58,14 @@ All four methods accept only one argument, and that argument needs to be instanc
 
 There are two default implementations that can be added as implementations of `PermissionsInterface`:
 
-1. ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImplementation is set to return `true` by default,
-2. ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation is set to return `false` by default.
+1. `ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImplementation` is set to return `true` by default,
+2. `ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation` is set to return `false` by default.
+
+**Note:** Generated code does not enforce these checks prior to doing CRUD operations. It’s up to the application that includes DatabaseStructure library to enforce that these restrictions are applied (in ACL or controller layer for example).
 
 Structure can be configured to apply permissions behaviour to types automatically (see `add_permissions` structure option). In a situation when you have structure set to automatically add permissions behaviour to types, but you want to turn it off for a particular type, just call `permissions(false)` again:
 
+```php
 class MyStructure extends Structure
 {
     public function configure()
@@ -57,5 +77,4 @@ class MyStructure extends Structure
         ])->permissions(false);
     }
 }
-
-**Note:** Generated code does not enforce these checks prior to doing CRUD operations. It’s up to the application that includes DatabaseStructure library to enforce that these restrictions are applied (in ACL or controller layer for example).
+```
