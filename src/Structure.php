@@ -75,6 +75,15 @@ abstract class Structure implements StructureInterface
         if (empty($this->types[$type_name])) {
             $this->types[$type_name] = new Type($type_name);
 
+            switch ($this->getConfig('add_permissions')) {
+                case self::ADD_PERMISSIVE_PERMISSIONS:
+                    $this->types[$type_name]->permissions();
+                    break;
+                case self::ADD_RESTRICTIVE_PERMISSIONS;
+                    $this->types[$type_name]->permissions(true, false);
+                    break;
+            }
+
             return $this->types[$type_name];
         } else {
             throw new InvalidArgumentException("Type '$type_name' already added");

@@ -2,11 +2,10 @@
 
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions;
 
-use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Structure;
 
 /**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Writers
+ * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions
  */
 class PermissionsStructure extends Structure
 {
@@ -15,12 +14,9 @@ class PermissionsStructure extends Structure
      */
     public function configure()
     {
-        $this->addType('elements')->addFields([
-            new NameField(),
-        ])->permissions();
-
-        $this->addType('restrictive_elements')->addFields([
-            new NameField(),
-        ])->permissions(true, false);
+        $this->addType('elements')->permissions();
+        $this->addType('restrictive_elements')->permissions(true, false);
+        $this->addType('reverted_elements')->permissions(true)->permissions(false);
+        $this->addType('changed_elements')->permissions(true)->permissions(true, false);
     }
 }

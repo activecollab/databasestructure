@@ -64,13 +64,18 @@ interface TypeInterface
     public function getPermissions();
 
     /**
+     * @return boolean
+     */
+    public function getPermissionsArePermissive();
+
+    /**
      * Add permissions interface to this model
      *
      * @param  boolean $value
-     * @param  boolean $permissive
+     * @param  boolean $permissions_are_permissive
      * @return $this
      */
-    public function &permissions($value = true, $permissive = true);
+    public function &permissions($value = true, $permissions_are_permissive = true);
 
     /**
      * Get expected dataset size

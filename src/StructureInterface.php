@@ -9,6 +9,9 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
  */
 interface StructureInterface
 {
+    const ADD_PERMISSIVE_PERMISSIONS = 'permissive';
+    const ADD_RESTRICTIVE_PERMISSIONS = 'restrictive';
+
     /**
      * Get all structure type
      *

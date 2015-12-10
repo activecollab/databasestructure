@@ -110,7 +110,7 @@ class Type implements TypeInterface
     private $permissions = false;
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function getPermissions()
     {
@@ -118,16 +118,32 @@ class Type implements TypeInterface
     }
 
     /**
-     * @param  boolean $value
-     * @param  boolean $permissive
-     * @return $this
+     * @var boolean
      */
-    public function &permissions($value = true, $permissive = true)
+    private $permissions_are_permissive = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissionsArePermissive()
+    {
+        return $this->permissions_are_permissive;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function &permissions($value = true, $permissions_are_permissive = true)
     {
         $this->permissions = (boolean) $value;
+        $this->permissions_are_permissive = (boolean) $permissions_are_permissive;
 
         if ($this->permissions) {
-            $this->addTrait(PermissionsInterface::class, ($permissive ? PermissiveImplementation::class : RestrictiveImplementation::class));
+            $this->removeTrait(PermissionsInterface::class, [PermissiveImplementation::class, RestrictiveImplementation::class]);
+
+            $this->addTrait(PermissionsInterface::class, ($this->permissions_are_permissive ? PermissiveImplementation::class : RestrictiveImplementation::class));
+        } else {
+            $this->removeInterface(PermissionsInterface::class);
         }
 
         return $this;
@@ -537,13 +553,48 @@ class Type implements TypeInterface
                     $this->traits[$interface] = [];
                 }
 
-                if ($implementation) {
+                if ($implementation && array_search($implementation, $this->traits[$interface]) === false) {
                     $this->traits[$interface][] = $implementation;
                 }
             } else {
                 throw new InvalidArgumentException('Interface or implementation are required');
             }
 
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove interface and all traits that are added to implement it
+     *
+     * @param  string $interface
+     * @return $this
+     */
+    public function &removeInterface($interface)
+    {
+        if (isset($this->traits[$interface])) {
+            unset($this->traits[$interface]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  string       $interface
+     * @param  array|string $trait
+     * @return $this
+     */
+    public function &removeTrait($interface, $trait)
+    {
+        if (isset($this->traits[$interface])) {
+            foreach ((array) $trait as $trait_to_remove) {
+                $pos = array_search($trait_to_remove, $this->traits[$interface]);
+
+                if ($pos !== false) {
+                    unset($this->traits[$interface][$pos]);
+                }
+            }
         }
 
         return $this;
