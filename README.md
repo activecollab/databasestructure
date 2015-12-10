@@ -41,8 +41,10 @@ All four methods accept only one argument, and that argument needs to be instanc
 
 There are two default implementations that can be added as implementations of `PermissionsInterface`:
 
-1. ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImplementation is set to return `true` by default,
-2. ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation is set to return `false` by default.
+1. `ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImplementation` is set to return `true` by default,
+2. `ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation` is set to return `false` by default.
+
+**Note:** Generated code does not enforce these checks prior to doing CRUD operations. It’s up to the application that includes DatabaseStructure library to enforce that these restrictions are applied (in ACL or controller layer for example).
 
 Structure can be configured to apply permissions behaviour to types automatically (see `add_permissions` structure option). In a situation when you have structure set to automatically add permissions behaviour to types, but you want to turn it off for a particular type, just call `permissions(false)` again:
 
@@ -59,5 +61,3 @@ class MyStructure extends Structure
     }
 }
 ```
-
-**Note:** Generated code does not enforce these checks prior to doing CRUD operations. It’s up to the application that includes DatabaseStructure library to enforce that these restrictions are applied (in ACL or controller layer for example).
