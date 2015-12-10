@@ -9,4 +9,5 @@ mysql:
 install: composer install --dev
 before_script:
   - mysql -e 'create database activecollab_database_structure_test'
+  - phpunit --version
 script: phpunit -c test/phpunit.xml
