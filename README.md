@@ -20,7 +20,7 @@ class MyStructure extends Structure
 
 Following options are available:
 
-1. `add_permissions`
+1. `add_permissions` [#](#add_permissions) - Add CRUD permission checks to objects.
 
 ### `add_permissions`
 
