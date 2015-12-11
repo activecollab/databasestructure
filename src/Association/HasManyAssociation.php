@@ -110,7 +110,8 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '       return $this->' . $this->getFinderMethodName() . '()->count();';
         $result[] = '    }';
 
-        // addBook
+        $this->buildAddRelatedObjectMethod($structure, $source_type, $target_type, $namespace, $result);
+        $this->buildRemoveRelatedObjectMethod($structure, $source_type, $target_type, $namespace, $result);
 
         // removeBook
 
@@ -149,6 +150,29 @@ class HasManyAssociation extends Association implements AssociationInterface
     }
 
     /**
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param string             $namespace
+     * @param array              $result
+     */
+    public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    {
+    }
+
+    /**
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param string             $namespace
+     * @param array              $result
+     */
+    public function buildRemoveRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    {
+
+    }
+
+    /**
      * @var string
      */
     private $classified_association_name;
@@ -163,6 +187,23 @@ class HasManyAssociation extends Association implements AssociationInterface
         }
 
         return $this->classified_association_name;
+    }
+
+    /**
+     * @var string
+     */
+    private $classified_single_association_name;
+
+    /**
+     * @return string
+     */
+    protected function getClassifiedSingleAssociationName()
+    {
+        if (empty($this->classified_single_association_name)) {
+            $this->classified_single_association_name = Inflector::classify(Inflector::singularize($this->getName()));
+        }
+
+        return $this->classified_single_association_name;
     }
 
     /**
