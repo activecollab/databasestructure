@@ -45,6 +45,8 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
 
+        $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
+
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
@@ -53,7 +55,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '     */';
         $result[] = '    private function ' . $this->getFinderMethodName() . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where("`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId());';
+        $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where("`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId())' . $order_by . ';';
         $result[] = '    }';
     }
 }
