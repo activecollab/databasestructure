@@ -156,4 +156,37 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '        return $this;';
         $result[] = '    }';
     }
+
+    /**
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param string             $namespace
+     * @param array              $result
+     */
+    public function buildClearRelatedObjectsMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    {
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . Inflector::singularize($source_type->getName());
+        $result[] = '     *';
+        $result[] = '     * @return $this';
+        $result[] = '     */';
+        $result[] = "    public function &clear{$this->getClassifiedAssociationName()}()";
+        $result[] = '    {';
+        $result[] = '        if ($objects = $this->get' . $this->getClassifiedAssociationName() . '()) {';
+        $result[] = '            $object_ids = [];';
+        $result[] = '            ';
+        $result[] = '            $this->connection->transact(function() use ($objects, &$object_ids) {';
+        $result[] = '                foreach ($objects as $object) {';
+        $result[] = '                    $object_ids[] = $object->getId();';
+        $result[] = '                    $object->delete(true);';
+        $result[] = '                }';
+        $result[] = '            });';
+        $result[] = '            ';
+        $result[] = '            $this->pool->forget(UserAccount::class, $object_ids);';
+        $result[] = '        }';
+        $result[] = '        return $this;';
+        $result[] = '    }';
+    }
 }
