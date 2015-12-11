@@ -130,13 +130,21 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
+        $result[] = '     * @var  \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     */';
+        $result[] = '     private $' . $this->getFinderPropertyName() . ';';
+        $result[] = '';
+        $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
         $result[] = '     *';
         $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
         $result[] = '    private function ' . $this->getFinderMethodName() . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId())' . $order_by . ';';
+        $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
+        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId())' . $order_by . ';';
+        $result[] = '        }';
+        $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
         $result[] = '    }';
     }
 
@@ -163,6 +171,14 @@ class HasManyAssociation extends Association implements AssociationInterface
     protected function getFinderMethodName()
     {
         return "get{$this->getClassifiedAssociationName()}Finder";
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFinderPropertyName()
+    {
+        return $this->getName() . '_finder';
     }
 
     /**
