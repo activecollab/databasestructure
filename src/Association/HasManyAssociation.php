@@ -75,8 +75,7 @@ class HasManyAssociation extends Association implements AssociationInterface
             $namespace = '\\' . ltrim($namespace, '\\');
         }
 
-        $this->buildGetFinderMethod($namespace, $source_type, $target_type, $result);
-        $this->buildCountInstancesMethod($namespace, $source_type, $target_type,$result);
+        $this->buildGetFinderMethod($structure, $source_type, $target_type, $namespace, $result);
 
         $result[] = '';
         $result[] = '    /**';
@@ -100,6 +99,17 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '       return $this->' . $this->getFinderMethodName() . '()->ids();';
         $result[] = '    }';
 
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     *';
+        $result[] = '     * @return integer';
+        $result[] = '     */';
+        $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
+        $result[] = '    {';
+        $result[] = '       return $this->' . $this->getFinderMethodName() . '()->count();';
+        $result[] = '    }';
+
         // addBook
 
         // removeBook
@@ -108,12 +118,13 @@ class HasManyAssociation extends Association implements AssociationInterface
     }
 
     /**
-     * @param string        $namespace
-     * @param TypeInterface $source_type
-     * @param TypeInterface $target_type
-     * @param array         $result
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param string             $namespace
+     * @param array              $result
      */
-    protected function buildGetFinderMethod($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
         $result[] = '';
         $result[] = '    /**';
@@ -124,26 +135,6 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    private function ' . $this->getFinderMethodName() . '()';
         $result[] = '    {';
         $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId());';
-        $result[] = '    }';
-    }
-
-    /**
-     * @param string        $namespace
-     * @param TypeInterface $source_type
-     * @param TypeInterface $target_type
-     * @param array         $result
-     */
-    protected function buildCountInstancesMethod($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
-    {
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
-        $result[] = '     *';
-        $result[] = '     * @return integer';
-        $result[] = '     */';
-        $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
-        $result[] = '    {';
-        $result[] = '       return $this->pool->count(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ', ["' . $this->getFkFieldNameFrom($source_type) . ' = ?", $this->getId()]);';
         $result[] = '    }';
     }
 

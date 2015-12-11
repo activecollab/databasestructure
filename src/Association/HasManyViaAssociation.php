@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -34,13 +35,16 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     }
 
     /**
-     * @param string        $namespace
-     * @param TypeInterface $source_type
-     * @param TypeInterface $target_type
-     * @param array         $result
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param string             $namespace
+     * @param array              $result
      */
-    protected function buildGetFinderMethod($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
+        $intermediary_type = $structure->getType($this->intermediary_type_name);
+
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
@@ -49,27 +53,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '     */';
         $result[] = '    private function ' . $this->getFinderMethodName() . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId());';
-        $result[] = '    }';
-    }
-
-    /**
-     * @param string        $namespace
-     * @param TypeInterface $source_type
-     * @param TypeInterface $target_type
-     * @param array         $result
-     */
-    protected function buildCountInstancesMethod($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
-    {
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
-        $result[] = '     *';
-        $result[] = '     * @return integer';
-        $result[] = '     */';
-        $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
-        $result[] = '    {';
-        $result[] = '       return $this->pool->count(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ', ["' . $this->getFkFieldNameFrom($source_type) . ' = ?", $this->getId()]);';
+        $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId());';
         $result[] = '    }';
     }
 }
