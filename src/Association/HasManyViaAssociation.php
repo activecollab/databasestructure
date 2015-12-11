@@ -166,6 +166,9 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
      */
     public function buildClearRelatedObjectsMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
+        $intermediary_type = $structure->getType($this->intermediary_type_name);
+        $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
+
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . Inflector::singularize($source_type->getName());
@@ -184,7 +187,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '                }';
         $result[] = '            });';
         $result[] = '            ';
-        $result[] = '            $this->pool->forget(UserAccount::class, $object_ids);';
+        $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', $object_ids);';
         $result[] = '        }';
         $result[] = '        return $this;';
         $result[] = '    }';
