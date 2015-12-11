@@ -77,16 +77,17 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
+
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
         $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
         
-        $longest_class_name = max(strlen($target_instance_class), 'array|null', $intermediary_instance_class);
+        $longest_docs_param_type_name = max(strlen($target_instance_class), 'array|null', '$this');
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_class_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
-        $result[] = '     * @param  ' . str_pad('array|null', $longest_class_name, ' ', STR_PAD_RIGHT) . ' $attributes';
-        $result[] = '     * @return ' . $intermediary_instance_class;
+        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
+        $result[] = '     * @param  ' . str_pad('array|null', $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $attributes';
+        $result[] = '     * @return $this';
         $result[] = '     */';
         $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_add, array $attributes = null)';
         $result[] = '    {';
@@ -107,7 +108,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '            $produce_attributes = array_merge($produce_attributes, $attributes);';
         $result[] = '        }';
         $result[] = '        ';
-        $result[] = '        $this->pool->produce(' . $intermediary_instance_class . '::class, $produce_attributes);';
+        $result[] = '        $this->pool->produce(' . var_export($intermediary_instance_class, true) . ', $produce_attributes);';
         $result[] = '        ';
         $result[] = '        return $this;';
         $result[] = '    }';
@@ -122,6 +123,33 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
      */
     public function buildRemoveRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
+        $intermediary_type = $structure->getType($this->intermediary_type_name);
 
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
+        $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
+
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * @param  ' . $target_instance_class . ' $object_to_remove';
+        $result[] = '     * @return $this';
+        $result[] = '     */';
+        $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_remove)';
+        $result[] = '    {';
+        $result[] = '        if ($this->isNew()) {';
+        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first");';
+        $result[] = '        }';
+        $result[] = '        ';
+        $result[] = '        if ($object_to_add->isNew()) {';
+        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first");';
+        $result[] = '        }';
+        $result[] = '        ';
+        $result[] = '        $intermediary_object = $this->pool->find(' . var_export($intermediary_instance_class, true) . ')->where("' . $this->getFkFieldNameFrom($source_type) . ' = ? AND ' . $this->getFkFieldNameFrom($target_type) . ' = ?", $this->getId(), $object_to_remove->getId())->first();';
+        $result[] = '        ';
+        $result[] = '        if ($intermediary_object instanceof ' . $intermediary_instance_class . ') {';
+        $result[] = '            $this->pool->scrap($intermediary_object, true);';
+        $result[] = '        }';
+        $result[] = '        ';
+        $result[] = '        return $this;';
+        $result[] = '    }';
     }
 }
