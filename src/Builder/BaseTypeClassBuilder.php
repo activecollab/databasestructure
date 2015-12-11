@@ -130,7 +130,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         foreach ($type->getAssociations() as $association) {
-            $association->buildClassMethods($this->getStructure()->getNamespace(), $type, $this->getStructure()->getType($association->getTargetTypeName()), $result);
+            $association->buildClassMethods($this->getStructure(), $type, $this->getStructure()->getType($association->getTargetTypeName()), $result);
         }
 
         foreach ($fields as $field) {

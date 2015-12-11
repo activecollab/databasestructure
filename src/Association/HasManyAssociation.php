@@ -3,6 +3,7 @@
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -61,13 +62,15 @@ class HasManyAssociation extends Association implements AssociationInterface
     /**
      * Build class methods
      *
-     * @param string        $namespace
-     * @param TypeInterface $source_type
-     * @param TypeInterface $target_type
-     * @param array         $result
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param array              $result
      */
-    public function buildClassMethods($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
     {
+        $namespace = $structure->getNamespace();
+
         if ($namespace) {
             $namespace = '\\' . ltrim($namespace, '\\');
         }

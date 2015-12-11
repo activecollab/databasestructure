@@ -39,10 +39,10 @@ interface AssociationInterface
     /**
      * Build class methods
      *
-     * @param string        $namespace
-     * @param TypeInterface $source_type
-     * @param TypeInterface $target_type
-     * @param array         $result
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param array              $result
      */
-    public function buildClassMethods($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result);
+    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result);
 }

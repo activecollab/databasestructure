@@ -2,7 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
-use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
