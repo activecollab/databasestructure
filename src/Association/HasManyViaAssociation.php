@@ -85,6 +85,8 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
 
         $result[] = '';
         $result[] = '    /**';
+        $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_add';
+        $result[] = '     *';
         $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
         $result[] = '     * @param  ' . str_pad('array|null', $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $attributes';
         $result[] = '     * @return $this';
@@ -130,6 +132,8 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
 
         $result[] = '';
         $result[] = '    /**';
+        $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove';
+        $result[] = '     *';
         $result[] = '     * @param  ' . $target_instance_class . ' $object_to_remove';
         $result[] = '     * @return $this';
         $result[] = '     */';
@@ -139,7 +143,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first");';
         $result[] = '        }';
         $result[] = '        ';
-        $result[] = '        if ($object_to_add->isNew()) {';
+        $result[] = '        if ($object_to_remove->isNew()) {';
         $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first");';
         $result[] = '        }';
         $result[] = '        ';
