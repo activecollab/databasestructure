@@ -79,26 +79,28 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $intermediary_type = $structure->getType($this->intermediary_type_name);
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
         $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
+        
+        $longest_class_name = max(strlen($target_instance_class), 'array|null', $intermediary_instance_class);
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * @param  ' . $target_instance_class . '     $peer';
-        $result[] = '     * @param  array|null  $attributes';
+        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_class_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
+        $result[] = '     * @param  ' . str_pad('array|null', $longest_class_name, ' ', STR_PAD_RIGHT) . ' $attributes';
         $result[] = '     * @return ' . $intermediary_instance_class;
         $result[] = '     */';
-        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $peer, array $attributes = null)';
+        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_add, array $attributes = null)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
-        $result[] = '            throw new RuntimeException("' . Inflector::singularize($source_type->getName()) . ' needs to be saved first");';
+        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first");';
         $result[] = '        }';
         $result[] = '        ';
-        $result[] = '        if ($peer->isNew()) {';
-        $result[] = '            throw new RuntimeException("' . Inflector::singularize($target_type->getName()) . ' needs to be saved first");';
+        $result[] = '        if ($object_to_add->isNew()) {';
+        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first");';
         $result[] = '        }';
         $result[] = '        ';
         $result[] = '        $produce_attributes = [';
         $result[] = '            "' . $this->getFkFieldNameFrom($source_type) . '" => $this->getId(),';
-        $result[] = '            "' . $this->getFkFieldNameFrom($target_type) . '" => $peer->getId(),';
+        $result[] = '            "' . $this->getFkFieldNameFrom($target_type) . '" => $object_to_add->getId(),';
         $result[] = '        ];';
         $result[] = '        ';
         $result[] = '        if (!empty($attributes)) {';
