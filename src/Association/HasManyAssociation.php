@@ -113,8 +113,6 @@ class HasManyAssociation extends Association implements AssociationInterface
         $this->buildAddRelatedObjectMethod($structure, $source_type, $target_type, $namespace, $result);
         $this->buildRemoveRelatedObjectMethod($structure, $source_type, $target_type, $namespace, $result);
 
-        // removeBook
-
         // clearBooks
     }
 
@@ -158,6 +156,7 @@ class HasManyAssociation extends Association implements AssociationInterface
      */
     public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
+        // @TODO Implement this method
     }
 
     /**
@@ -169,7 +168,7 @@ class HasManyAssociation extends Association implements AssociationInterface
      */
     public function buildRemoveRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
-
+        // @TODO Implement this method
     }
 
     /**
