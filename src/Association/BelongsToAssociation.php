@@ -2,7 +2,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
@@ -15,7 +14,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsToAssociation extends Association implements AssociationInterface
+class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface
 {
     use AssociationInterface\Implementation;
 

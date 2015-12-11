@@ -3,8 +3,6 @@
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -61,25 +59,6 @@ class HasManyAssociation extends Association implements AssociationInterface
     }
 
     /**
-     * Return a list of fields that are to be added to the source type
-     *
-     * @return FieldInterface[]
-     */
-    public function getFields()
-    {
-        return [];
-    }
-
-    /**
-     * Return a list of indexes
-     *
-     * @return IndexInterface[]
-     */
-    public function getIndexes()
-    {
-    }
-
-    /**
      * Build class methods
      *
      * @param string        $namespace
@@ -93,35 +72,18 @@ class HasManyAssociation extends Association implements AssociationInterface
             $namespace = '\\' . ltrim($namespace, '\\');
         }
 
-        $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
-        $classified_association_name = Inflector::classify($this->getName());
-
-        $fk_name = Inflector::singularize($source_type->getName()) . '_id';
-        $get_finder_name = "get{$classified_association_name}Finder";
-        $get_all_name = "get{$classified_association_name}";
-        $get_ids_name = 'get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids';
-        $count_name = "count{$classified_association_name}";
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
-        $result[] = '     *';
-        $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
-        $result[] = '     */';
-        $result[] = '    private function ' . $get_finder_name . '()';
-        $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where("`' . $fk_name . '` = ?", $this->getId());';
-        $result[] = '    }';
+        $this->buildGetFinderMethod($namespace, $source_type, $target_type, $result);
+        $this->buildCountInstancesMethod($namespace, $source_type, $target_type,$result);
 
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
         $result[] = '     *';
-        $result[] = '     * @return ' . $target_instance_class . '[]';
+        $result[] = '     * @return ' . $this->getInstanceClassFrom($namespace, $target_type) . '[]';
         $result[] = '     */';
-        $result[] = '    public function ' . $get_all_name . '()';
+        $result[] = "    public function get{$this->getClassifiedAssociationName()}()";
         $result[] = '    {';
-        $result[] = '       return $this->' . $get_finder_name . '()->all();';
+        $result[] = '       return $this->' . $this->getFinderMethodName() . '()->all();';
         $result[] = '    }';
 
         $result[] = '';
@@ -130,20 +92,9 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     *';
         $result[] = '     * @return integer[]';
         $result[] = '     */';
-        $result[] = '    public function ' . $get_ids_name. '()';
+        $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids()';
         $result[] = '    {';
-        $result[] = '       return $this->' . $get_finder_name . '()->ids();';
-        $result[] = '    }';
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
-        $result[] = '     *';
-        $result[] = '     * @return integer';
-        $result[] = '     */';
-        $result[] = '    public function ' . $count_name . '()';
-        $result[] = '    {';
-        $result[] = '       return $this->pool->count(' . var_export($target_instance_class, true) . ', ["' . $fk_name . ' = ?", $this->getId()]);';
+        $result[] = '       return $this->' . $this->getFinderMethodName() . '()->ids();';
         $result[] = '    }';
 
         // addBook
@@ -151,5 +102,93 @@ class HasManyAssociation extends Association implements AssociationInterface
         // removeBook
 
         // clearBooks
+    }
+
+    /**
+     * @param string        $namespace
+     * @param TypeInterface $source_type
+     * @param TypeInterface $target_type
+     * @param array         $result
+     */
+    protected function buildGetFinderMethod($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    {
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
+        $result[] = '     *';
+        $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     */';
+        $result[] = '    private function ' . $this->getFinderMethodName() . '()';
+        $result[] = '    {';
+        $result[] = '       return $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId());';
+        $result[] = '    }';
+    }
+
+    /**
+     * @param string        $namespace
+     * @param TypeInterface $source_type
+     * @param TypeInterface $target_type
+     * @param array         $result
+     */
+    protected function buildCountInstancesMethod($namespace, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    {
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     *';
+        $result[] = '     * @return integer';
+        $result[] = '     */';
+        $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
+        $result[] = '    {';
+        $result[] = '       return $this->pool->count(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ', ["' . $this->getFkFieldNameFrom($source_type) . ' = ?", $this->getId()]);';
+        $result[] = '    }';
+    }
+
+    /**
+     * @var string
+     */
+    private $classified_association_name;
+
+    /**
+     * @return string
+     */
+    protected function getClassifiedAssociationName()
+    {
+        if (empty($this->classified_association_name)) {
+            $this->classified_association_name = Inflector::classify($this->getName());
+        }
+
+        return $this->classified_association_name;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFinderMethodName()
+    {
+        return "get{$this->getClassifiedAssociationName()}Finder";
+    }
+
+    /**
+     * Return foreign key field name from type instance
+     *
+     * @param  TypeInterface $type
+     * @return string
+     */
+    protected function getFkFieldNameFrom(TypeInterface $type)
+    {
+        return Inflector::singularize($type->getName()) . '_id';
+    }
+
+    /**
+     * Return full instance class from namespace and type
+     *
+     * @param  string        $namespace
+     * @param  TypeInterface $type
+     * @return string
+     */
+    protected function getInstanceClassFrom($namespace, TypeInterface $type)
+    {
+        return $namespace . '\\' . Inflector::classify(Inflector::singularize($type->getName()));
     }
 }

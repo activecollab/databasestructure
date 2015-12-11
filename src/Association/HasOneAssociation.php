@@ -3,8 +3,6 @@
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -32,25 +30,6 @@ class HasOneAssociation extends Association implements AssociationInterface
 
         $this->name = $name;
         $this->target_type_name = $target_type_name;
-    }
-
-    /**
-     * Return a list of fields that are to be added to the source type
-     *
-     * @return FieldInterface[]
-     */
-    public function getFields()
-    {
-        return [];
-    }
-
-    /**
-     * Return a list of indexes
-     *
-     * @return IndexInterface[]
-     */
-    public function getIndexes()
-    {
     }
 
     /**

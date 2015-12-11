@@ -2,6 +2,8 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
+use ActiveCollab\DatabaseStructure\Association\InjectIndexesInsterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
@@ -325,8 +327,10 @@ class Type implements TypeInterface
         }
 
         foreach ($this->getAssociations() as $association) {
-            foreach ($association->getFields() as $field) {
-                $this->fieldToFlatList($field, $result);
+            if ($association instanceof InjectFieldsInsterface) {
+                foreach ($association->getFields() as $field) {
+                    $this->fieldToFlatList($field, $result);
+                }
             }
         }
 
@@ -411,10 +415,12 @@ class Type implements TypeInterface
         }
 
         foreach ($this->getAssociations() as $assosication) {
-            $association_indexes = $assosication->getIndexes();
+            if ($assosication instanceof InjectIndexesInsterface) {
+                $association_indexes = $assosication->getIndexes();
 
-            if (!empty($association_indexes)) {
-                $result = array_merge($result, $association_indexes);
+                if (!empty($association_indexes)) {
+                    $result = array_merge($result, $association_indexes);
+                }
             }
         }
 

@@ -22,20 +22,6 @@ interface AssociationInterface
     public function getTargetTypeName();
 
     /**
-     * Return a list of fields that are to be added to the source type
-     *
-     * @return FieldInterface[]
-     */
-    public function getFields();
-
-    /**
-     * Return a list of indexes
-     *
-     * @return IndexInterface[]
-     */
-    public function getIndexes();
-
-    /**
      * Return source type name
      *
      * @return string

@@ -3,8 +3,6 @@
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -58,25 +56,6 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
         $this->order_by = $order_by;
 
         return $this;
-    }
-
-    /**
-     * Return a list of fields that are to be added to the source type
-     *
-     * @return FieldInterface[]
-     */
-    public function getFields()
-    {
-        return [];
-    }
-
-    /**
-     * Return a list of indexes
-     *
-     * @return IndexInterface[]
-     */
-    public function getIndexes()
-    {
     }
 
     /**

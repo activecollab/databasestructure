@@ -2,6 +2,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
@@ -278,7 +279,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $fields_to_validate = $fields;
 
         foreach ($associations as $association) {
-            if (count($association->getFields())) {
+            if ($association instanceof InjectFieldsInsterface && count($association->getFields())) {
                 $fields_to_validate = array_merge($fields_to_validate, $association->getFields());
             }
         }
