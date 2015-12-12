@@ -7,7 +7,7 @@ use ActiveCollab\User\UserInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour
  */
-interface CreatedByOptionalInterface
+interface CreatedByOptionalInterface extends CreatedByInterface
 {
     /**
      * @param  boolean       $use_cache
