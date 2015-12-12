@@ -162,7 +162,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = 'public function &' . $instance_setter_name . '(\\' . UserInterface::class . ' $value)';
             $methods[] = '{';
             $methods[] = '    if ($value instanceof ' . $this->user_class_name . ' && $value->isLoaded()) {';
-            $methods[] = '        $this->' . $id_setter_name . '($value_>getId());';
+            $methods[] = '        $this->' . $id_setter_name . '($value->getId());';
             $methods[] = '        $this->' . $name_setter_name . '($value->getFullName());';;
             $methods[] = '        $this->' . $email_setter_name . '($value->getEmail());';
             $methods[] = '    } else {';
