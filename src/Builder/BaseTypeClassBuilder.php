@@ -37,6 +37,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
         $result[] = '/**';
+
+        $this->buildClassDocBlockProperties('', $result);
+
         $result[] = ' * @package ' . $base_class_namespace;
         $result[] = ' */';
 
@@ -223,6 +226,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
+    }
+
+    /**
+     * @param string $indent
+     * @param array  $result
+     */
+    public function buildClassDocBlockProperties($indent, array &$result)
+    {
+        $class_doc_block_properties = $this->getStructure()->getConfig('class_doc_block_properties');
+
+        if (is_array($class_doc_block_properties) && !empty($class_doc_block_properties)) {
+            foreach ($class_doc_block_properties as $property => $property_type) {
+                $result[] = $indent . " * @property {$property_type} $$property}";
+            }
+
+            $result[] = $indent . ' *';
+        }
     }
 
     /**
