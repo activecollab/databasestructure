@@ -238,7 +238,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         if (is_array($class_doc_block_properties) && !empty($class_doc_block_properties)) {
             foreach ($class_doc_block_properties as $property => $property_type) {
-                $result[] = $indent . " * @property {$property_type} $$property}";
+                $result[] = $indent . " * @property {$property_type} \${$property}";
             }
 
             $result[] = $indent . ' *';
