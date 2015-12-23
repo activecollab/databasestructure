@@ -20,8 +20,9 @@ class MyStructure extends Structure
 
 Following options are available:
 
-1. `add_permissions` - Add CRUD permission checks to objects. [Click here](#add_permissions) for more info.
-1. `base_class_extends` - Specify which class should built objects extend (`ActiveCollab\DatabaseObject\Object` is default).
+1. `add_permissions` - Add CRUD permission checks to objects. [More…](#add_permissions),
+1. `base_class_extends` - Specify which class should built objects extend (`ActiveCollab\DatabaseObject\Object` is default),
+1. `class_doc_block_properties` - Specify an array of properties to be added as `@property` elements to DocBlock section of generated classes. [More…](#class_doc_block_properties).
 
 ### `add_permissions`
 
@@ -39,6 +40,40 @@ class MyStructure extends Structure
     {
         $this->setConfig(‘add_permissions’, StructureInterface::ADD_RESTRICTIVE_PERMISSIONS);
     }
+}
+```
+
+### `class_doc_block_properties`
+
+Some editors read `@property` from DocBlock section of the class and know which properties are available via magic methods, which type they are and offer various features based on that info (like code completion, type checking etc). Use `class_doc_block_properties` to specify a list of properties that will be added to the class. Example of the config:
+
+```php
+class MyStructure extends Structure
+{
+    public function configure()
+    {
+        $this->setConfig(‘class_doc_block_properties’, [
+            'jobs' => '\\ActiveCollab\\JobsQueue\\Dispatcher'
+        ]);
+    }
+}
+```
+
+what it builds:
+
+```php
+<?php
+
+namespace Application\Structure\Namespace\Base;
+
+/**
+ * @property \ActiveCollab\JobsQueue\Dispatcher $jobs
+ *
+ * …
+ */
+abstract class Token extends \ActiveCollab\DatabaseObject\Object
+{
+    …
 }
 ```
 
