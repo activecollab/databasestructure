@@ -20,7 +20,8 @@ class MyStructure extends Structure
 
 Following options are available:
 
-1. `add_permissions` [#](#add_permissions) - Add CRUD permission checks to objects.
+1. `add_permissions` - Add CRUD permission checks to objects. [Click here](#add_permissions) for more info.
+1. `base_class_extends` - Specify which class should built objects extend (`ActiveCollab\DatabaseObject\Object` is default).
 
 ### `add_permissions`
 

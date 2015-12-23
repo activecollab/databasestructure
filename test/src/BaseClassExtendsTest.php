@@ -1,0 +1,35 @@
+<?php
+
+namespace ActiveCollab\DatabaseStructure\Test;
+
+use ActiveCollab\DatabaseObject\Object;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\BaseClassExtends\BaseClassExtendsStructure;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\ExtendThisObject;
+
+/**
+ * @package ActiveCollab\DatabaseStructure\Test
+ */
+class BaseClassExtendsTest extends TestCase
+{
+    /**
+     * Test default base class extends settings
+     */
+    public function testDefaultBaseClassExtends()
+    {
+        $structure = new BaseClassExtendsStructure();
+        $this->assertEmpty($structure->getConfig('base_class_extends'));
+
+        $this->assertEquals(Object::class, $structure->getType('writers')->getBaseClassExtends());
+    }
+
+    /**
+     * Test if we can override base class using a config
+     */
+    public function testBaseClassExtendsOverride()
+    {
+        $structure = new BaseClassExtendsStructure(ExtendThisObject::class);
+        $this->assertEquals(ExtendThisObject::class, $structure->getConfig('base_class_extends'));
+
+        $this->assertEquals(ExtendThisObject::class, $structure->getType('writers')->getBaseClassExtends());
+    }
+}

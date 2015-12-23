@@ -84,6 +84,10 @@ abstract class Structure implements StructureInterface
                     break;
             }
 
+            if ($this->getConfig('base_class_extends')) {
+                $this->types[$type_name]->setBaseClassExtends($this->getConfig('base_class_extends'));
+            }
+
             return $this->types[$type_name];
         } else {
             throw new InvalidArgumentException("Type '$type_name' already added");
