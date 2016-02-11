@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedByOptionalInterface;
@@ -13,9 +19,9 @@ use ActiveCollab\User\AnonymousUser;
 class CreatedByField extends ActionByField
 {
     /**
-     * @param string  $user_class_name
-     * @param string  $anonymous_user_class_name
-     * @param boolean $add_index
+     * @param string $user_class_name
+     * @param string $anonymous_user_class_name
+     * @param bool   $add_index
      */
     public function __construct($user_class_name, $anonymous_user_class_name = AnonymousUser::class, $add_index = true)
     {

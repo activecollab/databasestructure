@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
-use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -29,7 +35,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result = [];
 
-        $result[] = "<?php";
+        $result[] = '<?php';
         $result[] = '';
 
         $base_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Base' : 'Base';
@@ -52,7 +58,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
             if (count($implementations)) {
                 foreach ($implementations as $implementation) {
-                    $traits[] = '\\' . ltrim($implementation, '\\');;
+                    $traits[] = '\\' . ltrim($implementation, '\\');
                 }
             }
         }
@@ -66,7 +72,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '    use ' . implode(', ', $traits) . ($trait_tweaks_count ? '{' : ';');
 
             if ($trait_tweaks_count) {
-                for ($i = 0; $i < $trait_tweaks_count - 1; $i++) {
+                for ($i = 0; $i < $trait_tweaks_count - 1; ++$i) {
                     $result[] = '        ' . $type->getTraitTweaks()[$i] . ($i < $trait_tweaks_count - 2 ? ',' : '');
                 }
 
@@ -127,7 +133,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '    /**';
             $result[] = '     * @var string[]';
             $result[] = '     */';
-            $result[] = '    protected $order_by = [' . implode(', ', array_map(function($value) {
+            $result[] = '    protected $order_by = [' . implode(', ', array_map(function ($value) {
                 return var_export($value, true);
             }, $type->getOrderBy())) . '];';
         }
@@ -260,7 +266,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     }
 
     /**
-     * Build JSON serialize method, if we need to serialize extra fields
+     * Build JSON serialize method, if we need to serialize extra fields.
      *
      * @param array  $serialize
      * @param string $indent
@@ -340,7 +346,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     }
 
     /**
-     * Build validate lines for scalar fields
+     * Build validate lines for scalar fields.
      *
      * @param ScalarField $field
      * @param string      $line_indent
@@ -356,15 +362,15 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             } elseif ($field->isUnique()) {
                 $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
             }
-        } elseif($field instanceof RequiredInterface && $field->isRequired()) {
+        } elseif ($field instanceof RequiredInterface && $field->isRequired()) {
             $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
-        } elseif($field instanceof UniqueInterface && $field->isUnique()) {
+        } elseif ($field instanceof UniqueInterface && $field->isUnique()) {
             $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
         }
     }
 
     /**
-     * Build validator value presence line
+     * Build validator value presence line.
      *
      * @param  string $field_name
      * @return string
@@ -375,7 +381,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     }
 
     /**
-     * Build validator uniqueness line
+     * Build validator uniqueness line.
      *
      * @param  string $field_name
      * @param  array  $context
@@ -393,7 +399,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     }
 
     /**
-     * Build validator uniqueness line
+     * Build validator uniqueness line.
      *
      * @param  string $field_name
      * @param  array  $context

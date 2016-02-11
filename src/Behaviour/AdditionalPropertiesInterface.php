@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 /**
@@ -8,14 +14,14 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 interface AdditionalPropertiesInterface
 {
     /**
-     * Return additional log properties as array
+     * Return additional log properties as array.
      *
      * @return array
      */
     public function getAdditionalProperties();
 
     /**
-     * Set attributes value
+     * Set attributes value.
      *
      * @param  array|null $value
      * @return $this
@@ -23,7 +29,7 @@ interface AdditionalPropertiesInterface
     public function &setAdditionalProperties(array $value = null);
 
     /**
-     * Returna attribute value
+     * Returna attribute value.
      *
      * @param  string $name
      * @param  mixed  $default
@@ -32,7 +38,7 @@ interface AdditionalPropertiesInterface
     public function getAdditionalProperty($name, $default = null);
 
     /**
-     * Set attribute value
+     * Set attribute value.
      *
      * @param  string $name
      * @param  mixed  $value

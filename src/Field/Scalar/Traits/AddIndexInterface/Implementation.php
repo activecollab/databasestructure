@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 
 use ActiveCollab\DatabaseStructure\IndexInterface;
@@ -10,7 +16,7 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 trait Implementation
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $add_index = false;
 
@@ -25,7 +31,7 @@ trait Implementation
     private $add_index_type;
 
     /**
-     * Return whether we should add an index for this field or not, defualt is FALSE
+     * Return whether we should add an index for this field or not, defualt is FALSE.
      *
      * @return string
      */
@@ -43,7 +49,7 @@ trait Implementation
     }
 
     /**
-     * Return add index type
+     * Return add index type.
      *
      * @return string
      */
@@ -53,7 +59,7 @@ trait Implementation
     }
 
     /**
-     * @param  boolean    $add_index
+     * @param  bool       $add_index
      * @param  array|null $context
      * @param  string     $type
      * @return $this

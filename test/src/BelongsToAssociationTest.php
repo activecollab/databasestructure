@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
@@ -13,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Type;
 class BelongsToAssociationTest extends TestCase
 {
     /**
-     * Test if target type name is pluralized association name by default
+     * Test if target type name is pluralized association name by default.
      */
     public function testTargetTypeNameIsPluralizedByDefault()
     {
@@ -21,7 +27,7 @@ class BelongsToAssociationTest extends TestCase
     }
 
     /**
-     * Test if target type name can be specified
+     * Test if target type name can be specified.
      */
     public function testTargetTypeNameCanBeSpecified()
     {
@@ -29,7 +35,7 @@ class BelongsToAssociationTest extends TestCase
     }
 
     /**
-     * Test if belongs to associations are not optional by default
+     * Test if belongs to associations are not optional by default.
      */
     public function testBelongsToIsRequiredByDefault()
     {
@@ -37,7 +43,7 @@ class BelongsToAssociationTest extends TestCase
     }
 
     /**
-     * Test if belongs to association can be set as optional
+     * Test if belongs to association can be set as optional.
      */
     public function testBelongsToCanBeSetAsOptiona()
     {
@@ -45,7 +51,7 @@ class BelongsToAssociationTest extends TestCase
     }
 
     /**
-     * Test if BelongsToAssociation properly passes info whether it is required or not
+     * Test if BelongsToAssociation properly passes info whether it is required or not.
      */
     public function testBelongsToProperlyPassesRequiredToFk()
     {
@@ -63,7 +69,7 @@ class BelongsToAssociationTest extends TestCase
     }
 
     /**
-     * Test constraint name for belongs to association
+     * Test constraint name for belongs to association.
      */
     public function testConstraintName()
     {

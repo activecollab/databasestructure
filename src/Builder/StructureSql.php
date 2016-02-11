@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 /**
@@ -8,7 +14,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 trait StructureSql
 {
     /**
-     * Return expected structure.sql file path
+     * Return expected structure.sql file path.
      *
      * @return null|string
      */
@@ -18,7 +24,7 @@ trait StructureSql
     }
 
     /**
-     * Append statement to SQL file
+     * Append statement to SQL file.
      *
      * @param string $statement
      * @param string $comment

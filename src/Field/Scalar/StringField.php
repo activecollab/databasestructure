@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
@@ -13,7 +20,7 @@ class StringField extends Field implements ModifierInterface
     use ModifierInterfaceImplementation;
 
     /**
-     * Return PHP native type
+     * Return PHP native type.
      *
      * @return string
      */
@@ -23,12 +30,12 @@ class StringField extends Field implements ModifierInterface
     }
 
     /**
-     * @var integer
+     * @var int
      */
     private $length = 191;
 
     /**
-     * Return field length (default is 191)
+     * Return field length (default is 191).
      *
      * @return int
      */
@@ -38,9 +45,9 @@ class StringField extends Field implements ModifierInterface
     }
 
     /**
-     * Set field lenght to 1 .. 191 value
+     * Set field lenght to 1 .. 191 value.
      *
-     * @param  integer $value
+     * @param  int   $value
      * @return $this
      */
     public function &length($value)

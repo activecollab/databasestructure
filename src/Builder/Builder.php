@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\BuilderInterface;
@@ -18,7 +24,7 @@ abstract class Builder implements BuilderInterface
     private $structure;
 
     /**
-     * Construct a new builder instance
+     * Construct a new builder instance.
      *
      * @param StructureInterface $structure
      */
@@ -36,21 +42,21 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * Registered event handlers
+     * Registered event handlers.
      *
      * @var array
      */
     private $event_handlers = [];
 
     /**
-     * Execute prior to type build
+     * Execute prior to type build.
      */
     public function preBuild()
     {
     }
 
     /**
-     * Build type
+     * Build type.
      *
      * @param \ActiveCollab\DatabaseStructure\TypeInterface $type
      */
@@ -59,14 +65,14 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * Execute after types are built
+     * Execute after types are built.
      */
     public function postBuild()
     {
     }
 
     /**
-     * Register an internal event handler
+     * Register an internal event handler.
      *
      * @param string   $event
      * @param callable $handler
@@ -89,7 +95,7 @@ abstract class Builder implements BuilderInterface
     }
 
     /**
-     * Trigger an internal event
+     * Trigger an internal event.
      *
      * @param string     $event
      * @param array|null $event_parameters

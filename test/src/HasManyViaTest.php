@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Association\HasManyViaAssociation;
@@ -19,7 +25,7 @@ class HasManyViaTest extends TestCase
     }
 
     /**
-     * Test target type name is name of the association by default
+     * Test target type name is name of the association by default.
      */
     public function testTargetTypeNameIsAssociationName()
     {

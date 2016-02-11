@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
@@ -18,7 +24,7 @@ class StringFieldTest extends TestCase
     }
 
     /**
-     * Test if modifier is set when a valid function name is provided
+     * Test if modifier is set when a valid function name is provided.
      */
     public function testModifierCanBeSet()
     {
@@ -27,7 +33,7 @@ class StringFieldTest extends TestCase
     }
 
     /**
-     * Check if length defaults to 191
+     * Check if length defaults to 191.
      */
     public function testLengthIs191ByDefault()
     {
@@ -35,7 +41,7 @@ class StringFieldTest extends TestCase
     }
 
     /**
-     * Check if length can be changed
+     * Check if length can be changed.
      */
     public function testLengthCanBeChanged()
     {

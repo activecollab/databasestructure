@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
@@ -15,7 +21,7 @@ use ActiveCollab\DatabaseStructure\Type;
 class UpdatedAtFieldTest extends TestCase
 {
     /**
-     * Test if updated_at is default field name
+     * Test if updated_at is default field name.
      */
     public function testDefaultName()
     {
@@ -23,7 +29,7 @@ class UpdatedAtFieldTest extends TestCase
     }
 
     /**
-     * Test if updated_at can be added to a type
+     * Test if updated_at can be added to a type.
      */
     public function testUpdatedAtCanBeAddedToType()
     {
@@ -34,7 +40,7 @@ class UpdatedAtFieldTest extends TestCase
     }
 
     /**
-     * Test if updated_at field adds index by default
+     * Test if updated_at field adds index by default.
      */
     public function testUpdatedAtAddsIndexByDefault()
     {
@@ -45,7 +51,7 @@ class UpdatedAtFieldTest extends TestCase
     }
 
     /**
-     * Test if updated_at field can be set so it does not add an index
+     * Test if updated_at field can be set so it does not add an index.
      */
     public function testIndexCreationCanBeSkipped()
     {
@@ -55,7 +61,7 @@ class UpdatedAtFieldTest extends TestCase
     }
 
     /**
-     * Test if updated_at field adds behaviour to the type
+     * Test if updated_at field adds behaviour to the type.
      */
     public function testUpdatedAtFieldAddsBehaviourToType()
     {
@@ -66,7 +72,7 @@ class UpdatedAtFieldTest extends TestCase
     }
 
     /**
-     * Test if field is automatically added to serialization list
+     * Test if field is automatically added to serialization list.
      */
     public function testFieldShouldBeSerialized()
     {

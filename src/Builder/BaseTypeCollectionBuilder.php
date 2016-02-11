@@ -1,9 +1,13 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
@@ -24,7 +28,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
         $result = [];
 
-        $result[] = "<?php";
+        $result[] = '<?php';
         $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {
@@ -49,7 +53,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
             if (count($implementations)) {
                 foreach ($implementations as $implementation) {
-                    $traits[] = '\\' . ltrim($implementation, '\\');;
+                    $traits[] = '\\' . ltrim($implementation, '\\');
                 }
             }
         }

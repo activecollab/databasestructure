@@ -1,19 +1,25 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\TypeInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -36,7 +42,7 @@ class EmailField extends Field implements RequiredInterface, UniqueInterface, Mo
     /**
      * @param string      $name
      * @param string|null $default_value
-     * @param boolean     $add_index = false
+     * @param bool        $add_index     = false
      */
     public function __construct($name, $default_value = null, $add_index = false)
     {
@@ -62,7 +68,7 @@ class EmailField extends Field implements RequiredInterface, UniqueInterface, Mo
     }
 
     /**
-     * Return default field value
+     * Return default field value.
      *
      * @return string|null
      */
@@ -94,7 +100,7 @@ class EmailField extends Field implements RequiredInterface, UniqueInterface, Mo
     }
 
     /**
-     * Prepare validator lines
+     * Prepare validator lines.
      *
      * @param string $indent
      * @param array  $result
@@ -105,7 +111,7 @@ class EmailField extends Field implements RequiredInterface, UniqueInterface, Mo
     }
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
      * @param TypeInterface $type
      */

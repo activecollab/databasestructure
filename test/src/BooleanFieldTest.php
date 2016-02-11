@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
@@ -18,7 +24,7 @@ class BooleanFieldTest extends TestCase
     }
 
     /**
-     * Test if default value is false
+     * Test if default value is false.
      */
     public function testDefaultValueIsFalse()
     {
@@ -26,7 +32,7 @@ class BooleanFieldTest extends TestCase
     }
 
     /**
-     * Test if default value can be changed to NULL
+     * Test if default value can be changed to NULL.
      */
     public function testDefaultValueCanBeChagnedToNull()
     {

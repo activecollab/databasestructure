@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
@@ -15,14 +21,14 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     use StructureSql;
 
     /**
-     * Build path. If empty, class will be built to memory
+     * Build path. If empty, class will be built to memory.
      *
      * @var string
      */
     private $build_path;
 
     /**
-     * Return build path
+     * Return build path.
      *
      * @return string
      */
@@ -32,7 +38,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     }
 
     /**
-     * Set build path. If empty, class will be built in memory
+     * Set build path. If empty, class will be built in memory.
      *
      * @param  string $value
      * @return $this
@@ -45,7 +51,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     }
 
     /**
-     * Execute after types are built
+     * Execute after types are built.
      */
     public function postBuild()
     {
@@ -95,7 +101,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     }
 
     /**
-     * Prepare belongs to constraint statement
+     * Prepare belongs to constraint statement.
      *
      * @param  TypeInterface        $type
      * @param  BelongsToAssociation $association
@@ -118,9 +124,8 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
         return implode("\n", $result);
     }
 
-
     /**
-     * Prepare has and belongs to many constraint statement
+     * Prepare has and belongs to many constraint statement.
      *
      * @param  string $type_name
      * @param  string $connection_table
@@ -141,7 +146,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     }
 
     /**
-     * Check if constraint exists at referenced table
+     * Check if constraint exists at referenced table.
      *
      * @param  string $constraint_name
      * @param  string $referencing_table

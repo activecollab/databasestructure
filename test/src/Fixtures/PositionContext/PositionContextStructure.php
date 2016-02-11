@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
@@ -12,7 +18,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 class PositionContextStructure extends Structure
 {
     /**
-     * Configure the structure
+     * Configure the structure.
      */
     public function configure()
     {

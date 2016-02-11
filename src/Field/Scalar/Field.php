@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
@@ -51,7 +57,7 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * Return default field value
+     * Return default field value.
      *
      * @return mixed
      */
@@ -72,7 +78,7 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * Return PHP native type
+     * Return PHP native type.
      *
      * @return string
      */
@@ -82,7 +88,7 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * Return value casting code
+     * Return value casting code.
      *
      * @param  string $variable_name
      * @return string
@@ -93,23 +99,23 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
-     * @param  TypeInterface $type
+     * @param TypeInterface $type
      */
     public function onAddedToType(TypeInterface &$type)
     {
     }
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $should_be_added_to_model = true;
 
     /**
-     * Return true if this field should be part of the model, or does it do its work in background
+     * Return true if this field should be part of the model, or does it do its work in background.
      *
-     * @return boolean
+     * @return bool
      */
     public function getShouldBeAddedToModel()
     {
@@ -117,7 +123,7 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * @param  boolean $value
+     * @param  bool  $value
      * @return $this
      */
     public function &setShouldBeAddedToModel($value)

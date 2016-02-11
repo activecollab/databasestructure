@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -21,9 +27,9 @@ trait Implementation
     private $uniquness_context = [];
 
     /**
-     * Return true if this field should be unique
+     * Return true if this field should be unique.
      *
-     * @return boolean
+     * @return bool
      */
     public function isUnique()
     {
@@ -31,7 +37,7 @@ trait Implementation
     }
 
     /**
-     * Return uniqueness context
+     * Return uniqueness context.
      *
      * @return array
      */
@@ -41,7 +47,7 @@ trait Implementation
     }
 
     /**
-     * Value of this column needs to be unique (in the given context)
+     * Value of this column needs to be unique (in the given context).
      *
      * @param  string $context
      * @return $this

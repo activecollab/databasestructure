@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface;
 
 /**
@@ -8,14 +14,14 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface
 trait Implementation
 {
     /**
-     * Cached log attributes value
+     * Cached log attributes value.
      *
      * @var array
      */
     private $decoded_additional_properties = false;
 
     /**
-     * Return additional log properties as array
+     * Return additional log properties as array.
      *
      * @return array
      */
@@ -34,7 +40,7 @@ trait Implementation
     }
 
     /**
-     * Set attributes value
+     * Set attributes value.
      *
      * @param  array|null $value
      * @return $this
@@ -49,7 +55,7 @@ trait Implementation
     }
 
     /**
-     * Returna attribute value
+     * Returna attribute value.
      *
      * @param  string $name
      * @param  mixed  $default
@@ -63,7 +69,7 @@ trait Implementation
     }
 
     /**
-     * Set attribute value
+     * Set attribute value.
      *
      * @param  string $name
      * @param  mixed  $value
@@ -91,14 +97,14 @@ trait Implementation
     // ---------------------------------------------------
 
     /**
-     * Get raw additional properties value
+     * Get raw additional properties value.
      *
      * @return string
      */
     abstract public function getRawAdditionalProperties();
 
     /**
-     * Set raw additional properties value
+     * Set raw additional properties value.
      *
      * @param  string $value
      * @return $this

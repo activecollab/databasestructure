@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
+use ActiveCollab\DatabaseObject\ObjectInterface;
 use ActiveCollab\DatabaseObject\Pool;
+use ActiveCollab\DatabaseObject\PoolInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext\PositionContextStructure;
-use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
-use ActiveCollab\DatabaseObject\ObjectInterface;
-use ActiveCollab\DatabaseObject\PoolInterface;
 
 /**
- * Purpose of this test is to see if files and tables are properly build from BlogStructure
+ * Purpose of this test is to see if files and tables are properly build from BlogStructure.
  *
  * @package ActiveCollab\DatabaseStructure\Test
  */
@@ -75,7 +81,7 @@ class PositionContextTest extends TestCase
     }
 
     /**
-     * Tear down test environment
+     * Tear down test environment.
      */
     public function tearDown()
     {
@@ -91,7 +97,7 @@ class PositionContextTest extends TestCase
     }
 
     /**
-     * Test if position modes are properly set for registered type
+     * Test if position modes are properly set for registered type.
      */
     public function testPositionModes()
     {
@@ -107,7 +113,7 @@ class PositionContextTest extends TestCase
     }
 
     /**
-     * Test if position context is empty
+     * Test if position context is empty.
      */
     public function testPositionContexts()
     {
@@ -123,14 +129,14 @@ class PositionContextTest extends TestCase
     }
 
     /**
-     * Test first record
+     * Test first record.
      */
     public function testTail()
     {
         /** @var ObjectInterface|PositionInterface $entry1 */
-        /** @var ObjectInterface|PositionInterface $entry2 */
-        /** @var ObjectInterface|PositionInterface $entry3 */
-        /** @var ObjectInterface|PositionInterface $entry4 */
+        /* @var ObjectInterface|PositionInterface $entry2 */
+        /* @var ObjectInterface|PositionInterface $entry3 */
+        /* @var ObjectInterface|PositionInterface $entry4 */
         $entry1 = $this->pool->produce($this->tail_type_class_name, ['application_id' => 1, 'shard_id' => 1]);
         $entry2 = $this->pool->produce($this->tail_type_class_name, ['application_id' => 1, 'shard_id' => 1]);
         $entry3 = $this->pool->produce($this->tail_type_class_name, ['application_id' => 1, 'shard_id' => 1]);
@@ -157,14 +163,14 @@ class PositionContextTest extends TestCase
     }
 
     /**
-     * Test if all new records go to the begining of the list
+     * Test if all new records go to the begining of the list.
      */
     public function testHead()
     {
         /** @var ObjectInterface|PositionInterface $entry1 */
-        /** @var ObjectInterface|PositionInterface $entry2 */
-        /** @var ObjectInterface|PositionInterface $entry3 */
-        /** @var ObjectInterface|PositionInterface $entry4 */
+        /* @var ObjectInterface|PositionInterface $entry2 */
+        /* @var ObjectInterface|PositionInterface $entry3 */
+        /* @var ObjectInterface|PositionInterface $entry4 */
         $entry1 = $this->pool->produce($this->head_type_class_name, ['application_id' => 1, 'shard_id' => 1]);
         $entry2 = $this->pool->produce($this->head_type_class_name, ['application_id' => 1, 'shard_id' => 1]);
         $entry3 = $this->pool->produce($this->head_type_class_name, ['application_id' => 1, 'shard_id' => 1]);

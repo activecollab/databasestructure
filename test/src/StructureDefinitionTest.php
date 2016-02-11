@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
@@ -15,7 +21,7 @@ class StructureDefinitionTest extends TestCase
     private $structure;
 
     /**
-     * Set up test environment
+     * Set up test environment.
      */
     public function setUp()
     {
@@ -25,7 +31,7 @@ class StructureDefinitionTest extends TestCase
     }
 
     /**
-     * Test if get config option returns NULL by default
+     * Test if get config option returns NULL by default.
      */
     public function testGetConfigOptionReturnNullByDefault()
     {
@@ -33,7 +39,7 @@ class StructureDefinitionTest extends TestCase
     }
 
     /**
-     * Test if default return value can be set for get config option
+     * Test if default return value can be set for get config option.
      */
     public function testGetConfigCanReturnSpecifiedDefaultValue()
     {
@@ -41,7 +47,7 @@ class StructureDefinitionTest extends TestCase
     }
 
     /**
-     * Test get set config option value
+     * Test get set config option value.
      */
     public function testGetSetConfigOption()
     {
@@ -51,7 +57,7 @@ class StructureDefinitionTest extends TestCase
     }
 
     /**
-     * Use structure's namespace by default
+     * Use structure's namespace by default.
      */
     public function testStructureUsesItsOwnNamespaceByDefault()
     {
@@ -59,7 +65,7 @@ class StructureDefinitionTest extends TestCase
     }
 
     /**
-     * Namespace can be set to a custom value
+     * Namespace can be set to a custom value.
      */
     public function testStructureNamespaceCanBeChanged()
     {
@@ -68,7 +74,7 @@ class StructureDefinitionTest extends TestCase
     }
 
     /**
-     * Global namespace defaults to empty string
+     * Global namespace defaults to empty string.
      */
     public function testGlobalNamespaceDefaultsToEmptyString()
     {

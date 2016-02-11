@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers;
 
-use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\Trigger\BeforeInsertTrigger;
 use ActiveCollab\DatabaseStructure\Trigger\BeforeUpdateTrigger;
 
@@ -13,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Trigger\BeforeUpdateTrigger;
 class TriggersStructure extends Structure
 {
     /**
-     * Configure the structure
+     * Configure the structure.
      */
     public function configure()
     {

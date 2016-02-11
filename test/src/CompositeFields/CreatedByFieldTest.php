@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedByOptionalInterface;
@@ -14,7 +20,7 @@ use ActiveCollab\DatabaseStructure\Type;
 class CreatedByFieldTest extends TestCase
 {
     /**
-     * Test default name
+     * Test default name.
      */
     public function testDefaultName()
     {
@@ -22,7 +28,7 @@ class CreatedByFieldTest extends TestCase
     }
 
     /**
-     * Check if required adds required interface
+     * Check if required adds required interface.
      */
     public function testRequiredAddsRequiedInterface()
     {
@@ -33,7 +39,7 @@ class CreatedByFieldTest extends TestCase
     }
 
     /**
-     * Check if optional adds optional interface
+     * Check if optional adds optional interface.
      */
     public function testOptionaAddsOptionalInterface()
     {

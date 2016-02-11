@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Object;
@@ -12,7 +18,7 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\ExtendThisObject;
 class BaseClassExtendsTest extends TestCase
 {
     /**
-     * Test default base class extends settings
+     * Test default base class extends settings.
      */
     public function testDefaultBaseClassExtends()
     {
@@ -23,7 +29,7 @@ class BaseClassExtendsTest extends TestCase
     }
 
     /**
-     * Test if we can override base class using a config
+     * Test if we can override base class using a config.
      */
     public function testBaseClassExtendsOverride()
     {

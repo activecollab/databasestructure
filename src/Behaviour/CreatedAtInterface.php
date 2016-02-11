@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 /**
@@ -8,14 +14,14 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 interface CreatedAtInterface
 {
     /**
-     * Return object ID
+     * Return object ID.
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
     /**
-     * Return value of created_at field
+     * Return value of created_at field.
      *
      * @return \ActiveCollab\DateValue\DateTimeValueInterface|null
      */

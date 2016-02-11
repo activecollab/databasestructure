@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Structure;
@@ -33,7 +39,7 @@ class CodeBuilderTest extends TestCase
     private $base_writer_reflection, $writer_reflection, $base_book_reflection, $book_reflection, $base_chapter_reflection, $chapter_reflection;
 
     /**
-     * Set up test environment
+     * Set up test environment.
      */
     public function setUp()
     {
@@ -67,7 +73,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test base collection classes are abstract
+     * Test base collection classes are abstract.
      */
     public function testBaseCollectionClassesAreAbstract()
     {
@@ -77,7 +83,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test collection classes are not abstract
+     * Test collection classes are not abstract.
      */
     public function testCollectionClassesAreNotAbstract()
     {
@@ -87,7 +93,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if collection classes extend base collection classes
+     * Test if collection classes extend base collection classes.
      */
     public function testCollectionClassInheritance()
     {
@@ -97,7 +103,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if base type classes are abstract
+     * Test if base type classes are abstract.
      */
     public function testBaseTypeClassesAreAbstract()
     {
@@ -107,7 +113,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if type classes are not abstract
+     * Test if type classes are not abstract.
      */
     public function testTypeClassesAreNotAbstract()
     {
@@ -117,7 +123,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test inheritance
+     * Test inheritance.
      */
     public function testTypeClassInhritance()
     {
@@ -127,7 +133,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test writer class table name
+     * Test writer class table name.
      */
     public function testWriterClassTable()
     {
@@ -135,7 +141,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test book class table name
+     * Test book class table name.
      */
     public function tesBookClassTable()
     {
@@ -143,7 +149,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test chapter class table name
+     * Test chapter class table name.
      */
     public function testChapterClassTable()
     {
@@ -151,7 +157,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test writer class fields
+     * Test writer class fields.
      */
     public function testWriterClassFields()
     {
@@ -166,9 +172,9 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test book class fields
+     * Test book class fields.
      */
-    public function testBookClassFields() 
+    public function testBookClassFields()
     {
         $this->assertEquals(['id', 'author_id', 'title'], $this->base_book_reflection->getDefaultProperties()['fields']);
 
@@ -181,11 +187,11 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test chapter class fileds
+     * Test chapter class fileds.
      */
     public function testChapterClassFields()
     {
-        $this->assertEquals(['id', 'book_id', 'title','position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'book_id', 'title', 'position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setId'));
@@ -196,7 +202,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test writer class default field values
+     * Test writer class default field values.
      */
     public function testWriterClassDefaultFieldValues()
     {
@@ -209,7 +215,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test book class default field values
+     * Test book class default field values.
      */
     public function testBookClassDefaultFieldValues()
     {
@@ -222,7 +228,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test chapter class default field values
+     * Test chapter class default field values.
      */
     public function testChapterClassDefaultFieldValues()
     {
@@ -237,7 +243,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test writers type order by
+     * Test writers type order by.
      */
     public function testWritersOrderBy()
     {
@@ -249,7 +255,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test books type order by
+     * Test books type order by.
      */
     public function testBooksOrderBy()
     {
@@ -261,7 +267,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test chapters type order by
+     * Test chapters type order by.
      */
     public function testChaptersOrderBy()
     {
@@ -273,7 +279,7 @@ class CodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if JSON serialize is properly defined in writer class
+     * Test if JSON serialize is properly defined in writer class.
      */
     public function testJsonSerializeIsDefinedInBookClass()
     {

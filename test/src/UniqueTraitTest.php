@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
@@ -12,7 +18,7 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 class UniqueTraitTest extends TestCase
 {
     /**
-     * Test unique automatically adds index
+     * Test unique automatically adds index.
      */
     public function testUniqueAutomaticallyAddsIndex()
     {
@@ -25,7 +31,7 @@ class UniqueTraitTest extends TestCase
     }
 
     /**
-     * Test if index inehrits key's unique context
+     * Test if index inehrits key's unique context.
      */
     public function testIndexUsesUniqueContext()
     {

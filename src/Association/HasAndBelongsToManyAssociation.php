@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
@@ -34,7 +40,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Order releated records by
+     * Order releated records by.
      *
      * @var string
      */
@@ -60,7 +66,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Return left field name
+     * Return left field name.
      *
      * @return string
      */
@@ -70,7 +76,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Return right field name
+     * Return right field name.
      *
      * @return string
      */
@@ -80,7 +86,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Return left constraint name
+     * Return left constraint name.
      *
      * @return string
      */
@@ -90,7 +96,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Return right constraint name
+     * Return right constraint name.
      *
      * @return string
      */
@@ -100,7 +106,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Return connection table name
+     * Return connection table name.
      *
      * @return string
      */
@@ -110,7 +116,7 @@ class HasAndBelongsToManyAssociation extends Association implements AssociationI
     }
 
     /**
-     * Build class methods
+     * Build class methods.
      *
      * @param StructureInterface $structure
      * @param TypeInterface      $source_type

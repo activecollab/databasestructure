@@ -1,9 +1,13 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
-use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 use ActiveCollab\DatabaseStructure\Type;
 
@@ -13,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Type;
 class HasOneAssociationTest extends TestCase
 {
     /**
-     * Test if target type name is pluralized association name by default
+     * Test if target type name is pluralized association name by default.
      */
     public function testTargetTypeNameIsPluralizedByDefault()
     {
@@ -21,7 +25,7 @@ class HasOneAssociationTest extends TestCase
     }
 
     /**
-     * Test if target type name can be specified
+     * Test if target type name can be specified.
      */
     public function testTargetTypeNameCanBeSpecified()
     {

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -10,7 +16,7 @@ use ActiveCollab\DatabaseStructure\FieldInterface;
 interface InjectFieldsInsterface
 {
     /**
-     * Return a list of fields that are to be added to the source type
+     * Return a list of fields that are to be added to the source type.
      *
      * @return FieldInterface[]
      */

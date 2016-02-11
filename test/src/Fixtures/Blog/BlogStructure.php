@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Blog;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
@@ -14,14 +20,14 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
 /**
- * Blog structure is used for testing how builers are doing their job
+ * Blog structure is used for testing how builers are doing their job.
  *
  * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Blog
  */
 class BlogStructure extends Structure
 {
     /**
-     * Configure the structure
+     * Configure the structure.
      */
     public function configure()
     {

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 /**
@@ -14,14 +20,14 @@ interface FieldInterface
     const SIZE_BIG = 'big';
 
     /**
-     * Return field name
+     * Return field name.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
      * @param TypeInterface $type
      */

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 use InvalidArgumentException;
@@ -38,10 +44,10 @@ class Index implements IndexInterface
         if (is_array($fields) || $fields === null) {
             $fields = empty($fields) ? [$name] : $fields;
         } else {
-            throw new InvalidArgumentException("Fields value can be an array of field names or NULL");
+            throw new InvalidArgumentException('Fields value can be an array of field names or NULL');
         }
 
-        if (!in_array($index_type, [ self::PRIMARY, self::UNIQUE, self::INDEX, self::FULLTEXT ])) {
+        if (!in_array($index_type, [self::PRIMARY, self::UNIQUE, self::INDEX, self::FULLTEXT])) {
             throw new InvalidArgumentException("Value '$index_type' is not a valid index type");
         }
 

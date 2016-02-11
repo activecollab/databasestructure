@@ -1,15 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
+use ActiveCollab\DatabaseConnection\Result\Result;
 use ActiveCollab\DatabaseObject\Pool;
+use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail\PositionTailStructure;
-use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
-use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers\TriggersStructure;
-use ActiveCollab\DatabaseConnection\Result\Result;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -65,7 +70,7 @@ class TriggersTest extends TestCase
     }
 
     /**
-     * Tear down test environment
+     * Tear down test environment.
      */
     public function tearDown()
     {
@@ -83,7 +88,7 @@ class TriggersTest extends TestCase
     }
 
     /**
-     * Test if triggers are created
+     * Test if triggers are created.
      */
     public function testTriggersAreCreated()
     {
@@ -94,7 +99,7 @@ class TriggersTest extends TestCase
     }
 
     /**
-     * Test before insert trigger
+     * Test before insert trigger.
      */
     public function testBeforeInsertTrigger()
     {
@@ -108,7 +113,7 @@ class TriggersTest extends TestCase
     }
 
     /**
-     * Test before update trigger
+     * Test before update trigger.
      */
     public function testBeforeUpdateTrigger()
     {

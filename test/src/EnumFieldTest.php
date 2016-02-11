@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
@@ -10,7 +16,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
 class EnumFieldTest extends TestCase
 {
     /**
-     * Test if array of possibilities is empty by default
+     * Test if array of possibilities is empty by default.
      */
     public function testEmptyArrayOfPossibilitiesByDefault()
     {
@@ -21,7 +27,7 @@ class EnumFieldTest extends TestCase
     }
 
     /**
-     * Test possibilities can be changed
+     * Test possibilities can be changed.
      */
     public function testPossibilitiesCanBeChanged()
     {

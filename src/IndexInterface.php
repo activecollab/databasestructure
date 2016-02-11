@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 /**
@@ -8,7 +14,7 @@ namespace ActiveCollab\DatabaseStructure;
 interface IndexInterface
 {
     /**
-     * Index types
+     * Index types.
      */
     const INDEX = 'INDEX';
     const PRIMARY = 'PRIMARY';

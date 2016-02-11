@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Type;
-use ActiveCollab\DatabaseStructure\Field\Composite\IsArchivedField;
 use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface\Implementation as IsArchivedInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Composite\IsArchivedField;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -13,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface\Implementation 
 class IsArchivedFieldTest extends TestCase
 {
     /**
-     * Test if is_archived is default field name
+     * Test if is_archived is default field name.
      */
     public function testDefaultName()
     {
@@ -21,7 +27,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if FALSE is the default value
+     * Test if FALSE is the default value.
      */
     public function testFalseIsDefaultValue()
     {
@@ -29,7 +35,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if is_archived can be added to a type
+     * Test if is_archived can be added to a type.
      */
     public function testIsArchiveCanBeAddedToType()
     {
@@ -40,7 +46,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if cascade property is FALSE by default
+     * Test if cascade property is FALSE by default.
      */
     public function testCascadeIsFalseByDefault()
     {
@@ -48,7 +54,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if cascade can be changed to TRUE
+     * Test if cascade can be changed to TRUE.
      */
     public function testCascadeCanBeChanged()
     {
@@ -56,7 +62,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if original_is_archived field is not added when is_archived is not cascaded
+     * Test if original_is_archived field is not added when is_archived is not cascaded.
      */
     public function testIsArchivedDoesNotAddOriginalFieldByDefault()
     {
@@ -72,7 +78,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if original_is_archived field is added when is_archived is cascaded
+     * Test if original_is_archived field is added when is_archived is cascaded.
      */
     public function testIsArchivedAddsOriginalFieldWhenCascaded()
     {
@@ -88,7 +94,7 @@ class IsArchivedFieldTest extends TestCase
     }
 
     /**
-     * Test if is_archived field adds behaviour to the type
+     * Test if is_archived field adds behaviour to the type.
      */
     public function testIsArchivedFieldAddsBehaviourToType()
     {

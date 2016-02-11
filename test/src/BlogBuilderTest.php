@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Blog\BlogStructure;
@@ -7,7 +13,7 @@ use ActiveCollab\FileSystem\Adapter\LocalAdapter;
 use ActiveCollab\FileSystem\FileSystem;
 
 /**
- * Purpose of this test is to see if files and tables are properly build from BlogStructure
+ * Purpose of this test is to see if files and tables are properly build from BlogStructure.
  *
  * @package ActiveCollab\DatabaseStructure\Test
  */
@@ -35,7 +41,7 @@ class BlogBuilderTest extends TestCase
      * @param array  $data
      * @param string $dataName
      */
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -70,7 +76,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if all structure directories are added
+     * Test if all structure directories are added.
      */
     public function testDirectories()
     {
@@ -80,7 +86,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if base type classes are properly build
+     * Test if base type classes are properly build.
      */
     public function testBuildBaseTypes()
     {
@@ -90,7 +96,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if type classes are properly build
+     * Test if type classes are properly build.
      */
     public function testBuildTypes()
     {
@@ -100,7 +106,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if base type collections are properly build
+     * Test if base type collections are properly build.
      */
     public function testBuildBaseTypeCollections()
     {
@@ -110,7 +116,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if type collections are properly build
+     * Test if type collections are properly build.
      */
     public function testBuildTypeCollections()
     {
@@ -120,7 +126,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if types.php is properly generated
+     * Test if types.php is properly generated.
      */
     public function testBuildTypesPhp()
     {
@@ -128,7 +134,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if structure.sql is properly generated
+     * Test if structure.sql is properly generated.
      */
     public function testBuildStructureSql()
     {
@@ -136,7 +142,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Check if all tables are created
+     * Check if all tables are created.
      */
     public function testTablesCreated()
     {
@@ -149,7 +155,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test indexes in categories table
+     * Test indexes in categories table.
      */
     public function testCategoriesIndexes()
     {
@@ -163,7 +169,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test indexes in posts table
+     * Test indexes in posts table.
      */
     public function testPostsIndexes()
     {
@@ -177,7 +183,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test indexes in comments table
+     * Test indexes in comments table.
      */
     public function testCommentsIndexes()
     {
@@ -192,7 +198,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test indexes in categories posts connection table
+     * Test indexes in categories posts connection table.
      */
     public function testCategoriesPostsIndexes()
     {
@@ -207,7 +213,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test constraints pointing at categories
+     * Test constraints pointing at categories.
      */
     public function testConstraintsPointingAtCategories()
     {
@@ -218,7 +224,7 @@ class BlogBuilderTest extends TestCase
 
         $this->assertArrayHasKey('category_id_constraint', $categories_constraints);
 
-        list ($from_table, $from_field, $to_table, $to_field) = $categories_constraints['category_id_constraint'];
+        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints['category_id_constraint'];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('category_id', $from_field);
@@ -227,7 +233,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test constraints pointing at categories_posts
+     * Test constraints pointing at categories_posts.
      */
     public function testConstraintsPointingAtCategoriesPosts()
     {
@@ -238,7 +244,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test constraints pointing at posts
+     * Test constraints pointing at posts.
      */
     public function testConstraintsPointingAtPosts()
     {
@@ -249,7 +255,7 @@ class BlogBuilderTest extends TestCase
 
         $this->assertArrayHasKey('post_id_constraint', $posts_constraints);
 
-        list ($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_id_constraint'];
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_id_constraint'];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('post_id', $from_field);
@@ -258,7 +264,7 @@ class BlogBuilderTest extends TestCase
 
         $this->assertArrayHasKey('comment_post_constraint', $posts_constraints);
 
-        list ($from_table, $from_field, $to_table, $to_field) = $posts_constraints['comment_post_constraint'];
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['comment_post_constraint'];
 
         $this->assertEquals('comments', $from_table);
         $this->assertEquals('post_id', $from_field);
@@ -267,7 +273,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test constraints pointing at comments
+     * Test constraints pointing at comments.
      */
     public function testConstraintsPointingAtComments()
     {
@@ -278,7 +284,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Return table index names
+     * Return table index names.
      *
      * @param  string $table_name
      * @return array
@@ -301,7 +307,7 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Return constraints pointing at $table_name
+     * Return constraints pointing at $table_name.
      *
      * @param  string $table_name
      * @return array

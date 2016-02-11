@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Index;
@@ -19,7 +25,7 @@ class IndexTest extends TestCase
     }
 
     /**
-     * Test if index name is used as a field by default
+     * Test if index name is used as a field by default.
      */
     public function testDefaultFieldIsIndexName()
     {
@@ -30,7 +36,7 @@ class IndexTest extends TestCase
     }
 
     /**
-     * Test valid field arguments
+     * Test valid field arguments.
      */
     public function testNullOrArrayAllowedForFields()
     {
@@ -40,7 +46,7 @@ class IndexTest extends TestCase
     }
 
     /**
-     * Test default index type
+     * Test default index type.
      */
     public function testDefaultIndexType()
     {
@@ -49,7 +55,7 @@ class IndexTest extends TestCase
     }
 
     /**
-     * Test index type is applied when set
+     * Test index type is applied when set.
      */
     public function testIndexTypeCanBeSet()
     {

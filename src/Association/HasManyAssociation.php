@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
@@ -16,7 +22,7 @@ class HasManyAssociation extends Association implements AssociationInterface
     use AssociationInterface\Implementation;
 
     /**
-     * Order releated records by
+     * Order releated records by.
      *
      * @var string
      */
@@ -60,7 +66,7 @@ class HasManyAssociation extends Association implements AssociationInterface
     }
 
     /**
-     * Build class methods
+     * Build class methods.
      *
      * @param StructureInterface $structure
      * @param TypeInterface      $source_type
@@ -233,7 +239,7 @@ class HasManyAssociation extends Association implements AssociationInterface
     }
 
     /**
-     * Return foreign key field name from type instance
+     * Return foreign key field name from type instance.
      *
      * @param  TypeInterface $type
      * @return string
@@ -244,7 +250,7 @@ class HasManyAssociation extends Association implements AssociationInterface
     }
 
     /**
-     * Return full instance class from namespace and type
+     * Return full instance class from namespace and type.
      *
      * @param  string        $namespace
      * @param  TypeInterface $type

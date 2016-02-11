@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
@@ -15,7 +21,7 @@ abstract class Association implements AssociationInterface
     private $source_type_name;
 
     /**
-     * Return source type name
+     * Return source type name.
      *
      * @return string
      */
@@ -25,7 +31,7 @@ abstract class Association implements AssociationInterface
     }
 
     /**
-     * Set source type name
+     * Set source type name.
      *
      * @param  string $source_type_name
      * @return $this

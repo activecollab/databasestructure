@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
@@ -10,7 +16,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 class FieldDefinitionTest extends TestCase
 {
     /**
-     * Test if scalar fields are added to the model by default
+     * Test if scalar fields are added to the model by default.
      */
     public function testScalarFieldsShouldBeAddedToModelByDefault()
     {
@@ -18,7 +24,7 @@ class FieldDefinitionTest extends TestCase
     }
 
     /**
-     * Test if scalar fields can be omitted from model
+     * Test if scalar fields can be omitted from model.
      */
     public function testScalarFieldsCanBeOmittedFromModel()
     {

@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use mysqli;
 use ActiveCollab\DatabaseConnection\Connection;
+use mysqli;
 use RuntimeException;
 
 /**
@@ -22,7 +28,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected $connection;
 
     /**
-     * Set up test environment
+     * Set up test environment.
      */
     public function setUp()
     {
@@ -54,7 +60,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tear down test environment
+     * Tear down test environment.
      */
     public function tearDown()
     {

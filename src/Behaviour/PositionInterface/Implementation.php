@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
@@ -12,11 +18,11 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 trait Implementation
 {
     /**
-     * Say hello to the parent class
+     * Say hello to the parent class.
      */
     public function ActiveCollabDatabaseStructureBehaviourPositionInterfaceImplementation()
     {
-        $this->registerEventHandler('on_before_save', function() {
+        $this->registerEventHandler('on_before_save', function () {
             if (!$this->getPosition()) {
                 $table_name = $this->connection->escapeTableName($this->getTableName());
                 $conditions = $this->getPositionContextConditions();
@@ -35,13 +41,13 @@ trait Implementation
     }
 
     /**
-     * Return position context conditions
+     * Return position context conditions.
      *
      * @return string
      */
     private function getPositionContextConditions()
     {
-        $pattern = $this->pool->getTypeProperty(get_class($this), 'position_context_conditions_pattern', function() {
+        $pattern = $this->pool->getTypeProperty(get_class($this), 'position_context_conditions_pattern', function () {
             $conditions = [];
 
             foreach ($this->getPositionContext() as $field_name) {
@@ -65,18 +71,18 @@ trait Implementation
     }
 
     /**
-     * @return integer
+     * @return int
      */
     abstract public function getPosition();
 
     /**
-     * @param  integer $value
+     * @param  int   $value
      * @return $this
      */
     abstract public function &setPosition($value);
 
     /**
-     * Return position mode
+     * Return position mode.
      *
      * There are two modes:
      *
@@ -88,14 +94,14 @@ trait Implementation
     abstract public function getPositionMode();
 
     /**
-     * Return context in which position should be set
+     * Return context in which position should be set.
      *
      * @return array
      */
     abstract public function getPositionContext();
 
     /**
-     * Return value of table name
+     * Return value of table name.
      *
      * @return string
      */
@@ -111,7 +117,7 @@ trait Implementation
     abstract public function getFieldValue($field, $default = null);
 
     /**
-     * Register an internal event handler
+     * Register an internal event handler.
      *
      * @param string   $event
      * @param callable $handler

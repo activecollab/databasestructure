@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -59,7 +65,7 @@ class PositionField extends Field
     }
 
     /**
-     * Return default field value
+     * Return default field value.
      *
      * @return mixed
      */
@@ -74,7 +80,7 @@ class PositionField extends Field
     private $context = [];
 
     /**
-     * Return position context
+     * Return position context.
      *
      * @return string[]
      */
@@ -84,7 +90,7 @@ class PositionField extends Field
     }
 
     /**
-     * Set context in which position is calculated and maintained (usually within context of a foreign key)
+     * Set context in which position is calculated and maintained (usually within context of a foreign key).
      *
      * @param  string $fields
      * @return $this
@@ -97,7 +103,7 @@ class PositionField extends Field
     }
 
     /**
-     * Return position mode
+     * Return position mode.
      *
      * @return string
      */
@@ -107,7 +113,7 @@ class PositionField extends Field
     }
 
     /**
-     * Switch position mode to head
+     * Switch position mode to head.
      *
      * @return $this
      */
@@ -119,7 +125,7 @@ class PositionField extends Field
     }
 
     /**
-     * Switch position mode to tail
+     * Switch position mode to tail.
      *
      * @return $this
      */
@@ -131,7 +137,7 @@ class PositionField extends Field
     }
 
     /**
-     * Return fields that this field is composed of
+     * Return fields that this field is composed of.
      *
      * @return FieldInterface[]
      */
@@ -141,7 +147,7 @@ class PositionField extends Field
     }
 
     /**
-     * Return methods that this field needs to inject in base class
+     * Return methods that this field needs to inject in base class.
      *
      * @param string $indent
      * @param array  $result
@@ -149,7 +155,7 @@ class PositionField extends Field
     public function getBaseClassMethods($indent, array &$result)
     {
         $methods = [];
-        
+
         $methods[] = '/**';
         $methods[] = ' * Return position mode';
         $methods[] = ' *';
@@ -172,7 +178,7 @@ class PositionField extends Field
         $methods[] = ' */';
         $methods[] = 'public function getPositionContext()';
         $methods[] = '{';
-        $methods[] = '    return [' . implode(', ', array_map(function($field_name) {
+        $methods[] = '    return [' . implode(', ', array_map(function ($field_name) {
             return var_export($field_name, true);
         }, $this->getContext())) . '];';
         $methods[] = '}';
@@ -183,7 +189,7 @@ class PositionField extends Field
     }
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
      * @param TypeInterface $type
      */

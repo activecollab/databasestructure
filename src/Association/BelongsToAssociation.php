@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
-use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
@@ -20,7 +26,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     use AssociationInterface\Implementation;
 
     /**
-     * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:
+     * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:.
      *
      * new BelongsToAssociation('author')
      *
@@ -49,9 +55,9 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     private $is_required = true;
 
     /**
-     * Return true if this field is required
+     * Return true if this field is required.
      *
-     * @return boolean
+     * @return bool
      */
     public function isRequired()
     {
@@ -59,9 +65,9 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Value of this column is required
+     * Value of this column is required.
      *
-     * @param  boolean $value
+     * @param  bool  $value
      * @return $this
      */
     public function &required($value = true)
@@ -72,7 +78,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Return a list of fields that are to be added to the source type
+     * Return a list of fields that are to be added to the source type.
      *
      * @return FieldInterface[]
      */
@@ -82,7 +88,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Return a list of indexes
+     * Return a list of indexes.
      *
      * @return IndexInterface[]
      */
@@ -92,7 +98,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Return field name
+     * Return field name.
      *
      * @return string
      */
@@ -102,7 +108,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Return association name
+     * Return association name.
      *
      * @return string
      */
@@ -112,7 +118,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Build class methods
+     * Build class methods.
      *
      * @param StructureInterface $structure
      * @param TypeInterface      $source_type
@@ -146,7 +152,6 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '    {';
         $result[] = '       return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
         $result[] = '    }';
-
 
         $result[] = '';
         $result[] = '    /**';

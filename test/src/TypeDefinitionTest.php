@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ObjectClassDescendent;
+use ActiveCollab\DatabaseStructure\Type;
 use DateTime;
 
 /**
@@ -14,7 +20,7 @@ use DateTime;
 class TypeDefinitionTest extends TestCase
 {
     /**
-     * Test if types extend Object class of DatabaseObject package by default
+     * Test if types extend Object class of DatabaseObject package by default.
      */
     public function testTypeInheritsDatabaseObjectByDefault()
     {
@@ -22,7 +28,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test if types can extend any class that descends from Object class of DatabaseObject package
+     * Test if types can extend any class that descends from Object class of DatabaseObject package.
      */
     public function testBaseClassCanExtendObjectClassDescendent()
     {
@@ -39,7 +45,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test if table name defaults to type name
+     * Test if table name defaults to type name.
      */
     public function testTableNameDefaultsToTypeName()
     {
@@ -47,7 +53,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test if table name can be changed
+     * Test if table name can be changed.
      */
     public function testTableNameCanBeChanged()
     {
@@ -56,7 +62,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Check if expected dataset size is normal
+     * Check if expected dataset size is normal.
      */
     public function testExcepectedDatasetSizeDefaultsToNormal()
     {
@@ -64,7 +70,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Check if expected dataset size can be changed
+     * Check if expected dataset size can be changed.
      */
     public function testExpectedDatasetSizeCanBeChanged()
     {
@@ -72,7 +78,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test if change to expected dataset size changes configuration of ID field
+     * Test if change to expected dataset size changes configuration of ID field.
      */
     public function testExpectedDatasetSizeChangeChangesIdField()
     {
@@ -85,7 +91,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test default order by value
+     * Test default order by value.
      */
     public function testDefaultOrderBy()
     {
@@ -109,7 +115,7 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test if order by can be changed
+     * Test if order by can be changed.
      */
     public function testOrderByCanBeChanged()
     {

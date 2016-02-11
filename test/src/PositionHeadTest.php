@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Pool;
+use ActiveCollab\DatabaseObject\PoolInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionHead\PositionHeadStructure;
-use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
-use ActiveCollab\DatabaseObject\PoolInterface;
 
 /**
- * Purpose of this test is to see if files and tables are properly build from BlogStructure
+ * Purpose of this test is to see if files and tables are properly build from BlogStructure.
  *
  * @package ActiveCollab\DatabaseStructure\Test
  */
@@ -60,7 +66,7 @@ class PositionHeadTest extends TestCase
     }
 
     /**
-     * Tear down test environment
+     * Tear down test environment.
      */
     public function tearDown()
     {
@@ -72,7 +78,7 @@ class PositionHeadTest extends TestCase
     }
 
     /**
-     * Test if position mode is head
+     * Test if position mode is head.
      */
     public function testPositionModeIsHead()
     {
@@ -83,7 +89,7 @@ class PositionHeadTest extends TestCase
     }
 
     /**
-     * Test if position context is empty
+     * Test if position context is empty.
      */
     public function testPositionContextIsEmptyArray()
     {
@@ -94,7 +100,7 @@ class PositionHeadTest extends TestCase
     }
 
     /**
-     * Test first record
+     * Test first record.
      */
     public function testFirstRecord()
     {
@@ -107,13 +113,13 @@ class PositionHeadTest extends TestCase
     }
 
     /**
-     * Test if all new records go to the begining of the list
+     * Test if all new records go to the begining of the list.
      */
     public function testNewRecordsGoToHead()
     {
         /** @var PositionInterface $entry1 */
-        /** @var PositionInterface $entry2 */
-        /** @var PositionInterface $entry3 */
+        /* @var PositionInterface $entry2 */
+        /* @var PositionInterface $entry3 */
         $entry1 = $this->pool->produce($this->type_class_name);
         $entry2 = $this->pool->produce($this->type_class_name);
         $entry3 = $this->pool->produce($this->type_class_name);

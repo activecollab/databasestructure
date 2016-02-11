@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\StructureInterface;
@@ -11,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\AddPermissions\AddPermissionsSt
 class AddPermissionsConfigTest extends TestCase
 {
     /**
-     * Test if add permissions is not set by default
+     * Test if add permissions is not set by default.
      */
     public function testAddPermissionsIsNullByDefault()
     {
@@ -19,7 +25,7 @@ class AddPermissionsConfigTest extends TestCase
     }
 
     /**
-     * Test if we can change config option using a constructor argument in our test structure
+     * Test if we can change config option using a constructor argument in our test structure.
      */
     public function testCanChangeAddPermissionsStructureConfigViaConstructor()
     {
@@ -31,7 +37,7 @@ class AddPermissionsConfigTest extends TestCase
     }
 
     /**
-     * Test if structure automatically adds permissive permissions when configured to do that
+     * Test if structure automatically adds permissive permissions when configured to do that.
      */
     public function testAddPermissivePermissions()
     {
@@ -44,7 +50,7 @@ class AddPermissionsConfigTest extends TestCase
     }
 
     /**
-     * Test if structure automatically adds restrictive permissions when configured to do that
+     * Test if structure automatically adds restrictive permissions when configured to do that.
      */
     public function testAddRestrictivePermissions()
     {

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
@@ -28,14 +34,14 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     use StructureSql;
 
     /**
-     * Build path. If empty, class will be built to memory
+     * Build path. If empty, class will be built to memory.
      *
      * @var string
      */
     private $build_path;
 
     /**
-     * Return build path
+     * Return build path.
      *
      * @return string
      */
@@ -45,7 +51,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Set build path. If empty, class will be built in memory
+     * Set build path. If empty, class will be built in memory.
      *
      * @param  string $value
      * @return $this
@@ -58,7 +64,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Execute prior to type build
+     * Execute prior to type build.
      */
     public function preBuild()
     {
@@ -105,7 +111,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare CREATE TABLE statement for the given type
+     * Prepare CREATE TABLE statement for the given type.
      *
      * @param  TypeInterface $type
      * @return string
@@ -135,7 +141,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare field statement based on the field settings
+     * Prepare field statement based on the field settings.
      *
      * @param  ScalarField $field
      * @return string
@@ -156,7 +162,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare type definition for the given field
+     * Prepare type definition for the given field.
      *
      * @param  ScalarField $field
      * @return string
@@ -205,7 +211,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
             return $result;
         } elseif ($field instanceof EnumField) {
-            return 'ENUM(' . implode(',', array_map(function($possibility) {
+            return 'ENUM(' . implode(',', array_map(function ($possibility) {
                 return $this->getConnection()->escapeValue($possibility);
             }, $field->getPossibilities())) . ')';
         } elseif ($field instanceof FloatField) {
@@ -237,7 +243,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare default value
+     * Prepare default value.
      *
      * @param  ScalarField $field
      * @return string
@@ -264,7 +270,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare index statement
+     * Prepare index statement.
      *
      * @param  IndexInterface $index
      * @return string
@@ -286,13 +292,13 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                 break;
         }
 
-        return $result . ' (' . implode(', ', array_map(function($field_name) {
+        return $result . ' (' . implode(', ', array_map(function ($field_name) {
             return $this->getConnection()->escapeFieldName($field_name);
         }, $index->getFields())) . ')';
     }
 
     /**
-     * Return name of the connection that will be created for has and belongs to many association
+     * Return name of the connection that will be created for has and belongs to many association.
      *
      * @param  TypeInterface $source
      * @param  TypeInterface $target
@@ -304,7 +310,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare create connection table statement
+     * Prepare create connection table statement.
      *
      * @param  TypeInterface                  $source
      * @param  TypeInterface                  $target

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 /**
@@ -8,19 +14,19 @@ namespace ActiveCollab\DatabaseStructure;
 interface BuilderInterface
 {
     /**
-     * Execute prior to type build
+     * Execute prior to type build.
      */
     public function preBuild();
 
     /**
-     * Build type
+     * Build type.
      *
      * @param \ActiveCollab\DatabaseStructure\TypeInterface $type
      */
     public function buildType(TypeInterface $type);
 
     /**
-     * Execute after types are built
+     * Execute after types are built.
      */
     public function postBuild();
 
@@ -30,7 +36,7 @@ interface BuilderInterface
     public function getStructure();
 
     /**
-     * Register an internal event handler
+     * Register an internal event handler.
      *
      * @param string   $event
      * @param callable $handler

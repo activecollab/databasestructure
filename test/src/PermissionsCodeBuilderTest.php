@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
@@ -44,7 +50,7 @@ class PermissionsCodeBuilderTest extends TestCase
     private $changed_element_base_class_reflection, $changed_element_class_reflection;
 
     /**
-     * Set up test environment
+     * Set up test environment.
      */
     public function setUp()
     {
@@ -70,7 +76,7 @@ class PermissionsCodeBuilderTest extends TestCase
     }
 
     /**
-     * Test structure settings
+     * Test structure settings.
      */
     public function testStructureSettings()
     {
@@ -88,7 +94,7 @@ class PermissionsCodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if base classes implement the interface
+     * Test if base classes implement the interface.
      */
     public function testBaseClassesImplementsPermissionsInterface()
     {
@@ -98,7 +104,7 @@ class PermissionsCodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if permissive trait is added to permissive class
+     * Test if permissive trait is added to permissive class.
      */
     public function testPermissiveClassImplementsPermissiveTrait()
     {
@@ -107,7 +113,7 @@ class PermissionsCodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if restrictive trait is added to restrictive class
+     * Test if restrictive trait is added to restrictive class.
      */
     public function testRestrictiveClassImplementsRestrictiveTrait()
     {
@@ -116,7 +122,7 @@ class PermissionsCodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if reverted class does not have restrictire nor permissive traits
+     * Test if reverted class does not have restrictire nor permissive traits.
      */
     public function testRevertedClassImplementsRestrictiveTrait()
     {
@@ -125,7 +131,7 @@ class PermissionsCodeBuilderTest extends TestCase
     }
 
     /**
-     * Test if reverted class does not have restrictire nor permissive traits
+     * Test if reverted class does not have restrictire nor permissive traits.
      */
     public function testCahngedClassImplementsRestrictiveTrait()
     {

@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface\Implementation as AdditionalPropertiesInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\AdditionalPropertiesField;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -13,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Field\Composite\AdditionalPropertiesField;
 class AdditionalProprtiesFieldTest extends TestCase
 {
     /**
-     * Test if raw_additional_properties is default field name
+     * Test if raw_additional_properties is default field name.
      */
     public function testDefaultName()
     {
@@ -21,7 +27,7 @@ class AdditionalProprtiesFieldTest extends TestCase
     }
 
     /**
-     * Test if 0 is the default value
+     * Test if 0 is the default value.
      */
     public function testNullIsDefaultValue()
     {
@@ -29,7 +35,7 @@ class AdditionalProprtiesFieldTest extends TestCase
     }
 
     /**
-     * Test if additinal properties field can be added to a type
+     * Test if additinal properties field can be added to a type.
      */
     public function testAdditionalPropertiesCanBeAddedToType()
     {
@@ -40,7 +46,7 @@ class AdditionalProprtiesFieldTest extends TestCase
     }
 
     /**
-     * Test if additional properties field adds behaviour to the type
+     * Test if additional properties field adds behaviour to the type.
      */
     public function testAdditionalPropertiesFieldAddsBehaviourToType()
     {

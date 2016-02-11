@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
@@ -80,7 +86,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
 
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
         $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
-        
+
         $longest_docs_param_type_name = max(strlen($target_instance_class), 'array|null', '$this');
 
         $result[] = '';

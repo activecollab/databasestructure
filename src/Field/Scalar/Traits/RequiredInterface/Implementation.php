@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 
 /**
@@ -13,9 +19,9 @@ trait Implementation
     private $is_required = false;
 
     /**
-     * Return true if this field is required
+     * Return true if this field is required.
      *
-     * @return boolean
+     * @return bool
      */
     public function isRequired()
     {
@@ -23,9 +29,9 @@ trait Implementation
     }
 
     /**
-     * Value of this column is required
+     * Value of this column is required.
      *
-     * @param  boolean $value
+     * @param  bool  $value
      * @return $this
      */
     public function &required($value = true)

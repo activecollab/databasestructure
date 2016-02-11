@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 /**
@@ -26,7 +32,7 @@ class DecimalField extends NumberField
     }
 
     /**
-     * @param  integer $value
+     * @param  int   $value
      * @return $this
      */
     public function &length($value)
@@ -45,7 +51,7 @@ class DecimalField extends NumberField
     }
 
     /**
-     * @param  integer $value
+     * @param  int   $value
      * @return $this
      */
     public function &scale($value)
@@ -56,7 +62,7 @@ class DecimalField extends NumberField
     }
 
     /**
-     * Return value casting code
+     * Return value casting code.
      *
      * @param  string $variable_name
      * @return string

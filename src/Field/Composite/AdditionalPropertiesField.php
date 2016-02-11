@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
-use ActiveCollab\DatabaseStructure\TypeInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface\Implementation as AdditionalPropertiesInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
+use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
@@ -22,7 +28,7 @@ class AdditionalPropertiesField extends Field
     }
 
     /**
-     * Return default field value
+     * Return default field value.
      *
      * @return mixed
      */
@@ -40,7 +46,7 @@ class AdditionalPropertiesField extends Field
     }
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
      * @param TypeInterface $type
      */

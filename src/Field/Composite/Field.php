@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -11,7 +17,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 abstract class Field implements FieldInterface
 {
     /**
-     * Return fields that this field is composed of
+     * Return fields that this field is composed of.
      *
      * @return FieldInterface[]
      */
@@ -21,7 +27,7 @@ abstract class Field implements FieldInterface
     }
 
     /**
-     * Return methods that this field needs to inject in base class
+     * Return methods that this field needs to inject in base class.
      *
      * @param string $indent
      * @param array  $result
@@ -39,7 +45,7 @@ abstract class Field implements FieldInterface
     }
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
      * @param TypeInterface $type
      */

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 /**
@@ -8,23 +14,23 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 interface IsArchivedInterface
 {
     /**
-     * Return true if parent object is archived
+     * Return true if parent object is archived.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsArchived();
 
     /**
-     * Move to archive
+     * Move to archive.
      *
-     * @param boolean $bulk
+     * @param bool $bulk
      */
     public function moveToArchive($bulk = false);
 
     /**
-     * Restore from archive
+     * Restore from archive.
      *
-     * @param boolean $bulk
+     * @param bool $bulk
      */
     public function restoreFromArchive($bulk = false);
 }

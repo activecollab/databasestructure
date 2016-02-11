@@ -1,8 +1,13 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseConnection\Result\Result;
 use ActiveCollab\DatabaseStructure\TriggerInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
@@ -14,14 +19,14 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     use StructureSql;
 
     /**
-     * Build path. If empty, class will be built to memory
+     * Build path. If empty, class will be built to memory.
      *
      * @var string
      */
     private $build_path;
 
     /**
-     * Return build path
+     * Return build path.
      *
      * @return string
      */
@@ -31,7 +36,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     }
 
     /**
-     * Set build path. If empty, class will be built in memory
+     * Set build path. If empty, class will be built in memory.
      *
      * @param  string $value
      * @return $this
@@ -69,7 +74,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     }
 
     /**
-     * Prepare belongs to constraint statement
+     * Prepare belongs to constraint statement.
      *
      * @param  TypeInterface    $type
      * @param  TriggerInterface $trigger
@@ -110,7 +115,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     }
 
     /**
-     * Prepare drop trigger statement
+     * Prepare drop trigger statement.
      *
      * @param  TriggerInterface $trigger
      * @return string
@@ -121,7 +126,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     }
 
     /**
-     * Check if trigger exists
+     * Check if trigger exists.
      *
      * @param  string $trigger_name
      * @return bool

@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -11,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 class PolymorphTypeTest extends TestCase
 {
     /**
-     * Test if types are not polymorph by default
+     * Test if types are not polymorph by default.
      */
     public function testTypesAreNotPolymorphByDefault()
     {
@@ -19,7 +25,7 @@ class PolymorphTypeTest extends TestCase
     }
 
     /**
-     * Test if we can make a type polymorph
+     * Test if we can make a type polymorph.
      */
     public function testTypesCanBeSetAsPolymorph()
     {
@@ -27,7 +33,7 @@ class PolymorphTypeTest extends TestCase
     }
 
     /**
-     * Check if polymorphism adds type field
+     * Check if polymorphism adds type field.
      */
     public function testPolymorphismAddsTypeField()
     {
@@ -53,7 +59,7 @@ class PolymorphTypeTest extends TestCase
     }
 
     /**
-     * Check if polymorphism adds type index
+     * Check if polymorphism adds type index.
      */
     public function testPolymorphismAddsTypeIndex()
     {

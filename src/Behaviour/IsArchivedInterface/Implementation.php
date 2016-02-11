@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 
 /**
@@ -9,7 +15,7 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 trait Implementation
 {
     /**
-     * Say hello to the parent class
+     * Say hello to the parent class.
      */
     public function ActiveCollabDatabaseStructureBehaviourIsArchivedInterfaceImplementation()
     {
@@ -19,9 +25,9 @@ trait Implementation
     }
 
     /**
-     * Move to archive
+     * Move to archive.
      *
-     * @param boolean $bulk
+     * @param bool $bulk
      */
     public function moveToArchive($bulk = false)
     {
@@ -40,9 +46,9 @@ trait Implementation
     }
 
     /**
-     * Restore from archive
+     * Restore from archive.
      *
-     * @param boolean $bulk
+     * @param bool $bulk
      */
     public function restoreFromArchive($bulk = false)
     {
@@ -69,29 +75,29 @@ trait Implementation
     // ---------------------------------------------------
 
     /**
-     * Return true if parent object is archived
+     * Return true if parent object is archived.
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function getIsArchived();
 
     /**
-     * Set value of is_archived field
+     * Set value of is_archived field.
      *
-     * @param  boolean $value
-     * @return boolean
+     * @param  bool $value
+     * @return bool
      */
     abstract public function setIsArchived($value);
 
     /**
-     * Save to database
+     * Save to database.
      *
      * @return $this
      */
     abstract public function &save();
 
     /**
-     * Register an internal event handler
+     * Register an internal event handler.
      *
      * @param string   $event
      * @param callable $handler
@@ -99,7 +105,7 @@ trait Implementation
     abstract protected function registerEventHandler($event, callable $handler);
 
     /**
-     * Trigger an internal event
+     * Trigger an internal event.
      *
      * @param string     $event
      * @param array|null $event_parameters

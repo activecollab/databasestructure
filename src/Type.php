@@ -1,20 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseObject\Object;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\Association\InjectIndexesInsterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
-use ActiveCollab\DatabaseObject\Object;
-use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation as PolymorphInterfaceImplementation;
-use InvalidArgumentException;
+use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use BadMethodCallException;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure
@@ -35,7 +41,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Return type name
+     * Return type name.
      *
      * @return string
      */
@@ -77,12 +83,12 @@ class Type implements TypeInterface
     }
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $polymorph = false;
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPolymorph()
     {
@@ -90,9 +96,9 @@ class Type implements TypeInterface
     }
 
     /**
-     * Set this model to be polymorph (type field is added and used to store instance's class name)
+     * Set this model to be polymorph (type field is added and used to store instance's class name).
      *
-     * @param  boolean $value
+     * @param  bool  $value
      * @return $this
      */
     public function &polymorph($value = true)
@@ -107,7 +113,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $permissions = false;
 
@@ -120,7 +126,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $permissions_are_permissive = false;
 
@@ -162,7 +168,7 @@ class Type implements TypeInterface
     private $base_class_extends;
 
     /**
-     * Return name of a class that base type class should extend
+     * Return name of a class that base type class should extend.
      *
      * @return string
      */
@@ -176,7 +182,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Set name of a class that base type class should extend
+     * Set name of a class that base type class should extend.
      *
      * Note: This class needs to descened from Object class of DatabaseObject package
      *
@@ -186,7 +192,6 @@ class Type implements TypeInterface
     public function &setBaseClassExtends($class_name)
     {
         if ($class_name && class_exists($class_name) && (new \ReflectionClass($class_name))->isSubclassOf(Object::class)) {
-
         } else {
             throw new InvalidArgumentException("Class name '$class_name' is not valid");
         }
@@ -202,7 +207,7 @@ class Type implements TypeInterface
     private $expected_dataset_size = FieldInterface::SIZE_NORMAL;
 
     /**
-     * Get expected dataset size
+     * Get expected dataset size.
      *
      * @return string
      */
@@ -212,7 +217,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG
+     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
      *
      * @param  string $size
      * @return $this
@@ -246,7 +251,7 @@ class Type implements TypeInterface
     private $id_field;
 
     /**
-     * Return ID field for this type
+     * Return ID field for this type.
      *
      * @return IntegerField
      */
@@ -294,7 +299,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Add a single field to the type
+     * Add a single field to the type.
      *
      * @param  FieldInterface $field
      * @return $this
@@ -312,7 +317,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Return all fields, flatten to one array
+     * Return all fields, flatten to one array.
      *
      * @return FieldInterface[]
      */
@@ -398,7 +403,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Return all indexes
+     * Return all indexes.
      *
      * @return IndexInterface[]
      */
@@ -520,14 +525,14 @@ class Type implements TypeInterface
     // ---------------------------------------------------
 
     /**
-     * Traits
+     * Traits.
      *
      * @var array
      */
     private $traits = [];
 
     /**
-     * Return traits
+     * Return traits.
      *
      * @return array
      */
@@ -537,14 +542,15 @@ class Type implements TypeInterface
     }
 
     /**
-     * Implement an interface or add a trait (or both)
+     * Implement an interface or add a trait (or both).
      *
      * @param  string                   $interface
      * @param  string                   $implementation
      * @return $this
      * @throws InvalidArgumentException
      */
-    public function &addTrait($interface = null, $implementation = null) {
+    public function &addTrait($interface = null, $implementation = null)
+    {
         if (is_array($interface)) {
             foreach ($interface as $k => $v) {
                 $this->addTrait($k, $v);
@@ -565,14 +571,13 @@ class Type implements TypeInterface
             } else {
                 throw new InvalidArgumentException('Interface or implementation are required');
             }
-
         }
 
         return $this;
     }
 
     /**
-     * Remove interface and all traits that are added to implement it
+     * Remove interface and all traits that are added to implement it.
      *
      * @param  string $interface
      * @return $this
@@ -607,14 +612,14 @@ class Type implements TypeInterface
     }
 
     /**
-     * Trait conflict resolutions
+     * Trait conflict resolutions.
      *
      * @var array
      */
     private $trait_tweaks = [];
 
     /**
-     * Return trait tweaks
+     * Return trait tweaks.
      *
      * @return array
      */
@@ -624,12 +629,13 @@ class Type implements TypeInterface
     }
 
     /**
-     * Resolve trait conflict
+     * Resolve trait conflict.
      *
      * @param  string $tweak
      * @return $this
      */
-    public function &addTraitTweak($tweak) {
+    public function &addTraitTweak($tweak)
+    {
         $this->trait_tweaks[] = $tweak;
 
         return $this;
@@ -641,7 +647,7 @@ class Type implements TypeInterface
     private $order_by = ['id'];
 
     /**
-     * Return how records of this type should be ordered by default
+     * Return how records of this type should be ordered by default.
      *
      * @return string|array
      */
@@ -651,7 +657,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Set how records of this type should be ordered by default
+     * Set how records of this type should be ordered by default.
      *
      * @param  string|array $order_by
      * @return $this
@@ -675,7 +681,7 @@ class Type implements TypeInterface
     private $serialize = [];
 
     /**
-     * Return a list of additional fields that will be included during object serialization
+     * Return a list of additional fields that will be included during object serialization.
      *
      * @return array
      */
@@ -685,7 +691,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Set a list of fields that will be included during object serialization
+     * Set a list of fields that will be included during object serialization.
      *
      * @param  string ...$fields
      * @return $this

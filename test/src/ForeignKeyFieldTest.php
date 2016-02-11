@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
@@ -14,7 +20,7 @@ use ActiveCollab\DatabaseStructure\Type;
 class ForeignKeyFieldTest extends TestCase
 {
     /**
-     * Test if FK is required by default
+     * Test if FK is required by default.
      */
     public function testForeignKeyIsRequiredByDefault()
     {
@@ -22,7 +28,7 @@ class ForeignKeyFieldTest extends TestCase
     }
 
     /**
-     * Test if FK can be made optional
+     * Test if FK can be made optional.
      */
     public function testForeignKeyCanBeMadeOptional()
     {
@@ -30,7 +36,7 @@ class ForeignKeyFieldTest extends TestCase
     }
 
     /**
-     * Test if FK produces a valid integer field
+     * Test if FK produces a valid integer field.
      */
     public function testForeignKeyProducesIntegerField()
     {
@@ -52,7 +58,7 @@ class ForeignKeyFieldTest extends TestCase
     }
 
     /**
-     * Test if required flag change is passed on to the field
+     * Test if required flag change is passed on to the field.
      */
     public function testForeignKeyPassesRequiredToField()
     {
@@ -64,7 +70,7 @@ class ForeignKeyFieldTest extends TestCase
     }
 
     /**
-     * Test if size change is passed on to the field
+     * Test if size change is passed on to the field.
      */
     public function testForeignKeyPassesSizeToField()
     {
@@ -76,7 +82,7 @@ class ForeignKeyFieldTest extends TestCase
     }
 
     /**
-     * Test if FK field adds index by default
+     * Test if FK field adds index by default.
      */
     public function testForeignKeyAddsIndexByDefault()
     {
@@ -92,7 +98,7 @@ class ForeignKeyFieldTest extends TestCase
     }
 
     /**
-     * Test if we can skip index creation using FK field
+     * Test if we can skip index creation using FK field.
      */
     public function testIndexCreationCanBeSkipped()
     {

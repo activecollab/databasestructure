@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
@@ -11,7 +17,7 @@ use InvalidArgumentException;
 interface TypeInterface
 {
     /**
-     * Return type name
+     * Return type name.
      *
      * @return string
      */
@@ -29,14 +35,14 @@ interface TypeInterface
     public function &setTableName($table_name);
 
     /**
-     * Return name of a class that base type class should extend
+     * Return name of a class that base type class should extend.
      *
      * @return string
      */
     public function getBaseClassExtends();
 
     /**
-     * Set name of a class that base type class should extend
+     * Set name of a class that base type class should extend.
      *
      * Note: This class needs to descened from Object class of DatabaseObject package
      *
@@ -46,46 +52,46 @@ interface TypeInterface
     public function &setBaseClassExtends($class_name);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPolymorph();
 
     /**
-     * Set this model to be polymorph (type field is added and used to store instance's class name)
+     * Set this model to be polymorph (type field is added and used to store instance's class name).
      *
-     * @param  boolean $value
+     * @param  bool  $value
      * @return $this
      */
     public function &polymorph($value = true);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPermissions();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPermissionsArePermissive();
 
     /**
-     * Add permissions interface to this model
+     * Add permissions interface to this model.
      *
-     * @param  boolean $value
-     * @param  boolean $permissions_are_permissive
+     * @param  bool  $value
+     * @param  bool  $permissions_are_permissive
      * @return $this
      */
     public function &permissions($value = true, $permissions_are_permissive = true);
 
     /**
-     * Get expected dataset size
+     * Get expected dataset size.
      *
      * @return string
      */
     public function getExpectedDatasetSize();
 
     /**
-     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG
+     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
      *
      * @param  string $size
      * @return $this
@@ -98,7 +104,7 @@ interface TypeInterface
     public function getFields();
 
     /**
-     * Return ID field for this type
+     * Return ID field for this type.
      *
      * @return IntegerField
      */
@@ -111,7 +117,7 @@ interface TypeInterface
     public function &addFields(array $fields);
 
     /**
-     * Add a single field to the type
+     * Add a single field to the type.
      *
      * @param  FieldInterface $field
      * @return $this
@@ -119,7 +125,7 @@ interface TypeInterface
     public function &addField(FieldInterface $field);
 
     /**
-     * Return all fields, flatten to one array
+     * Return all fields, flatten to one array.
      *
      * @return FieldInterface[]
      */
@@ -160,7 +166,7 @@ interface TypeInterface
     public function &addTrigger(TriggerInterface $trigger);
 
     /**
-     * Return all indexes
+     * Return all indexes.
      *
      * @return IndexInterface[]
      */
@@ -184,14 +190,14 @@ interface TypeInterface
     public function &addAssociation(AssociationInterface $association);
 
     /**
-     * Return traits
+     * Return traits.
      *
      * @return array
      */
     public function getTraits();
 
     /**
-     * Implement an interface or add a trait (or both)
+     * Implement an interface or add a trait (or both).
      *
      * @param  string                   $interface
      * @param  string                   $implementation
@@ -201,14 +207,14 @@ interface TypeInterface
     public function &addTrait($interface = null, $implementation = null);
 
     /**
-     * Return trait tweaks
+     * Return trait tweaks.
      *
      * @return array
      */
     public function getTraitTweaks();
 
     /**
-     * Resolve trait conflict
+     * Resolve trait conflict.
      *
      * @param  string $tweak
      * @return $this
@@ -216,14 +222,14 @@ interface TypeInterface
     public function &addTraitTweak($tweak);
 
     /**
-     * Return how records of this type should be ordered by default
+     * Return how records of this type should be ordered by default.
      *
      * @return string|array
      */
     public function getOrderBy();
 
     /**
-     * Set how records of this type should be ordered by default
+     * Set how records of this type should be ordered by default.
      *
      * @param  string|array $order_by
      * @return $this
@@ -231,14 +237,14 @@ interface TypeInterface
     public function &orderBy($order_by);
 
     /**
-     * Return a list of additional fields that will be included during object serialization
+     * Return a list of additional fields that will be included during object serialization.
      *
      * @return array
      */
     public function getSerialize();
 
     /**
-     * Set a list of fields that will be included during object serialization
+     * Set a list of fields that will be included during object serialization.
      *
      * @param  string ...$fields
      * @return $this

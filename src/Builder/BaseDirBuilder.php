@@ -1,9 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use RuntimeException;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
@@ -11,7 +17,7 @@ use InvalidArgumentException;
 class BaseDirBuilder extends FileSystemBuilder
 {
     /**
-     * Execute prior to type build
+     * Execute prior to type build.
      */
     public function preBuild()
     {

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
@@ -12,7 +18,7 @@ use ActiveCollab\DatabaseStructure\FieldInterface;
 class IntegerFieldTest extends TestCase
 {
     /**
-     * Test if integer field extends number
+     * Test if integer field extends number.
      */
     public function testIntegerExtendsNumber()
     {
@@ -20,7 +26,7 @@ class IntegerFieldTest extends TestCase
     }
 
     /**
-     * Test if integer fields are not unsigned by default
+     * Test if integer fields are not unsigned by default.
      */
     public function testNotUnsignedByDefault()
     {
@@ -28,7 +34,7 @@ class IntegerFieldTest extends TestCase
     }
 
     /**
-     * Test if integer fields can be set to be unsigned
+     * Test if integer fields can be set to be unsigned.
      */
     public function testFieldCanBeSetToBeUnsigned()
     {
@@ -36,7 +42,7 @@ class IntegerFieldTest extends TestCase
     }
 
     /**
-     * Check if size is normal by default
+     * Check if size is normal by default.
      */
     public function testSizeIsNormalByDefault()
     {
@@ -44,7 +50,7 @@ class IntegerFieldTest extends TestCase
     }
 
     /**
-     * Test if size can be changed
+     * Test if size can be changed.
      */
     public function testSizeCanBeChanged()
     {

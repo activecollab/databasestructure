@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\ActionByField;
@@ -40,7 +46,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if we use full user class name
+     * Test if we use full user class name.
      */
     public function testUserClassUsesFullPath()
     {
@@ -57,7 +63,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if we use full anonymous user class name
+     * Test if we use full anonymous user class name.
      */
     public function testAnonymousUserClassUsesFullPath()
     {
@@ -66,7 +72,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if field can be added to type
+     * Test if field can be added to type.
      */
     public function testFieldCanBeAddedToType()
     {
@@ -102,7 +108,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if action_by_id field is required by default
+     * Test if action_by_id field is required by default.
      */
     public function testActionByIdFieldIsNotRequiredByDefault()
     {
@@ -122,7 +128,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if action by field can be set as required
+     * Test if action by field can be set as required.
      */
     public function testActionByIdFieldCanBeSetAsRequired()
     {
@@ -142,7 +148,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if index is automatically added to the type
+     * Test if index is automatically added to the type.
      */
     public function testActionByAddsIndexByDefault()
     {
@@ -153,7 +159,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if we can skip index creation
+     * Test if we can skip index creation.
      */
     public function testIndexCreationCanBeSkipped()
     {
@@ -163,7 +169,7 @@ class ActionByFieldTest extends TestCase
     }
 
     /**
-     * Test if created by ID is automatically added to serialization list
+     * Test if created by ID is automatically added to serialization list.
      */
     public function testFieldShouldSerializeId()
     {

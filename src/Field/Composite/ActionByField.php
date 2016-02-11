@@ -1,14 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\AnonymousUser;
@@ -39,10 +45,10 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     private $anonymous_user_class_name;
 
     /**
-     * @param string  $name
-     * @param string  $user_class_name
-     * @param string  $anonymous_user_class_name
-     * @param boolean $add_index
+     * @param string $name
+     * @param string $user_class_name
+     * @param string $anonymous_user_class_name
+     * @param bool   $add_index
      */
     public function __construct($name, $user_class_name, $anonymous_user_class_name = AnonymousUser::class, $add_index = true)
     {
@@ -57,11 +63,11 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         }
 
         if (empty($user_class_name)) {
-            throw new InvalidArgumentException("User class name is required");
+            throw new InvalidArgumentException('User class name is required');
         }
 
         if (empty($anonymous_user_class_name)) {
-            throw new InvalidArgumentException("Anonymous user class name is required");
+            throw new InvalidArgumentException('Anonymous user class name is required');
         }
 
         $this->name = $name;
@@ -113,7 +119,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     }
 
     /**
-     * Return methods that this field needs to inject in base class
+     * Return methods that this field needs to inject in base class.
      *
      * @param string $indent
      * @param array  $result
@@ -163,7 +169,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = '{';
             $methods[] = '    if ($value instanceof ' . $this->user_class_name . ' && $value->isLoaded()) {';
             $methods[] = '        $this->' . $id_setter_name . '($value->getId());';
-            $methods[] = '        $this->' . $name_setter_name . '($value->getFullName());';;
+            $methods[] = '        $this->' . $name_setter_name . '($value->getFullName());';
             $methods[] = '        $this->' . $email_setter_name . '($value->getEmail());';
             $methods[] = '    } else {';
             $methods[] = '        throw new \InvalidArgumentException(' . var_export("Instance of '$this->user_class_name' expected", true) . ');';
@@ -183,18 +189,18 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = '    if ($value instanceof ' . $this->user_class_name . ') {';
             $methods[] = '        if ($value->isLoaded()) {';
             $methods[] = '            $this->' . $id_setter_name . '($value->getId());';
-            $methods[] = '            $this->' . $name_setter_name . '($value->getFullName());';;
+            $methods[] = '            $this->' . $name_setter_name . '($value->getFullName());';
             $methods[] = '            $this->' . $email_setter_name . '($value->getEmail());';
             $methods[] = '        } else {';
             $methods[] = '            throw new \InvalidArgumentException(' . var_export("Instance of '$this->user_class_name' expected") . ');';
             $methods[] = '        }';
             $methods[] = '    } elseif ($value instanceof ' . $this->anonymous_user_class_name . ') {';
             $methods[] = '        $this->' . $id_setter_name . '(0);';
-            $methods[] = '        $this->' . $name_setter_name . '($value->getFullName());';;
+            $methods[] = '        $this->' . $name_setter_name . '($value->getFullName());';
             $methods[] = '        $this->' . $email_setter_name . '($value->getEmail());';
             $methods[] = '    } else {';
             $methods[] = '        $this->' . $id_setter_name . '(0);';
-            $methods[] = '        $this->' . $name_setter_name . '(null);';;
+            $methods[] = '        $this->' . $name_setter_name . '(null);';
             $methods[] = '        $this->' . $email_setter_name . '(null);';
             $methods[] = '    }';
             $methods[] = '';
@@ -213,7 +219,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     private $action_name;
 
     /**
-     * Return action name (name without _by_id)
+     * Return action name (name without _by_id).
      *
      * @return string
      */

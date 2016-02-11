@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\TypeInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface\Implementation as IsArchivedInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
+use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
@@ -22,7 +28,7 @@ class IsArchivedField extends Field
     }
 
     /**
-     * Return default field value
+     * Return default field value.
      *
      * @return mixed
      */
@@ -32,7 +38,7 @@ class IsArchivedField extends Field
     }
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $cascade = false;
 
@@ -70,7 +76,7 @@ class IsArchivedField extends Field
     }
 
     /**
-     * Method that is called when field is added to a type
+     * Method that is called when field is added to a type.
      *
      * @param TypeInterface $type
      */

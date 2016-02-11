@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 /**
@@ -8,7 +14,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 class DateTimeField extends Field
 {
     /**
-     * Return PHP native type
+     * Return PHP native type.
      *
      * @return string
      */
@@ -18,7 +24,7 @@ class DateTimeField extends Field
     }
 
     /**
-     * Return value casting code
+     * Return value casting code.
      *
      * @param  string $variable_name
      * @return string

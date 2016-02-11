@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 /**
@@ -8,14 +14,14 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 abstract class NumberField extends Field
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $unsigned = false;
 
     /**
-     * Return unsigned
+     * Return unsigned.
      *
-     * @return boolean
+     * @return bool
      */
     public function isUnsigned()
     {
@@ -23,9 +29,9 @@ abstract class NumberField extends Field
     }
 
     /**
-     * Set unsigned column flag
+     * Set unsigned column flag.
      *
-     * @param  boolean $value
+     * @param  bool  $value
      * @return $this
      */
     public function &unsigned($value = true)

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -16,7 +22,7 @@ trait Implementation
     private $size = FieldInterface::SIZE_NORMAL;
 
     /**
-     * Return size of the field, if set
+     * Return size of the field, if set.
      *
      * @return string
      */
@@ -41,7 +47,7 @@ trait Implementation
     }
 
     /**
-     * Return an array of supported sizes
+     * Return an array of supported sizes.
      *
      * @return array
      */

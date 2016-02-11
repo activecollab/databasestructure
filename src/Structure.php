@@ -1,14 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\AssociationsBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseCollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\CollectionDirBuilder;
-use ActiveCollab\DatabaseStructure\Builder\BaseCollectionDirBuilder;
-use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
@@ -24,7 +30,7 @@ use InvalidArgumentException;
 abstract class Structure implements StructureInterface
 {
     /**
-     * Construct a new instance
+     * Construct a new instance.
      */
     public function __construct()
     {
@@ -32,7 +38,7 @@ abstract class Structure implements StructureInterface
     }
 
     /**
-     * Configure types, fields and associations
+     * Configure types, fields and associations.
      */
     abstract protected function configure();
 
@@ -42,7 +48,7 @@ abstract class Structure implements StructureInterface
     private $types = [];
 
     /**
-     * Get all structure type
+     * Get all structure type.
      *
      * @return Type[]
      */
@@ -52,7 +58,7 @@ abstract class Structure implements StructureInterface
     }
 
     /**
-     * Return type by type name
+     * Return type by type name.
      *
      * @param  string $type_name
      * @return Type
@@ -100,7 +106,7 @@ abstract class Structure implements StructureInterface
     private $config = [];
 
     /**
-     * Return a config option value
+     * Return a config option value.
      *
      * @param  string $name
      * @param  mixed  $default
@@ -112,7 +118,7 @@ abstract class Structure implements StructureInterface
     }
 
     /**
-     * Set a config option option value
+     * Set a config option option value.
      *
      * @param  string $name
      * @param  mixed  $value
@@ -166,7 +172,7 @@ abstract class Structure implements StructureInterface
     // ---------------------------------------------------
 
     /**
-     * Build model at the given path
+     * Build model at the given path.
      *
      * If $build_path is null, classes will be generated, evaled and loaded into the memory
      *
@@ -199,7 +205,7 @@ abstract class Structure implements StructureInterface
     private $builders = [];
 
     /**
-     * Return a list of prepared builder instances
+     * Return a list of prepared builder instances.
      *
      * @param  string|null         $build_path
      * @param  ConnectionInterface $connection

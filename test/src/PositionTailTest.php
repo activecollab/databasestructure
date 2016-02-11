@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Pool;
+use ActiveCollab\DatabaseObject\PoolInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail\PositionTailStructure;
-use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
-use ActiveCollab\DatabaseObject\PoolInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -58,7 +64,7 @@ class PositionTailTest extends TestCase
     }
 
     /**
-     * Tear down test environment
+     * Tear down test environment.
      */
     public function tearDown()
     {
@@ -70,7 +76,7 @@ class PositionTailTest extends TestCase
     }
 
     /**
-     * Test if position mode is tail
+     * Test if position mode is tail.
      */
     public function testPositionModeIsTail()
     {
@@ -81,7 +87,7 @@ class PositionTailTest extends TestCase
     }
 
     /**
-     * Test if position context is empty
+     * Test if position context is empty.
      */
     public function testPositionContextIsEmptyArray()
     {
@@ -92,7 +98,7 @@ class PositionTailTest extends TestCase
     }
 
     /**
-     * Test first record
+     * Test first record.
      */
     public function testFirstRecord()
     {
@@ -105,13 +111,13 @@ class PositionTailTest extends TestCase
     }
 
     /**
-     * Test if all new records go to the begining of the list
+     * Test if all new records go to the begining of the list.
      */
     public function testNewRecordsGoToTail()
     {
         /** @var PositionInterface $entry1 */
-        /** @var PositionInterface $entry2 */
-        /** @var PositionInterface $entry3 */
+        /* @var PositionInterface $entry2 */
+        /* @var PositionInterface $entry3 */
         $entry1 = $this->pool->produce($this->type_class_name);
         $entry2 = $this->pool->produce($this->type_class_name);
         $entry3 = $this->pool->produce($this->type_class_name);

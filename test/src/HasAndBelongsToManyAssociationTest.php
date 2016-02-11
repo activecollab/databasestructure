@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
@@ -11,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Type;
 class HasAndBelongsToManyAssociationTest extends TestCase
 {
     /**
-     * Return field names
+     * Return field names.
      */
     public function testFieldNames()
     {
@@ -25,7 +31,7 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     }
 
     /**
-     * Test constraint name for belongs to association
+     * Test constraint name for belongs to association.
      */
     public function testConstraintNames()
     {

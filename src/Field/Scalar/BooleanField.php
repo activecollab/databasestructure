@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use LogicException;
@@ -9,8 +16,8 @@ use LogicException;
 class BooleanField extends Field
 {
     /**
-     * @param  string  $name
-     * @param  boolean $default_value
+     * @param string $name
+     * @param bool   $default_value
      */
     public function __construct($name, $default_value = false)
     {
@@ -18,7 +25,7 @@ class BooleanField extends Field
     }
 
     /**
-     * Value of this column needs to be unique (in the given context)
+     * Value of this column needs to be unique (in the given context).
      *
      * @param  string $context
      * @return $this
@@ -29,7 +36,7 @@ class BooleanField extends Field
     }
 
     /**
-     * Return value casting code
+     * Return value casting code.
      *
      * @param  string $variable_name
      * @return string

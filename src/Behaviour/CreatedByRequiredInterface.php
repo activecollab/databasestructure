@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 use ActiveCollab\User\UserInterface;
@@ -10,7 +16,7 @@ use ActiveCollab\User\UserInterface;
 interface CreatedByRequiredInterface extends CreatedByInterface
 {
     /**
-     * @param  boolean       $use_cache
+     * @param  bool          $use_cache
      * @return UserInterface
      */
     public function getCreatedBy($use_cache = true);

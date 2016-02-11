@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\AssociationInterface;
 
 /**
@@ -18,7 +24,7 @@ trait Implementation
     private $target_type_name;
 
     /**
-     * Return association name
+     * Return association name.
      */
     public function getName()
     {
@@ -26,7 +32,7 @@ trait Implementation
     }
 
     /**
-     * Return target type
+     * Return target type.
      *
      * @return string
      */

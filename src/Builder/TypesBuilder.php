@@ -1,8 +1,13 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Type;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -11,7 +16,7 @@ use Doctrine\Common\Inflector\Inflector;
 class TypesBuilder extends FileSystemBuilder
 {
     /**
-     * Execute after types are built
+     * Execute after types are built.
      */
     public function postBuild()
     {
@@ -20,7 +25,7 @@ class TypesBuilder extends FileSystemBuilder
         if ($types_build_path) {
             $result = [];
 
-            $result[] = "<?php";
+            $result[] = '<?php';
             $result[] = '';
 
             $namespace = $this->getStructure()->getNamespace();

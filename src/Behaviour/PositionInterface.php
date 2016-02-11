@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 /**
@@ -11,22 +17,22 @@ interface PositionInterface
     const POSITION_MODE_TAIL = 'tail';
 
     /**
-     * Get position value
+     * Get position value.
      *
-     * @return integer
+     * @return int
      */
     public function getPosition();
 
     /**
-     * Set position value
+     * Set position value.
      *
-     * @param  integer $value
+     * @param  int   $value
      * @return $this
      */
     public function &setPosition($value);
 
     /**
-     * Return position mode
+     * Return position mode.
      *
      * There are two modes:
      *
@@ -38,7 +44,7 @@ interface PositionInterface
     public function getPositionMode();
 
     /**
-     * Return context in which position should be set
+     * Return context in which position should be set.
      *
      * @return array
      */

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
@@ -15,7 +21,7 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
     use RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
     /**
-     * Return PHP native type
+     * Return PHP native type.
      *
      * @return string
      */
@@ -25,7 +31,7 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
     }
 
     /**
-     * Return value casting code
+     * Return value casting code.
      *
      * @param  string $variable_name
      * @return string

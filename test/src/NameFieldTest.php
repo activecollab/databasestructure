@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\IndexInterface;
-use ActiveCollab\DatabaseStructure\Type;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -13,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 class NameFieldTest extends TestCase
 {
     /**
-     * Test if name is default field name
+     * Test if name is default field name.
      */
     public function testDefaultName()
     {
@@ -21,7 +27,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if NULL is the default value
+     * Test if NULL is the default value.
      */
     public function testNullIsDefaultValue()
     {
@@ -29,7 +35,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if name uses trim() as value modifier by default
+     * Test if name uses trim() as value modifier by default.
      */
     public function testNameIsTrimmedByDefault()
     {
@@ -37,7 +43,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if name can be added to a type
+     * Test if name can be added to a type.
      */
     public function testNameCanBeAddedToType()
     {
@@ -48,7 +54,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if name field does not add an index by default
+     * Test if name field does not add an index by default.
      */
     public function testNameFieldDoesNotAddIndexByDefault()
     {
@@ -58,7 +64,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if name index is added to the type when requested
+     * Test if name index is added to the type when requested.
      */
     public function testNameFieldAddsIndexWhenRequested()
     {
@@ -73,7 +79,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if unique name index is added to the type when requested
+     * Test if unique name index is added to the type when requested.
      */
     public function testNameFieldAddsUniqueIndexWhenRequested()
     {
@@ -88,7 +94,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Test if unique index properly alters index added by the name field
+     * Test if unique index properly alters index added by the name field.
      */
     public function testUniqueContextAddsFieldsToTheIndex()
     {
@@ -105,7 +111,7 @@ class NameFieldTest extends TestCase
     }
 
     /**
-     * Make sure that resulting string field is required and / or unique when name is required and / or unique
+     * Make sure that resulting string field is required and / or unique when name is required and / or unique.
      */
     public function testNameProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {

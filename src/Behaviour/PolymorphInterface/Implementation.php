@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 
 /**
@@ -8,11 +14,11 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 trait Implementation
 {
     /**
-     * Say hello to the parent class
+     * Say hello to the parent class.
      */
     public function ActiveCollabDatabaseStructureBehaviourPolymorphInterfaceImplementation()
     {
-        $this->registerEventHandler('on_before_save', function() {
+        $this->registerEventHandler('on_before_save', function () {
             if (!$this->getType()) {
                 $this->setType(get_class($this));
             }
@@ -31,7 +37,7 @@ trait Implementation
     abstract public function &setType($value);
 
     /**
-     * Register an internal event handler
+     * Register an internal event handler.
      *
      * @param string   $event
      * @param callable $handler

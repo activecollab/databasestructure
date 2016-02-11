@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -22,6 +28,7 @@ class TypeCollectionBuilder extends FileSystemBuilder
 
         if ($class_build_path && is_file($class_build_path)) {
             $this->triggerEvent('on_class_build_skipped', [$collection_class_name, $class_build_path]);
+
             return;
         }
 
@@ -29,7 +36,7 @@ class TypeCollectionBuilder extends FileSystemBuilder
 
         $result = [];
 
-        $result[] = "<?php";
+        $result[] = '<?php';
         $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {

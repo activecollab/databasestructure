@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Type;
-use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\UrlField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -13,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 class UrlFieldTest extends TestCase
 {
     /**
-     * Test if name can be set
+     * Test if name can be set.
      */
     public function testName()
     {
@@ -21,7 +27,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if NULL is the default value
+     * Test if NULL is the default value.
      */
     public function testNullIsDefaultValue()
     {
@@ -29,7 +35,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test no modifier when default URL is NULL
+     * Test no modifier when default URL is NULL.
      */
     public function testNoModifierWhenNullIsDefaultValue()
     {
@@ -37,7 +43,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if URL is trimmed when not null by default
+     * Test if URL is trimmed when not null by default.
      */
     public function testValueIsTrimmedByDefault()
     {
@@ -45,7 +51,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if URL can be added to a type
+     * Test if URL can be added to a type.
      */
     public function testUrlCanBeAddedToType()
     {
@@ -56,7 +62,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if URL field does not add an index by default
+     * Test if URL field does not add an index by default.
      */
     public function testUrlFieldDoesNotAddIndexByDefault()
     {
@@ -66,7 +72,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if URL index is added to the type when requested
+     * Test if URL index is added to the type when requested.
      */
     public function testUrlFieldAddsIndexWhenRequested()
     {
@@ -81,7 +87,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if unique URL index is added to the type when requested
+     * Test if unique URL index is added to the type when requested.
      */
     public function testUrlFieldAddsUniqueIndexWhenRequested()
     {
@@ -96,7 +102,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Test if unique index properly alters index added by the URL field
+     * Test if unique index properly alters index added by the URL field.
      */
     public function testUniqueContextAddsFieldsToTheIndex()
     {
@@ -113,7 +119,7 @@ class UrlFieldTest extends TestCase
     }
 
     /**
-     * Make sure that resulting string field is required and / or unique when name is required and / or unique
+     * Make sure that resulting string field is required and / or unique when name is required and / or unique.
      */
     public function testUrlProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {

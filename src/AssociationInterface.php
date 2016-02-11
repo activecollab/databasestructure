@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure;
 
 /**
@@ -8,28 +14,28 @@ namespace ActiveCollab\DatabaseStructure;
 interface AssociationInterface
 {
     /**
-     * Get association name, in underscore notation
+     * Get association name, in underscore notation.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * Return name of the target type
+     * Return name of the target type.
      *
      * @return string
      */
     public function getTargetTypeName();
 
     /**
-     * Return source type name
+     * Return source type name.
      *
      * @return string
      */
     public function getSourceTypeName();
 
     /**
-     * Set source type name
+     * Set source type name.
      *
      * @param  string $source_type_name
      * @return $this
@@ -37,7 +43,7 @@ interface AssociationInterface
     public function &setSourceTypeName($source_type_name);
 
     /**
-     * Build class methods
+     * Build class methods.
      *
      * @param StructureInterface $structure
      * @param TypeInterface      $source_type

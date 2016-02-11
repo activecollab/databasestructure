@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * This file is part of the Active Collab DatabaseStructure project.
+ *
+ * (c) A51 doo <info@activecollab.com>. All rights reserved.
+ */
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\IndexInterface;
-use ActiveCollab\DatabaseStructure\Type;
-use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
+use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Type;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -14,7 +20,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as
 class PositionFieldTest extends TestCase
 {
     /**
-     * Test if position is default field name
+     * Test if position is default field name.
      */
     public function testDefaultName()
     {
@@ -22,7 +28,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if 0 is the default value
+     * Test if 0 is the default value.
      */
     public function testNullIsDefaultValue()
     {
@@ -30,7 +36,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if position can be added to a type
+     * Test if position can be added to a type.
      */
     public function testPositionCanBeAddedToType()
     {
@@ -41,7 +47,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if position index is added to the type when requested
+     * Test if position index is added to the type when requested.
      */
     public function testPositionFieldAddsIndexByDefault()
     {
@@ -52,7 +58,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if position field does not add an index by default
+     * Test if position field does not add an index by default.
      */
     public function testPositionFieldDoesNotAddIndexWhenRequested()
     {
@@ -62,7 +68,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if position fields adds behaviour to the type
+     * Test if position fields adds behaviour to the type.
      */
     public function testPositionFieldAddsBehaviourToType()
     {
@@ -73,7 +79,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if position context is the entire data set by default
+     * Test if position context is the entire data set by default.
      */
     public function testContextIsEmptyByDefault()
     {
@@ -84,7 +90,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if position context can be changed
+     * Test if position context can be changed.
      */
     public function testContextCanBeChanged()
     {
@@ -97,7 +103,7 @@ class PositionFieldTest extends TestCase
     }
 
     /**
-     * Test if context can be called with no arguments
+     * Test if context can be called with no arguments.
      */
     public function testContextCanBeCalledWithNoArguments()
     {
