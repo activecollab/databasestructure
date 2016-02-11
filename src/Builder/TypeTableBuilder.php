@@ -326,8 +326,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         $left_field_name = $association->getLeftFieldName();
         $right_field_name = $association->getRightFieldName();
 
-        $left_field = (new IntegerField($left_field_name))->unsigned(true)->size($source->getIdField()->getSize());
-        $right_field = (new IntegerField($right_field_name))->unsigned(true)->size($target->getIdField()->getSize());
+        $left_field = (new IntegerField($left_field_name, 0))->unsigned(true)->size($source->getIdField()->getSize());
+        $right_field = (new IntegerField($right_field_name, 0))->unsigned(true)->size($target->getIdField()->getSize());
 
         $result[] = '    ' . $this->prepareFieldStatement($left_field) . ',';
         $result[] = '    ' . $this->prepareFieldStatement($right_field) . ',';
