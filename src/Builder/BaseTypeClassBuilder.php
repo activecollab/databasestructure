@@ -128,6 +128,18 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '     ];';
         }
 
+        if (count($type->getProtectedFields())) {
+            $result[] = '';
+            $result[] = '    /**';
+            $result[] = '     * List of protected fields';
+            $result[] = '     *';
+            $result[] = '     * @var array';
+            $result[] = '     */';
+            $result[] = '    protected $protected_fields = [' . implode(',', array_map(function ($field) {
+                return var_export($field, true);
+            }, $type->getProtectedFields())) . '];';
+        }
+
         if ($type->getOrderBy() != ['id']) {
             $result[] = '';
             $result[] = '    /**';

@@ -114,3 +114,17 @@ class MyStructure extends Structure
     }
 }
 ```
+
+### Protected Fields Behaviour
+
+This behaviour adds a simple list of proteected fields to the object (accessible using `getProtectedFields()` method). It's up to the rest of the system to decide what to do with this list, but most common scenario is to disable set of these fields when objects are added using POST or updated using PUT requests:
+
+```php
+class MyStructure extends Structure
+{
+    public function configure()
+    {
+        $this->addType('elements')->protectFields('created_at', 'created_by_id');
+    }
+}
+```

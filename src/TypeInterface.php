@@ -84,6 +84,21 @@ interface TypeInterface
     public function &permissions($value = true, $permissions_are_permissive = true);
 
     /**
+     * Return a list of protected fields.
+     *
+     * @return array
+     */
+    public function getProtectedFields();
+
+    /**
+     * Protect given fields.
+     *
+     * @param  string[] ...$fields
+     * @return $this
+     */
+    public function &protectFields(...$fields);
+
+    /**
      * Get expected dataset size.
      *
      * @return string
@@ -246,7 +261,7 @@ interface TypeInterface
     /**
      * Set a list of fields that will be included during object serialization.
      *
-     * @param  string ...$fields
+     * @param  string[] ...$fields
      * @return $this
      */
     public function &serialize(...$fields);

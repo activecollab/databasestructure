@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseConnection\Connection;
+use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
 use mysqli;
 use RuntimeException;
 
@@ -23,7 +23,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected $link;
 
     /**
-     * @var Connection
+     * @var MysqliConnection
      */
     protected $connection;
 
@@ -44,7 +44,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             throw new RuntimeException('Failed to select database');
         }
 
-        $this->connection = new Connection($this->link);
+        $this->connection = new MysqliConnection($this->link);
 
         if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
             foreach ($triggers as $trigger) {

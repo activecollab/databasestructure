@@ -16,6 +16,8 @@ use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\PermissiveImpl
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation as PolymorphInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
@@ -152,6 +154,37 @@ class Type implements TypeInterface
             $this->addTrait(PermissionsInterface::class, ($this->permissions_are_permissive ? PermissiveImplementation::class : RestrictiveImplementation::class));
         } else {
             $this->removeInterface(PermissionsInterface::class);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @var array
+     */
+    private $protected_fields = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProtectedFields()
+    {
+        return $this->protected_fields;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function &protectFields(...$fields)
+    {
+        foreach ($fields as $field) {
+            if ($field && !in_array($field, $this->protected_fields)) {
+                $this->protected_fields[] = $field;
+            }
+        }
+
+        if (!empty($this->protected_fields)) {
+            $this->addTrait(ProtectedFieldsInterface::class, ProtectedFieldsInterfaceImplementation::class);
         }
 
         return $this;

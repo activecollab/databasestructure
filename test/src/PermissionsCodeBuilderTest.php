@@ -27,7 +27,7 @@ class PermissionsCodeBuilderTest extends TestCase
     /**
      * @var string
      */
-    private $namespace = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\Permissions';
+    private $namespace = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Permissions';
 
     /**
      * @var ReflectionClass
