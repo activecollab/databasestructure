@@ -124,7 +124,7 @@ class MyStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('elements')->protectFields('created_at', 'created_by_id');
+        $this->addType('elements')->protectFields('created_at', 'created_by_id')->unprotectFields('created_by_id'); // will record ['created_at']
     }
 }
 ```
@@ -140,4 +140,3 @@ class MyStructure extends Structure
     }
 }
 ```
-

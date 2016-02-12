@@ -22,6 +22,6 @@ class ProtectedFieldsStructure extends Structure
     {
         $this->addType('no_protected_fields');
         $this->addType('has_protected_fields')->protectFields('field_1', 'field_2');
-        $this->addType('multi_protected_fields')->protectFields('field_1', 'field_2')->protectFields('', '')->protectFields('field_2', 'field_3');
+        $this->addType('multi_protected_fields')->protectFields('field_1', 'field_2')->protectFields('', 'field_8')->protectFields('field_2', 'field_3')->unprotectFields('field_8');
     }
 }

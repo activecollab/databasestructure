@@ -99,6 +99,14 @@ interface TypeInterface
     public function &protectFields(...$fields);
 
     /**
+     * Unprotect a list of protected fields.
+     *
+     * @param  string[] ...$fields
+     * @return $this
+     */
+    public function &unprotectFields(...$fields);
+
+    /**
      * Get expected dataset size.
      *
      * @return string

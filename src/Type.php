@@ -191,6 +191,28 @@ class Type implements TypeInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function &unprotectFields(...$fields)
+    {
+        foreach ($fields as $field) {
+            $index = array_search($field, $this->protected_fields);
+
+            if ($index !== false) {
+                unset($this->protected_fields[$index]);
+            }
+        }
+
+        if (empty($this->protected_fields)) {
+            $this->removeTrait(ProtectedFieldsInterface::class, ProtectedFieldsInterfaceImplementation::class);
+        } else {
+            $this->protected_fields = array_values($this->protected_fields); // Reindex keys
+        }
+
+        return $this;
+    }
+
+    /**
      * @var FieldInterface[]
      */
     private $fields = [];
