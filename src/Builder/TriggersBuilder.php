@@ -83,7 +83,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
     public function prepareCreateTriggerStatement(TypeInterface $type, TriggerInterface $trigger)
     {
         if (strpos($trigger->getBody(), "\n") === false) {
-            return 'CREATE TRIGGER ' . $this->getConnection()->escapeFieldName($trigger->getName()) . ' ' . strtoupper($trigger->getTime()) . ' ' . strtoupper($trigger->getEvent()) . ' ON ' . $this->getConnection()->escapeTableName($type->getName()) . ' FOR EACH ROW ' . $trigger->getBody();
+            return rtrim('CREATE TRIGGER ' . $this->getConnection()->escapeFieldName($trigger->getName()) . ' ' . strtoupper($trigger->getTime()) . ' ' . strtoupper($trigger->getEvent()) . ' ON ' . $this->getConnection()->escapeTableName($type->getName()) . ' FOR EACH ROW ' . $trigger->getBody(), ';') . ';';
         } else {
             $result = [];
 
