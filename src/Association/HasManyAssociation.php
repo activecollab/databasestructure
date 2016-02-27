@@ -91,7 +91,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     */';
         $result[] = "    public function get{$this->getClassifiedAssociationName()}()";
         $result[] = '    {';
-        $result[] = '       return $this->' . $this->getFinderMethodName() . '()->all();';
+        $result[] = '        return $this->' . $this->getFinderMethodName() . '()->all();';
         $result[] = '    }';
 
         $result[] = '';
@@ -102,7 +102,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     */';
         $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids()';
         $result[] = '    {';
-        $result[] = '       return $this->' . $this->getFinderMethodName() . '()->ids();';
+        $result[] = '        return $this->' . $this->getFinderMethodName() . '()->ids();';
         $result[] = '    }';
 
         $result[] = '';
@@ -113,7 +113,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     */';
         $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
         $result[] = '    {';
-        $result[] = '       return $this->' . $this->getFinderMethodName() . '()->count();';
+        $result[] = '        return $this->' . $this->getFinderMethodName() . '()->count();';
         $result[] = '    }';
 
         $this->buildAddRelatedObjectMethod($structure, $source_type, $target_type, $namespace, $result);

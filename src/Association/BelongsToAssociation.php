@@ -150,7 +150,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '     */';
         $result[] = '    public function ' . $getter_name . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+        $result[] = '         return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
         $result[] = '    }';
 
         $result[] = '';
@@ -164,21 +164,21 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '    {';
 
         if ($this->isRequired()) {
-            $result[] = '       if (empty($value) || !$value->isLoaded()) {';
-            $result[] = '           throw new \\InvalidArgumentException(\'Valid related instance is required\');';
-            $result[] = '       }';
+            $result[] = '        if (empty($value) || !$value->isLoaded()) {';
+            $result[] = '            throw new \\InvalidArgumentException(\'Valid related instance is required\');';
+            $result[] = '        }';
             $result[] = '';
-            $result[] = '       $this->' . $fk_setter_name . '($value->getId());';
+            $result[] = '        $this->' . $fk_setter_name . '($value->getId());';
             $result[] = '';
-            $result[] = '       return $this;';
+            $result[] = '        return $this;';
         } else {
-            $result[] = '       if (empty($value)) {';
-            $result[] = '           $this->' . $fk_setter_name . '(0);';
-            $result[] = '       } else {';
-            $result[] = '           $this->' . $fk_setter_name . '($value->getId());';
-            $result[] = '       }';
+            $result[] = '        if (empty($value)) {';
+            $result[] = '            $this->' . $fk_setter_name . '(0);';
+            $result[] = '        } else {';
+            $result[] = '            $this->' . $fk_setter_name . '($value->getId());';
+            $result[] = '        }';
             $result[] = '';
-            $result[] = '       return $this;';
+            $result[] = '        return $this;';
         }
 
         $result[] = '    }';
