@@ -134,7 +134,7 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * @var  \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
         $result[] = '     private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
