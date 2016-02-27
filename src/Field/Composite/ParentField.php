@@ -37,26 +37,32 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
     /**
      * @var string
      */
-    private $type_field_name;
+    private $relation_name;
 
     /**
      * @var string
      */
-    private $id_field_name;
+    private $type_field_name;
 
     /**
      * @param string $name
      * @param bool   $add_index
      */
-    public function __construct($name = 'parent', $add_index = true)
+    public function __construct($name = 'parent_id', $add_index = true)
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid field name");
         }
 
+        $name_len = strlen($name);
+
+        if ($name_len <= 3 || substr($name, $name_len - 3) != '_id') {
+            throw new InvalidArgumentException("Value '$name' needs to be in parent_id format");
+        }
+
         $this->name = $name;
-        $this->type_field_name = "{$this->name}_type";
-        $this->id_field_name = "{$this->name}_id";
+        $this->relation_name = substr($this->name, 0, $name_len - 3);
+        $this->type_field_name = "{$this->relation_name}_type";
         $this->addIndex($add_index);
     }
 
@@ -69,19 +75,27 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
     }
 
     /**
+     * @return string
+     */
+    public function getRelationName()
+    {
+        return $this->relation_name;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFields()
     {
         $type_field = (new StringField($this->type_field_name));
-        $id_field = (new IntegerField($this->id_field_name, 0))->size($this->getSize())->unsigned();
+        $id_field = (new IntegerField($this->name, 0))->size($this->getSize())->unsigned();
 
         if ($this->isRequired()) {
             $type_field->required();
             $id_field->required();
         }
 
-        return [$id_field, $type_field];
+        return [$type_field, $id_field];
     }
 
     /**
@@ -95,11 +109,11 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         $type_getter_name = 'get' . Inflector::classify($this->type_field_name);
         $type_setter_name = 'set' . Inflector::classify($this->type_field_name);
 
-        $id_getter_name = 'get' . Inflector::classify($this->id_field_name);
-        $id_setter_name = 'set' . Inflector::classify($this->id_field_name);
+        $id_getter_name = 'get' . Inflector::classify($this->name);
+        $id_setter_name = 'set' . Inflector::classify($this->name);
 
-        $instance_getter_name = 'get' . Inflector::classify($this->name);
-        $instance_setter_name = 'set' . Inflector::classify($this->name);
+        $instance_getter_name = 'get' . Inflector::classify($this->relation_name);
+        $instance_setter_name = 'set' . Inflector::classify($this->relation_name);
 
         $type_hint = '\\' . ObjectInterface::class;
 
@@ -175,9 +189,10 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         parent::onAddedToType($type);
 
         if ($this->getAddIndex()) {
+            $type->addIndex(new Index($this->relation_name, [$this->type_field_name, $this->name]));
             $type->addIndex(new Index($this->name));
         }
 
-        $type->serialize($this->type_field_name, $this->id_field_name);
+        $type->serialize($this->type_field_name, $this->name);
     }
 }
