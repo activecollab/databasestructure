@@ -54,6 +54,6 @@ class AdditionalPropertiesField extends Field
     {
         parent::onAddedToType($type);
 
-        $type->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class);
+        $type->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class)->protectFields($this->getName());
     }
 }
