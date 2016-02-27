@@ -38,6 +38,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '<?php';
         $result[] = '';
 
+        if ($this->getStructure()->getConfig('header_comment')) {
+            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
+            $result[] = '';
+        }
+
         $base_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Base' : 'Base';
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
