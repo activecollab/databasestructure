@@ -28,6 +28,11 @@ class TypesBuilder extends FileSystemBuilder
             $result[] = '<?php';
             $result[] = '';
 
+            if ($this->getStructure()->getConfig('header_comment')) {
+                $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
+                $result[] = '';
+            }
+
             $namespace = $this->getStructure()->getNamespace();
 
             if ($namespace) {

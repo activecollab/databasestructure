@@ -31,6 +31,11 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         $result[] = '<?php';
         $result[] = '';
 
+        if ($this->getStructure()->getConfig('header_comment')) {
+            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
+            $result[] = '';
+        }
+
         if ($this->getStructure()->getNamespace()) {
             $base_class_namespace = $this->getStructure()->getNamespace() . '\\Collection\\Base';
             $type_class_name = '\\' . ltrim($this->getStructure()->getNamespace(), '\\') . '\\' . $type_class_name;
