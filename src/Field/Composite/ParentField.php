@@ -165,7 +165,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
             $methods[] = '            $this->' . $type_setter_name . '(get_class($value));';
             $methods[] = '            $this->' . $id_setter_name . '($value->getId());';
             $methods[] = '        } else {';
-            $methods[] = '            throw new \InvalidArgumentException(' . var_export("Instance of '" . ObjectInterface::class . "' expected") . ');';
+            $methods[] = '            throw new \InvalidArgumentException(' . var_export("Instance of '" . ObjectInterface::class . "' expected", true) . ');';
             $methods[] = '        }';
             $methods[] = '    } else {';
             $methods[] = '        $this->' . $type_setter_name . '(null);';
