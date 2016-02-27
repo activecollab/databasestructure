@@ -66,7 +66,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         $result[] = 'abstract class ' . $base_collection_class_name . ' extends \ActiveCollab\DatabaseObject\Collection\Type';
         $result[] = '{';
         $result[] = '    /**';
-        $result[] = '     * Return type that this collection works with';
+        $result[] = '     * Return type that this collection works with.';
         $result[] = '     *';
         $result[] = '     * @return string';
         $result[] = '     */';

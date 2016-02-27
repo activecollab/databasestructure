@@ -157,7 +157,7 @@ class PositionField extends Field
         $methods = [];
 
         $methods[] = '/**';
-        $methods[] = ' * Return position mode';
+        $methods[] = ' * Return position mode.';
         $methods[] = ' *';
         $methods[] = ' * There are two modes:';
         $methods[] = ' *';
@@ -168,11 +168,11 @@ class PositionField extends Field
         $methods[] = ' */';
         $methods[] = 'public function getPositionMode()';
         $methods[] = '{';
-        $methods[] = '   return ' . var_export($this->mode, true) . ';';
+        $methods[] = '    return ' . var_export($this->mode, true) . ';';
         $methods[] = '}';
         $methods[] = '';
         $methods[] = '/**';
-        $methods[] = ' * Return context in which position should be set';
+        $methods[] = ' * Return context in which position should be set.';
         $methods[] = ' *';
         $methods[] = ' * @return array';
         $methods[] = ' */';
