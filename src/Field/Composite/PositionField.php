@@ -184,7 +184,11 @@ class PositionField extends Field
         $methods[] = '}';
 
         foreach ($methods as $line) {
-            $result[] = "$indent$line";
+            if ($line) {
+                $result[] = "$indent$line";
+            } else {
+                $result[] = '';
+            }
         }
     }
 

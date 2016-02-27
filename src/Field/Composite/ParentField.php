@@ -177,7 +177,11 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         }
 
         foreach ($methods as $line) {
-            $result[] = "$indent$line";
+            if ($line) {
+                $result[] = "$indent$line";
+            } else {
+                $result[] = '';
+            }
         }
     }
 

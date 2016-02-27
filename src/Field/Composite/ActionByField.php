@@ -209,7 +209,11 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         }
 
         foreach ($methods as $line) {
-            $result[] = "$indent$line";
+            if ($line) {
+                $result[] = "$indent$line";
+            } else {
+                $result[] = '';
+            }
         }
     }
 

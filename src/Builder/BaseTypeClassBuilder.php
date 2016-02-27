@@ -303,7 +303,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = $indent . '    return array_merge(parent::jsonSerialize(), [';
 
             foreach ($serialize as $field) {
-                $result[] = $indent . '        ' . var_export($field, true) . ' => $this->' . $this->getGetterName($field) . '(), ';
+                $result[] = $indent . '        ' . var_export($field, true) . ' => $this->' . $this->getGetterName($field) . '(),';
             }
 
             $result[] = $indent . '    ]);';
