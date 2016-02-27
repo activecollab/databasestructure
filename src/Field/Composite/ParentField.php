@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseObject\ObjectInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -18,6 +19,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
+use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
 /**
@@ -32,8 +34,14 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
      */
     private $name;
 
+    /**
+     * @var string
+     */
     private $type_field_name;
 
+    /**
+     * @var string
+     */
     private $id_field_name;
 
     /**
@@ -74,6 +82,89 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         }
 
         return [$id_field, $type_field];
+    }
+
+    /**
+     * Return methods that this field needs to inject in base class.
+     *
+     * @param string $indent
+     * @param array  $result
+     */
+    public function getBaseClassMethods($indent, array &$result)
+    {
+        $type_getter_name = 'get' . Inflector::classify($this->type_field_name);
+        $type_setter_name = 'set' . Inflector::classify($this->type_field_name);
+
+        $id_getter_name = 'get' . Inflector::classify($this->id_field_name);
+        $id_setter_name = 'set' . Inflector::classify($this->id_field_name);
+
+        $instance_getter_name = 'get' . Inflector::classify($this->name);
+        $instance_setter_name = 'set' . Inflector::classify($this->name);
+
+        $type_hint = '\\' . ObjectInterface::class;
+
+        $methods = [];
+
+        $methods[] = '/**';
+        $methods[] = ' * @param  boolean' . str_pad('$use_cache', strlen($type_hint) + 4, ' ', STR_PAD_LEFT);
+        $methods[] = ' * @return ' . $type_hint;
+        $methods[] = ' */';
+        $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';
+        $methods[] = '{';
+        $methods[] = '    if ($id = $this->' . $id_getter_name . '()) {';
+        $methods[] = '        return $this->pool->getById($this->' . $type_getter_name . '(), $id, $use_cache);';
+        $methods[] = '    } else {';
+        $methods[] = '        return null;';
+        $methods[] = '    }';
+        $methods[] = '}';
+        $methods[] = '';
+
+        if ($this->isRequired()) {
+            $methods[] = '/**';
+            $methods[] = ' * Return context in which position should be set';
+            $methods[] = ' *';
+            $methods[] = ' * @param  ' . $type_hint . ' $value';
+            $methods[] = ' * @return $this';
+            $methods[] = ' */';
+            $methods[] = 'public function &' . $instance_setter_name . '(\\' . ObjectInterface::class . ' $value)';
+            $methods[] = '{';
+            $methods[] = '    if ($value instanceof \\' . ObjectInterface::class . ' && $value->isLoaded()) {';
+            $methods[] = '        $this->' . $type_setter_name . '(get_class($value));';
+            $methods[] = '        $this->' . $id_setter_name . '($value->getId());';
+            $methods[] = '    } else {';
+            $methods[] = '        throw new \InvalidArgumentException(' . var_export("Instance of '" . ObjectInterface::class . "' expected", true) . ');';
+            $methods[] = '    }';
+            $methods[] = '';
+            $methods[] = '    return $this;';
+            $methods[] = '}';
+        } else {
+            $methods[] = '/**';
+            $methods[] = ' * Return context in which position should be set';
+            $methods[] = ' *';
+            $methods[] = ' * @param  ' . $type_hint . ' $value';
+            $methods[] = ' * @return $this';
+            $methods[] = ' */';
+            $methods[] = 'public function &' . $instance_setter_name . '(\\' . ObjectInterface::class . ' $value = null)';
+            $methods[] = '{';
+            $methods[] = '    if ($value instanceof \\' . ObjectInterface::class . ') {';
+            $methods[] = '        if ($value->isLoaded()) {';
+            $methods[] = '            $this->' . $type_setter_name . '(get_class($value));';
+            $methods[] = '            $this->' . $id_setter_name . '($value->getId());';
+            $methods[] = '        } else {';
+            $methods[] = '            throw new \InvalidArgumentException(' . var_export("Instance of '" . ObjectInterface::class . "' expected") . ');';
+            $methods[] = '        }';
+            $methods[] = '    } else {';
+            $methods[] = '        $this->' . $type_setter_name . '(null);';
+            $methods[] = '        $this->' . $id_setter_name . '(0);';
+            $methods[] = '    }';
+            $methods[] = '';
+            $methods[] = '    return $this;';
+            $methods[] = '}';
+        }
+
+        foreach ($methods as $line) {
+            $result[] = "$indent$line";
+        }
     }
 
     /**

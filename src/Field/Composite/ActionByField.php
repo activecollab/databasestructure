@@ -160,7 +160,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
 
         if ($this->isRequired()) {
             $methods[] = '/**';
-            $methods[] = ' * Return context in which position should be set';
+            $methods[] = ' * Set ' . $this->action_name;
             $methods[] = ' *';
             $methods[] = ' * @param  \\' . UserInterface::class . '|' . $this->user_class_name .' $value';
             $methods[] = ' * @return $this';
@@ -179,7 +179,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = '}';
         } else {
             $methods[] = '/**';
-            $methods[] = ' * Return context in which position should be set';
+            $methods[] = ' * Set ' . $this->action_name;
             $methods[] = ' *';
             $methods[] = ' * @param  ' . $type_hint . ' $value';
             $methods[] = ' * @return $this';
