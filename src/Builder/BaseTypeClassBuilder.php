@@ -175,7 +175,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $result[] = '    /**';
                 $result[] = '     * Set value of ' . $field->getName() . ' field.';
                 $result[] = '     *';
-                $result[] = '     * @param  ' . str_pad($field->getNativeType(), 5 - strlen($field->getNativeType()), ' ', STR_PAD_RIGHT) . ' $value';
+                $result[] = '     * @param  ' . $field->getNativeType() . str_pad('$value', 5 - strlen($field->getNativeType()), ' ', STR_PAD_LEFT);
                 $result[] = '     * @return $this';
                 $result[] = '     */';
                 $result[] = '    public function &' . $this->getSetterName($field->getName()) . '($value)';
