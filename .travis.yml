@@ -11,4 +11,4 @@ install:
   - phpunit --version
 before_script:
   - mysql -e 'create database activecollab_database_structure_test'
-script: phpunit -c test/phpunit.xml
+script: phpunit
