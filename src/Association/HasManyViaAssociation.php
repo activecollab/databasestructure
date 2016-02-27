@@ -60,7 +60,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '     private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
         $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
@@ -91,7 +91,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_add';
+        $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_add.';
         $result[] = '     *';
         $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
         $result[] = '     * @param  ' . str_pad('array|null', $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $attributes';
@@ -138,7 +138,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove';
+        $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove.';
         $result[] = '     *';
         $result[] = '     * @param  ' . $target_instance_class . ' $object_to_remove';
         $result[] = '     * @return $this';
@@ -177,7 +177,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . Inflector::singularize($source_type->getName());
+        $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . Inflector::singularize($source_type->getName()) . '.';
         $result[] = '     *';
         $result[] = '     * @return $this';
         $result[] = '     */';

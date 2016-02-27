@@ -85,7 +85,7 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return ' . $this->getInstanceClassFrom($namespace, $target_type) . '[]';
         $result[] = '     */';
@@ -96,7 +96,7 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s.';
         $result[] = '     *';
         $result[] = '     * @return integer[]';
         $result[] = '     */';
@@ -107,7 +107,7 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return integer';
         $result[] = '     */';
@@ -139,7 +139,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance';
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
         $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';

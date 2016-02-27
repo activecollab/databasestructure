@@ -63,7 +63,7 @@ class HasOneAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return ' . $target_instance_class;
         $result[] = '     */';

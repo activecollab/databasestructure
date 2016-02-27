@@ -144,7 +144,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return ' . $target_instance_class;
         $result[] = '     */';
@@ -155,7 +155,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName();
+        $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @param  ' . $target_instance_class  . ' $value';
         $result[] = '     * @return $this';
