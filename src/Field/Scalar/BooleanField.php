@@ -27,7 +27,7 @@ class BooleanField extends Field
     /**
      * Value of this column needs to be unique (in the given context).
      *
-     * @param  string $context
+     * @param  string[] $context
      * @return $this
      */
     public function &unique(...$context)
@@ -43,6 +43,6 @@ class BooleanField extends Field
      */
     public function getCastingCode($variable_name)
     {
-        return '(boolean) $' . $variable_name;
+        return '(bool) $' . $variable_name;
     }
 }

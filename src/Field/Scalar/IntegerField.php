@@ -27,7 +27,7 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
      */
     public function getNativeType()
     {
-        return 'integer';
+        return 'int';
     }
 
     /**
@@ -38,6 +38,6 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
      */
     public function getCastingCode($variable_name)
     {
-        return '(integer) $' . $variable_name;
+        return '(int) $' . $variable_name;
     }
 }
