@@ -101,7 +101,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
     public function getFields()
     {
