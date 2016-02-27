@@ -143,7 +143,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $methods = [];
 
         $methods[] = '/**';
-        $methods[] = ' * @param  boolean' . str_pad('$use_cache', strlen($type_hint) + 4, ' ', STR_PAD_LEFT);
+        $methods[] = ' * @param  bool' . str_pad('$use_cache', strlen($type_hint) + 7, ' ', STR_PAD_LEFT);
         $methods[] = ' * @return ' . $type_hint;
         $methods[] = ' */';
         $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';

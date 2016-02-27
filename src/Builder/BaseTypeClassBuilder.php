@@ -83,7 +83,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $result[] = '    /**';
-        $result[] = '     * Name of the table where records are stored';
+        $result[] = '     * Name of the table where records are stored.';
         $result[] = '     *';
         $result[] = '     * @var string';
         $result[] = '     */';
@@ -106,7 +106,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * All table fields';
+        $result[] = '     * All table fields.';
         $result[] = '     *';
         $result[] = '     * @var array';
         $result[] = '     */';
@@ -115,7 +115,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         if (count($fields_with_default_value)) {
             $result[] = '';
             $result[] = '    /**';
-            $result[] = '     * List of default field values';
+            $result[] = '     * List of default field values.';
             $result[] = '     *';
             $result[] = '     * @var array';
             $result[] = '     */';
@@ -131,7 +131,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         if (count($type->getProtectedFields())) {
             $result[] = '';
             $result[] = '    /**';
-            $result[] = '     * List of protected fields';
+            $result[] = '     * List of protected fields.';
             $result[] = '     *';
             $result[] = '     * @var array';
             $result[] = '     */';
@@ -158,7 +158,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
                 $result[] = '';
                 $result[] = '    /**';
-                $result[] = '     * Return value of ' . $field->getName() . ' field';
+                $result[] = '     * Return value of ' . $field->getName() . ' field.';
                 $result[] = '     *';
                 $result[] = '     * @return ' . $field->getNativeType();
                 $result[] = '     */';
@@ -168,7 +168,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $result[] = '    }';
                 $result[] = '';
                 $result[] = '    /**';
-                $result[] = '     * Set value of ' . $field->getName() . '  field';
+                $result[] = '     * Set value of ' . $field->getName() . '  field.';
                 $result[] = '     *';
                 $result[] = '     * @param  ' . $field->getNativeType() . ' $value';
                 $result[] = '     * @return $this';
@@ -184,7 +184,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Set value of specific field';
+        $result[] = '     * Set value of specific field.';
         $result[] = '     *';
         $result[] = '     * @param  string                    $name';
         $result[] = '     * @param  mixed                     $value';
@@ -289,7 +289,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         if (count($serialize)) {
             $result[] = '';
             $result[] = $indent . '/**';
-            $result[] = $indent . ' * Prepare object properties so they can be serialized to JSON';
+            $result[] = $indent . ' * Prepare object properties so they can be serialized to JSON.';
             $result[] = $indent . ' *';
             $result[] = $indent . ' * @return array';
             $result[] = $indent . ' */';
@@ -342,7 +342,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         if (count($validator_lines)) {
             $result[] = '';
             $result[] = $indent . '/**';
-            $result[] = $indent . ' * Validate object properties before object is saved';
+            $result[] = $indent . ' * Validate object properties before object is saved.';
             $result[] = $indent . ' *';
             $result[] = $indent . ' * @param \ActiveCollab\DatabaseObject\ValidatorInterface $validator';
             $result[] = $indent . ' */';

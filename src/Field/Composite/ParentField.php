@@ -120,7 +120,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         $methods = [];
 
         $methods[] = '/**';
-        $methods[] = ' * @param  boolean' . str_pad('$use_cache', strlen($type_hint) + 4, ' ', STR_PAD_LEFT);
+        $methods[] = ' * @param  bool' . str_pad('$use_cache', strlen($type_hint) + 7, ' ', STR_PAD_LEFT);
         $methods[] = ' * @return ' . $type_hint;
         $methods[] = ' */';
         $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';
@@ -135,7 +135,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
 
         if ($this->isRequired()) {
             $methods[] = '/**';
-            $methods[] = ' * Return context in which position should be set';
+            $methods[] = ' * Set ' . $this->relation_name . '.';
             $methods[] = ' *';
             $methods[] = ' * @param  ' . $type_hint . ' $value';
             $methods[] = ' * @return $this';
@@ -153,7 +153,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
             $methods[] = '}';
         } else {
             $methods[] = '/**';
-            $methods[] = ' * Return context in which position should be set';
+            $methods[] = ' * Set ' . $this->relation_name . '.';
             $methods[] = ' *';
             $methods[] = ' * @param  ' . $type_hint . ' $value';
             $methods[] = ' * @return $this';
