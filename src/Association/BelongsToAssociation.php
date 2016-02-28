@@ -125,7 +125,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     /**
      * @return bool
      */
-    public function getProtectSetter(): bool
+    public function getProtectSetter()
     {
         return $this->protect_setter;
     }
@@ -136,9 +136,9 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
      * @param  bool  $value
      * @return $this
      */
-    public function &protectSetter(bool $value = true)
+    public function &protectSetter($value = true)
     {
-        $this->protect_setter = $value;
+        $this->protect_setter = (boolean) $value;
 
         return $this;
     }
