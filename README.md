@@ -77,6 +77,10 @@ abstract class Token extends \ActiveCollab\DatabaseObject\Object
 }
 ```
 
+### `header_comment`
+
+Add a comment that will be included at the header of all auto-generated files. This option is useful if you need to include licensing information in your source code.
+
 ## Behaviours
 
 Behaviours are interfaces and interface implementations that types and fields add to resulting object classes. These behaviours can do all sort of things: let you element position in collections, store additional bits of information on object level, check user permissions and more.
@@ -140,3 +144,7 @@ class MyStructure extends Structure
     }
 }
 ```
+
+## To Do
+
+1. Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it.

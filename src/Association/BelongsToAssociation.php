@@ -118,6 +118,32 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
+     * @var bool
+     */
+    private $protect_setter = false;
+
+    /**
+     * @return bool
+     */
+    public function getProtectSetter(): bool
+    {
+        return $this->protect_setter;
+    }
+
+    /**
+     * Generate setter as protected, insted of public.
+     *
+     * @param  bool  $value
+     * @return $this
+     */
+    public function &protectSetter(bool $value = true)
+    {
+        $this->protect_setter = $value;
+
+        return $this;
+    }
+
+    /**
      * Build class methods.
      *
      * @param StructureInterface $structure
@@ -153,6 +179,8 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
         $result[] = '    }';
 
+        $setter_access_level = $this->getProtectSetter() ? 'protected' : 'public';
+
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
@@ -160,7 +188,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '     * @param  ' . $target_instance_class  . ' $value';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
+        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
         $result[] = '    {';
 
         if ($this->isRequired()) {
