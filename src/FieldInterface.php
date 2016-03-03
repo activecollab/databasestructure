@@ -11,7 +11,7 @@ namespace ActiveCollab\DatabaseStructure;
 /**
  * @package ActiveCollab\DatabaseStructure
  */
-interface FieldInterface
+interface FieldInterface extends ProtectSetterInterface
 {
     const SIZE_TINY = 'tiny';
     const SIZE_SMALL = 'small';

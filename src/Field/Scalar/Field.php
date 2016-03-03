@@ -13,6 +13,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Impleme
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
@@ -21,7 +22,7 @@ use InvalidArgumentException;
  */
 abstract class Field implements FieldInterface, RequiredInterface, UniqueInterface
 {
-    use RequiredInterfaceImplementation, UniqueInterfaceImplementation;
+    use ProtectSetterInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
 
     /**
      * @var string

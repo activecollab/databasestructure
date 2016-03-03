@@ -13,6 +13,8 @@ use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\ProtectSetterInterface;
+use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
@@ -21,9 +23,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface
+class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface
 {
-    use AssociationInterface\Implementation;
+    use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation;
 
     /**
      * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:.
@@ -115,32 +117,6 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     public function getConstraintName()
     {
         return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
-    }
-
-    /**
-     * @var bool
-     */
-    private $protect_setter = false;
-
-    /**
-     * @return bool
-     */
-    public function getProtectSetter()
-    {
-        return $this->protect_setter;
-    }
-
-    /**
-     * Generate setter as protected, insted of public.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function &protectSetter($value = true)
-    {
-        $this->protect_setter = (boolean) $value;
-
-        return $this;
     }
 
     /**

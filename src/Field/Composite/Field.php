@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 /**
@@ -16,6 +17,8 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
  */
 abstract class Field implements FieldInterface
 {
+    use ProtectSetterInterfaceImplementation;
+
     /**
      * Return fields that this field is composed of.
      *
