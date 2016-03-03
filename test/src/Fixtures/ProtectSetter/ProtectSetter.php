@@ -6,23 +6,27 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test\Fixtures\BelongsToProtectSetter;
+namespace ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectSetter;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Structure;
 
 /**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\BelongsToProtectSetter
+ * @package ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectSetter
  */
-class BelongsToProtectSetter extends Structure
+class ProtectSetter extends Structure
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->addType('users')->addAssociations([
+        $this->addType('users')->addFields([
+            new StringField('unprotected_setter'),
+            (new StringField('protected_setter'))->protectSetter(),
+        ])->addAssociations([
             new HasManyAssociation('books'),
             new HasManyAssociation('notes'),
         ]);

@@ -160,6 +160,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         foreach ($fields as $field) {
+            $setter_access_level = $field->getProtectSetter() ? 'protected' : 'public';
+
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
                 $result[] = '';
                 $result[] = '    /**';
@@ -178,7 +180,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $result[] = '     * @param  ' . str_pad($field->getNativeType(), 5, ' ', STR_PAD_RIGHT) . ' $value';
                 $result[] = '     * @return $this';
                 $result[] = '     */';
-                $result[] = '    public function &' . $this->getSetterName($field->getName()) . '($value)';
+                $result[] = '    ' . $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '($value)';
                 $result[] = '    {';
                 $result[] = '        $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
                 $result[] = '';
