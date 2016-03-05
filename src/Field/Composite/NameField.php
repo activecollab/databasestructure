@@ -103,6 +103,8 @@ class NameField extends Field implements ModifierInterface, RequiredInterface, U
     {
         parent::onAddedToType($type);
 
+        $type->serialize($this->getName());
+
         if ($this->getAddIndex()) {
             $index_fields = [$this->name];
 

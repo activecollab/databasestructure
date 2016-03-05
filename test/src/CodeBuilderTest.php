@@ -287,9 +287,9 @@ class CodeBuilderTest extends TestCase
         $this->assertEquals($this->base_writer_reflection->getName(), $json_serialize->getDeclaringClass()->getName());
 
         $json_serialize = $this->base_book_reflection->getMethod('jsonSerialize');
-        $this->assertEquals('ActiveCollab\DatabaseObject\Object', $json_serialize->getDeclaringClass()->getName());
+        $this->assertEquals('ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Book', $json_serialize->getDeclaringClass()->getName());
 
         $json_serialize = $this->base_chapter_reflection->getMethod('jsonSerialize');
-        $this->assertEquals('ActiveCollab\DatabaseObject\Object', $json_serialize->getDeclaringClass()->getName());
+        $this->assertEquals('ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Chapter', $json_serialize->getDeclaringClass()->getName());
     }
 }

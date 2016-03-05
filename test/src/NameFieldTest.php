@@ -111,6 +111,14 @@ class NameFieldTest extends TestCase
     }
 
     /**
+     * Test if name is added to the list of fields that need to be serialized.
+     */
+    public function testNameFieldShouldBeSerialized()
+    {
+        $this->assertContains('name', (new Type('chapters'))->addField(new NameField())->getSerialize());
+    }
+
+    /**
      * Make sure that resulting string field is required and / or unique when name is required and / or unique.
      */
     public function testNameProducesRequiredAndUniqueStringWhenRequiredAndUnique()
