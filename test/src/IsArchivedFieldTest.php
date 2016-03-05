@@ -103,4 +103,12 @@ class IsArchivedFieldTest extends TestCase
         $this->assertArrayHasKey(IsArchivedInterface::class, $type->getTraits());
         $this->assertContains(IsArchivedInterfaceImplementation::class, $type->getTraits()[IsArchivedInterface::class]);
     }
+
+    /**
+     * Test if is_archived is added to the list of fields that need to be serialized.
+     */
+    public function testIsArchivedFieldShouldBeSerialized()
+    {
+        $this->assertContains('is_archived', (new Type('chapters'))->addField(new IsArchivedField())->getSerialize());
+    }
 }
