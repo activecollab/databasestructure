@@ -92,8 +92,6 @@ class ProtectSetterTest extends TestCase
 
         $this->assertTrue($this->base_user_reflection->getMethod('setUnprotectedSetter')->isPublic());
         $this->assertTrue($this->base_user_reflection->getMethod('setProtectedSetter')->isProtected());
-
-
     }
 
     /**
