@@ -146,7 +146,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
         $result[] = '    {';
         $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where("`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId())' . $order_by . ';';
+        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
         $result[] = '        }';
         $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
         $result[] = '    }';

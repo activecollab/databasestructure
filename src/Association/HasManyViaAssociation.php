@@ -67,7 +67,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
         $result[] = '    {';
         $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where("`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?", $this->getId())' . $order_by . ';';
+        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
         $result[] = '        }';
         $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
         $result[] = '    }';
@@ -153,7 +153,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first");';
         $result[] = '        }';
         $result[] = '        ';
-        $result[] = '        $intermediary_object = $this->pool->find(' . var_export($intermediary_instance_class, true) . ')->where("' . $this->getFkFieldNameFrom($source_type) . ' = ? AND ' . $this->getFkFieldNameFrom($target_type) . ' = ?", $this->getId(), $object_to_remove->getId())->first();';
+        $result[] = '        $intermediary_object = $this->pool->find(' . var_export($intermediary_instance_class, true) . ')->where(\'' . $this->getFkFieldNameFrom($source_type) . ' = ? AND ' . $this->getFkFieldNameFrom($target_type) . ' = ?\', $this->getId(), $object_to_remove->getId())->first();';
         $result[] = '        ';
         $result[] = '        if ($intermediary_object instanceof ' . $intermediary_instance_class . ') {';
         $result[] = '            $this->pool->scrap($intermediary_object, true);';

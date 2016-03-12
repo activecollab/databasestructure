@@ -69,7 +69,7 @@ class HasOneAssociation extends Association implements AssociationInterface
         $result[] = '     */';
         $result[] = '    public function ' . $getter_name . '()';
         $result[] = '    {';
-        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where("`' . $fk_name . '`` = ?", $this->getId())->first();';
+        $result[] = '       return $this->pool->find(' . var_export($target_instance_class, true) . ')->where(\'`' . $fk_name . '`` = ?\', $this->getId())->first();';
         $result[] = '    }';
     }
 }
