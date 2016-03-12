@@ -101,11 +101,11 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_add, array $attributes = null)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
-        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first");';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '        ';
         $result[] = '        if ($object_to_add->isNew()) {';
-        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first");';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '        ';
         $result[] = '        $produce_attributes = [';
