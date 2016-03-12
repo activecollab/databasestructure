@@ -98,7 +98,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s.';
         $result[] = '     *';
-        $result[] = '     * @return integer[]';
+        $result[] = '     * @return int[]';
         $result[] = '     */';
         $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids()';
         $result[] = '    {';
@@ -109,7 +109,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    /**';
         $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return integer';
+        $result[] = '     * @return int';
         $result[] = '     */';
         $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
         $result[] = '    {';

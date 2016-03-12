@@ -186,7 +186,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '        if ($objects = $this->get' . $this->getClassifiedAssociationName() . '()) {';
         $result[] = '            $object_ids = [];';
         $result[] = '            ';
-        $result[] = '            $this->connection->transact(function() use ($objects, &$object_ids) {';
+        $result[] = '            $this->connection->transact(function () use ($objects, &$object_ids) {';
         $result[] = '                foreach ($objects as $object) {';
         $result[] = '                    $object_ids[] = $object->getId();';
         $result[] = '                    $object->delete(true);';
