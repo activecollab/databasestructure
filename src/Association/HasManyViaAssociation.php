@@ -57,7 +57,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '    /**';
         $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
-        $result[] = '     private $' . $this->getFinderPropertyName() . ';';
+        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
@@ -69,6 +69,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
         $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
         $result[] = '        }';
+        $result[] = '';
         $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
         $result[] = '    }';
     }
