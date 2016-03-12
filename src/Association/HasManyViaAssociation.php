@@ -116,7 +116,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '        if (!empty($attributes)) {';
         $result[] = '            $produce_attributes = array_merge($produce_attributes, $attributes);';
         $result[] = '        }';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        $this->pool->produce(' . var_export($intermediary_instance_class, true) . ', $produce_attributes);';
         $result[] = '';
         $result[] = '        return $this;';
@@ -147,19 +147,19 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_remove)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
-        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first");';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        if ($object_to_remove->isNew()) {';
-        $result[] = '            throw new \RuntimeException("' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first");';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        $intermediary_object = $this->pool->find(' . var_export($intermediary_instance_class, true) . ')->where(\'' . $this->getFkFieldNameFrom($source_type) . ' = ? AND ' . $this->getFkFieldNameFrom($target_type) . ' = ?\', $this->getId(), $object_to_remove->getId())->first();';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        if ($intermediary_object instanceof ' . $intermediary_instance_class . ') {';
         $result[] = '            $this->pool->scrap($intermediary_object, true);';
         $result[] = '        }';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
     }
@@ -186,16 +186,17 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '    {';
         $result[] = '        if ($objects = $this->get' . $this->getClassifiedAssociationName() . '()) {';
         $result[] = '            $object_ids = [];';
-        $result[] = '            ';
+        $result[] = '';
         $result[] = '            $this->connection->transact(function () use ($objects, &$object_ids) {';
         $result[] = '                foreach ($objects as $object) {';
         $result[] = '                    $object_ids[] = $object->getId();';
         $result[] = '                    $object->delete(true);';
         $result[] = '                }';
         $result[] = '            });';
-        $result[] = '            ';
+        $result[] = '';
         $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', $object_ids);';
         $result[] = '        }';
+        $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
     }
