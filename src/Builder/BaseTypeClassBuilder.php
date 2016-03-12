@@ -140,7 +140,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '     *';
             $result[] = '     * @var array';
             $result[] = '     */';
-            $result[] = '    protected $protected_fields = [' . implode(',', array_map(function ($field) {
+            $result[] = '    protected $protected_fields = [' . implode(', ', array_map(function ($field) {
                 return var_export($field, true);
             }, $type->getProtectedFields())) . '];';
         }
