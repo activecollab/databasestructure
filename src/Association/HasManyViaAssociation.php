@@ -103,22 +103,22 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        if ($object_to_add->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        $produce_attributes = [';
-        $result[] = '            "' . $this->getFkFieldNameFrom($source_type) . '" => $this->getId(),';
-        $result[] = '            "' . $this->getFkFieldNameFrom($target_type) . '" => $object_to_add->getId(),';
+        $result[] = '            \'' . $this->getFkFieldNameFrom($source_type) . '\' => $this->getId(),';
+        $result[] = '            \'' . $this->getFkFieldNameFrom($target_type) . '\' => $object_to_add->getId(),';
         $result[] = '        ];';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        if (!empty($attributes)) {';
         $result[] = '            $produce_attributes = array_merge($produce_attributes, $attributes);';
         $result[] = '        }';
         $result[] = '        ';
         $result[] = '        $this->pool->produce(' . var_export($intermediary_instance_class, true) . ', $produce_attributes);';
-        $result[] = '        ';
+        $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
     }
