@@ -136,7 +136,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    /**';
         $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
-        $result[] = '     private $' . $this->getFinderPropertyName() . ';';
+        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
