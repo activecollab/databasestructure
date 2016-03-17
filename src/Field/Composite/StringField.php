@@ -11,6 +11,8 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface\Implementation as LengthInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
@@ -25,9 +27,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-abstract class StringField extends Field implements RequiredInterface, UniqueInterface, ModifierInterface, AddIndexInterface
+abstract class StringField extends Field implements RequiredInterface, UniqueInterface, LengthInterface, ModifierInterface, AddIndexInterface
 {
-    use RequiredInterfaceImplementation, UniqueInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
+    use RequiredInterfaceImplementation, UniqueInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
 
     /**
      * @var string
@@ -78,7 +80,7 @@ abstract class StringField extends Field implements RequiredInterface, UniqueInt
      */
     public function getFields()
     {
-        $scalar_string_field = new ScalarStringField($this->getName(), $this->getDefaultValue());
+        $scalar_string_field = (new ScalarStringField($this->getName(), $this->getDefaultValue()))->length($this->getLength());
 
         if ($this->getModifier()) {
             $scalar_string_field->modifier($this->getModifier());
