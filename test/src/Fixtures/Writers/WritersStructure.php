@@ -27,7 +27,7 @@ class WritersStructure extends Structure
     public function configure()
     {
         $this->addType('writers')->addFields([
-            new NameField(),
+            new NameField('name', ''),
             (new DateField('birthday'))->required(),
         ])->addIndexes([
             new Index('birthday'),

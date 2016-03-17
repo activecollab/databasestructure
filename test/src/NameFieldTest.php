@@ -39,7 +39,8 @@ class NameFieldTest extends TestCase
      */
     public function testNameIsTrimmedByDefault()
     {
-        $this->assertEquals('trim', (new NameField())->getModifier());
+        $this->assertEquals('trim', (new NameField('name', ''))->getModifier());
+        $this->assertEquals(null, (new NameField())->getModifier());
     }
 
     /**

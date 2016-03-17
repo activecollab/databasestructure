@@ -8,8 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
-
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
