@@ -6,11 +6,12 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test;
+namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
@@ -39,7 +40,8 @@ class NameFieldTest extends TestCase
      */
     public function testNameIsTrimmedByDefault()
     {
-        $this->assertEquals('trim', (new NameField())->getModifier());
+        $this->assertEquals('trim', (new NameField('name', ''))->getModifier());
+        $this->assertEquals(null, (new NameField())->getModifier());
     }
 
     /**

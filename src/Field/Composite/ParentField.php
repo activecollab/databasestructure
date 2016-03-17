@@ -8,9 +8,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
 use ActiveCollab\DatabaseObject\ObjectInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
@@ -87,7 +87,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
      */
     public function getFields()
     {
-        $type_field = (new StringField($this->type_field_name));
+        $type_field = (new ScalarStringField($this->type_field_name));
         $id_field = (new IntegerField($this->name, 0))->size($this->getSize())->unsigned();
 
         if ($this->isRequired()) {

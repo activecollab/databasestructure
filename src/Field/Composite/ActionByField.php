@@ -9,12 +9,11 @@
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\AnonymousUser;
@@ -113,7 +112,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
 
         return [
             $id_field,
-            new StringField($this->getActionName() . '_by_name'),
+            new ScalarStringField($this->getActionName() . '_by_name'),
             new EmailField($this->getActionName() . '_by_email'),
         ];
     }
