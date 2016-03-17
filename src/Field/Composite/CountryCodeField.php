@@ -289,6 +289,6 @@ class CountryCodeField extends StringField
     {
         $result[] = $indent . '$validator->inArray(' . var_export($this->getName(), true) . ', [' . implode(', ', array_map(function($country_code) {
             return "'$country_code'";
-        }, $this->valid_country_codes)) . '],' . ($this->getDefaultValue() === null ? 'true' : 'false') . ');';
+        }, $this->valid_country_codes)) . '], ' . ($this->getDefaultValue() === null ? 'true' : 'false') . ');';
     }
 }
