@@ -276,7 +276,7 @@ class CountryCodeField extends StringField
         parent::__construct($name, $default_value, $add_index);
 
         if ($default_value !== null) {
-            $this->modifier('trim');
+            $this->modifier('strtoupper');
         }
 
         $this->length(2);

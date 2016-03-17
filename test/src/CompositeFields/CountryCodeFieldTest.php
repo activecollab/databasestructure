@@ -62,9 +62,9 @@ class CountryCodeFieldTest extends TestCase
     /**
      * Test if country code value is trimmed when not null by default.
      */
-    public function testValueIsTrimmedByDefault()
+    public function testValueIsUppercasedByDefault()
     {
-        $this->assertEquals('trim', (new CountryCodeField('country_code', 'DE'))->getModifier());
+        $this->assertEquals('strtoupper', (new CountryCodeField('country_code', 'DE'))->getModifier());
     }
 
     /**
