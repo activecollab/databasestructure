@@ -6,11 +6,12 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test;
+namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\EmailField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\IndexInterface;
+use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
@@ -123,10 +124,10 @@ class EmailFieldTest extends TestCase
      */
     public function testEmailProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {
-        $name_field = (new EmailField('email_address'))->required()->unique('context_filed_1');
+        $email_field = (new EmailField('email_address'))->required()->unique('context_filed_1');
 
         /** @var StringField $string_field */
-        $string_field = $name_field->getFields()[0];
+        $string_field = $email_field->getFields()[0];
 
         $this->assertInstanceOf(StringField::class, $string_field);
 
