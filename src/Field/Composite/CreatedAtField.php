@@ -17,6 +17,9 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
+/**
+ * @package ActiveCollab\DatabaseStructure\Field\Composite
+ */
 class CreatedAtField extends Field
 {
     use AddIndexInterfaceImplementation;
