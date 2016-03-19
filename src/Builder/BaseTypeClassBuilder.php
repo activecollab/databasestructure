@@ -503,7 +503,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      */
     private function getShortGetterName($field_name)
     {
-        return Inflector::classify($field_name);
+        return lcfirst(Inflector::classify($field_name));
     }
 
     /**
