@@ -25,10 +25,7 @@ class BooleanField extends Field
     }
 
     /**
-     * Value of this column needs to be unique (in the given context).
-     *
-     * @param  string[] $context
-     * @return $this
+     * {@inheritdoc}
      */
     public function &unique(...$context)
     {
@@ -36,10 +33,15 @@ class BooleanField extends Field
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
+     */
+    public function getNativeType()
+    {
+        return 'bool';
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getCastingCode($variable_name)
     {
