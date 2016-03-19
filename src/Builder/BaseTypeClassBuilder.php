@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
@@ -160,32 +161,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         foreach ($fields as $field) {
-            $setter_access_level = $field->getProtectSetter() ? 'protected' : 'public';
-
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
-                $result[] = '';
-                $result[] = '    /**';
-                $result[] = '     * Return value of ' . $field->getName() . ' field.';
-                $result[] = '     *';
-                $result[] = '     * @return ' . $field->getNativeType();
-                $result[] = '     */';
-                $result[] = '    public function ' . $this->getGetterName($field->getName()) . '()';
-                $result[] = '    {';
-                $result[] = '        return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
-                $result[] = '    }';
-                $result[] = '';
-                $result[] = '    /**';
-                $result[] = '     * Set value of ' . $field->getName() . ' field.';
-                $result[] = '     *';
-                $result[] = '     * @param  ' . str_pad($field->getNativeType(), 5, ' ', STR_PAD_RIGHT) . ' $value';
-                $result[] = '     * @return $this';
-                $result[] = '     */';
-                $result[] = '    ' . $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '($value)';
-                $result[] = '    {';
-                $result[] = '        $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
-                $result[] = '';
-                $result[] = '        return $this;';
-                $result[] = '    }';
+                $this->buildFieldGetterAndSetter($field, '    ', $result);
             }
         }
 
@@ -257,7 +234,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * @param string $indent
      * @param array  $result
      */
-    public function buildBaseClassDocBlockProperties($indent, array &$result)
+    private function buildBaseClassDocBlockProperties($indent, array &$result)
     {
         $base_class_doc_block_properties = $this->getStructure()->getConfig('base_class_doc_block_properties');
 
@@ -275,12 +252,74 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * @param string           $indent
      * @param array            $result
      */
-    public function buildCompositeFieldMethods($fields, $indent, array &$result)
+    private function buildCompositeFieldMethods($fields, $indent, array &$result)
     {
         foreach ($fields as $field) {
             if ($field instanceof CompositeField) {
                 $field->getBaseClassMethods($indent, $result);
             }
+        }
+    }
+
+    /**
+     * @param ScalarField $field
+     * @param string      $indent
+     * @param array       $result
+     */
+    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result)
+    {
+        $setter_access_level = $field->getProtectSetter() ? 'protected' : 'public';
+
+        $lines = [];
+
+        $short_getter = null;
+
+        if ($field instanceof BooleanField && (substr($field->getName(), 0, 3) === 'is_' || in_array(substr($field->getName(), 0, 4), ['has_', 'had_', 'was_']) || in_array(substr($field->getName(), 0, 5), ['were_', 'have_']))) {
+            $short_getter = $this->getShortGetterName($field->getName());
+
+            $lines[] = '';
+            $lines[] = '/**';
+            $lines[] = ' * Return value of ' . $field->getName() . ' field.';
+            $lines[] = ' *';
+            $lines[] = ' * @return ' . $field->getNativeType();
+            $lines[] = ' */';
+            $lines[] = 'public function ' . $short_getter . '()';
+            $lines[] = '{';
+            $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+            $lines[] = '}';
+        }
+
+        $lines[] = '';
+        $lines[] = '/**';
+        $lines[] = ' * Return value of ' . $field->getName() . ' field.';
+        $lines[] = ' *';
+        $lines[] = ' * @return ' . $field->getNativeType();
+
+        if ($short_getter) {
+            $lines[] = " * @deprecated use $short_getter";
+        }
+
+        $lines[] = ' */';
+        $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()';
+        $lines[] = '{';
+        $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+        $lines[] = '}';
+        $lines[] = '';
+        $lines[] = '/**';
+        $lines[] = ' * Set value of ' . $field->getName() . ' field.';
+        $lines[] = ' *';
+        $lines[] = ' * @param  ' . str_pad($field->getNativeType(), 5, ' ', STR_PAD_RIGHT) . ' $value';
+        $lines[] = ' * @return $this';
+        $lines[] = ' */';
+        $lines[] = $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '($value)';
+        $lines[] = '{';
+        $lines[] = '    $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
+        $lines[] = '';
+        $lines[] = '    return $this;';
+        $lines[] = '}';
+
+        foreach ($lines as $line) {
+            $result[] = $line ? $indent . $line : '';
         }
     }
 
@@ -291,7 +330,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * @param string $indent
      * @param array  $result
      */
-    public function buildJsonSerialize(array $serialize, $indent, array &$result)
+    private function buildJsonSerialize(array $serialize, $indent, array &$result)
     {
         if (count($serialize)) {
             $result[] = '';
@@ -454,6 +493,17 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         return $this->getter_names[$field_name];
+    }
+
+    /**
+     * Return short getter name, without get bit.
+     *
+     * @param  string $field_name
+     * @return string
+     */
+    private function getShortGetterName($field_name)
+    {
+        return Inflector::classify($field_name);
     }
 
     /**

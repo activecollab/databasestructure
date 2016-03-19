@@ -12,6 +12,7 @@ use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
@@ -29,6 +30,7 @@ class WritersStructure extends Structure
         $this->addType('writers')->addFields([
             new NameField('name', ''),
             (new DateField('birthday'))->required(),
+            new BooleanField('is_awesome', true),
         ])->addIndexes([
             new Index('birthday'),
         ])->addAssociations([

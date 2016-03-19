@@ -161,14 +161,23 @@ class CodeBuilderTest extends TestCase
      */
     public function testWriterClassFields()
     {
-        $this->assertEquals(['id', 'name', 'birthday'], $this->base_writer_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'name', 'birthday', 'is_awesome'], $this->base_writer_reflection->getDefaultProperties()['fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getName'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setName'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getBirthday'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setBirthday'));
+        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getIsAwesome'));
+        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setIsAwesome'));
+    }
+
+    /**
+     * Test if boolean fields have shortcut getter.
+     */
+    public function testBooleanFieldHasShortcutGetter()
+    {
+        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('isAwesome'));
     }
 
     /**
@@ -208,10 +217,13 @@ class CodeBuilderTest extends TestCase
     {
         $default_field_values = $this->base_writer_reflection->getDefaultProperties()['default_field_values'];
 
-        $this->assertCount(1, $default_field_values);
+        $this->assertCount(2, $default_field_values);
 
         $this->assertArrayHasKey('name', $default_field_values);
         $this->assertSame('', $default_field_values['name']);
+
+        $this->assertArrayHasKey('is_awesome', $default_field_values);
+        $this->assertSame(true, $default_field_values['is_awesome']);
     }
 
     /**
