@@ -295,8 +295,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = ' *';
         $lines[] = ' * @return ' . $field->getNativeType();
 
-        if ($short_getter) {
-            $lines[] = " * @deprecated use $short_getter";
+        if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
+            $lines[] = " * @deprecated use $short_getter()";
         }
 
         $lines[] = ' */';

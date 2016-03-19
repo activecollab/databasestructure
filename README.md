@@ -81,6 +81,10 @@ abstract class Token extends \ActiveCollab\DatabaseObject\Object
 }
 ```
 
+### `deprecate_long_bool_field_getter`
+
+Set to true if you want to have log boolean field getters to be marked as deprecated, when there's a short getter (`isAwesome()` vs `getIsAwesome()`).
+
 ### `header_comment`
 
 Add a comment that will be included at the header of all auto-generated files. This option is useful if you need to include licensing information in your source code.
