@@ -177,7 +177,7 @@ class AddressField extends Field implements RequiredInterface
         }
 
         if ($this->getIndexOnCountry()) {
-            $type->addIndex(new Index($this->getPrefixedFieldName('country')));
+            $type->addIndex(new Index($this->getPrefixedFieldName('country_code')));
         }
     }
 }

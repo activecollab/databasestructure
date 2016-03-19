@@ -139,6 +139,6 @@ class AddressFieldTest extends TestCase
         $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['billing_city']);
         $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['billing_zip_code']);
         $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['billing_region']);
-        $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['billing_country']);
+        $this->assertInstanceOf(IndexInterface::class, $type->getIndexes()['billing_country_code']);
     }
 }
