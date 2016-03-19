@@ -4,6 +4,10 @@
 
 …
 
+## Fields
+
+Boolean fields with names that start with `is_`, `has_`, `had_`, `was_`, `were_` and `have_` also get a short getter. For example, if field name is `is_awesome`, builder will product two getters: `getIsAwesome()` and `isAwesome()`.
+
 ## Structure Options
 
 Structure object support config option setting via `setConfig()` method. This method can be called during object configuration, of after it has been created:
