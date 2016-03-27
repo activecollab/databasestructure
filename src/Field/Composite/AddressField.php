@@ -147,14 +147,24 @@ class AddressField extends Field implements RequiredInterface
      */
     public function getFields()
     {
-        return [
+        /** @var RequiredInterface[] $fields */
+        $fields = [
             new ScalarStringField($this->getName()),
             new ScalarStringField($this->getPrefixedFieldName('address_extended')),
             new ScalarStringField($this->getPrefixedFieldName('city')),
             new ScalarStringField($this->getPrefixedFieldName('zip_code')),
             new ScalarStringField($this->getPrefixedFieldName('region')),
-            (new CountryCodeField($this->getPrefixedFieldName('country_code')))->required(),
+            new CountryCodeField($this->getPrefixedFieldName('country_code')),
         ];
+
+        if ($this->isRequired()) {
+            $fields[0]->required(); // address
+            $fields[2]->required(); // city
+            $fields[3]->required(); // zip code
+            $fields[5]->required(); // country code
+        }
+
+        return $fields;
     }
 
     /**

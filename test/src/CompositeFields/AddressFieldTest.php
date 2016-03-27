@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 use ActiveCollab\DatabaseStructure\Field\Composite\AddressField;
 use ActiveCollab\DatabaseStructure\Field\Composite\CountryCodeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
@@ -101,6 +102,32 @@ class AddressFieldTest extends TestCase
 
             ++$counter;
         }
+    }
+
+    /**
+     * Test if correct fields are required when composite field is required.
+     */
+    public function testRequiredAddressField()
+    {
+        /** @var RequiredInterface[] $not_required */
+        $not_required = (new AddressField('billing_address'))->getFields();
+
+        /** @var RequiredInterface[] $required */
+        $required = (new AddressField('billing_address'))->required()->getFields();
+
+        $this->assertFalse($not_required[0]->isRequired()); // address
+        $this->assertFalse($not_required[1]->isRequired()); // address extended
+        $this->assertFalse($not_required[2]->isRequired()); // city
+        $this->assertFalse($not_required[3]->isRequired()); // zip code
+        $this->assertFalse($not_required[4]->isRequired()); // region
+        $this->assertFalse($not_required[5]->isRequired()); // country code
+
+        $this->assertTrue($required[0]->isRequired()); // address
+        $this->assertFalse($required[1]->isRequired()); // address extended
+        $this->assertTrue($required[2]->isRequired()); // city
+        $this->assertTrue($required[3]->isRequired()); // zip code
+        $this->assertFalse($required[4]->isRequired()); // region
+        $this->assertTrue($required[5]->isRequired()); // country code
     }
 
     /**
