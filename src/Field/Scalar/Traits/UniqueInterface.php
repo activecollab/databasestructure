@@ -30,7 +30,7 @@ interface UniqueInterface extends FieldTraitInterface
     /**
      * Value of this column needs to be unique (in the given context).
      *
-     * @param  string $context
+     * @param  string[] $context
      * @return $this
      */
     public function &unique(...$context);

@@ -27,9 +27,7 @@ trait Implementation
     private $uniquness_context = [];
 
     /**
-     * Return true if this field should be unique.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isUnique()
     {
@@ -37,9 +35,7 @@ trait Implementation
     }
 
     /**
-     * Return uniqueness context.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getUniquenessContext()
     {
@@ -47,10 +43,7 @@ trait Implementation
     }
 
     /**
-     * Value of this column needs to be unique (in the given context).
-     *
-     * @param  string $context
-     * @return $this
+     * {@inheritdoc}
      */
     public function &unique(...$context)
     {
