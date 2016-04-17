@@ -69,6 +69,16 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
                             $this->getConnection()->execute($create_constraint_statement);
                             $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . $association->getTargetTypeName()]);
                         }
+                    } elseif ($association instanceof HasOneAssociation) {
+                        $create_constraint_statement = $this->prepareHasOneConstraintStatement($type, $association);
+                        $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
+
+                        if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
+                            $this->triggerEvent('on_association_exists', [$type->getName() . ' has one ' . $association->getTargetTypeName()]);
+                        } else {
+                            $this->getConnection()->execute($create_constraint_statement);
+                            $this->triggerEvent('on_association_created', [$type->getName() . ' has one ' . $association->getTargetTypeName()]);
+                        }
                     } elseif ($association instanceof HasAndBelongsToManyAssociation) {
                         $connection_table = $association->getConnectionTableName();
 
