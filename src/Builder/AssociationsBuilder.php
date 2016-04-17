@@ -10,6 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
@@ -108,6 +109,30 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
      * @return string
      */
     public function prepareBelongsToConstraintStatement(TypeInterface $type, BelongsToAssociation $association)
+    {
+        $result = [];
+
+        $result[] = 'ALTER TABLE ' . $this->getConnection()->escapeTableName($type->getName());
+        $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($association->getConstraintName());
+        $result[] = '    FOREIGN KEY (' . $this->getConnection()->escapeFieldName($association->getFieldName()) . ') REFERENCES ' . $this->getConnection()->escapeTableName($association->getTargetTypeName()) . '(`id`)';
+
+        if ($association->isRequired()) {
+            $result[] = '    ON UPDATE CASCADE ON DELETE CASCADE;';
+        } else {
+            $result[] = '    ON UPDATE SET NULL ON DELETE SET NULL;';
+        }
+
+        return implode("\n", $result);
+    }
+
+    /**
+     * Prepare has one constraint statement.
+     *
+     * @param  TypeInterface     $type
+     * @param  HasOneAssociation $association
+     * @return string
+     */
+    public function prepareHasOneConstraintStatement(TypeInterface $type, HasOneAssociation $association)
     {
         $result = [];
 

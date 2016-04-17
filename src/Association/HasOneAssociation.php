@@ -92,6 +92,16 @@ class HasOneAssociation extends Association implements AssociationInterface, Pro
     }
 
     /**
+     * Return association name.
+     *
+     * @return string
+     */
+    public function getConstraintName()
+    {
+        return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
+    }
+
+    /**
      * Build class methods.
      *
      * @param StructureInterface $structure
@@ -159,38 +169,4 @@ class HasOneAssociation extends Association implements AssociationInterface, Pro
 
         $result[] = '    }';
     }
-
-//    /**
-//     * Build class methods.
-//     *
-//     * @param StructureInterface $structure
-//     * @param TypeInterface      $source_type
-//     * @param TypeInterface      $target_type
-//     * @param array              $result
-//     */
-//    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
-//    {
-//        $namespace = $structure->getNamespace();
-//
-//        if ($namespace) {
-//            $namespace = '\\' . ltrim($namespace, '\\');
-//        }
-//
-//        $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
-//        $classified_association_name = Inflector::classify($this->getName());
-//
-//        $fk_name = Inflector::singularize($source_type->getName()) . '_id';
-//        $getter_name = "get{$classified_association_name}";
-//
-//        $result[] = '';
-//        $result[] = '    /**';
-//        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
-//        $result[] = '     *';
-//        $result[] = '     * @return ' . $target_instance_class;
-//        $result[] = '     */';
-//        $result[] = '    public function ' . $getter_name . '()';
-//        $result[] = '    {';
-//        $result[] = '        return $this->pool->find(' . var_export($target_instance_class, true) . ')->where(\'`' . $fk_name . '` = ?\', $this->getId())->first();';
-//        $result[] = '    }';
-//    }
 }
