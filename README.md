@@ -157,3 +157,4 @@ class MyStructure extends Structure
 
 1. Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it.
 1. Associations should automatically add connection fields to the list of fields to be serialized
+1. Association cascading options and tests
