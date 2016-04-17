@@ -21,7 +21,7 @@ use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as Prot
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class HasOneAssociation extends Association implements AssociationInterface, ProtectSetterInterface
+class HasOneAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface
 {
     use AssociationInterface\Implementation, ProtectSetterInterfaceImplementation;
 
@@ -72,13 +72,19 @@ class HasOneAssociation extends Association implements AssociationInterface, Pro
     }
 
     /**
-     * Return a list of fields that are to be added to the source type.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
     public function getFields()
     {
         return [(new ForeignKeyField($this->getFieldName()))->required($this->isRequired())];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexes()
+    {
+        return [new Index($this->getFieldName())];
     }
 
     /**

@@ -80,9 +80,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Return a list of fields that are to be added to the source type.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
     public function getFields()
     {
@@ -90,9 +88,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
     }
 
     /**
-     * Return a list of indexes.
-     *
-     * @return IndexInterface[]
+     * {@inheritdoc}
      */
     public function getIndexes()
     {
