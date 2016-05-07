@@ -16,12 +16,12 @@ interface LengthInterface extends FieldTraitInterface
     /**
      * Return length of the field, if set.
      *
-     * @return integer
+     * @return int
      */
     public function getLength();
 
     /**
-     * @param  integer $length
+     * @param  int   $length
      * @return $this
      */
     public function &length($length);

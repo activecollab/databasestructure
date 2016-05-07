@@ -83,7 +83,7 @@ class IsArchivedField extends Field
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
-        
+
         $type->addTrait(IsArchivedInterface::class, IsArchivedInterfaceImplementation::class)->serialize($this->getName());
     }
 }
