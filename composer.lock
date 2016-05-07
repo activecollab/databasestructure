@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ae72bd6dc6c76b2a921a8809d1b84ba",
-    "content-hash": "a4513f9d7c85789d906448b4614fc048",
+    "hash": "7000c51f1d95bc9ef2e7997cf1164313",
+    "content-hash": "fa8fe9f2b6c8d948435af55650abffa3",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -251,16 +251,16 @@
         },
         {
             "name": "activecollab/filesystem",
-            "version": "0.1.11",
+            "version": "0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/filesystem.git",
-                "reference": "646d6352b7ca62da259450565a4070542ec6a001"
+                "reference": "6efdcaaffb3c9e5549d369b5210ec8b356cf7cc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/646d6352b7ca62da259450565a4070542ec6a001",
-                "reference": "646d6352b7ca62da259450565a4070542ec6a001",
+                "url": "https://api.github.com/repos/activecollab/filesystem/zipball/6efdcaaffb3c9e5549d369b5210ec8b356cf7cc6",
+                "reference": "6efdcaaffb3c9e5549d369b5210ec8b356cf7cc6",
                 "shasum": ""
             },
             "require": {
@@ -293,7 +293,7 @@
                 "activecollab",
                 "filesystem"
             ],
-            "time": "2016-03-06 16:33:49"
+            "time": "2016-03-06 16:37:32"
         },
         {
             "name": "activecollab/humannameparser",
@@ -2208,7 +2208,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.6.0"

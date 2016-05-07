@@ -3,7 +3,6 @@
     "type": "library",
     "description": "Define database structure in PHP and let the library generate object classes and tables",
     "license": "MIT",
-    "prefer-stable": true,
     "keywords": [
         "persistence",
         "mysql",
@@ -21,7 +20,7 @@
         "php": ">=5.6.0",
         "activecollab/databaseconnection": "^2.0.0",
         "activecollab/databaseobject": "^1.0.7",
-        "activecollab/filesystem": "~0.1.0",
+        "activecollab/filesystem": "^0.10.0",
         "activecollab/user": "^1.1.0",
         "doctrine/inflector": "^1.0"
     },
