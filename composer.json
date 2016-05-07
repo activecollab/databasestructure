@@ -19,11 +19,11 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "activecollab/databaseconnection": "dev-next",
-        "activecollab/databaseobject": "dev-master",
+        "activecollab/databaseconnection": "^2.0.0",
+        "activecollab/databaseobject": "^1.0.7",
         "activecollab/filesystem": "~0.1.0",
-        "activecollab/user": "~1.0",
-        "doctrine/inflector": "~1.0"
+        "activecollab/user": "^1.0",
+        "doctrine/inflector": "^1.0"
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "~1.0",
