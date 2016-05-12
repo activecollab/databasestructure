@@ -29,7 +29,9 @@ class EnumField extends Field
     }
 
     /**
-     * @param  string ...$possibilities
+     * Set a list of possible values.
+     *
+     * @param  string[] $possibilities
      * @return $this
      */
     public function &possibilities(...$possibilities)
