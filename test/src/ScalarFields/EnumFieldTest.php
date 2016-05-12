@@ -6,9 +6,10 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test;
+namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
+use ActiveCollab\DatabaseStructure\Test\TestCase;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test

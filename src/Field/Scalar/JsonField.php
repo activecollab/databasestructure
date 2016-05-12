@@ -26,6 +26,6 @@ class JsonField extends Field
      */
     public function getCastingCode($variable_name)
     {
-        return '$' . $variable_name . ' === null ? null : json_decode($' . $variable_name . ')';
+        return 'json_decode($' . $variable_name . ')';
     }
 }
