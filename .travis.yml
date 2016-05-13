@@ -10,5 +10,6 @@ install:
   - composer install --dev
   - phpunit --version
 before_script:
+  - bash .travis.install-mysql-5.7.sh
   - mysql -e 'create database activecollab_database_structure_test'
 script: phpunit
