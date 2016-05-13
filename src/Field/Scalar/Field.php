@@ -89,7 +89,20 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * Return value casting code.
+     * Return de-serialized value, on get field value.
+     *
+     * This method should be unsed only for fields that store serialized data, like JSON or serialized PHP values.
+     *
+     * @param  string $variable_name
+     * @return string
+     */
+    public function getDeserializingCode($variable_name)
+    {
+        return '';
+    }
+
+    /**
+     * Return value casting code, that is called when value is set for a field.
      *
      * @param  string $variable_name
      * @return string
