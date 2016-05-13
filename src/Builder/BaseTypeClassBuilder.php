@@ -166,14 +166,46 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
         }
 
+        $build_custom_get_field_value = false;
+
+        foreach ($fields as $field) {
+            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && !empty($field->getDeserializingCode('raw_value'))) {
+                $build_custom_get_field_value = true;
+                break;
+            }
+        }
+
+        if ($build_custom_get_field_value) {
+            $result[] = '';
+            $result[] = '    /**';
+            $result[] = '     * {@inheritdoc}';
+            $result[] = '     */';
+            $result[] = '    public function getFieldValue($field, $default = null)';
+            $result[] = '    {';
+            $result[] = '        $value = parent::getFieldValue($field, $default);';
+            $result[] = '';
+            $result[] = '        if ($value === null) {';
+            $result[] = '            return null;';
+            $result[] = '        } else {';
+            $result[] = '            switch ($field) {';
+
+            foreach ($fields as $field) {
+                if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && !empty($field->getDeserializingCode('value'))) {
+                    $result[] = '                case ' . var_export($field->getName(), true) . ':';
+                    $result[] = '                    return ' . $field->getDeserializingCode('value') . ';';
+                }
+            }
+
+            $result[] = '            }';
+            $result[] = '';
+            $result[] = '            return $value;';
+            $result[] = '        }';
+            $result[] = '    }';
+        }
+
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Set value of specific field.';
-        $result[] = '     *';
-        $result[] = '     * @param  string                    $name';
-        $result[] = '     * @param  mixed                     $value';
-        $result[] = '     * @return $this';
-        $result[] = '     * @throws \\InvalidArgumentException';
+        $result[] = '     * {@inheritdoc}';
         $result[] = '     */';
         $result[] = '    public function &setFieldValue($name, $value)';
         $result[] = '    {';

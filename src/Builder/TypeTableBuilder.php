@@ -17,6 +17,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
@@ -222,6 +223,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             }
 
             return $result;
+        } elseif($field instanceof JsonField) {
+            return 'JSON';
         } elseif ($field instanceof StringField) {
             return 'VARCHAR(' . $field->getLength() . ')';
         } elseif ($field instanceof TextField) {
