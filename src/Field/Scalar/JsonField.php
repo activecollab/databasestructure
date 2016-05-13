@@ -16,9 +16,9 @@ class JsonField extends Field
     /**
      * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getDeserializingCode($variable_name)
     {
-        return 'mixed';
+        return 'json_decode($' . $variable_name . ', true)';
     }
 
     /**
@@ -26,6 +26,6 @@ class JsonField extends Field
      */
     public function getCastingCode($variable_name)
     {
-        return 'json_decode($' . $variable_name . ')';
+        return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
     }
 }
