@@ -26,7 +26,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testNameMustNotBeEmpty()
     {
-        new ActionByField('', 'User', 'AnonymousUser');
+        new ActionByField('', 'User', 'IdentifiedVisitor');
     }
 
     /**
@@ -34,7 +34,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testNameMustEndWithById()
     {
-        new ActionByField('wooops', 'User', 'AnonymousUser');
+        new ActionByField('wooops', 'User', 'IdentifiedVisitor');
     }
 
     /**
@@ -42,7 +42,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testUserClassMustNotBeEmpty()
     {
-        new ActionByField('wooops', '', 'AnonymousUser');
+        new ActionByField('wooops', '', 'IdentifiedVisitor');
     }
 
     /**
@@ -50,14 +50,14 @@ class ActionByFieldTest extends TestCase
      */
     public function testUserClassUsesFullPath()
     {
-        $this->assertEquals('\User', (new ActionByField('created_by_id', 'User', 'AnonymousUser'))->getUserClassName());
-        $this->assertEquals('\User', (new ActionByField('created_by_id', '\User', 'AnonymousUser'))->getUserClassName());
+        $this->assertEquals('\User', (new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'))->getUserClassName());
+        $this->assertEquals('\User', (new ActionByField('created_by_id', '\User', 'IdentifiedVisitor'))->getUserClassName());
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testAnonymousUserClassMustNotBeEmpty()
+    public function testIdentifiedVisitorClassMustNotBeEmpty()
     {
         new ActionByField('wooops', 'User', '');
     }
@@ -65,10 +65,10 @@ class ActionByFieldTest extends TestCase
     /**
      * Test if we use full anonymous user class name.
      */
-    public function testAnonymousUserClassUsesFullPath()
+    public function testIdentifiedVisitorClassUsesFullPath()
     {
-        $this->assertEquals('\AnonymousUser', (new ActionByField('created_by_id', 'User', 'AnonymousUser'))->getAnonymousUserClassName());
-        $this->assertEquals('\AnonymousUser', (new ActionByField('created_by_id', 'User', '\AnonymousUser'))->getAnonymousUserClassName());
+        $this->assertEquals('\IdentifiedVisitor', (new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'))->getIdentifiedvisitorClassName());
+        $this->assertEquals('\IdentifiedVisitor', (new ActionByField('created_by_id', 'User', '\IdentifiedVisitor'))->getIdentifiedvisitorClassName());
     }
 
     /**
@@ -76,7 +76,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testFieldCanBeAddedToType()
     {
-        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'));
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'));
 
         $this->assertArrayHasKey('created_by_id', $type->getFields());
         $this->assertInstanceOf(ActionByField::class, $type->getFields()['created_by_id']);
@@ -84,7 +84,7 @@ class ActionByFieldTest extends TestCase
 
     public function testFieldAddsThreeFieldsToType()
     {
-        $created_by_id = new ActionByField('created_by_id', 'User', 'AnonymousUser');
+        $created_by_id = new ActionByField('created_by_id', 'User', 'IdentifiedVisitor');
 
         $fields = $created_by_id->getFields();
 
@@ -112,7 +112,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testActionByIdFieldIsNotRequiredByDefault()
     {
-        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'));
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'));
 
         /** @var ActionByField $action_by */
         $action_by = $type->getFields()['created_by_id'];
@@ -132,7 +132,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testActionByIdFieldCanBeSetAsRequired()
     {
-        $type = (new Type('chapters'))->addField((new ActionByField('created_by_id', 'User', 'AnonymousUser'))->required());
+        $type = (new Type('chapters'))->addField((new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'))->required());
 
         /** @var ActionByField $action_by */
         $action_by = $type->getFields()['created_by_id'];
@@ -152,7 +152,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testActionByAddsIndexByDefault()
     {
-        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'));
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'));
 
         $this->assertArrayHasKey('created_by_id', $type->getIndexes());
         $this->assertInstanceOf(Index::class, $type->getIndexes()['created_by_id']);
@@ -163,7 +163,7 @@ class ActionByFieldTest extends TestCase
      */
     public function testIndexCreationCanBeSkipped()
     {
-        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser', false));
+        $type = (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'IdentifiedVisitor', false));
 
         $this->assertArrayNotHasKey('created_by_id', $type->getIndexes());
     }
@@ -173,6 +173,6 @@ class ActionByFieldTest extends TestCase
      */
     public function testFieldShouldSerializeId()
     {
-        $this->assertContains('created_by_id', (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'AnonymousUser'))->getSerialize());
+        $this->assertContains('created_by_id', (new Type('chapters'))->addField(new ActionByField('created_by_id', 'User', 'IdentifiedVisitor'))->getSerialize());
     }
 }

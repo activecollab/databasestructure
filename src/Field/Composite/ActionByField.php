@@ -16,7 +16,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use ActiveCollab\User\AnonymousUser;
+use ActiveCollab\User\IdentifiedVisitor;
 use ActiveCollab\User\UserInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -41,15 +41,15 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     /**
      * @var string
      */
-    private $anonymous_user_class_name;
+    private $identified_visitor_class_name;
 
     /**
      * @param string $name
      * @param string $user_class_name
-     * @param string $anonymous_user_class_name
+     * @param string $identified_visitor_class_name
      * @param bool   $add_index
      */
-    public function __construct($name, $user_class_name, $anonymous_user_class_name = AnonymousUser::class, $add_index = true)
+    public function __construct($name, $user_class_name, $identified_visitor_class_name = IdentifiedVisitor::class, $add_index = true)
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid field name");
@@ -65,13 +65,13 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             throw new InvalidArgumentException('User class name is required');
         }
 
-        if (empty($anonymous_user_class_name)) {
+        if (empty($identified_visitor_class_name)) {
             throw new InvalidArgumentException('Anonymous user class name is required');
         }
 
         $this->name = $name;
         $this->user_class_name = '\\' . ltrim($user_class_name, '\\');
-        $this->anonymous_user_class_name = '\\' . ltrim($anonymous_user_class_name, '\\');
+        $this->identified_visitor_class_name = '\\' . ltrim($identified_visitor_class_name, '\\');
         $this->addIndex($add_index);
     }
 
@@ -94,9 +94,9 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     /**
      * @return string
      */
-    public function getAnonymousUserClassName()
+    public function getIdentifiedvisitorClassName()
     {
-        return $this->anonymous_user_class_name;
+        return $this->identified_visitor_class_name;
     }
 
     /**
@@ -137,7 +137,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
         $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
 
-        $type_hint = '\\' . UserInterface::class . '|' . $this->anonymous_user_class_name . '|' . $this->user_class_name . '|null';
+        $type_hint = '\\' . UserInterface::class . '|' . $this->identified_visitor_class_name . '|' . $this->user_class_name . '|null';
 
         $methods = [];
 
@@ -150,7 +150,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
         $methods[] = '    if ($id = $this->' . $id_getter_name . '()) {';
         $methods[] = '        return $this->pool->getById(' . var_export($this->user_class_name, true). ', $id, $use_cache);';
         $methods[] = '    } elseif ($email = $this->' . $email_getter_name . '()) {';
-        $methods[] = '        return new ' . $this->anonymous_user_class_name . '($this->' . $name_getter_name . '(), $email);';
+        $methods[] = '        return new ' . $this->identified_visitor_class_name . '($this->' . $name_getter_name . '(), $email);';
         $methods[] = '    } else {';
         $methods[] = '        return null;';
         $methods[] = '    }';
@@ -193,7 +193,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
             $methods[] = '        } else {';
             $methods[] = '            throw new \InvalidArgumentException(' . var_export("Instance of '$this->user_class_name' expected") . ');';
             $methods[] = '        }';
-            $methods[] = '    } elseif ($value instanceof ' . $this->anonymous_user_class_name . ') {';
+            $methods[] = '    } elseif ($value instanceof ' . $this->identified_visitor_class_name . ') {';
             $methods[] = '        $this->' . $id_setter_name . '(0);';
             $methods[] = '        $this->' . $name_setter_name . '($value->getFullName());';
             $methods[] = '        $this->' . $email_setter_name . '($value->getEmail());';
