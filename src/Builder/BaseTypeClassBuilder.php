@@ -131,7 +131,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $result[] = '       ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
             }
 
-            $result[] = '     ];';
+            $result[] = '    ];';
         }
 
         if (count($type->getProtectedFields())) {

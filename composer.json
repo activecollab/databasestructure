@@ -20,13 +20,13 @@
     "require": {
         "php": ">=5.6.0",
         "activecollab/databaseconnection": "^2.0",
-        "activecollab/databaseobject": "^1.0",
+        "activecollab/databaseobject": "^2.0",
         "activecollab/filesystem": "^0.10",
-        "activecollab/user": "^2.0",
+        "activecollab/user": "^3.0",
         "doctrine/inflector": "^1.0"
     },
     "require-dev": {
-        "fabpot/php-cs-fixer": "^1.0",
+        "friendsofphp/php-cs-fixer": "^1.0",
         "phpunit/phpunit": "^5.0"
     },
     "autoload": {
