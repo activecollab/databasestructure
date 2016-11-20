@@ -223,7 +223,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             }
 
             return $result;
-        } elseif($field instanceof JsonField) {
+        } elseif ($field instanceof JsonField) {
             return 'JSON';
         } elseif ($field instanceof StringField) {
             return 'VARCHAR(' . $field->getLength() . ')';

@@ -748,7 +748,7 @@ class Type implements TypeInterface
     /**
      * Set a list of fields that will be included during object serialization.
      *
-     * @param  string ...$fields
+     * @param  string[] $fields
      * @return $this
      */
     public function &serialize(...$fields)
