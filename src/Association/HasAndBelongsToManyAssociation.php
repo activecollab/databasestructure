@@ -117,13 +117,13 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $objects_to_add';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &add' . $this->getClassifiedAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_add);';
+        $result[] = '    public function &add' . $this->getClassifiedAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_add)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        $batch = new \\' . BatchInsert::class . '($this->connection, ' . var_export($this->getConnectionTableName(), true) . ', [' . var_export($this->getFkFieldNameFrom($source_type), true). ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '], 50, \\' . ConnectionInterface::class . '::REPLACE)';
+        $result[] = '        $batch = new \\' . BatchInsert::class . '($this->connection, ' . var_export($this->getConnectionTableName(), true) . ', [' . var_export($this->getFkFieldNameFrom($source_type), true). ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '], 50, \\' . ConnectionInterface::class . '::REPLACE);';
         $result[] = '';
         $result[] = '        foreach ($objects_to_add as $object_to_add) {';
         $result[] = '            if ($object_to_add->isNew()) {';
