@@ -152,7 +152,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '    /**';
         $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $object_to_remove';
+        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $objects_to_remove';
         $result[] = '     * @return $this';
         $result[] = '     */';
         $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_remove)';
@@ -168,11 +168,11 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '            }';
         $result[] = '';
-        $result[] = '            $ids_to_remove[] = $object_to_add->getId();';
+        $result[] = '            $ids_to_remove[] = $object_to_remove->getId();';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        if (!empty($ids_to_remove)) {';
-        $result[] = '            $this->connection->execute(\'DELETE FROM `' . var_export($this->getConnectionTableName(), true) . '` WHERE `' . var_export($this->getFkFieldNameFrom($source_type), true) . '` = ? AND `' . var_export($this->getFkFieldNameFrom($target_type), true) . '` IN ?\', $this->getId(), $ids_to_remove);';
+        $result[] = '            $this->connection->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ? AND `' . $this->getFkFieldNameFrom($target_type) . '` IN ?\', $this->getId(), $ids_to_remove);';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';
@@ -196,7 +196,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        $this->connection->execute(\'DELETE FROM `' . var_export($this->getConnectionTableName(), true) . '` WHERE `' . var_export($this->getFkFieldNameFrom($source_type), true) . '` = ?\', $this->getId());';
+        $result[] = '        $this->connection->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId());';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
