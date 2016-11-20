@@ -6,11 +6,12 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test;
+namespace ActiveCollab\DatabaseStructure\Test\Associations;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
+use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**
