@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseConnection\BatchInsert\BatchInsert;
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -71,13 +73,6 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         return implode('_', $type_names);
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
-//    {
-//    }
-
     /**
      * {@inheritdoc}
      */
@@ -103,6 +98,48 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
+        $result[] = '    }';
+    }
+
+    /**
+     * @param StructureInterface $structure
+     * @param TypeInterface      $source_type
+     * @param TypeInterface      $target_type
+     * @param string             $namespace
+     * @param array              $result
+     */
+    public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    {
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
+
+        $longest_docs_param_type_name = max(strlen($target_instance_class) + 2, '$this');
+
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and one or more $objects_to_add.';
+        $result[] = '     *';
+        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $objects_to_add';
+        $result[] = '     * @return $this';
+        $result[] = '     */';
+        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $objects_to_add, array $attributes = null)';
+        $result[] = '    {';
+        $result[] = '        if ($this->isNew()) {';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        if ($objects_to_add->isNew()) {';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        $batch = new \\' . BatchInsert::class . '($this->connection, ' . var_export($this->getConnectionTableName(), true) . ', [' . var_export($this->getFkFieldNameFrom($source_type), true). ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '], 50, \\' . ConnectionInterface::class . '::REPLACE)';
+        $result[] = '';
+        $result[] = '        foreach ($objects_to_add as $object_to_add) {';
+        $result[] = '            $batch->insert($this->getId(), $object_to_add->getId());';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        $batch->done();';
+        $result[] = '';
+        $result[] = '        return $this;';
         $result[] = '    }';
     }
 }
