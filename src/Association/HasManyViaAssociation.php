@@ -41,11 +41,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     }
 
     /**
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param string             $namespace
-     * @param array              $result
+     * {@inheritdoc}
      */
     protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
@@ -75,11 +71,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     }
 
     /**
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param string             $namespace
-     * @param array              $result
+     * {@inheritdoc}
      */
     public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
@@ -124,11 +116,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     }
 
     /**
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param string             $namespace
-     * @param array              $result
+     * {@inheritdoc}
      */
     public function buildRemoveRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
@@ -165,11 +153,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     }
 
     /**
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param string             $namespace
-     * @param array              $result
+     * {@inheritdoc}
      */
     public function buildClearRelatedObjectsMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {

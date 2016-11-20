@@ -102,17 +102,13 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
     }
 
     /**
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param string             $namespace
-     * @param array              $result
+     * {@inheritdoc}
      */
     public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
 
-        $longest_docs_param_type_name = max(strlen($target_instance_class) + 2, '$this');
+        $longest_docs_param_type_name = max(strlen($target_instance_class), '$this');
 
         $result[] = '';
         $result[] = '    /**';
@@ -121,23 +117,86 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $objects_to_add';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $objects_to_add, array $attributes = null)';
+        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_add)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        if ($objects_to_add->isNew()) {';
-        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
-        $result[] = '        }';
-        $result[] = '';
         $result[] = '        $batch = new \\' . BatchInsert::class . '($this->connection, ' . var_export($this->getConnectionTableName(), true) . ', [' . var_export($this->getFkFieldNameFrom($source_type), true). ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '], 50, \\' . ConnectionInterface::class . '::REPLACE)';
         $result[] = '';
         $result[] = '        foreach ($objects_to_add as $object_to_add) {';
+        $result[] = '            if ($object_to_add->isNew()) {';
+        $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
+        $result[] = '            }';
+        $result[] = '';
         $result[] = '            $batch->insert($this->getId(), $object_to_add->getId());';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        $batch->done();';
+        $result[] = '';
+        $result[] = '        return $this;';
+        $result[] = '    }';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildRemoveRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    {
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
+
+        $longest_docs_param_type_name = max(strlen($target_instance_class), '$this');
+
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove.';
+        $result[] = '     *';
+        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $object_to_remove';
+        $result[] = '     * @return $this';
+        $result[] = '     */';
+        $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_remove)';
+        $result[] = '    {';
+        $result[] = '        if ($this->isNew()) {';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        $ids_to_remove = [];';
+        $result[] = '';
+        $result[] = '        foreach ($objects_to_remove as $object_to_remove) {';
+        $result[] = '            if ($object_to_remove->isNew()) {';
+        $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
+        $result[] = '            }';
+        $result[] = '';
+        $result[] = '            $ids_to_remove[] = $object_to_add->getId();';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        if (!empty($ids_to_remove)) {';
+        $result[] = '            $this->connection->execute(\'DELETE FROM `' . var_export($this->getConnectionTableName(), true) . '` WHERE `' . var_export($this->getFkFieldNameFrom($source_type), true) . '` = ? AND `' . var_export($this->getFkFieldNameFrom($target_type), true) . '` IN ?\', $this->getId(), $ids_to_remove);';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        return $this;';
+        $result[] = '    }';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildClearRelatedObjectsMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    {
+        $result[] = '';
+        $result[] = '    /**';
+        $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . Inflector::singularize($source_type->getName()) . '.';
+        $result[] = '     *';
+        $result[] = '     * @return $this';
+        $result[] = '     */';
+        $result[] = "    public function &clear{$this->getClassifiedAssociationName()}()";
+        $result[] = '    {';
+        $result[] = '        if ($this->isNew()) {';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        $this->connection->execute(\'DELETE FROM `' . var_export($this->getConnectionTableName(), true) . '` WHERE `' . var_export($this->getFkFieldNameFrom($source_type), true) . '` = ?\', $this->getId());';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
