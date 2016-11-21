@@ -112,9 +112,9 @@ class CodeBuilderTest extends TestCase
      */
     public function testManagerClassInheritance()
     {
-        $this->assertTrue($this->writers_manager_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Writers"));
-        $this->assertTrue($this->books_manager_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Books"));
-        $this->assertTrue($this->chapters_manager_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Chapters"));
+        $this->assertTrue($this->writers_manager_reflection->isSubclassOf("{$this->namespace}Manager\\Base\\Writers"));
+        $this->assertTrue($this->books_manager_reflection->isSubclassOf("{$this->namespace}Manager\\Base\\Books"));
+        $this->assertTrue($this->chapters_manager_reflection->isSubclassOf("{$this->namespace}Manager\\Base\\Chapters"));
     }
 
     /**

@@ -22,5 +22,5 @@ interface PolymorphInterface
      * @param  string $value
      * @return $this
      */
-    public function &setType($value);
+    public function &settype($value);
 }

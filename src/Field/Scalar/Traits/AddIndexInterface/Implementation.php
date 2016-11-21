@@ -66,7 +66,7 @@ trait Implementation
      */
     public function &addIndex($add_index = true, array $context = [], $type = IndexInterface::INDEX)
     {
-        $this->add_index = (boolean) $add_index;
+        $this->add_index = (bool) $add_index;
         $this->add_index_context = $context;
         $this->add_index_type = $type;
 

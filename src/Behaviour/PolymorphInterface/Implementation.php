@@ -34,7 +34,7 @@ trait Implementation
      * @param  string $value
      * @return $this
      */
-    abstract public function &setType($value);
+    abstract public function &settype($value);
 
     /**
      * Register an internal event handler.

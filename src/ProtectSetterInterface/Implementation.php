@@ -31,7 +31,7 @@ trait Implementation
      */
     public function &protectSetter($value = true)
     {
-        $this->protect_setter = (boolean) $value;
+        $this->protect_setter = (bool) $value;
 
         return $this;
     }

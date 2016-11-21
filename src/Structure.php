@@ -12,14 +12,18 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\AssociationsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseCollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeCollectionBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseTypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\CollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\ManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeCollectionBuilder;
+use ActiveCollab\DatabaseStructure\Builder\TypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use InvalidArgumentException;
@@ -85,7 +89,7 @@ abstract class Structure implements StructureInterface
                 case self::ADD_PERMISSIVE_PERMISSIONS:
                     $this->types[$type_name]->permissions();
                     break;
-                case self::ADD_RESTRICTIVE_PERMISSIONS;
+                case self::ADD_RESTRICTIVE_PERMISSIONS:
                     $this->types[$type_name]->permissions(true, false);
                     break;
             }
@@ -212,20 +216,28 @@ abstract class Structure implements StructureInterface
      * @param  array               $event_handlers
      * @return BuilderInterface[]
      */
-    private function getBuilders($build_path = null, ConnectionInterface $connection = null, array $event_handlers)
+    private function getBuilders($build_path, ConnectionInterface $connection = null, array $event_handlers)
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDirBuilder($this);
-            $this->builders[] = new CollectionDirBuilder($this);
-            $this->builders[] = new BaseCollectionDirBuilder($this);
+
             $this->builders[] = new TypesBuilder($this);
             $this->builders[] = new BaseTypeClassBuilder($this);
             $this->builders[] = new TypeClassBuilder($this);
             $this->builders[] = new TypeTableBuilder($this);
-            $this->builders[] = new BaseTypeCollectionBuilder($this);
-            $this->builders[] = new TypeCollectionBuilder($this);
+
             $this->builders[] = new AssociationsBuilder($this);
             $this->builders[] = new TriggersBuilder($this);
+
+            $this->builders[] = new ManagerDirBuilder($this);
+            $this->builders[] = new BaseManagerDirBuilder($this);
+            $this->builders[] = new BaseTypeManagerBuilder($this);
+            $this->builders[] = new TypeManagerBuilder($this);
+
+            $this->builders[] = new CollectionDirBuilder($this);
+            $this->builders[] = new BaseCollectionDirBuilder($this);
+            $this->builders[] = new BaseTypeCollectionBuilder($this);
+            $this->builders[] = new TypeCollectionBuilder($this);
 
             if ($build_path) {
                 foreach ($this->builders as $k => $v) {
