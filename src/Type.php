@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseObject\Object;
+use ActiveCollab\DatabaseObject\Entity\Entity;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\Association\InjectIndexesInsterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
@@ -105,7 +105,7 @@ class Type implements TypeInterface
      */
     public function &polymorph($value = true)
     {
-        $this->polymorph = (boolean) $value;
+        $this->polymorph = (bool) $value;
 
         if ($this->polymorph) {
             $this->addTrait(PolymorphInterface::class, PolymorphInterfaceImplementation::class);
@@ -145,8 +145,8 @@ class Type implements TypeInterface
      */
     public function &permissions($value = true, $permissions_are_permissive = true)
     {
-        $this->permissions = (boolean) $value;
-        $this->permissions_are_permissive = (boolean) $permissions_are_permissive;
+        $this->permissions = (bool) $value;
+        $this->permissions_are_permissive = (bool) $permissions_are_permissive;
 
         if ($this->permissions) {
             $this->removeTrait(PermissionsInterface::class, [PermissiveImplementation::class, RestrictiveImplementation::class]);
@@ -230,7 +230,7 @@ class Type implements TypeInterface
     public function getBaseClassExtends()
     {
         if (empty($this->base_class_extends)) {
-            $this->base_class_extends = Object::class;
+            $this->base_class_extends = Entity::class;
         }
 
         return $this->base_class_extends;
@@ -246,7 +246,7 @@ class Type implements TypeInterface
      */
     public function &setBaseClassExtends($class_name)
     {
-        if ($class_name && class_exists($class_name) && (new \ReflectionClass($class_name))->isSubclassOf(Object::class)) {
+        if ($class_name && class_exists($class_name) && (new \ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
         } else {
             throw new InvalidArgumentException("Class name '$class_name' is not valid");
         }

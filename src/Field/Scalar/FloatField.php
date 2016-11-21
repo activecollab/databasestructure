@@ -37,7 +37,7 @@ class FloatField extends NumberField
      */
     public function &length($value)
     {
-        $this->length = (integer) $value;
+        $this->length = (int) $value;
 
         return $this;
     }
@@ -56,7 +56,7 @@ class FloatField extends NumberField
      */
     public function &scale($value)
     {
-        $this->scale = (integer) $value;
+        $this->scale = (int) $value;
 
         return $this;
     }

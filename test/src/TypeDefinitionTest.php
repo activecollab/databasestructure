@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseObject\Object;
+use ActiveCollab\DatabaseObject\Entity\Entity;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ObjectClassDescendent;
 use ActiveCollab\DatabaseStructure\Type;
@@ -24,7 +24,7 @@ class TypeDefinitionTest extends TestCase
      */
     public function testTypeInheritsDatabaseObjectByDefault()
     {
-        $this->assertEquals(Object::class, (new Type('writers'))->getBaseClassExtends());
+        $this->assertEquals(Entity::class, (new Type('writers'))->getBaseClassExtends());
     }
 
     /**

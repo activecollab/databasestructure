@@ -36,7 +36,7 @@ abstract class NumberField extends Field
      */
     public function &unsigned($value = true)
     {
-        $this->unsigned = (boolean) $value;
+        $this->unsigned = (bool) $value;
 
         return $this;
     }

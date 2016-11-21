@@ -56,7 +56,7 @@ class IsArchivedField extends Field
      */
     public function cascade($value = true)
     {
-        $this->cascade = (boolean) $value;
+        $this->cascade = (bool) $value;
 
         return $this;
     }

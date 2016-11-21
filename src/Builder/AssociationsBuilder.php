@@ -189,6 +189,6 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
      */
     private function constraintExists($constraint_name, $referencing_table)
     {
-        return (boolean) $this->getConnection()->executeFirstCell('SELECT COUNT(*) AS "row_count" FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = ? AND REFERENCED_TABLE_NAME = ?;', $constraint_name, $referencing_table);
+        return (bool) $this->getConnection()->executeFirstCell('SELECT COUNT(*) AS "row_count" FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = ? AND REFERENCED_TABLE_NAME = ?;', $constraint_name, $referencing_table);
     }
 }

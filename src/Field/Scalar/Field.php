@@ -142,7 +142,7 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
      */
     public function &setShouldBeAddedToModel($value)
     {
-        $this->should_be_added_to_model = (boolean) $value;
+        $this->should_be_added_to_model = (bool) $value;
 
         return $this;
     }

@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseObject\Object;
+use ActiveCollab\DatabaseObject\Entity\Entity;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\BaseClassExtends\BaseClassExtendsStructure;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ExtendThisObject;
 
@@ -25,7 +25,7 @@ class BaseClassExtendsTest extends TestCase
         $structure = new BaseClassExtendsStructure();
         $this->assertEmpty($structure->getConfig('base_class_extends'));
 
-        $this->assertEquals(Object::class, $structure->getType('writers')->getBaseClassExtends());
+        $this->assertEquals(Entity::class, $structure->getType('writers')->getBaseClassExtends());
     }
 
     /**

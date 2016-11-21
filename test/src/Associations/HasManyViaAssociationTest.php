@@ -14,7 +14,7 @@ use ActiveCollab\DatabaseStructure\Test\TestCase;
 /**
  * @package ActiveCollab\DatabaseStructure\Test
  */
-class HasManyViaTest extends TestCase
+class HasManyViaAssociationTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

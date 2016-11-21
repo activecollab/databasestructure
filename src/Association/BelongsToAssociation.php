@@ -72,7 +72,7 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
      */
     public function &required($value = true)
     {
-        $this->is_required = (boolean) $value;
+        $this->is_required = (bool) $value;
 
         return $this;
     }
