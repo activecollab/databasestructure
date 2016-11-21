@@ -31,6 +31,11 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_writers_manager_reflection, $writers_manager_reflection, $base_books_manager_reflection, $books_manager_reflection, $base_chapters_manager_reflection, $chapters_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $base_writers_collection_reflection, $writers_collection_reflection, $base_books_collection_reflection, $books_collection_reflection, $base_chapters_collection_reflection, $chapters_collection_reflection;
 
     /**
@@ -51,6 +56,16 @@ class CodeBuilderTest extends TestCase
             $this->structure->build();
         }
 
+        // Managers
+        $this->base_writers_manager_reflection = new ReflectionClass("{$this->namespace}Manager\\Base\\Writers");
+        $this->writers_manager_reflection = new ReflectionClass("{$this->namespace}Manager\\Writers");
+
+        $this->base_books_manager_reflection = new ReflectionClass("{$this->namespace}Manager\\Base\\Books");
+        $this->books_manager_reflection = new ReflectionClass("{$this->namespace}Manager\\Books");
+
+        $this->base_chapters_manager_reflection = new ReflectionClass("{$this->namespace}Manager\\Base\\Chapters");
+        $this->chapters_manager_reflection = new ReflectionClass("{$this->namespace}Manager\\Chapters");
+
         // Collections
         $this->base_writers_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Base\\Writers");
         $this->writers_collection_reflection = new ReflectionClass("{$this->namespace}Collection\\Writers");
@@ -70,6 +85,36 @@ class CodeBuilderTest extends TestCase
 
         $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}Base\\Chapter");
         $this->chapter_reflection = new ReflectionClass("{$this->namespace}Chapter");
+    }
+
+    /**
+     * Test base manager classes are abstract.
+     */
+    public function testBaseManagerClassesAreAbstract()
+    {
+        $this->assertTrue($this->base_writers_manager_reflection->isAbstract());
+        $this->assertTrue($this->base_books_manager_reflection->isAbstract());
+        $this->assertTrue($this->base_chapters_manager_reflection->isAbstract());
+    }
+
+    /**
+     * Test manager classes are not abstract.
+     */
+    public function testManagerClassesAreNotAbstract()
+    {
+        $this->assertFalse($this->writers_manager_reflection->isAbstract());
+        $this->assertFalse($this->books_manager_reflection->isAbstract());
+        $this->assertFalse($this->chapters_manager_reflection->isAbstract());
+    }
+
+    /**
+     * Test if manager classes extend base collection classes.
+     */
+    public function testManagerClassInheritance()
+    {
+        $this->assertTrue($this->writers_manager_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Writers"));
+        $this->assertTrue($this->books_manager_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Books"));
+        $this->assertTrue($this->chapters_manager_reflection->isSubclassOf("{$this->namespace}Collection\\Base\\Chapters"));
     }
 
     /**
