@@ -237,7 +237,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $result[] = '                default:';
-        $result[] = '                    throw new \\InvalidArgumentException("Field $name does not exist in this table");';
+        $result[] = '                    if ($this->isGeneratedField($name)) {';
+        $result[] = '                        throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
+        $result[] = '                    } else {';
+        $result[] = '                        throw new \\InvalidArgumentException("Field $name does not exist in this table");';
+        $result[] = '                    }';
         $result[] = '            }';
         $result[] = '        }';
         $result[] = '';
