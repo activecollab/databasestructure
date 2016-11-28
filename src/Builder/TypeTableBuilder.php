@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
@@ -18,9 +19,11 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Utility\JsonFieldValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
@@ -123,13 +126,31 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
         $result[] = 'CREATE TABLE IF NOT EXISTS ' . $this->getConnection()->escapeTableName($type->getName()) . ' (';
 
+        $generaterd_field_indexes = [];
+
         foreach ($type->getAllFields() as $field) {
             if ($field instanceof ScalarField) {
                 $result[] = '    ' . $this->prepareFieldStatement($field) . ',';
             }
+
+            if ($field instanceof JsonFieldInterface) {
+                foreach ($field->getValueExtractors() as $value_extractor) {
+                    $result[] = '    ' . $this->prepareGeneratedFieldStatement($field, $value_extractor) . ',';
+
+                    if ($value_extractor->isIndexed()) {
+                        $generaterd_field_indexes[] = new Index($value_extractor->getFieldName());
+                    }
+                }
+            }
         }
 
-        foreach ($type->getAllIndexes() as $index) {
+        $indexes = $type->getAllIndexes();
+
+        if (!empty($generaterd_field_indexes)) {
+            $indexes = array_merge($indexes, $generaterd_field_indexes);
+        }
+
+        foreach ($indexes as $index) {
             $result[] = '    ' . $this->prepareIndexStatement($index) . ',';
         }
 
@@ -270,6 +291,39 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         }
 
         return $this->getConnection()->escapeValue($default_value);
+    }
+
+    public function prepareGeneratedFieldStatement(FieldInterface $source_field, JsonFieldValueExtractorInterface $extractor)
+    {
+        $generated_field_name = $this->getConnection()->escapeFieldName($extractor->getFieldName());
+
+        switch ($extractor->getCaster()) {
+            case ValueCasterInterface::CAST_INT:
+                $field_type = 'INT';
+                break;
+            case ValueCasterInterface::CAST_FLOAT:
+                $field_type = 'DECIMAL(12, 2)';
+                break;
+            case ValueCasterInterface::CAST_BOOL:
+                $field_type = 'TINYINT(1) UNSIGNED';
+                break;
+            case ValueCasterInterface::CAST_DATE:
+                $field_type = 'DATE';
+                break;
+            case ValueCasterInterface::CAST_DATETIME:
+                $field_type = 'DATETIME';
+                break;
+            case ValueCasterInterface::CAST_JSON:
+                $field_type = 'JSON';
+                break;
+            default:
+                $field_type = 'VARCHAR(191)';
+        }
+
+        $expression = '(' . $this->getCOnnection()->escapeFieldName($source_field->getName()) . '->>' . var_export($extractor->getExpression(), true) . ')';
+        $storage = $extractor->isStored() ? 'STORED' : 'VIRTUAL';
+
+        return trim("$generated_field_name $field_type AS $expression $storage");
     }
 
     /**

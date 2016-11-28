@@ -70,7 +70,7 @@ class JsonField extends Field implements JsonFieldInterface
             throw new InvalidArgumentException("Field name '$extract_as_field' is taken");
         }
 
-        $this->value_extractors[] = new JsonFieldValueExtractor($extract_as_field, $extract_as_field, $caster, $is_stored, $is_indexed);
+        $this->value_extractors[] = new JsonFieldValueExtractor($extract_as_field, $expression, $caster, $is_stored, $is_indexed);
 
         return $this;
     }
