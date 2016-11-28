@@ -8,10 +8,15 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Utility\JsonFieldValueExtractor;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Utility\JsonFieldValueExtractorInterface;
+use InvalidArgumentException;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class JsonField extends Field
+class JsonField extends Field implements JsonFieldInterface
 {
     /**
      * {@inheritdoc}
@@ -27,5 +32,32 @@ class JsonField extends Field
     public function getCastingCode($variable_name)
     {
         return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
+    }
+
+    /**
+     * @var JsonFieldValueExtractorInterface[]
+     */
+    private $value_extractors = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function &extractValue($extract_as_field, $expression, $caster = ValueCasterInterface::CAST_STRING, $is_stored = true, $is_indexed = false)
+    {
+        if (!empty($this->value_extractors[$extract_as_field])) {
+            throw new InvalidArgumentException("Field name '$extract_as_field' is taken");
+        }
+
+        $this->value_extractors[] = new JsonFieldValueExtractor($extract_as_field, $extract_as_field, $caster, $is_stored, $is_indexed);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function &extractIndex($index_name, $expression)
+    {
+        return $this;
     }
 }
