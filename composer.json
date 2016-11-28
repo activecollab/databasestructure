@@ -20,7 +20,7 @@
     "require": {
         "php": ">=5.6.0",
         "activecollab/databaseconnection": "^2.0",
-        "activecollab/databaseobject": "^2.0",
+        "activecollab/databaseobject": "^3.0",
         "activecollab/filesystem": "^0.10",
         "activecollab/user": "^3.0",
         "doctrine/inflector": "^1.0"

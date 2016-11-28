@@ -21,7 +21,7 @@ class JsonFieldTest extends TestCase
      */
     public function testMixedNativeType()
     {
-        $this->assertEquals('mixed', (new JsonField('test_feild'))->getNativeType());
+        $this->assertEquals('mixed', (new JsonField('test_field'))->getNativeType());
     }
 
     /**
@@ -29,6 +29,6 @@ class JsonFieldTest extends TestCase
      */
     public function testCastingUsesJsonDecode()
     {
-        $this->assertContains('json_encode', (new JsonField('test_feild'))->getCastingCode('value'));
+        $this->assertContains('json_encode', (new JsonField('test_field'))->getCastingCode('value'));
     }
 }
