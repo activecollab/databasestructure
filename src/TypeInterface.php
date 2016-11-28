@@ -155,6 +155,13 @@ interface TypeInterface
     public function getAllFields();
 
     /**
+     * Return an array of generated fields. Key is the field name, value is the caster.
+     *
+     * @return array
+     */
+    public function getGeneratedFields();
+
+    /**
      * @return IndexInterface[]
      */
     public function getIndexes();

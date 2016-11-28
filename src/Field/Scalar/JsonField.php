@@ -35,9 +35,31 @@ class JsonField extends Field implements JsonFieldInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getGeneratedFields()
+    {
+        $result = [];
+
+        foreach ($this->getValueExtractors() as $value_extractor) {
+            $result[$value_extractor->getFieldName()] = $value_extractor->getCaster();
+        }
+
+        return $result;
+    }
+
+    /**
      * @var JsonFieldValueExtractorInterface[]
      */
     private $value_extractors = [];
+
+    /**
+     * @return JsonFieldValueExtractorInterface[]
+     */
+    public function getValueExtractors()
+    {
+        return $this->value_extractors;
+    }
 
     /**
      * {@inheritdoc}

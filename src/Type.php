@@ -19,6 +19,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation a
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use BadMethodCallException;
@@ -372,9 +373,7 @@ class Type implements TypeInterface
     }
 
     /**
-     * Return all fields, flatten to one array.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
     public function getAllFields()
     {
@@ -396,6 +395,22 @@ class Type implements TypeInterface
 
         foreach ($this->getFields() as $field) {
             $this->fieldToFlatList($field, $result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGeneratedFields()
+    {
+        $result = [];
+
+        foreach ($this->getAllFields() as $field) {
+            if ($field instanceof GeneratedFieldsInterface) {
+                $result = array_merge($result, $field->getGeneratedFields());
+            }
         }
 
         return $result;

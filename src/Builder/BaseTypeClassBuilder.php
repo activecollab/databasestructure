@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCaster;
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
@@ -17,6 +19,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
+use ActiveCollab\DateValue\DateTimeValueInterface;
+use ActiveCollab\DateValue\DateValueInterface;
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -97,42 +101,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $fields = $type->getAllFields();
 
-        $stringified_field_names = [];
-        $fields_with_default_value = [];
-
-        foreach ($fields as $field) {
-            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
-                $stringified_field_names[] = var_export($field->getName(), true);
-
-                if ($field->getName() != 'id' && $field->getDefaultValue() !== null) {
-                    $fields_with_default_value[$field->getName()] = $field->getDefaultValue();
-                }
-            }
-        }
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * All table fields.';
-        $result[] = '     *';
-        $result[] = '     * @var array';
-        $result[] = '     */';
-        $result[] = '    protected $fields = [' . implode(', ', $stringified_field_names) . '];';
-
-        if (count($fields_with_default_value)) {
-            $result[] = '';
-            $result[] = '    /**';
-            $result[] = '     * List of default field values.';
-            $result[] = '     *';
-            $result[] = '     * @var array';
-            $result[] = '     */';
-            $result[] = '    protected $default_field_values = [';
-
-            foreach ($fields_with_default_value as $field_name => $default_value) {
-                $result[] = '       ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
-            }
-
-            $result[] = '    ];';
-        }
+        $this->buildFields($fields, '    ', $result);
+        $this->buildGeneratedFields(array_keys($type->getGeneratedFields()), '    ', $result);
 
         if (count($type->getProtectedFields())) {
             $result[] = '';
@@ -156,6 +126,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }, $type->getOrderBy())) . '];';
         }
 
+        $this->buildConfigureMethod($type->getGeneratedFields(), '    ', $result);
+
         foreach ($type->getAssociations() as $association) {
             $association->buildClassMethods($this->getStructure(), $type, $this->getStructure()->getType($association->getTargetTypeName()), $result);
         }
@@ -164,6 +136,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
                 $this->buildFieldGetterAndSetter($field, '    ', $result);
             }
+        }
+
+        foreach ($type->getGeneratedFields() as $field_name => $caster) {
+            $this->buildGeneratedFieldGetter($field_name, $caster, '    ', $result);
         }
 
         $build_custom_get_field_value = false;
@@ -288,6 +264,122 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     }
 
     /**
+     * Build field definitions.
+     *
+     * @param FieldInterface[] $fields
+     * @param string           $indent
+     * @param array            $result
+     */
+    private function buildFields(array $fields, $indent, array &$result)
+    {
+        $stringified_field_names = [];
+        $fields_with_default_value = [];
+
+        foreach ($fields as $field) {
+            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
+                $stringified_field_names[] = var_export($field->getName(), true);
+
+                if ($field->getName() != 'id' && $field->getDefaultValue() !== null) {
+                    $fields_with_default_value[$field->getName()] = $field->getDefaultValue();
+                }
+            }
+        }
+
+        $result[] = '';
+        $result[] = $indent . '/**';
+        $result[] = $indent . ' * Table fields that are managed by this entity.';
+        $result[] = $indent . ' *';
+        $result[] = $indent . ' * @var array';
+        $result[] = $indent . ' */';
+        $result[] = $indent . 'protected $fields = [' . implode(', ', $stringified_field_names) . '];';
+
+        if (count($fields_with_default_value)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * List of default field values.';
+            $result[] = $indent . ' *';
+            $result[] = $indent . ' * @var array';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'protected $default_field_values = [';
+
+            foreach ($fields_with_default_value as $field_name => $default_value) {
+                $result[] = $indent . '   ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
+            }
+
+            $result[] = $indent . '];';
+        }
+    }
+
+    /**
+     * Build a list of generated fields.
+     *
+     * @param string[] $generated_field_names
+     * @param string   $indent
+     * @param array    $result
+     */
+    public function buildGeneratedFields(array $generated_field_names, $indent, array &$result)
+    {
+        $result[] = '';
+        $result[] = $indent . '/**';
+        $result[] = $indent . ' * Generated fields that are loaded, but not managed by the entity..';
+        $result[] = $indent . ' *';
+        $result[] = $indent . ' * @var array';
+        $result[] = $indent . ' */';
+        $result[] = $indent . 'protected $generated_fields = [' . implode(', ', array_map(function($field_name) {
+            return var_export($field_name, true);
+        }, $generated_field_names)) . '];';
+    }
+
+    public function buildConfigureMethod(array $generated_fields, $indent, array &$result)
+    {
+        if (!empty($generated_fields)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * {@inheritdoc}';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'protected function configure()';
+            $result[] = $indent . '{';
+            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(new ' . ValueCaster::class . '([';
+
+            foreach ($generated_fields as $field_name => $caster) {
+                switch ($caster) {
+                    case ValueCasterInterface::CAST_INT:
+                        $full_caster = ValueCasterInterface::class . '::CAST_INT';
+                        break;
+                    case ValueCasterInterface::CAST_FLOAT:
+                        $full_caster = ValueCasterInterface::class . '::CAST_FLOAT';
+                        break;
+                    case ValueCasterInterface::CAST_BOOL:
+                        $full_caster = ValueCasterInterface::class . '::CAST_BOOL';
+                        break;
+                    case ValueCasterInterface::CAST_DATE:
+                        $full_caster = ValueCasterInterface::class . '::CAST_DATE';
+                        break;
+                    case ValueCasterInterface::CAST_DATETIME:
+                        $full_caster = ValueCasterInterface::class . '::CAST_DATETIME';
+                        break;
+                    case ValueCasterInterface::CAST_JSON:
+                        $full_caster = ValueCasterInterface::class . '::CAST_JSON';
+                        break;
+                    default:
+                        $full_caster = ValueCasterInterface::class . '::CAST_STRING';
+                }
+
+                $result[] = $indent . '        ' . var_export($field_name, true) . ' => ' . $full_caster . ',';
+            }
+
+            $result[] = $indent . '    ]));';
+            $result[] = $indent . '}';
+
+//            $this->setGeneratedFieldsValueCaster(new ValueCaster([
+//                'is_used_on_day' => ValueCasterInterface::CAST_BOOL,
+//                'plan_name' => ValueCasterInterface::CAST_STRING,
+//                'number_of_users' => ValueCasterInterface::CAST_INT,
+//            ]));
+        }
+    }
+
+    /**
      * @param FieldInterface[] $fields
      * @param string           $indent
      * @param array            $result
@@ -314,7 +406,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $short_getter = null;
 
-        if ($field instanceof BooleanField && (substr($field->getName(), 0, 3) === 'is_' || in_array(substr($field->getName(), 0, 4), ['has_', 'had_', 'was_']) || in_array(substr($field->getName(), 0, 5), ['were_', 'have_']))) {
+        if ($field instanceof BooleanField && $this->useShortGetterName($field->getName())) {
             $short_getter = $this->getShortGetterName($field->getName());
 
             $lines[] = '';
@@ -361,6 +453,89 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         foreach ($lines as $line) {
             $result[] = $line ? $indent . $line : '';
         }
+    }
+
+    /**
+     * Build getter for generated field.
+     *
+     * @param string $field_name
+     * @param string $caster
+     * @param string $indent
+     * @param array  $result
+     */
+    private function buildGeneratedFieldGetter($field_name, $caster, $indent, array &$result)
+    {
+        $short_getter = null;
+
+        switch ($caster) {
+            case ValueCasterInterface::CAST_INT:
+                $return_type = 'int';
+                break;
+            case ValueCasterInterface::CAST_FLOAT:
+                $return_type = 'float';
+                break;
+            case ValueCasterInterface::CAST_BOOL:
+                $return_type = 'bool';
+                break;
+            case ValueCasterInterface::CAST_DATE:
+                $return_type = '\\' . DateValueInterface::class;
+                break;
+            case ValueCasterInterface::CAST_DATETIME:
+                $return_type = '\\' . DateTimeValueInterface::class;
+                break;
+            case ValueCasterInterface::CAST_JSON:
+                $return_type = 'mixed';
+                break;
+            default:
+                $return_type = 'string';
+        }
+
+        if ($this->useShortGetterName($field_name)) {
+            $short_getter = $this->getShortGetterName($field_name);
+
+            $lines[] = '';
+            $lines[] = '/**';
+            $lines[] = ' * Return value of ' . $field_name . ' field.';
+            $lines[] = ' *';
+            $lines[] = ' * @return ' . $return_type;
+            $lines[] = ' */';
+            $lines[] = 'public function ' . $short_getter . '()';
+            $lines[] = '{';
+            $lines[] = '    return $this->getFieldValue(' . var_export($field_name, true) . ');';
+            $lines[] = '}';
+        }
+
+        $lines[] = '';
+        $lines[] = '/**';
+        $lines[] = ' * Return value of ' . $field_name . ' field.';
+        $lines[] = ' *';
+        $lines[] = ' * @return ' . $return_type;
+
+        if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
+            $lines[] = " * @deprecated use $short_getter()";
+        }
+
+        $lines[] = ' */';
+        $lines[] = 'public function ' . $this->getGetterName($field_name) . '()';
+        $lines[] = '{';
+        $lines[] = '    return $this->getFieldValue(' . var_export($field_name, true) . ');';
+        $lines[] = '}';
+        $lines[] = '';
+
+        foreach ($lines as $line) {
+            $result[] = $line ? $indent . $line : '';
+        }
+    }
+
+    /**
+     * Return true if we should use a short getter name.
+     *
+     * @param  string $field_name
+     * @return bool
+     */
+    private function useShortGetterName($field_name)
+    {
+        return substr($field_name, 0, 3) === 'is_' || in_array(substr($field_name, 0, 4), ['has_', 'had_', 'was_']) || in_array(substr($field_name, 0, 5), ['were_', 'have_']);
     }
 
     /**

@@ -9,13 +9,20 @@
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Utility\JsonFieldValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-interface JsonFieldInterface extends FieldInterface
+interface JsonFieldInterface extends FieldInterface, GeneratedFieldsInterface
 {
+    /**
+     * @return JsonFieldValueExtractorInterface[]
+     */
+    public function getValueExtractors();
+
     /**
      * @param  string $extract_as_field
      * @param  string $expression
