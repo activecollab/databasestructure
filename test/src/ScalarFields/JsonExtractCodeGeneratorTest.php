@@ -18,7 +18,7 @@ use ReflectionMethod;
 /**
  * @package ActiveCollab\DatabaseStructure\Test\ScalarFields
  */
-class JsonFieldValueExtractionTest extends TestCase
+class JsonExtractCodeGeneratorTest extends TestCase
 {
     /**
      * @var JsonFieldStructure
@@ -55,6 +55,16 @@ class JsonFieldValueExtractionTest extends TestCase
 
         $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\StatsSnapshot");
         $this->stats_snapshot_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->connection->dropTable('stats_snapshots');
+
+        parent::tearDown();
     }
 
     public function testGeneratedFieldsPropertyIsSet()
@@ -95,8 +105,8 @@ class JsonFieldValueExtractionTest extends TestCase
         $this->assertContains("`plan_name` VARCHAR(191) AS (`stats`->>'$.plan_name') STORED", $create_table_statement);
         $this->assertContains("`number_of_active_users` INT AS (`stats`->>'$.users.num_active') STORED", $create_table_statement);
         $this->assertContains("`is_used_on_day` TINYINT(1) UNSIGNED AS (`stats`->>'$.is_used_on_day') VIRTUAL", $create_table_statement);
-        $this->assertContains("INDEX `plan_name` (`plan_name`)", $create_table_statement);
-        $this->assertNotContains("INDEX `number_of_active_users` (`number_of_active_users`)", $create_table_statement);
-        $this->assertNotContains("INDEX `number_of_active_users` (`number_of_active_users`)", $create_table_statement);
+        $this->assertContains('INDEX `plan_name` (`plan_name`)', $create_table_statement);
+        $this->assertNotContains('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
+        $this->assertNotContains('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
     }
 }

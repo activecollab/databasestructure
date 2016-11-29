@@ -29,7 +29,7 @@ class JsonFieldStructure extends Structure
             (new JsonField('stats'))
                 ->extractValue('plan_name', '$.plan_name', ValueCasterInterface::CAST_STRING, true, true)
                 ->extractValue('number_of_active_users', '$.users.num_active', ValueCasterInterface::CAST_INT, true)
-                ->extractValue('is_used_on_day', '$.is_used_on_day', ValueCasterInterface::CAST_BOOL, false)
+                ->extractValue('is_used_on_day', '$.is_used_on_day', ValueCasterInterface::CAST_BOOL, false),
         ])->addIndex(new Index('day'));
     }
 }

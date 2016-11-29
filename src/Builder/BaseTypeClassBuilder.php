@@ -325,7 +325,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = $indent . ' *';
         $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $generated_fields = [' . implode(', ', array_map(function($field_name) {
+        $result[] = $indent . 'protected $generated_fields = [' . implode(', ', array_map(function ($field_name) {
             return var_export($field_name, true);
         }, $generated_field_names)) . '];';
     }
@@ -339,30 +339,30 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = $indent . ' */';
             $result[] = $indent . 'protected function configure()';
             $result[] = $indent . '{';
-            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(new ' . ValueCaster::class . '([';
+            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(new \\' . ValueCaster::class . '([';
 
             foreach ($generated_fields as $field_name => $caster) {
                 switch ($caster) {
                     case ValueCasterInterface::CAST_INT:
-                        $full_caster = ValueCasterInterface::class . '::CAST_INT';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_INT';
                         break;
                     case ValueCasterInterface::CAST_FLOAT:
-                        $full_caster = ValueCasterInterface::class . '::CAST_FLOAT';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_FLOAT';
                         break;
                     case ValueCasterInterface::CAST_BOOL:
-                        $full_caster = ValueCasterInterface::class . '::CAST_BOOL';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_BOOL';
                         break;
                     case ValueCasterInterface::CAST_DATE:
-                        $full_caster = ValueCasterInterface::class . '::CAST_DATE';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_DATE';
                         break;
                     case ValueCasterInterface::CAST_DATETIME:
-                        $full_caster = ValueCasterInterface::class . '::CAST_DATETIME';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_DATETIME';
                         break;
                     case ValueCasterInterface::CAST_JSON:
-                        $full_caster = ValueCasterInterface::class . '::CAST_JSON';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_JSON';
                         break;
                     default:
-                        $full_caster = ValueCasterInterface::class . '::CAST_STRING';
+                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_STRING';
                 }
 
                 $result[] = $indent . '        ' . var_export($field_name, true) . ' => ' . $full_caster . ',';
