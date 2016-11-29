@@ -8,6 +8,33 @@
 
 Boolean fields with names that start with `is_`, `has_`, `had_`, `was_`, `were_` and `have_` also get a short getter. For example, if field name is `is_awesome`, builder will product two getters: `getIsAwesome()` and `isAwesome()`.
 
+### JSON Field
+
+JSON field add a JSON field to the type. It will be automatically serialized and deserialized on reads and writes:
+
+```php
+$this->addType('stats_snapshots')->addFields([
+    new JsonField('stats')
+]);
+```
+
+System supports value extraction from JSON fields. These values are extracted by MySQL automatically, and tthey can be stored and indexed. Arguments:
+
+1. `field_name` - Name of the generated field,
+1. `expression` - Expression used to extract the value from JSON. See [https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract](JSON_EXTRACT()) MySQL function for details,
+1. `is_stored` - Should the value be permanently stored, or should it be virtual (calculated on the fly on read). Value is stored by default,
+1. `is_indexed` - Should the value be indexed. Index on the generated field is added when `TRUE`. `FALSE` by default.
+
+```php
+$this->addType('stats_snapshots')->addFields([
+    new DateField('day'),
+    (new JsonField('stats'))
+        ->extractValue('plan_name', '$.plan_name', ValueCasterInterface::CAST_STRING, true, true)
+        ->extractValue('number_of_active_users', '$.users.num_active', ValueCasterInterface::CAST_INT, true)
+        ->extractValue('is_used_on_day', '$.is_used_on_day', ValueCasterInterface::CAST_BOOL, false),
+]);
+```
+
 ## Structure Options
 
 Structure object support config option setting via `setConfig()` method. This method can be called during object configuration, of after it has been created:
@@ -75,7 +102,7 @@ namespace Application\Structure\Namespace\Base;
  *
  * …
  */
-abstract class Token extends \ActiveCollab\DatabaseObject\Object
+abstract class Token extends \ActiveCollab\DatabaseObject\Entity\Entity
 {
     …
 }
