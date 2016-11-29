@@ -32,11 +32,4 @@ interface JsonFieldInterface extends FieldInterface, GeneratedFieldsInterface
      * @return $this
      */
     public function &extractValue($extract_as_field, $expression, $caster = ValueCasterInterface::CAST_STRING, $is_stored = true, $is_indexed = false);
-
-    /**
-     * @param  string $index_name
-     * @param  string $expression
-     * @return $this
-     */
-    public function &extractIndex($index_name, $expression);
 }

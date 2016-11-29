@@ -74,12 +74,4 @@ class JsonField extends Field implements JsonFieldInterface
 
         return $this;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function &extractIndex($index_name, $expression)
-    {
-        return $this;
-    }
 }
