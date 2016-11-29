@@ -97,10 +97,10 @@ abstract class Builder implements BuilderInterface
     /**
      * Trigger an internal event.
      *
-     * @param string     $event
-     * @param array|null $event_parameters
+     * @param string $event
+     * @param array  $event_parameters
      */
-    protected function triggerEvent($event, array $event_parameters = null)
+    protected function triggerEvent($event, array $event_parameters = [])
     {
         if (isset($this->event_handlers[$event])) {
             if (empty($event_parameters)) {

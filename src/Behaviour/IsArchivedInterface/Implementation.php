@@ -107,8 +107,8 @@ trait Implementation
     /**
      * Trigger an internal event.
      *
-     * @param string     $event
-     * @param array|null $event_parameters
+     * @param string $event
+     * @param array  $event_parameters
      */
-    abstract protected function triggerEvent($event, array $event_parameters = null);
+    abstract protected function triggerEvent($event, array $event_parameters = []);
 }
