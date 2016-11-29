@@ -25,6 +25,8 @@ System supports value extraction from JSON fields. These values are extracted by
 1. `is_stored` - Should the value be permanently stored, or should it be virtual (calculated on the fly on read). Value is stored by default,
 1. `is_indexed` - Should the value be indexed. Index on the generated field is added when `TRUE`. `FALSE` by default.
 
+Example:
+
 ```php
 $this->addType('stats_snapshots')->addFields([
     new DateField('day'),
@@ -33,6 +35,22 @@ $this->addType('stats_snapshots')->addFields([
         ->extractValue('number_of_active_users', '$.users.num_active', ValueCasterInterface::CAST_INT, true)
         ->extractValue('is_used_on_day', '$.is_used_on_day', ValueCasterInterface::CAST_BOOL, false),
 ]);
+```
+
+Getter methods are automatically added for all generated fields:
+
+```php
+$snapshot = $pool->getById(StatsSnapshot::class, 1);
+print $snapshot->getPlanName() . "\n";
+print $snapshot->getNumberOfActiveUsers() . "\n";
+print ($snapshot->isUsedOnDay() ? 'yes' : 'no') . "\n";
+```
+
+Note that values of generated fields can't be set directly. This code will raise an exception:
+
+```php
+$snapshot = $pool->getById(StatsSnapshot::class, 1);
+$snapshot->setFieldValue('number_of_active_users', 123);  // Exception!
 ```
 
 ## Structure Options
