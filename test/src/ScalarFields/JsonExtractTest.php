@@ -115,4 +115,35 @@ class JsonExtractTest extends TestCase
         $this->assertSame(123, $stats_snapshot->getNumberOfActiveUsers());
         $this->assertTrue($stats_snapshot->isUsedOnDay());
     }
+
+    public function testUpdate()
+    {
+        $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
+            'day' => new DateValue('2016-11-28'),
+            'stats' => [
+                'plan_name' => 'MEGA',
+                'users' => [
+                    'num_active' => 123,
+                ],
+                'is_used_on_day' => 1,
+            ],
+        ]);
+        $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
+
+        $this->assertSame('MEGA', $stats_snapshot->getPlanName());
+        $this->assertSame(123, $stats_snapshot->getNumberOfActiveUsers());
+        $this->assertTrue($stats_snapshot->isUsedOnDay());
+
+        $stats_snapshot->setStats([
+            'plan_name' => 'Lerge',
+            'users' => [
+                'num_active' => 321,
+            ],
+            'is_used_on_day' => 0,
+        ])->save();
+
+        $this->assertSame('Lerge', $stats_snapshot->getPlanName());
+        $this->assertSame(321, $stats_snapshot->getNumberOfActiveUsers());
+        $this->assertFalse($stats_snapshot->isUsedOnDay());
+    }
 }
