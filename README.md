@@ -18,10 +18,28 @@ $this->addType('stats_snapshots')->addFields([
 ]);
 ```
 
-System supports value extraction from JSON fields. These values are extracted by MySQL automatically, and tthey can be stored and indexed. Arguments:
+System supports value extraction from JSON fields. These values are extracted by MySQL automatically, and they can be stored and indexed. 
+
+There are two ways of adding extractors. First is by constructing extractor instance by yourself, and adding it:
+
+```php
+$execution_time_extractor = (new FloatValueExtractor('execution_time', '$.exec_time', 0))
+    ->storeValue()
+    ->addIndex();
+
+$this->addType('stats_snapshots')->addFields([
+    new DateField('day'),
+    (new JsonField('stats'))
+        ->extract($execution_time_extractor)
+]);
+```
+
+Second is by calling `extractValue` method, which uses provided arguments to construct the appropriate extractor, configure it and add it to the field. Method arguments:
 
 1. `field_name` - Name of the generated field,
 1. `expression` - Expression used to extract the value from JSON. See [https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract](JSON_EXTRACT()) MySQL function for details,
+1. `default_value` - Value that will be used if `expression` returns `NULL`,
+1. `extractor_type` - Class name of the extractor implementation that should be used. Default is `ValueExtractor` (string value extractor), but there are also extractors for int, float, bool, date, and date and time values,
 1. `is_stored` - Should the value be permanently stored, or should it be virtual (calculated on the fly on read). Value is stored by default,
 1. `is_indexed` - Should the value be indexed. Index on the generated field is added when `TRUE`. `FALSE` by default.
 
