@@ -49,9 +49,9 @@ Example:
 $this->addType('stats_snapshots')->addFields([
     new DateField('day'),
     (new JsonField('stats'))
-        ->extractValue('plan_name', '$.plan_name', ValueExtractor::class, true, true)
-        ->extractValue('number_of_active_users', '$.users.num_active', IntValueExtractor::class, true)
-        ->extractValue('is_used_on_day', '$.is_used_on_day', BoolValueExtractor::class, false),
+        ->extractValue('plan_name', '$.plan_name', 'Unknown', ValueExtractor::class, true, true)
+        ->extractValue('number_of_active_users', '$.users.num_active', 0, IntValueExtractor::class, true)
+        ->extractValue('is_used_on_day', '$.is_used_on_day', null, BoolValueExtractor::class, false),
 ]);
 ```
 
