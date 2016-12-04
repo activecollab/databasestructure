@@ -6,7 +6,7 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
+namespace ActiveCollab\DatabaseStructure\Test\ScalarFields\JsonExtract;
 
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
@@ -97,6 +97,68 @@ class JsonExtractTest extends TestCase
         $this->assertNull($stats_snapshot->isUsedOnDay());
     }
 
+    /**
+     * @param mixed $current_test
+     * @dataProvider validTruesProvider
+     */
+    public function testValueThatCastsToTrue($current_test)
+    {
+        $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
+            'day' => new DateValue('2016-11-28'),
+            'stats' => [
+                'is_used_on_day' => $current_test
+            ],
+        ]);
+        $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
+
+        $this->assertTrue($stats_snapshot->isUsedOnDay());
+    }
+
+    /**
+     * @return array
+     */
+    public function validTruesProvider()
+    {
+        return [
+            [true],
+            ['true'],
+            [-12],
+            [12]
+        ];
+    }
+
+    /**
+     * @param mixed $current_test
+     * @dataProvider validFalsesProvider
+     */
+    public function testValueThatCastsToFalse($current_test)
+    {
+        $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
+            'day' => new DateValue('2016-11-28'),
+            'stats' => [
+                'is_used_on_day' => $current_test
+            ],
+        ]);
+        $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
+
+        $this->assertFalse($stats_snapshot->isUsedOnDay());
+    }
+
+    /**
+     * @return array
+     */
+    public function validFalsesProvider()
+    {
+        return [
+            [false],
+            ['false'],
+            [0],
+            [12.34],
+            ['something other'],
+            ['what not']
+        ];
+    }
+
     public function testExtractionAndCasting()
     {
         $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
@@ -106,7 +168,7 @@ class JsonExtractTest extends TestCase
                 'users' => [
                     'num_active' => 123,
                 ],
-                'is_used_on_day' => 1,
+                'is_used_on_day' => true,
             ],
         ]);
         $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
@@ -125,7 +187,7 @@ class JsonExtractTest extends TestCase
                 'users' => [
                     'num_active' => 123,
                 ],
-                'is_used_on_day' => 1,
+                'is_used_on_day' => true,
             ],
         ]);
         $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
@@ -139,7 +201,7 @@ class JsonExtractTest extends TestCase
             'users' => [
                 'num_active' => 321,
             ],
-            'is_used_on_day' => 0,
+            'is_used_on_day' => false,
         ])->save();
 
         $this->assertSame('Lerge', $stats_snapshot->getPlanName());

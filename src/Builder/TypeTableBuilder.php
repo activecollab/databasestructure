@@ -320,10 +320,38 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                 $field_type = 'VARCHAR(191)';
         }
 
-        $expression = '(' . $this->getCOnnection()->escapeFieldName($source_field->getName()) . '->>' . var_export($extractor->getExpression(), true) . ')';
+        $expression = '(' . $this->prepareGeneratedFieldExpression($this->getConnection()->escapeFieldName($source_field->getName()), var_export($extractor->getExpression(), true), $extractor->getCaster()) . ')';
         $storage = $extractor->isStored() ? 'STORED' : 'VIRTUAL';
 
         return trim("$generated_field_name $field_type AS $expression $storage");
+    }
+
+    /**
+     * Prepare extraction statement based on expression.
+     *
+     * @param  string $escaped_field_name
+     * @param  string $escaped_expression
+     * @param  string $caster
+     * @return string
+     */
+    private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster)
+    {
+        $value_extractor_expression = "{$escaped_field_name}->>{$escaped_expression}";
+
+        switch ($caster) {
+            case ValueCasterInterface::CAST_BOOL:
+                return "IF({$value_extractor_expression} IS NULL, NULL, IF({$value_extractor_expression} = 'true' OR ({$value_extractor_expression} REGEXP '^-?[0-9]+$' AND CAST({$value_extractor_expression} AS SIGNED) != 0), 1, 0))";
+            case ValueCasterInterface::CAST_DATE:
+                return "CAST({$value_extractor_expression} AS DATE)";
+            case ValueCasterInterface::CAST_DATETIME:
+                return "CAST({$value_extractor_expression} AS DATETIME)";
+            case ValueCasterInterface::CAST_INT:
+                return "CAST({$value_extractor_expression} AS SIGNED INTEGER)";
+            case ValueCasterInterface::CAST_FLOAT:
+                return "CAST({$value_extractor_expression} AS DECIMAL(12, 2))";
+            default:
+                return $value_extractor_expression;
+        }
     }
 
     /**
