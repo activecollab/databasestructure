@@ -14,7 +14,9 @@ use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\JsonField\JsonFieldStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\TypeInterface;
+use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValue;
+use ActiveCollab\DateValue\DateValueInterface;
 use ReflectionClass;
 
 /**
@@ -84,7 +86,7 @@ class JsonExtractTest extends TestCase
         $this->pool->registerType($this->stats_snapshot_class_name);
     }
 
-    public function testEmptyStatsDefaultToNull()
+    public function testDefaultValues()
     {
         $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
             'day' => new DateValue('2016-11-28'),
@@ -95,6 +97,16 @@ class JsonExtractTest extends TestCase
         $this->assertNull($stats_snapshot->getPlanName());
         $this->assertNull($stats_snapshot->getNumberOfActiveUsers());
         $this->assertNull($stats_snapshot->isUsedOnDay());
+        $this->assertSame(0.0, $stats_snapshot->getExecutionTime());
+
+        /** @var DateValueInterface $important_date */
+        $important_date = $stats_snapshot->getImportantDate1();
+        $this->assertInstanceOf(DateValueInterface::class, $important_date);
+        $this->assertSame('2013-10-02', $important_date->format('Y-m-d'));
+
+        $important_date_time = $stats_snapshot->getImportantDate2WithTime();
+        $this->assertInstanceOf(DateTimeValueInterface::class, $important_date_time);
+        $this->assertSame('2016-05-09 09:11:00', $important_date_time->format('Y-m-d h:i:s'));
     }
 
     /**
