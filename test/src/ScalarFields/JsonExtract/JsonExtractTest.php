@@ -106,7 +106,7 @@ class JsonExtractTest extends TestCase
         $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
             'day' => new DateValue('2016-11-28'),
             'stats' => [
-                'is_used_on_day' => $current_test
+                'is_used_on_day' => $current_test,
             ],
         ]);
         $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
@@ -123,7 +123,7 @@ class JsonExtractTest extends TestCase
             [true],
             ['true'],
             [-12],
-            [12]
+            [12],
         ];
     }
 
@@ -136,7 +136,7 @@ class JsonExtractTest extends TestCase
         $stats_snapshot = $this->pool->produce($this->stats_snapshot_class_name, [
             'day' => new DateValue('2016-11-28'),
             'stats' => [
-                'is_used_on_day' => $current_test
+                'is_used_on_day' => $current_test,
             ],
         ]);
         $this->assertInstanceOf($this->stats_snapshot_class_name, $stats_snapshot);
@@ -155,7 +155,7 @@ class JsonExtractTest extends TestCase
             [0],
             [12.34],
             ['something other'],
-            ['what not']
+            ['what not'],
         ];
     }
 

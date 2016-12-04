@@ -10,6 +10,8 @@ namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\BoolValueExtractor;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\IntValueExtractor;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
 /**
@@ -48,8 +50,8 @@ class JsonFieldTest extends TestCase
     {
         $field = (new JsonField('stats'))
             ->extractValue('plan_name', '$.plan_name')
-            ->extractValue('number_of_projects', '$.projects', ValueCasterInterface::CAST_INT)
-            ->extractValue('is_used_on_day', '$.is_used', ValueCasterInterface::CAST_BOOL);
+            ->extractValue('number_of_projects', '$.projects', null, IntValueExtractor::class)
+            ->extractValue('is_used_on_day', '$.is_used', null, BoolValueExtractor::class);
 
         $generated_fields = $field->getGeneratedFields();
 

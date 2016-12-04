@@ -19,11 +19,11 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Utility\JsonFieldValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
@@ -85,6 +85,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     {
         if ($this->getConnection()) {
             $create_table_statement = $this->prepareCreateTableStatement($type);
+
             $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($type->getName()) . ' table');
 
             if ($this->getConnection()->tableExists($type->getName())) {
@@ -137,7 +138,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                 foreach ($field->getValueExtractors() as $value_extractor) {
                     $result[] = '    ' . $this->prepareGeneratedFieldStatement($field, $value_extractor) . ',';
 
-                    if ($value_extractor->isIndexed()) {
+                    if ($value_extractor->getAddIndex()) {
                         $generaterd_field_indexes[] = new Index($value_extractor->getFieldName());
                     }
                 }
@@ -293,11 +294,18 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $this->getConnection()->escapeValue($default_value);
     }
 
-    public function prepareGeneratedFieldStatement(FieldInterface $source_field, JsonFieldValueExtractorInterface $extractor)
+    /**
+     * Prpeare generated field statement.
+     *
+     * @param  FieldInterface          $source_field
+     * @param  ValueExtractorInterface $extractor
+     * @return string
+     */
+    public function prepareGeneratedFieldStatement(FieldInterface $source_field, ValueExtractorInterface $extractor)
     {
         $generated_field_name = $this->getConnection()->escapeFieldName($extractor->getFieldName());
 
-        switch ($extractor->getCaster()) {
+        switch ($extractor->getValueCaster()) {
             case ValueCasterInterface::CAST_INT:
                 $field_type = 'INT';
                 break;
@@ -320,10 +328,15 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                 $field_type = 'VARCHAR(191)';
         }
 
-        $expression = '(' . $this->prepareGeneratedFieldExpression($this->getConnection()->escapeFieldName($source_field->getName()), var_export($extractor->getExpression(), true), $extractor->getCaster()) . ')';
-        $storage = $extractor->isStored() ? 'STORED' : 'VIRTUAL';
+        $expression = $this->prepareGeneratedFieldExpression(
+            $this->getConnection()->escapeFieldName($source_field->getName()),
+            var_export($extractor->getExpression(), true),
+            $extractor->getValueCaster(),
+            $this->getConnection()->escapeValue($extractor->getDefaultValue())
+        );
+        $storage = $extractor->getStoreValue() ? 'STORED' : 'VIRTUAL';
 
-        return trim("$generated_field_name $field_type AS $expression $storage");
+        return trim("$generated_field_name $field_type AS ($expression) $storage");
     }
 
     /**
@@ -332,25 +345,26 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
      * @param  string $escaped_field_name
      * @param  string $escaped_expression
      * @param  string $caster
+     * @param  mixed  $escaped_default_value
      * @return string
      */
-    private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster)
+    private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster, $escaped_default_value)
     {
         $value_extractor_expression = "{$escaped_field_name}->>{$escaped_expression}";
 
         switch ($caster) {
             case ValueCasterInterface::CAST_BOOL:
-                return "IF({$value_extractor_expression} IS NULL, NULL, IF({$value_extractor_expression} = 'true' OR ({$value_extractor_expression} REGEXP '^-?[0-9]+$' AND CAST({$value_extractor_expression} AS SIGNED) != 0), 1, 0))";
+                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, IF({$value_extractor_expression} = 'true' OR ({$value_extractor_expression} REGEXP '^-?[0-9]+$' AND CAST({$value_extractor_expression} AS SIGNED) != 0), 1, 0))";
             case ValueCasterInterface::CAST_DATE:
-                return "CAST({$value_extractor_expression} AS DATE)";
+                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATE))";
             case ValueCasterInterface::CAST_DATETIME:
-                return "CAST({$value_extractor_expression} AS DATETIME)";
+                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATETIME))";
             case ValueCasterInterface::CAST_INT:
-                return "CAST({$value_extractor_expression} AS SIGNED INTEGER)";
+                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS SIGNED INTEGER))";
             case ValueCasterInterface::CAST_FLOAT:
-                return "CAST({$value_extractor_expression} AS DECIMAL(12, 2))";
+                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DECIMAL(12, 2)))";
             default:
-                return $value_extractor_expression;
+                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, {$value_extractor_expression})";
         }
     }
 

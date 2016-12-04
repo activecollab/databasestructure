@@ -102,8 +102,8 @@ class JsonExtractCodeGeneratorTest extends TestCase
 
         $create_table_statement = $type_table_build->prepareCreateTableStatement($stats_snapshots_type);
 
-        $this->assertContains("`plan_name` VARCHAR(191) AS (`stats`->>'$.plan_name') STORED", $create_table_statement);
-        $this->assertContains("`number_of_active_users` INT AS (CAST(`stats`->>'$.users.num_active' AS SIGNED INTEGER)) STORED", $create_table_statement);
+        $this->assertContains("`plan_name` VARCHAR(191) AS (IF(`stats`->>'$.plan_name' IS NULL, NULL, `stats`->>'$.plan_name')) STORED", $create_table_statement);
+        $this->assertContains("`number_of_active_users` INT AS (IF(`stats`->>'$.users.num_active' IS NULL, NULL, CAST(`stats`->>'$.users.num_active' AS SIGNED INTEGER))) STORED", $create_table_statement);
         $this->assertContains("`is_used_on_day` TINYINT(1) UNSIGNED AS (IF(`stats`->>'$.is_used_on_day' IS NULL, NULL, IF(`stats`->>'$.is_used_on_day' = 'true' OR (`stats`->>'$.is_used_on_day' REGEXP '^-?[0-9]+$' AND CAST(`stats`->>'$.is_used_on_day' AS SIGNED) != 0), 1, 0))) VIRTUAL", $create_table_statement);
         $this->assertContains('INDEX `plan_name` (`plan_name`)', $create_table_statement);
         $this->assertNotContains('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
