@@ -29,7 +29,7 @@ interface JsonFieldInterface extends FieldInterface, GeneratedFieldsInterface
      * @param  ValueExtractorInterface $extractor
      * @return $this
      */
-    public function &extract(ValueExtractorInterface $extractor);
+    public function &addValueExtractor(ValueExtractorInterface $extractor);
 
     /**
      * Shortcut method that builds extractor instance from the (long) list of arguments.

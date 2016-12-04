@@ -65,7 +65,7 @@ class JsonField extends Field implements JsonFieldInterface
     /**
      * {@inheritdoc}
      */
-    public function &extract(ValueExtractorInterface $extractor)
+    public function &addValueExtractor(ValueExtractorInterface $extractor)
     {
         $extract_as_field = $extractor->getFieldName();
 
@@ -100,6 +100,6 @@ class JsonField extends Field implements JsonFieldInterface
         $extractor->storeValue($is_stored);
         $extractor->addIndex($is_indexed);
 
-        return $this->extract($extractor);
+        return $this->addValueExtractor($extractor);
     }
 }

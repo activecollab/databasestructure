@@ -30,7 +30,7 @@ $execution_time_extractor = (new FloatValueExtractor('execution_time', '$.exec_t
 $this->addType('stats_snapshots')->addFields([
     new DateField('day'),
     (new JsonField('stats'))
-        ->extract($execution_time_extractor)
+        ->addValueExtractor($execution_time_extractor)
 ]);
 ```
 
@@ -49,9 +49,9 @@ Example:
 $this->addType('stats_snapshots')->addFields([
     new DateField('day'),
     (new JsonField('stats'))
-        ->extractValue('plan_name', '$.plan_name', ValueCasterInterface::CAST_STRING, true, true)
-        ->extractValue('number_of_active_users', '$.users.num_active', ValueCasterInterface::CAST_INT, true)
-        ->extractValue('is_used_on_day', '$.is_used_on_day', ValueCasterInterface::CAST_BOOL, false),
+        ->extractValue('plan_name', '$.plan_name', ValueExtractor::class, true, true)
+        ->extractValue('number_of_active_users', '$.users.num_active', IntValueExtractor::class, true)
+        ->extractValue('is_used_on_day', '$.is_used_on_day', BoolValueExtractor::class, false),
 ]);
 ```
 

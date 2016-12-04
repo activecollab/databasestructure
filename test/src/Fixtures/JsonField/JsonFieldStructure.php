@@ -35,9 +35,9 @@ class JsonFieldStructure extends Structure
                 ->extractValue('plan_name', '$.plan_name', null, ValueExtractor::class, true, true)
                 ->extractValue('number_of_active_users', '$.users.num_active', null, IntValueExtractor::class, true)
                 ->extractValue('is_used_on_day', '$.is_used_on_day', null, BoolValueExtractor::class, false)
-                ->extract(new FloatValueExtractor('execution_time', '$.exec_time', 0))
-                ->extract(new DateValueExtractor('important_date_1', '$.important_date_1', '2013-10-02'))
-                ->extract(new DateTimeValueExtractor('important_date_2_with_time', '$.important_date_2_with_time', '2016-05-09 09:11:00')),
+                ->addValueExtractor(new FloatValueExtractor('execution_time', '$.exec_time', 0))
+                ->addValueExtractor(new DateValueExtractor('important_date_1', '$.important_date_1', '2013-10-02'))
+                ->addValueExtractor(new DateTimeValueExtractor('important_date_2_with_time', '$.important_date_2_with_time', '2016-05-09 09:11:00')),
         ])->addIndex(new Index('day'));
     }
 }
