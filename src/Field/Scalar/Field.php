@@ -8,11 +8,13 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -119,6 +121,9 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        if ($this instanceof AddIndexInterface && $this->getAddIndex()) {
+            $type->addIndex(new Index($this->getName(), $this->getAddIndexContext(), $this->getAddIndexType()));
+        }
     }
 
     /**
