@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
@@ -22,9 +23,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface, RequiredInterface
+class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProgramToInterfaceInterface, ProtectSetterInterface, RequiredInterface
 {
-    use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation, RequiredInterfaceImplementation;
+    use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, RequiredInterfaceImplementation;
 
     /**
      * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:.
@@ -104,6 +105,11 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
 
         $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
 
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
         $classified_association_name = Inflector::classify($this->getName());
 
         $getter_name = "get{$classified_association_name}";
@@ -115,9 +121,9 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return ' . $target_instance_class;
+        $result[] = '     * @return ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null');
         $result[] = '     */';
-        $result[] = '    public function ' . $getter_name . '()';
+        $result[] = '    public function ' . $getter_name . '(): ' . ($this->isRequired() ? '' : '?') . $returns_and_accepts;
         $result[] = '    {';
         $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
         $result[] = '    }';
@@ -128,10 +134,10 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '    /**';
         $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . $target_instance_class  . ' $value';
+        $result[] = '     * @param  ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null') . ' $value';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
+        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $returns_and_accepts . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
         $result[] = '    {';
 
         if ($this->isRequired()) {
