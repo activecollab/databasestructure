@@ -72,6 +72,27 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
     }
 
     /**
+     * @var string|null
+     */
+    private $returns;
+
+    public function getReturns(): ? string
+    {
+        return $this->returns;
+    }
+
+    /**
+     * @param  string|null                $interface_name
+     * @return AssociationInterface|$this
+     */
+    public function &returns(string $interface_name = null) : AssociationInterface
+    {
+        $this->returns = $interface_name;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFields()

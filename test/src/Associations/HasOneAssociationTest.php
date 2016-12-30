@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\TestInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
@@ -49,6 +50,11 @@ class HasOneAssociationTest extends TestCase
     public function testHasOneCanBeSetAsOptiona()
     {
         $this->assertFalse((new HasOneAssociation('book'))->required(false)->isRequired());
+    }
+
+    public function testHasOneCanTypeHintDifferentReturnType()
+    {
+        $this->assertSame(TestInterface::class, (new HasOneAssociation('book'))->returns(TestInterface::class)->getReturns());
     }
 
     /**
