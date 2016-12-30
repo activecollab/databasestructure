@@ -52,9 +52,27 @@ class HasOneAssociationTest extends TestCase
         $this->assertFalse((new HasOneAssociation('book'))->required(false)->isRequired());
     }
 
+    /**
+     * @dataProvider invalidInterfacesProvider
+     * @expectedException \InvalidArgumentException
+     * @param string $invalid_interface
+     */
+    public function testAcceptsRequiresInterface(string $invalid_interface)
+    {
+        (new HasOneAssociation('book'))->accepts($invalid_interface);
+    }
+
+    public function invalidInterfacesProvider()
+    {
+        return [
+            [\stdClass::class],
+            ['not an interface'],
+        ];
+    }
+
     public function testHasOneCanTypeHintDifferentReturnType()
     {
-        $this->assertSame(TestInterface::class, (new HasOneAssociation('book'))->returns(TestInterface::class)->getReturns());
+        $this->assertSame(TestInterface::class, (new HasOneAssociation('book'))->accepts(TestInterface::class)->getAccepts());
     }
 
     /**

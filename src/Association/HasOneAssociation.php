@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Index;
@@ -21,9 +22,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class HasOneAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface
+class HasOneAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProgramToInterfaceInterface, ProtectSetterInterface
 {
-    use AssociationInterface\Implementation, ProtectSetterInterfaceImplementation;
+    use AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, ProtectSetterInterfaceImplementation;
 
     /**
      * @param string $name
@@ -67,27 +68,6 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
     public function &required($value = true)
     {
         $this->is_required = (bool) $value;
-
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     */
-    private $returns;
-
-    public function getReturns(): ? string
-    {
-        return $this->returns;
-    }
-
-    /**
-     * @param  string|null                $interface_name
-     * @return AssociationInterface|$this
-     */
-    public function &returns(string $interface_name = null) : AssociationInterface
-    {
-        $this->returns = $interface_name;
 
         return $this;
     }
@@ -146,6 +126,11 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
 
         $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
 
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
         $classified_association_name = Inflector::classify($this->getName());
 
         $getter_name = "get{$classified_association_name}";
@@ -157,11 +142,13 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return ' . $target_instance_class;
+        $result[] = '     * @return ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null');
         $result[] = '     */';
-        $result[] = '    public function ' . $getter_name . '()';
+        $result[] = '    public function ' . $getter_name . '(): ' . ($this->isRequired() ? '' : '?') . $returns_and_accepts;
         $result[] = '    {';
-        $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+        $result[] = '        return $this->' . $fk_getter_name . '() ?';
+        $result[] = '            $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '()) :';
+        $result[] = '            null;';
         $result[] = '    }';
 
         $setter_access_level = $this->getProtectSetter() ? 'protected' : 'public';
@@ -170,10 +157,10 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
         $result[] = '    /**';
         $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . $target_instance_class  . ' $value';
+        $result[] = '     * @param  ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null') . ' $value';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
+        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $returns_and_accepts . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
         $result[] = '    {';
 
         if ($this->isRequired()) {
