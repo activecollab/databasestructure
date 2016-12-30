@@ -71,6 +71,26 @@ $snapshot = $pool->getById(StatsSnapshot::class, 1);
 $snapshot->setFieldValue('number_of_active_users', 123);  // Exception!
 ```
 
+## Associations
+
+### Programming to an Interface
+
+Belongs to and Has One associations support "programming to an interface" approach. This means that you can set so they accept (and return) instances that implement a specific interface. In this case, code will be generated so arguments, and return types are set to that interface, instead of a concrete class (target type).
+
+Example:
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
+
+(new BelongsToAssociation('author'))->accepts(AuthorInterface::class);
+(new HasOneAssociation('book'))->accepts(BookInterface::class);
+```
+
 ## Structure Options
 
 Structure object support config option setting via `setConfig()` method. This method can be called during object configuration, of after it has been created:
