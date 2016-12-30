@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Index;
@@ -21,9 +22,9 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface
+class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface, RequiredInterface
 {
-    use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation;
+    use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation, RequiredInterfaceImplementation;
 
     /**
      * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:.
@@ -47,34 +48,6 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
 
         $this->name = $name;
         $this->target_type_name = $target_type_name;
-    }
-
-    /**
-     * @var bool
-     */
-    private $is_required = true;
-
-    /**
-     * Return true if this field is required.
-     *
-     * @return bool
-     */
-    public function isRequired()
-    {
-        return $this->is_required;
-    }
-
-    /**
-     * Value of this column is required.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function &required($value = true)
-    {
-        $this->is_required = (bool) $value;
-
-        return $this;
     }
 
     /**
