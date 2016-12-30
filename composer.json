@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.1",
         "activecollab/databaseconnection": "^2.0",
         "activecollab/databaseobject": "^3.0",
         "activecollab/filesystem": "^0.10",
