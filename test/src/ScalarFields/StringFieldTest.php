@@ -9,6 +9,8 @@
 namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
 /**
@@ -63,5 +65,22 @@ class StringFieldTest extends TestCase
     public function testExceptionOnLengthToLarge()
     {
         (new StringField('some_string'))->length(255);
+    }
+
+    public function testAddIndex()
+    {
+        $string_field = new StringField('some_string', '', true);
+
+        $this->assertInstanceOf(AddIndexInterface::class, $string_field);
+        $this->assertTrue($string_field->getAddIndex());
+    }
+
+    public function testUniqueAddsIndex()
+    {
+        $string_field = (new StringField('some_string'))->unique('field_1', 'field_2');
+
+        $this->assertTrue($string_field->getAddIndex());
+        $this->assertSame(IndexInterface::UNIQUE, $string_field->getAddIndexType());
+        $this->assertSame(['field_1', 'field_2'], $string_field->getAddIndexContext());
     }
 }
