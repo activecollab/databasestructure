@@ -11,13 +11,13 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface\Implementation as UpdatedAtInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-class UpdatedAtField extends Field
+class UpdatedAtField extends Field implements AddIndexInterface
 {
     use AddIndexInterfaceImplementation;
 
@@ -64,10 +64,6 @@ class UpdatedAtField extends Field
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
-        }
 
         $type->addTrait(UpdatedAtInterface::class, UpdatedAtInterfaceImplementation::class)->serialize($this->name);
     }

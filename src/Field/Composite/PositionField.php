@@ -11,16 +11,16 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class PositionField extends Field
+class PositionField extends Field implements AddIndexInterface
 {
     use AddIndexInterfaceImplementation;
 
@@ -200,10 +200,6 @@ class PositionField extends Field
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
-        }
 
         $type->addTrait(PositionInterface::class, PositionInterfaceImplementation::class);
     }

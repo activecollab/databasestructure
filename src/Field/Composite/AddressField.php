@@ -147,7 +147,7 @@ class AddressField extends Field implements RequiredInterface
      */
     public function getFields()
     {
-        /** @var RequiredInterface[] $fields */
+        /** @var FieldInterface[]|RequiredInterface[] $fields */
         $fields = [
             new ScalarStringField($this->getName()),
             new ScalarStringField($this->getPrefixedFieldName('address_extended')),

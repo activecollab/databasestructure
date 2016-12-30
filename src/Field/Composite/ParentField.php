@@ -185,6 +185,11 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         }
     }
 
+    protected function autoAddIndexWhenAddedToType(): bool
+    {
+        return false;
+    }
+
     /**
      * {@inheritdoc}
      */

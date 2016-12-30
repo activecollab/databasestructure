@@ -16,8 +16,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Impleme
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
@@ -63,19 +61,5 @@ class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterf
     public function getFields()
     {
         return [(new IntegerField($this->getName()))->unsigned(true)->size($this->getSize())->required($this->isRequired())];
-    }
-
-    /**
-     * Method that is called when field is added to a type.
-     *
-     * @param TypeInterface $type
-     */
-    public function onAddedToType(TypeInterface &$type)
-    {
-        parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
-        }
     }
 }

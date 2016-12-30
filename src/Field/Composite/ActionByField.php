@@ -14,7 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\IdentifiedVisitor;
 use ActiveCollab\User\UserInterface;
@@ -241,10 +240,6 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
-        }
 
         $type->serialize($this->name);
     }

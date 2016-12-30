@@ -8,7 +8,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
@@ -47,6 +49,11 @@ abstract class Field implements FieldInterface
     {
     }
 
+    protected function autoAddIndexWhenAddedToType(): bool
+    {
+        return true;
+    }
+
     /**
      * Method that is called when field is added to a type.
      *
@@ -54,5 +61,8 @@ abstract class Field implements FieldInterface
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        if ($this instanceof AddIndexInterface && $this->getAddIndex() && $this->autoAddIndexWhenAddedToType()) {
+            $type->addIndex(new Index($this->getName(), $this->getAddIndexContext(), $this->getAddIndexType()));
+        }
     }
 }

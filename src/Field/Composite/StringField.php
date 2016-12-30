@@ -97,6 +97,11 @@ abstract class StringField extends Field implements RequiredInterface, UniqueInt
         return [$scalar_string_field];
     }
 
+    protected function autoAddIndexWhenAddedToType(): bool
+    {
+        return false;
+    }
+
     /**
      * Method that is called when field is added to a type.
      *
