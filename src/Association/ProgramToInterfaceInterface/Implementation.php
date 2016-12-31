@@ -18,7 +18,7 @@ trait Implementation
      */
     private $accepts;
 
-    public function getAccepts(): ? string
+    public function getAccepts(): ?string
     {
         return $this->accepts;
     }
@@ -27,7 +27,7 @@ trait Implementation
      * @param  string|null                $interface_name
      * @return AssociationInterface|$this
      */
-    public function &accepts(string $interface_name = null) : AssociationInterface
+    public function &accepts(string $interface_name = null): AssociationInterface
     {
         if ($interface_name && !interface_exists($interface_name)) {
             throw new InvalidArgumentException("Interface '$interface_name' not found.");
