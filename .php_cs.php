@@ -40,6 +40,7 @@ return (new PhpCsFixer\Config('psr2'))->setRules([
     'ordered_imports' => true,
     'array_syntax' => ['syntax' => 'short'],
     'phpdoc_align' => true,
+    'return_type_declaration' => true,
     'phpdoc_separation' => false,
     'phpdoc_no_package' => false,
     'no_mixed_echo_print' => false,
