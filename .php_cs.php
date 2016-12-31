@@ -12,8 +12,8 @@ This file is part of the Active Collab DatabaseStructure project.
 (c) A51 doo <info@activecollab.com>. All rights reserved.
 EOF;
 
-return (new PhpCsFixer\Config('psr2'))->setRules(array(
-    'header_comment' => array('header' => $header),
+return (new PhpCsFixer\Config('psr2'))->setRules([
+    'header_comment' => ['header' => $header],
     'no_whitespace_before_comma_in_array' => true,
     'whitespace_after_comma_in_array' => true,
     'no_multiline_whitespace_around_double_arrow' => true,
@@ -38,11 +38,11 @@ return (new PhpCsFixer\Config('psr2'))->setRules(array(
     'no_unused_imports' => true,
     'no_whitespace_in_blank_line' => true,
     'ordered_imports' => true,
-    'array_syntax' => array('syntax' => 'long'),
+    'array_syntax' => ['syntax' => 'short'],
     'phpdoc_align' => true,
     'phpdoc_separation' => false,
     'phpdoc_no_package' => false,
     'no_mixed_echo_print' => false,
     'concat_space' => false,
     'simplified_null_return' => false,
-))->setFinder((new PhpCsFixer\Finder())->in(array(__DIR__ . '/src', __DIR__ . '/test')));
+])->setFinder((new PhpCsFixer\Finder())->in([__DIR__ . '/src', __DIR__ . '/test']));
