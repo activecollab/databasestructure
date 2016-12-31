@@ -12,7 +12,7 @@ use ActiveCollab\DatabaseStructure\AssociationInterface;
 
 interface ProgramToInterfaceInterface
 {
-    public function getAccepts(): ? string;
+    public function getAccepts(): ?string;
 
-    public function &accepts(string $interface_name = null) : AssociationInterface;
+    public function &accepts(string $interface_name = null): AssociationInterface;
 }
