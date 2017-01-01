@@ -56,7 +56,10 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
      */
     public function getFields()
     {
-        return [(new ForeignKeyField($this->getFieldName()))->required($this->isRequired())];
+        return [
+            (new ForeignKeyField($this->getFieldName(), 0))
+                ->required($this->isRequired()),
+        ];
     }
 
     /**
