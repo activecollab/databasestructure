@@ -9,6 +9,8 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
+use ActiveCollab\DateValue\DateTimeValue;
+use ActiveCollab\DateValue\DateTimeValueInterface;
 use mysqli;
 use RuntimeException;
 
@@ -26,6 +28,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      * @var MysqliConnection
      */
     protected $connection;
+
+    /**
+     * @var DateTimeValueInterface|null
+     */
+    protected $now;
 
     /**
      * Set up test environment.
@@ -57,6 +64,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $this->connection->dropTable($table_name);
         }
         $this->connection->execute('SET foreign_key_checks = 1;');
+
+        $this->setNow(new DateTimeValue());
     }
 
     /**
@@ -79,6 +88,25 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $this->connection = null;
         $this->link->close();
 
+        $this->setNow(null);
+
         parent::tearDown();
+    }
+
+    /**
+     * @return DateTimeValueInterface
+     */
+    protected function getNow()
+    {
+        return $this->now;
+    }
+
+    /**
+     * @param DateTimeValueInterface|null $now
+     */
+    protected function setNow(DateTimeValueInterface $now = null)
+    {
+        $this->now = $now;
+        DateTimeValue::setTestNow($this->now);
     }
 }
