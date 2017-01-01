@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3a7bfd20c29fd3869c8c37faef632535",
-    "content-hash": "c0ddd820c5b2df89bbc44e56ba89094b",
+    "hash": "71982226f4eea4183d844c44dbb2590d",
+    "content-hash": "4342be4f859f208c633c7983ff5505af",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -107,16 +107,16 @@
         },
         {
             "name": "activecollab/databaseobject",
-            "version": "3.0.2",
+            "version": "v4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "f7020eceefb879eeb8f97400812fd283f2c787ca"
+                "reference": "b453298b7580c2070fb3500c42d87117069d45a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/f7020eceefb879eeb8f97400812fd283f2c787ca",
-                "reference": "f7020eceefb879eeb8f97400812fd283f2c787ca",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/b453298b7580c2070fb3500c42d87117069d45a6",
+                "reference": "b453298b7580c2070fb3500c42d87117069d45a6",
                 "shasum": ""
             },
             "require": {
@@ -124,11 +124,11 @@
                 "activecollab/etag": "^1.0",
                 "activecollab/object": "^1.0",
                 "doctrine/inflector": "^1.0",
-                "php": ">=5.6.0",
+                "php": ">=7.1",
                 "psr/log": "^1.0.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.0",
+                "friendsofphp/php-cs-fixer": "^2.0",
                 "phpunit/phpunit": "~5.0",
                 "pimple/pimple": "~3.0.0"
             },
@@ -156,7 +156,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2016-12-03 17:36:34"
+            "time": "2017-01-01 14:28:59"
         },
         {
             "name": "activecollab/datevalue",
@@ -2561,7 +2561,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "activecollab/databaseobject": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
