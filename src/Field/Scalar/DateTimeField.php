@@ -16,22 +16,17 @@ use ActiveCollab\DateValue\DateTimeValueInterface;
 class DateTimeField extends Field
 {
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return '\\' . DateTimeValueInterface::class;
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getCastingCode($variable_name): string
     {
         return '$this->getDateTimeValueInstanceFrom($' . $variable_name . ')';
     }

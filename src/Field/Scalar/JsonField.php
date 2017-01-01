@@ -22,7 +22,7 @@ class JsonField extends Field implements JsonFieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getDeserializingCode($variable_name)
+    public function getDeserializingCode($variable_name): string
     {
         return 'json_decode($' . $variable_name . ', true)';
     }
@@ -30,7 +30,7 @@ class JsonField extends Field implements JsonFieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getCastingCode($variable_name): string
     {
         return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
     }

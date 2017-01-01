@@ -62,12 +62,9 @@ class DecimalField extends NumberField
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getCastingCode($variable_name): string
     {
         return '(float) $' . $variable_name;
     }

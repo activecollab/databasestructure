@@ -15,7 +15,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -24,7 +23,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-abstract class Field implements FieldInterface, DefaultValueInterface, RequiredInterface, UniqueInterface
+abstract class Field implements ScalarFieldInterface, DefaultValueInterface, RequiredInterface, UniqueInterface
 {
     use ProtectSetterInterfaceImplementation, DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
 
@@ -57,35 +56,25 @@ abstract class Field implements FieldInterface, DefaultValueInterface, RequiredI
     }
 
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return 'mixed';
     }
 
     /**
-     * Return de-serialized value, on get field value.
-     *
-     * This method should be unsed only for fields that store serialized data, like JSON or serialized PHP values.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getDeserializingCode($variable_name)
+    public function getDeserializingCode($variable_name): string
     {
         return '';
     }
 
     /**
-     * Return value casting code, that is called when value is set for a field.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getCastingCode($variable_name): string
     {
         return '(string) $' . $variable_name;
     }
@@ -112,16 +101,16 @@ abstract class Field implements FieldInterface, DefaultValueInterface, RequiredI
      *
      * @return bool
      */
-    public function getShouldBeAddedToModel()
+    public function getShouldBeAddedToModel(): bool
     {
         return $this->should_be_added_to_model;
     }
 
     /**
-     * @param  bool  $value
-     * @return $this
+     * @param  bool                       $value
+     * @return ScalarFieldInterface|$this
      */
-    public function &setShouldBeAddedToModel($value)
+    public function &setShouldBeAddedToModel(bool $value): ScalarFieldInterface
     {
         $this->should_be_added_to_model = (bool) $value;
 

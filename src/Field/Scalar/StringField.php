@@ -39,7 +39,7 @@ class StringField extends Field implements AddIndexInterface, LengthInterface, M
      *
      * @return string
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return 'string';
     }

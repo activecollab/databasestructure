@@ -21,22 +21,17 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
     use RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return 'int';
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getCastingCode($variable_name): string
     {
         return '(int) $' . $variable_name;
     }
