@@ -60,6 +60,12 @@ class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterf
      */
     public function getFields()
     {
-        return [(new IntegerField($this->getName()))->unsigned(true)->size($this->getSize())->required($this->isRequired())];
+        $default_value = $this->isRequired() ? 0 : null;
+
+        return [
+            (new IntegerField($this->getName(), $default_value))
+                ->unsigned(true)->size($this->getSize())
+                ->required($this->isRequired())
+        ];
     }
 }

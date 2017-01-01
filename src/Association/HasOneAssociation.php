@@ -51,7 +51,7 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
     public function getFields()
     {
         return [
-            (new ForeignKeyField($this->getFieldName(), 0))
+            (new ForeignKeyField($this->getFieldName()))
                 ->required($this->isRequired()),
         ];
     }
