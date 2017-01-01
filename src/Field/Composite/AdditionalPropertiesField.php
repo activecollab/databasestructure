@@ -38,9 +38,9 @@ class AdditionalPropertiesField extends Field
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return [
             (new TextField($this->getName(), $this->getDefaultValue()))

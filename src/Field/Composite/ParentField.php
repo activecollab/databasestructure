@@ -85,7 +85,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         $type_field = (new ScalarStringField($this->type_field_name));
         $id_field = (new IntegerField($this->name, 0))->size($this->getSize())->unsigned();
@@ -104,7 +104,7 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
      * @param string $indent
      * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result)
+    public function getBaseClassMethods($indent, array &$result): void
     {
         $type_getter_name = 'get' . Inflector::classify($this->type_field_name);
         $type_setter_name = 'set' . Inflector::classify($this->type_field_name);

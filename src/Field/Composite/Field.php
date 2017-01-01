@@ -17,33 +17,27 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-abstract class Field implements FieldInterface
+abstract class Field implements CompositeFieldInterface
 {
     use ProtectSetterInterfaceImplementation;
 
     /**
-     * Return fields that this field is composed of.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return [];
     }
 
     /**
-     * Return methods that this field needs to inject in base class.
-     *
-     * @param string $indent
-     * @param array  $result
+     * {@inheritdoc}
      */
-    public function getBaseClassMethods($indent, array &$result)
+    public function getBaseClassMethods($indent, array &$result): void
     {
     }
 
     /**
-     * @param       $indent
-     * @param array $result
+     * {@inheritdoc}
      */
     public function getValidatorLines($indent, array &$result)
     {

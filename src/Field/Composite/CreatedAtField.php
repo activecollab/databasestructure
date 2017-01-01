@@ -52,9 +52,9 @@ class CreatedAtField extends Field implements AddIndexInterface
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return [new DateTimeField($this->getName())];
     }

@@ -54,11 +54,9 @@ class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterf
     }
 
     /**
-     * Return fields that this field is composed of.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         $default_value = $this->isRequired() ? 0 : null;
 

@@ -41,7 +41,7 @@ class UpdatedAtField extends Field implements AddIndexInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -49,9 +49,9 @@ class UpdatedAtField extends Field implements AddIndexInterface
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return [new DateTimeField($this->getName())];
     }

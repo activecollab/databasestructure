@@ -137,11 +137,9 @@ class PositionField extends Field implements AddIndexInterface
     }
 
     /**
-     * Return fields that this field is composed of.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return [
             (new IntegerField('position', 0))
@@ -156,7 +154,7 @@ class PositionField extends Field implements AddIndexInterface
      * @param string $indent
      * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result)
+    public function getBaseClassMethods($indent, array &$result): void
     {
         $methods = [];
 

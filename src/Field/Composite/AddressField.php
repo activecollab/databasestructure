@@ -143,9 +143,9 @@ class AddressField extends Field implements RequiredInterface
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         /** @var FieldInterface[]|RequiredInterface[] $fields */
         $fields = [

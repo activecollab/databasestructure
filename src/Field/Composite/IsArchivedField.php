@@ -62,9 +62,9 @@ class IsArchivedField extends Field
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         $result = [new BooleanField('is_archived', $this->getDefaultValue())];
 

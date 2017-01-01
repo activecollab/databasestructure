@@ -76,9 +76,9 @@ abstract class StringField extends Field implements RequiredInterface, UniqueInt
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         $scalar_string_field = (new ScalarStringField($this->getName(), $this->getDefaultValue()))->length($this->getLength());
 

@@ -101,7 +101,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         $id_field = (new IntegerField($this->getName(), 0))
             ->unsigned();
@@ -123,7 +123,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
      * @param string $indent
      * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result)
+    public function getBaseClassMethods($indent, array &$result): void
     {
         $id_getter_name = 'get' . Inflector::classify($this->name);
         $id_setter_name = 'set' . Inflector::classify($this->name);
