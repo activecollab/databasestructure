@@ -92,7 +92,7 @@ class PositionField extends Field implements AddIndexInterface
     /**
      * Set context in which position is calculated and maintained (usually within context of a foreign key).
      *
-     * @param  string $fields
+     * @param  string[] $fields
      * @return $this
      */
     public function &context(...$fields)
@@ -143,7 +143,11 @@ class PositionField extends Field implements AddIndexInterface
      */
     public function getFields()
     {
-        return [(new IntegerField('position', 0))->unsigned(true)];
+        return [
+            (new IntegerField('position', 0))
+                ->unsigned(true)
+                ->required(true)
+        ];
     }
 
     /**

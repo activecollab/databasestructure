@@ -406,6 +406,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $short_getter = null;
 
+        $type_for_executable_code = $this->getTypeForExecutableCode($field->getNativeType(), $field->isRequired());
+        $type_for_doc_block = $this->getTypeForDocBlock($field->getNativeType(), $field->isRequired());
+
         if ($field instanceof BooleanField && $this->useShortGetterName($field->getName())) {
             $short_getter = $this->getShortGetterName($field->getName());
 
@@ -413,9 +416,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $lines[] = '/**';
             $lines[] = ' * Return value of ' . $field->getName() . ' field.';
             $lines[] = ' *';
-            $lines[] = ' * @return ' . $field->getNativeType();
+            $lines[] = ' * @return ' . $type_for_doc_block;
             $lines[] = ' */';
-            $lines[] = 'public function ' . $short_getter . '()';
+            $lines[] = 'public function ' . $short_getter . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
             $lines[] = '{';
             $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
             $lines[] = '}';
@@ -425,14 +428,14 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '/**';
         $lines[] = ' * Return value of ' . $field->getName() . ' field.';
         $lines[] = ' *';
-        $lines[] = ' * @return ' . $field->getNativeType();
+        $lines[] = ' * @return ' . $type_for_doc_block;
 
         if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
             $lines[] = " * @deprecated use $short_getter()";
         }
 
         $lines[] = ' */';
-        $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()';
+        $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
         $lines[] = '{';
         $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
         $lines[] = '}';
@@ -440,10 +443,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '/**';
         $lines[] = ' * Set value of ' . $field->getName() . ' field.';
         $lines[] = ' *';
-        $lines[] = ' * @param  ' . str_pad($field->getNativeType(), 5, ' ', STR_PAD_RIGHT) . ' $value';
+        $lines[] = ' * @param  ' . str_pad($type_for_doc_block, 5, ' ', STR_PAD_RIGHT) . ' $value';
         $lines[] = ' * @return $this';
         $lines[] = ' */';
-        $lines[] = $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '($value)';
+        $lines[] = $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '(' . $type_for_executable_code . ($type_for_executable_code ? ' ' : '') . '$value)';
         $lines[] = '{';
         $lines[] = '    $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
         $lines[] = '';
@@ -453,6 +456,26 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         foreach ($lines as $line) {
             $result[] = $line ? $indent . $line : '';
         }
+    }
+
+    private function getTypeForExecutableCode(string $native_type, bool $field_is_required): string
+    {
+        $result = '';
+
+        if ($native_type != 'mixed') {
+            $result = ($field_is_required ? '' : '?') . $native_type;
+        }
+
+        return $result;
+    }
+
+    private function getTypeForDocBlock(string $native_type, bool $field_is_required): string
+    {
+        if ($native_type === 'mixed') {
+            return $native_type;
+        }
+
+        return $native_type . ($field_is_required ?  '' : '|null');
     }
 
     /**

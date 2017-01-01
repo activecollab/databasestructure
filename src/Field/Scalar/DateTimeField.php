@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DateValue\DateTimeValueInterface;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
@@ -20,7 +22,7 @@ class DateTimeField extends Field
      */
     public function getNativeType()
     {
-        return '\\ActiveCollab\\DateValue\\DateTimeValueInterface' . ($this->getDefaultValue() === null ? '|null' : '');
+        return '\\' . DateTimeValueInterface::class;
     }
 
     /**
