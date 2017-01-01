@@ -103,7 +103,8 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
      */
     public function getFields()
     {
-        $id_field = (new IntegerField($this->getName(), 0))->unsigned();
+        $id_field = (new IntegerField($this->getName(), 0))
+            ->unsigned();
 
         if ($this->isRequired()) {
             $id_field->required();

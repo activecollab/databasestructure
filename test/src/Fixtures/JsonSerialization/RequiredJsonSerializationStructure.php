@@ -24,7 +24,7 @@ class RequiredJsonSerializationStructure extends Structure
     {
         $this->addType('required_key_values')->addFields([
             (new NameField())->unique(),
-            (new JsonField('value'))->required(),
+            (new JsonField('value', '{}'))->required(),
         ]);
     }
 }

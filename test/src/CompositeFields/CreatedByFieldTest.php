@@ -32,7 +32,8 @@ class CreatedByFieldTest extends TestCase
      */
     public function testRequiredAddsRequiedInterface()
     {
-        $type = (new Type('chapters'))->addField((new CreatedByField('User'))->required());
+        $type = (new Type('chapters'))->addField((new CreatedByField('User'))
+            ->required());
 
         $this->assertArrayHasKey(CreatedByRequiredInterface::class, $type->getTraits());
         $this->assertArrayNotHasKey(CreatedByOptionalInterface::class, $type->getTraits());

@@ -140,7 +140,9 @@ class CountryCodeFieldTest extends TestCase
      */
     public function testCountryCodeProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {
-        $country_code_field = (new CountryCodeField('country_code'))->required()->unique('context_filed_1');
+        $country_code_field = (new CountryCodeField('country_code', ''))
+            ->required()
+            ->unique('context_filed_1');
 
         /** @var StringField $string_field */
         $string_field = $country_code_field->getFields()[0];

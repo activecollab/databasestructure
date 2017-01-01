@@ -30,4 +30,9 @@ class FieldDefinitionTest extends TestCase
     {
         $this->assertFalse((new StringField('is_important'))->setShouldBeAddedToModel(false)->getShouldBeAddedToModel());
     }
+
+    public function testDefaultValueCantBeNullForRequiredFields()
+    {
+        (new StringField('should_not_be_null', null))->required();
+    }
 }

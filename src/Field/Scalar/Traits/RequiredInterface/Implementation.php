@@ -8,6 +8,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
+use LogicException;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
  */
@@ -36,6 +39,10 @@ trait Implementation
      */
     public function &required($value = true)
     {
+        if ($this instanceof DefaultValueInterface && $this->getDefaultValue() === null) {
+            throw new LogicException("Default value can't NULL empty for required fields.");
+        }
+
         $this->is_required = (bool) $value;
 
         return $this;

@@ -262,10 +262,13 @@ class CodeBuilderTest extends TestCase
     {
         $default_field_values = $this->base_writer_reflection->getDefaultProperties()['default_field_values'];
 
-        $this->assertCount(2, $default_field_values);
+        $this->assertCount(3, $default_field_values);
 
         $this->assertArrayHasKey('name', $default_field_values);
         $this->assertSame('', $default_field_values['name']);
+
+        $this->assertArrayHasKey('birthday', $default_field_values);
+        $this->assertSame('0000-00-00', $default_field_values['birthday']);
 
         $this->assertArrayHasKey('is_awesome', $default_field_values);
         $this->assertSame(true, $default_field_values['is_awesome']);

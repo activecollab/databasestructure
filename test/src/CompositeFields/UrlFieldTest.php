@@ -124,7 +124,9 @@ class UrlFieldTest extends TestCase
      */
     public function testUrlProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {
-        $url_field = (new UrlField('homepage_url'))->required()->unique('context_filed_1');
+        $url_field = (new UrlField('homepage_url', ''))
+            ->required()
+            ->unique('context_filed_1');
 
         /** @var StringField $string_field */
         $string_field = $url_field->getFields()[0];

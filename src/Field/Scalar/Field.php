@@ -9,6 +9,8 @@
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface\Implementation as DefaultValueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
@@ -22,19 +24,14 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-abstract class Field implements FieldInterface, RequiredInterface, UniqueInterface
+abstract class Field implements FieldInterface, DefaultValueInterface, RequiredInterface, UniqueInterface
 {
-    use ProtectSetterInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
+    use ProtectSetterInterfaceImplementation, DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
 
     /**
      * @var string
      */
     private $name;
-
-    /**
-     * @var mixed
-     */
-    private $default_value;
 
     /**
      * @param  string                   $name
@@ -48,7 +45,7 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
         }
 
         $this->name = $name;
-        $this->default_value = $default_value;
+        $this->defaultValue($default_value);
     }
 
     /**
@@ -57,27 +54,6 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Return default field value.
-     *
-     * @return mixed
-     */
-    public function getDefaultValue()
-    {
-        return $this->default_value;
-    }
-
-    /**
-     * @param  mixed $value
-     * @return $this
-     */
-    public function &defaultValue($value)
-    {
-        $this->default_value = $value;
-
-        return $this;
     }
 
     /**

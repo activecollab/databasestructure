@@ -42,7 +42,10 @@ class AdditionalPropertiesField extends Field
      */
     public function getFields()
     {
-        return [(new TextField($this->getName(), $this->getDefaultValue()))->size(FieldInterface::SIZE_BIG)->protectSetter()];
+        return [
+            (new TextField($this->getName(), $this->getDefaultValue()))
+                ->size(FieldInterface::SIZE_BIG)->protectSetter(),
+        ];
     }
 
     /**
@@ -54,6 +57,8 @@ class AdditionalPropertiesField extends Field
     {
         parent::onAddedToType($type);
 
-        $type->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class)->protectFields($this->getName());
+        $type
+            ->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class)
+            ->protectFields($this->getName());
     }
 }
