@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "71982226f4eea4183d844c44dbb2590d",
-    "content-hash": "4342be4f859f208c633c7983ff5505af",
+    "hash": "f7e20d4d537f5b53cc576aa515b592ef",
+    "content-hash": "7502a226da7ef4a8ba80b721f40b70f7",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -111,12 +111,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "b453298b7580c2070fb3500c42d87117069d45a6"
+                "reference": "4db925451a6ad173c1e2288a3b55383f02f2c0fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/b453298b7580c2070fb3500c42d87117069d45a6",
-                "reference": "b453298b7580c2070fb3500c42d87117069d45a6",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/4db925451a6ad173c1e2288a3b55383f02f2c0fd",
+                "reference": "4db925451a6ad173c1e2288a3b55383f02f2c0fd",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2017-01-01 14:28:59"
+            "time": "2017-01-01 14:32:05"
         },
         {
             "name": "activecollab/datevalue",
@@ -394,24 +394,25 @@
         },
         {
             "name": "activecollab/user",
-            "version": "3.0.0",
+            "version": "v4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/user.git",
-                "reference": "9e2cd4e18b39a6ea319a3996e7c5a46d8f3ff24b"
+                "reference": "34fb8e28ffaab2698b21088be5fc36449f7a1c60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/user/zipball/9e2cd4e18b39a6ea319a3996e7c5a46d8f3ff24b",
-                "reference": "9e2cd4e18b39a6ea319a3996e7c5a46d8f3ff24b",
+                "url": "https://api.github.com/repos/activecollab/user/zipball/34fb8e28ffaab2698b21088be5fc36449f7a1c60",
+                "reference": "34fb8e28ffaab2698b21088be5fc36449f7a1c60",
                 "shasum": ""
             },
             "require": {
                 "activecollab/humannameparser": "^1.0",
                 "activecollab/object": "^1.0",
-                "php": ">=5.6.0"
+                "php": ">=7.1"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.0",
                 "phpunit/phpunit": "^5.0"
             },
             "type": "library",
@@ -436,7 +437,7 @@
             "keywords": [
                 "activecollab"
             ],
-            "time": "2016-07-14 20:42:29"
+            "time": "2017-01-01 16:57:30"
         },
         {
             "name": "container-interop/container-interop",
@@ -2562,7 +2563,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "activecollab/databaseobject": 20
+        "activecollab/databaseobject": 20,
+        "activecollab/user": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
