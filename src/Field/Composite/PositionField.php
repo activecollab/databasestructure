@@ -146,7 +146,7 @@ class PositionField extends Field implements AddIndexInterface
         return [
             (new IntegerField('position', 0))
                 ->unsigned(true)
-                ->required(true)
+                ->required(true),
         ];
     }
 

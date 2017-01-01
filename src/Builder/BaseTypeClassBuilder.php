@@ -475,7 +475,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             return $native_type;
         }
 
-        return $native_type . ($field_is_required ?  '' : '|null');
+        return $native_type . ($field_is_required ? '' : '|null');
     }
 
     /**
