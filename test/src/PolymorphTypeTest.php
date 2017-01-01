@@ -44,17 +44,20 @@ class PolymorphTypeTest extends TestCase
         $this->assertInternalType('array', $fields);
 
         $type_field_found = false;
+        $type_field_is_required = false;
         $type_field_default_value = null;
 
         /** @var ScalarField $field */
         foreach ($fields as $field) {
             if ($field->getName() == 'type') {
                 $type_field_found = true;
+                $type_field_is_required = $field->isRequired();
                 $type_field_default_value = $field->getDefaultValue();
             }
         }
 
         $this->assertTrue($type_field_found);
+        $this->assertTrue($type_field_is_required);
         $this->assertSame('', $type_field_default_value);
     }
 

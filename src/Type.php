@@ -332,7 +332,7 @@ class Type implements TypeInterface
     {
         if ($this->getPolymorph()) {
             if (empty($this->type_field)) {
-                $this->type_field = new StringField('type', '');
+                $this->type_field = (new StringField('type', ''))->required();
             }
 
             return $this->type_field;
