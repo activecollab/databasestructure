@@ -9,16 +9,10 @@
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 use ActiveCollab\DateValue\DateTimeValueInterface;
+use ActiveCollab\Object\ObjectInterface;
 
-interface CreatedAtInterface
+interface CreatedAtInterface extends ObjectInterface
 {
-    /**
-     * Return object ID.
-     *
-     * @return int
-     */
-    public function getId();
-
     /**
      * Return value of created_at field.
      *
