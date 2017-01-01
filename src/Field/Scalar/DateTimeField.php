@@ -10,10 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DateValue\DateTimeValueInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-class DateTimeField extends ScalarFieldWithDefaultValue
+class DateTimeField extends ScalarField
 {
     /**
      * {@inheritdoc}

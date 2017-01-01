@@ -29,7 +29,7 @@ class WritersStructure extends Structure
     {
         $this->addType('writers')->addFields([
             new NameField('name', ''),
-            (new DateField('birthday', '0000-00-00'))->required(),
+            (new DateField('birthday'))->required(),
             new BooleanField('is_awesome', true),
         ])->addIndexes([
             new Index('birthday'),
