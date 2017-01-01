@@ -426,7 +426,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $lines[] = '    $field_value = $this->getFieldValue(' . var_export($field->getName(), true) . ');';
                 $lines[] = '';
                 $lines[] = '    if ($field_value === null) {';
-                $lines[] = "        throw new \\LogicException('Value of '{$field->getName()}' should not be accessed prior to being set.');";
+                $lines[] = "        throw new \\LogicException(\"Value of '{$field->getName()}' should not be accessed prior to being set.\");";
                 $lines[] = '    }';
                 $lines[] = '';
                 $lines[] = '    return $field_value;';
@@ -450,7 +450,19 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = ' */';
         $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
         $lines[] = '{';
-        $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+
+        if ($field->isRequired()) {
+            $lines[] = '    $field_value = $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+            $lines[] = '';
+            $lines[] = '    if ($field_value === null) {';
+            $lines[] = "        throw new \\LogicException(\"Value of '{$field->getName()}' should not be accessed prior to being set.\");";
+            $lines[] = '    }';
+            $lines[] = '';
+            $lines[] = '    return $field_value;';
+        } else {
+            $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+        }
+
         $lines[] = '}';
         $lines[] = '';
         $lines[] = '/**';
