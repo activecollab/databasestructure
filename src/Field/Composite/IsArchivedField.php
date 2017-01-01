@@ -11,13 +11,12 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface\Implementation as IsArchivedInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class IsArchivedField extends Field
+class IsArchivedField extends CompositeField
 {
     /**
      * @return string

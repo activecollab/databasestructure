@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -19,7 +20,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class AddressField extends Field implements RequiredInterface
+class AddressField extends CompositeField implements RequiredInterface
 {
     use RequiredInterfaceImplementation;
 
@@ -147,7 +148,7 @@ class AddressField extends Field implements RequiredInterface
      */
     public function getFields(): array
     {
-        /** @var FieldInterface[]|RequiredInterface[] $fields */
+        /** @var FieldInterface[]|DefaultValueInterface[]|RequiredInterface[] $fields */
         $fields = [
             new ScalarStringField($this->getName()),
             new ScalarStringField($this->getPrefixedFieldName('address_extended')),
@@ -158,10 +159,10 @@ class AddressField extends Field implements RequiredInterface
         ];
 
         if ($this->isRequired()) {
-            $fields[0]->required(); // address
-            $fields[2]->required(); // city
-            $fields[3]->required(); // zip code
-            $fields[5]->required(); // country code
+            $fields[0]->defaultValue('')->required(); // address
+            $fields[2]->defaultValue('')->required(); // city
+            $fields[3]->defaultValue('')->required(); // zip code
+            $fields[5]->defaultValue('')->required(); // country code
         }
 
         return $fields;

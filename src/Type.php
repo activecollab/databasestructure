@@ -18,7 +18,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation as PolymorphInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;

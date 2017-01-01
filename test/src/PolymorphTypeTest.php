@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Type;
 
 /**

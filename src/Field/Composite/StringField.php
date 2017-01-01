@@ -11,6 +11,8 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface\Implementation as DefaultValueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface\Implementation as LengthInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
@@ -19,7 +21,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -27,19 +28,14 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-abstract class StringField extends Field implements RequiredInterface, UniqueInterface, LengthInterface, ModifierInterface, AddIndexInterface
+abstract class StringField extends CompositeField implements DefaultValueInterface, RequiredInterface, UniqueInterface, LengthInterface, ModifierInterface, AddIndexInterface
 {
-    use RequiredInterfaceImplementation, UniqueInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
+    use DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
 
     /**
      * @var string
      */
     private $name;
-
-    /**
-     * @var string|null
-     */
-    private $default_value;
 
     /**
      * @param string      $name
@@ -53,7 +49,7 @@ abstract class StringField extends Field implements RequiredInterface, UniqueInt
         }
 
         $this->name = $name;
-        $this->default_value = $default_value;
+        $this->defaultValue($default_value);
         $this->addIndex($add_index);
     }
 
@@ -63,16 +59,6 @@ abstract class StringField extends Field implements RequiredInterface, UniqueInt
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Return default field value.
-     *
-     * @return string|null
-     */
-    public function getDefaultValue()
-    {
-        return $this->default_value;
     }
 
     /**

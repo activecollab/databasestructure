@@ -113,7 +113,9 @@ class AddressFieldTest extends TestCase
         $not_required = (new AddressField('billing_address'))->getFields();
 
         /** @var RequiredInterface[] $required */
-        $required = (new AddressField('billing_address'))->required()->getFields();
+        $required = (new AddressField('billing_address'))
+            ->required()
+            ->getFields();
 
         $this->assertFalse($not_required[0]->isRequired()); // address
         $this->assertFalse($not_required[1]->isRequired()); // address extended

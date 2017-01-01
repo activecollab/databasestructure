@@ -23,7 +23,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ActionByField extends Field implements AddIndexInterface, RequiredInterface
+class ActionByField extends CompositeField implements AddIndexInterface, RequiredInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation;
 

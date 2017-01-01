@@ -15,15 +15,17 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
@@ -173,15 +175,28 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     {
         $result = $this->getConnection()->escapeFieldName($field->getName()) . ' ' . $this->prepareTypeDefinition($field);
 
-        if ($field->getDefaultValue() !== null) {
+        if ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null) {
             $result .= ' NOT NULL';
         }
 
-        if (!($field instanceof IntegerField && $field->getName() == 'id')) {
+        if ($this->hasDefaultValue($field)) {
             $result .= ' DEFAULT ' . $this->prepareDefaultValue($field);
         }
 
         return $result;
+    }
+
+    private function hasDefaultValue(FieldInterface $field)
+    {
+        if ($field instanceof IntegerField && $field->getName() == 'id') {
+            return false;
+        }
+
+        if (!$field instanceof DefaultValueInterface) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -270,10 +285,10 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     /**
      * Prepare default value.
      *
-     * @param  ScalarField $field
+     * @param  ScalarFieldWithDefaultValue $field
      * @return string
      */
-    public function prepareDefaultValue(ScalarField $field)
+    public function prepareDefaultValue(ScalarFieldWithDefaultValue $field)
     {
         $default_value = $field->getDefaultValue();
 

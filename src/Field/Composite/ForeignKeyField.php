@@ -15,13 +15,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterface, SizeInterface
+class ForeignKeyField extends CompositeField implements AddIndexInterface, RequiredInterface, SizeInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
@@ -58,12 +57,14 @@ class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterf
      */
     public function getFields(): array
     {
-        $default_value = $this->isRequired() ? 0 : null;
+        $fk_field = (new IntegerField($this->getName()))
+            ->unsigned(true)
+            ->size($this->getSize());
 
-        return [
-            (new IntegerField($this->getName(), $default_value))
-                ->unsigned(true)->size($this->getSize())
-                ->required($this->isRequired())
-        ];
+        if ($this->isRequired()) {
+            $fk_field->defaultValue(0)->required(true);
+        }
+
+        return [$fk_field];
     }
 }

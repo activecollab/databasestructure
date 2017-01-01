@@ -9,7 +9,6 @@
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -17,7 +16,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-abstract class Field implements CompositeFieldInterface
+abstract class CompositeField implements CompositeFieldInterface
 {
     use ProtectSetterInterfaceImplementation;
 

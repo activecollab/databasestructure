@@ -17,7 +17,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class AdditionalPropertiesField extends Field
+class AdditionalPropertiesField extends CompositeField
 {
     /**
      * @return string

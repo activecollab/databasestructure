@@ -13,14 +13,13 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class PositionField extends Field implements AddIndexInterface
+class PositionField extends CompositeField implements AddIndexInterface
 {
     use AddIndexInterfaceImplementation;
 

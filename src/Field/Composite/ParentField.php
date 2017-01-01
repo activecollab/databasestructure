@@ -25,7 +25,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ParentField extends Field implements AddIndexInterface, RequiredInterface, SizeInterface
+class ParentField extends CompositeField implements AddIndexInterface, RequiredInterface, SizeInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
@@ -91,8 +91,8 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
         $id_field = (new IntegerField($this->name, 0))->size($this->getSize())->unsigned();
 
         if ($this->isRequired()) {
-            $type_field->required();
-            $id_field->required();
+            $type_field->defaultValue('')->required();
+            $id_field->defaultValue(0)->required();
         }
 
         return [$type_field, $id_field];

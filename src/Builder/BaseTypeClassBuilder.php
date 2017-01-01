@@ -12,9 +12,10 @@ use ActiveCollab\DatabaseConnection\Record\ValueCaster;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -279,7 +280,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
 
-                if ($field->getName() != 'id' && $field->getDefaultValue() !== null) {
+                if ($field->getName() != 'id' && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
                     $fields_with_default_value[$field->getName()] = $field->getDefaultValue();
                 }
             }

@@ -13,11 +13,10 @@ use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface\Implementation a
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-class UpdatedAtField extends Field implements AddIndexInterface
+class UpdatedAtField extends CompositeField implements AddIndexInterface
 {
     use AddIndexInterfaceImplementation;
 
