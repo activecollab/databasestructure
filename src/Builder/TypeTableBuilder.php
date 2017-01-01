@@ -15,7 +15,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;

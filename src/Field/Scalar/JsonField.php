@@ -14,10 +14,7 @@ use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-class JsonField extends Field implements JsonFieldInterface
+class JsonField extends ScalarField implements JsonFieldInterface
 {
     /**
      * {@inheritdoc}

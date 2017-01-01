@@ -14,7 +14,7 @@ use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;

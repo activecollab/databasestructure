@@ -13,7 +13,7 @@ use LogicException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class BooleanField extends Field
+class BooleanField extends ScalarFieldWithDefaultValue
 {
     /**
      * @param string $name

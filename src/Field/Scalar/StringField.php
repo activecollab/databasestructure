@@ -18,7 +18,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Impleme
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class StringField extends Field implements AddIndexInterface, LengthInterface, ModifierInterface
+class StringField extends ScalarFieldWithDefaultValue implements AddIndexInterface, LengthInterface, ModifierInterface
 {
     use AddIndexInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation;
 

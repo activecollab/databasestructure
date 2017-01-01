@@ -8,9 +8,11 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
-interface ScalarFieldInterface extends FieldInterface
+interface ScalarFieldInterface extends FieldInterface, RequiredInterface, UniqueInterface
 {
     /**
      * Return PHP native type.

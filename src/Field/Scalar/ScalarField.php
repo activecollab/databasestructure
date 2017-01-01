@@ -9,23 +9,16 @@
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface\Implementation as DefaultValueInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-abstract class Field implements ScalarFieldInterface, DefaultValueInterface, RequiredInterface, UniqueInterface
+abstract class ScalarField implements ScalarFieldInterface
 {
-    use ProtectSetterInterfaceImplementation, DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
+    use ProtectSetterInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
 
     /**
      * @var string
@@ -34,17 +27,15 @@ abstract class Field implements ScalarFieldInterface, DefaultValueInterface, Req
 
     /**
      * @param  string                   $name
-     * @param  mixed                    $default_value
      * @throws InvalidArgumentException
      */
-    public function __construct($name, $default_value = null)
+    public function __construct($name)
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid field name");
         }
 
         $this->name = $name;
-        $this->defaultValue($default_value);
     }
 
     /**

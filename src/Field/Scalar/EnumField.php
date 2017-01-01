@@ -13,7 +13,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class EnumField extends Field
+class EnumField extends ScalarFieldWithDefaultValue
 {
     /**
      * @var string[]

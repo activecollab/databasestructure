@@ -13,7 +13,7 @@ use ActiveCollab\DateValue\DateValueInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class DateField extends Field
+class DateField extends ScalarFieldWithDefaultValue
 {
     /**
      * {@inheritdoc}

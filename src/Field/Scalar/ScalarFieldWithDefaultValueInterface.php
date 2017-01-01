@@ -8,9 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-class TimeField extends ScalarFieldWithDefaultValue
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
+
+interface ScalarFieldWithDefaultValueInterface extends ScalarFieldInterface, DefaultValueInterface
 {
 }
