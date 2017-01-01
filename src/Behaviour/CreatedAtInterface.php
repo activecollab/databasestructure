@@ -8,9 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour
- */
+use ActiveCollab\DateValue\DateTimeValueInterface;
+
 interface CreatedAtInterface
 {
     /**
@@ -23,13 +22,13 @@ interface CreatedAtInterface
     /**
      * Return value of created_at field.
      *
-     * @return \ActiveCollab\DateValue\DateTimeValueInterface|null
+     * @return DateTimeValueInterface|null
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): ?DateTimeValueInterface;
 
     /**
-     * @param  \ActiveCollab\DateValue\DateTimeValueInterface|null $value
+     * @param  DateTimeValueInterface|null $value
      * @return $this
      */
-    public function &setCreatedAt($value);
+    public function &setCreatedAt(?DateTimeValueInterface $value);
 }

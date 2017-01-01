@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
+use ActiveCollab\DateValue\DateTimeValueInterface;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour
  */
@@ -16,13 +18,13 @@ interface UpdatedAtInterface
     /**
      * Return value of updated_at field.
      *
-     * @return \ActiveCollab\DateValue\DateTimeValueInterface|null
+     * @return DateTimeValueInterface|null
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): ?DateTimeValueInterface;
 
     /**
-     * @param  \ActiveCollab\DateValue\DateTimeValueInterface|null $value
+     * @param  DateTimeValueInterface|null $value
      * @return $this
      */
-    public function &setUpdatedAt($value);
+    public function &setUpdatedAt(?DateTimeValueInterface $value);
 }

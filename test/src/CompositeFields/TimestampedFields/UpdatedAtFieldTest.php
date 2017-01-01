@@ -6,7 +6,7 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
+namespace ActiveCollab\DatabaseStructure\Test\CompositeFields\TimestampedFields;
 
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface\Implementation as UpdatedAtInterfaceImplementation;
