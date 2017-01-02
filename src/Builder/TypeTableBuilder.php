@@ -20,6 +20,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
@@ -264,6 +265,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             return 'JSON';
         } elseif ($field instanceof StringField) {
             return 'VARCHAR(' . $field->getLength() . ')';
+        } elseif ($field instanceof PasswordField) {
+            return 'VARCHAR(191)';
         } elseif ($field instanceof TextField) {
             switch ($field->getSize()) {
                 case FieldInterface::SIZE_TINY:

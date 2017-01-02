@@ -15,9 +15,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface\Implement
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 class StringField extends ScalarFieldWithDefaultValue implements AddIndexInterface, LengthInterface, ModifierInterface
 {
     use AddIndexInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation;
@@ -35,9 +32,7 @@ class StringField extends ScalarFieldWithDefaultValue implements AddIndexInterfa
     }
 
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getNativeType(): string
     {
