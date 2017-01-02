@@ -8,6 +8,21 @@
 
 Boolean fields with names that start with `is_`, `has_`, `had_`, `was_`, `were_` and `have_` also get a short getter. For example, if field name is `is_awesome`, builder will product two getters: `getIsAwesome()` and `isAwesome()`.
 
+### Password Field
+
+Password field is field meant for storing password hashes. By default, it sets `password` as field name. It is similar to `StringField` (uses `VARCHAR` columns), but it can't have default value (doh!), and it does not have methods for easy indexing (you can still add an index by yourself, if you wish).
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
+
+new PasswordField(); // Use default name (password).
+new PasswordField('psswd_hash'); // Specify field name. 
+```
+
 ### JSON Field
 
 JSON field add a JSON field to the type. It will be automatically serialized and deserialized on reads and writes:
