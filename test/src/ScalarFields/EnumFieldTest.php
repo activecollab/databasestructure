@@ -47,4 +47,9 @@ class EnumFieldTest extends TestCase
         $one_of_many = new EnumField('one_of_many', 'default_one');
         $one_of_many->possibilities('one', 'two', 'three');
     }
+
+    public function testNativeType()
+    {
+        $this->assertSame('string', (new EnumField('one_of_many'))->possibilities('one', 'two', 'three')->getNativeType());
+    }
 }

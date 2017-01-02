@@ -64,6 +64,14 @@ class FloatField extends NumberField
     /**
      * {@inheritdoc}
      */
+    public function getNativeType(): string
+    {
+        return 'float';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCastingCode($variable_name): string
     {
         return '(float) $' . $variable_name;

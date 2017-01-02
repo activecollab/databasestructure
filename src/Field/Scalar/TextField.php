@@ -17,4 +17,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementat
 class TextField extends ScalarField implements SizeInterface
 {
     use SizeInterfaceImplementation;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNativeType(): string
+    {
+        return 'string';
+    }
 }

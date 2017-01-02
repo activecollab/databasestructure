@@ -44,4 +44,12 @@ class EnumField extends ScalarFieldWithDefaultValue
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNativeType(): string
+    {
+        return 'string';
+    }
 }
