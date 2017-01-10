@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseObject\FinderInterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -87,9 +88,9 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return ' . $this->getInstanceClassFrom($namespace, $target_type) . '[]';
+        $result[] = '     * @return iterable|null|' . $this->getInstanceClassFrom($namespace, $target_type) . '[]';
         $result[] = '     */';
-        $result[] = "    public function get{$this->getClassifiedAssociationName()}()";
+        $result[] = "    public function get{$this->getClassifiedAssociationName()}(): ?iterable";
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->all();';
         $result[] = '    }';
@@ -98,9 +99,9 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s.';
         $result[] = '     *';
-        $result[] = '     * @return int[]';
+        $result[] = '     * @return iterable|null|int[]';
         $result[] = '     */';
-        $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids()';
+        $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids(): ?iterable';
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->ids();';
         $result[] = '    }';
@@ -111,7 +112,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     *';
         $result[] = '     * @return int';
         $result[] = '     */';
-        $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
+        $result[] = "    public function count{$this->getClassifiedAssociationName()}(): int";
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->count();';
         $result[] = '    }';
@@ -134,16 +135,16 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     * @var \\' . FinderInterface::class;
         $result[] = '     */';
         $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
-        $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     * @return \\' . FinderInterface::class;
         $result[] = '     */';
-        $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
+        $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
         $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
         $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';

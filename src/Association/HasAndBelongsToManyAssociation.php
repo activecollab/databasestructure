@@ -10,6 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseConnection\BatchInsert\BatchInsert;
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
+use ActiveCollab\DatabaseObject\FinderInterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -82,16 +83,16 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     * @var \\' . FinderInterface::class;
         $result[] = '     */';
         $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
-        $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     * @return \\' . FinderInterface::class;
         $result[] = '     */';
-        $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
+        $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
         $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
         $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->joinTable(' . var_export($this->getConnectionTableName(), true) . ')->where(\'`' . $this->getConnectionTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
