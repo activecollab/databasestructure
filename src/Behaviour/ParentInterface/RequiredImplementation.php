@@ -29,7 +29,7 @@ trait RequiredImplementation
     }
 
     /**
-     * @param  EntityInterface      $value
+     * @param  EntityInterface       $value
      * @return ParentInterface|$this
      */
     public function &setParent(EntityInterface $value): ParentInterface
