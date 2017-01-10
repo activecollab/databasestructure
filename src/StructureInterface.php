@@ -21,17 +21,24 @@ interface StructureInterface
     /**
      * Get all structure type.
      *
-     * @return Type[]
+     * @return iterable|TypeInterface[]
      */
-    public function getTypes();
+    public function getTypes(): iterable;
 
     /**
      * Return type by type name.
      *
-     * @param  string $type_name
-     * @return Type
+     * @param  string        $type_name
+     * @return TypeInterface
      */
-    public function getType($type_name);
+    public function getType($type_name): TypeInterface;
+
+    /**
+     * Return a list of initial records, indexed by the table name.
+     *
+     * @return RecordInterface|array
+     */
+    public function getRecords(): array;
 
     /**
      * @return string
@@ -51,16 +58,16 @@ interface StructureInterface
      * @param  mixed  $default
      * @return mixed
      */
-    public function getConfig($name, $default = null);
+    public function getConfig(string $name, $default = null);
 
     /**
      * Set a config option option value.
      *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return $this
+     * @param  string                   $name
+     * @param  mixed                    $value
+     * @return $this|StructureInterface
      */
-    public function &setConfig($name, $value);
+    public function &setConfig($name, $value): StructureInterface;
 
     /**
      * Build model at the given path.

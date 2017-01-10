@@ -20,6 +20,7 @@ use ActiveCollab\DatabaseStructure\Builder\CollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\ManagerDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\RecordsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeCollectionBuilder;
@@ -47,27 +48,22 @@ abstract class Structure implements StructureInterface
     abstract protected function configure();
 
     /**
-     * @var Type[]
+     * @var iterable|TypeInterface[]
      */
     private $types = [];
 
     /**
-     * Get all structure type.
-     *
-     * @return Type[]
+     * {@inheritdoc}
      */
-    public function getTypes()
+    public function getTypes(): iterable
     {
         return $this->types;
     }
 
     /**
-     * Return type by type name.
-     *
-     * @param  string $type_name
-     * @return Type
+     * {@internal }.
      */
-    public function getType($type_name)
+    public function getType($type_name): TypeInterface
     {
         if (isset($this->types[$type_name])) {
             return $this->types[$type_name];
@@ -77,10 +73,10 @@ abstract class Structure implements StructureInterface
     }
 
     /**
-     * @param  string $type_name
-     * @return Type
+     * @param  string        $type_name
+     * @return TypeInterface
      */
-    protected function &addType($type_name)
+    protected function &addType(string $type_name): TypeInterface
     {
         if (empty($this->types[$type_name])) {
             $this->types[$type_name] = new Type($type_name);
@@ -105,30 +101,93 @@ abstract class Structure implements StructureInterface
     }
 
     /**
+     * @var RecordInterface|array
+     */
+    private $records = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRecords(): array
+    {
+        return $this->records;
+    }
+
+    /**
+     * Add a record to the initial data set.
+     *
+     * @param  string             $type_name
+     * @param  array              $record
+     * @param  string             $comment
+     * @return StructureInterface
+     */
+    protected function &addRecord(string $type_name, array $record, string $comment = ''): StructureInterface
+    {
+        return $this->addTableRecord($this->getType($type_name)->getTableName(), $record, $comment);
+    }
+
+    /**
+     * Add multiple records to the initial data set.
+     *
+     * @param  string             $type_name
+     * @param  array              $field_names
+     * @param  array              $records_to_add
+     * @param  string             $comment
+     * @return StructureInterface
+     */
+    protected function &addRecords(string $type_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
+    {
+        return $this->addTableRecords($this->getType($type_name)->getTableName(), $field_names, $records_to_add, $comment);
+    }
+
+    /**
+     * Add a record to the initial data set.
+     *
+     * @param  string             $table_name
+     * @param  array              $record
+     * @param  string             $comment
+     * @return StructureInterface
+     */
+    protected function &addTableRecord(string $table_name, array $record, string $comment = ''): StructureInterface
+    {
+        $this->records[] = new SingleRecord($table_name, $record, $comment);
+
+        return $this;
+    }
+
+    /**
+     * Add multiple records to the initial data set.
+     *
+     * @param  string             $table_name
+     * @param  array              $field_names
+     * @param  array              $records_to_add
+     * @param  string             $comment
+     * @return StructureInterface
+     */
+    protected function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
+    {
+        $this->records[] = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
+
+        return $this;
+    }
+
+    /**
      * @var array
      */
     private $config = [];
 
     /**
-     * Return a config option value.
-     *
-     * @param  string $name
-     * @param  mixed  $default
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getConfig($name, $default = null)
+    public function getConfig(string $name, $default = null)
     {
         return array_key_exists($name, $this->config) ? $this->config[$name] : $default;
     }
 
     /**
-     * Set a config option option value.
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return $this
+     * {@inheritdoc}
      */
-    public function &setConfig($name, $value)
+    public function &setConfig($name, $value): StructureInterface
     {
         $this->config[$name] = $value;
 
@@ -228,6 +287,7 @@ abstract class Structure implements StructureInterface
 
             $this->builders[] = new AssociationsBuilder($this);
             $this->builders[] = new TriggersBuilder($this);
+            $this->builders[] = new RecordsBuilder($this);
 
             $this->builders[] = new ManagerDirBuilder($this);
             $this->builders[] = new BaseManagerDirBuilder($this);
