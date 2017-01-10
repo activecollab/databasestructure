@@ -8,11 +8,10 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseObject\ObjectInterface;
-use ActiveCollab\DatabaseStructure\Behaviour\ParentOptionalInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ParentInterface\OptionalImplementation as ParentOptionalInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Behaviour\ParentRequiredInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ParentInterface\RequiredImplementation as ParentRequiredInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\ParentOptionalInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\ParentRequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -23,7 +22,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
 /**
