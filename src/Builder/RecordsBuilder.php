@@ -76,11 +76,7 @@ class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterfa
             $statement .= "    ({$this->prepareValues($record->getValues())}),\n";
         }
 
-        $statement = rtrim(rtrim($statement, "\n"), ',') . ";\n";
-
-        print "\n$statement";
-
-        return $statement;
+        return rtrim(rtrim($statement, "\n"), ',') . ";\n";
     }
 
     /**
