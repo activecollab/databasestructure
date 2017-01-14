@@ -18,15 +18,15 @@ interface AdditionalPropertiesInterface
      *
      * @return array
      */
-    public function getAdditionalProperties();
+    public function getAdditionalProperties(): array;
 
     /**
      * Set attributes value.
      *
-     * @param  array|null $value
-     * @return $this
+     * @param  array|null                          $value
+     * @return $this|AdditionalPropertiesInterface
      */
-    public function &setAdditionalProperties(array $value = null);
+    public function &setAdditionalProperties(array $value = null): AdditionalPropertiesInterface;
 
     /**
      * Returna attribute value.
@@ -35,14 +35,14 @@ interface AdditionalPropertiesInterface
      * @param  mixed  $default
      * @return mixed
      */
-    public function getAdditionalProperty($name, $default = null);
+    public function getAdditionalProperty(string $name, $default = null);
 
     /**
      * Set attribute value.
      *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return $this
+     * @param  string                              $name
+     * @param  mixed                               $value
+     * @return $this|AdditionalPropertiesInterface
      */
-    public function &setAdditionalProperty($name, $value);
+    public function &setAdditionalProperty(string $name, $value): AdditionalPropertiesInterface;
 }

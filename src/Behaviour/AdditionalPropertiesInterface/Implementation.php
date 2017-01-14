@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface;
 
+use ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface
  */
@@ -18,16 +20,16 @@ trait Implementation
      *
      * @var array
      */
-    private $decoded_additional_properties = false;
+    private $decoded_additional_properties;
 
     /**
      * Return additional log properties as array.
      *
      * @return array
      */
-    public function getAdditionalProperties()
+    public function getAdditionalProperties(): array
     {
-        if ($this->decoded_additional_properties === false) {
+        if ($this->decoded_additional_properties === null) {
             $raw = trim($this->getRawAdditionalProperties());
             $this->decoded_additional_properties = empty($raw) ? [] : json_decode($raw, true);
 
@@ -40,12 +42,10 @@ trait Implementation
     }
 
     /**
-     * Set attributes value.
-     *
-     * @param  array|null $value
-     * @return $this
+     * @param  array|null                          $value
+     * @return AdditionalPropertiesInterface|$this
      */
-    public function &setAdditionalProperties(array $value = null)
+    public function &setAdditionalProperties(array $value = null): AdditionalPropertiesInterface
     {
         $this->decoded_additional_properties = false; // Reset...
 
@@ -61,7 +61,7 @@ trait Implementation
      * @param  mixed  $default
      * @return mixed
      */
-    public function getAdditionalProperty($name, $default = null)
+    public function getAdditionalProperty(string $name, $default = null)
     {
         $additional_properties = $this->getAdditionalProperties();
 
@@ -71,11 +71,11 @@ trait Implementation
     /**
      * Set attribute value.
      *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return $this
+     * @param  string                              $name
+     * @param  mixed                               $value
+     * @return $this|AdditionalPropertiesInterface
      */
-    public function &setAdditionalProperty($name, $value)
+    public function &setAdditionalProperty(string $name, $value): AdditionalPropertiesInterface
     {
         $additional_properties = $this->getAdditionalProperties();
 
