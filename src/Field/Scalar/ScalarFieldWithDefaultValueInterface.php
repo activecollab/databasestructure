@@ -10,6 +10,8 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 
-interface ScalarFieldWithDefaultValueInterface extends ScalarFieldInterface, DefaultValueInterface
+interface ScalarFieldWithDefaultValueInterface extends
+    ScalarFieldInterface,
+    DefaultValueInterface
 {
 }

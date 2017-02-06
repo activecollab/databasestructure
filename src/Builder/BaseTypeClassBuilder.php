@@ -15,6 +15,7 @@ use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
@@ -407,8 +408,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $short_getter = null;
 
-        $type_for_executable_code = $this->getTypeForExecutableCode($field->getNativeType(), $field->isRequired());
-        $type_for_doc_block = $this->getTypeForDocBlock($field->getNativeType(), $field->isRequired());
+        $default_value = $field instanceof ScalarFieldWithDefaultValueInterface ? $field->getDefaultValue() : null;
+
+        $type_for_executable_code = $this->getTypeForExecutableCode($field->getNativeType(), $default_value, $field->isRequired());
+        $type_for_doc_block = $this->getTypeForDocBlock($field->getNativeType(), $default_value, $field->isRequired());
 
         if ($field instanceof BooleanField && $this->useShortGetterName($field->getName())) {
             $short_getter = $this->getShortGetterName($field->getName());
@@ -483,24 +486,24 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
     }
 
-    private function getTypeForExecutableCode(string $native_type, bool $field_is_required): string
+    private function getTypeForExecutableCode(string $native_type, $default_value, bool $field_is_required): string
     {
         $result = '';
 
         if ($native_type != 'mixed') {
-            $result = ($field_is_required ? '' : '?') . $native_type;
+            $result = ($default_value !== null || $field_is_required ? '' : '?') . $native_type;
         }
 
         return $result;
     }
 
-    private function getTypeForDocBlock(string $native_type, bool $field_is_required): string
+    private function getTypeForDocBlock(string $native_type, $default_value, bool $field_is_required): string
     {
         if ($native_type === 'mixed') {
             return $native_type;
         }
 
-        return $native_type . ($field_is_required ? '' : '|null');
+        return $native_type . ($default_value !== null || $field_is_required ? '' : '|null');
     }
 
     /**
