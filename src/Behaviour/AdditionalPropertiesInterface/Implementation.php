@@ -47,7 +47,7 @@ trait Implementation
      */
     public function &setAdditionalProperties(array $value = null): AdditionalPropertiesInterface
     {
-        $this->decoded_additional_properties = false; // Reset...
+        $this->decoded_additional_properties = null; // Reset...
 
         $this->setRawAdditionalProperties(json_encode($value));
 
