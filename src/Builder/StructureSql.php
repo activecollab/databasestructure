@@ -20,7 +20,7 @@ trait StructureSql
      */
     public function getStructureSqlPath()
     {
-        return $this->getBuildPath() ? "{$this->getBuildPath()}/sql/structure.sql" : null;
+        return $this->getBuildPath() ? "{$this->getBuildPath()}/SQL/structure.sql" : null;
     }
 
     /**
@@ -30,7 +30,7 @@ trait StructureSql
      */
     public function getInitialDataSqlPath()
     {
-        return $this->getBuildPath() ? "{$this->getBuildPath()}/sql/initial_data.sql" : null;
+        return $this->getBuildPath() ? "{$this->getBuildPath()}/SQL/initial_data.sql" : null;
     }
 
     /**
