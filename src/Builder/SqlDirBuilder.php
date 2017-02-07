@@ -11,13 +11,13 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class BaseManagerDirBuilder extends DirBuilder
+class SqlDirBuilder extends DirBuilder
 {
     /**
      * {@inheritdoc}
      */
     protected function getDirToBuildPath($build_path)
     {
-        return "$build_path/Manager/Base";
+        return "$build_path/SQL";
     }
 }

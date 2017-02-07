@@ -8,39 +8,16 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use InvalidArgumentException;
-use RuntimeException;
-
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class BaseDirBuilder extends FileSystemBuilder
+class BaseDirBuilder extends DirBuilder
 {
     /**
-     * Execute prior to type build.
+     * {@inheritdoc}
      */
-    public function preBuild()
+    protected function getDirToBuildPath($build_path)
     {
-        $build_path = $this->getBuildPath();
-
-        if ($build_path) {
-            if (is_dir($build_path)) {
-                $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
-
-                if (!is_dir("$build_path/Base")) {
-                    $old_umask = umask(0);
-                    $dir_created = mkdir("$build_path/Base");
-                    umask($old_umask);
-
-                    if ($dir_created) {
-                        $this->triggerEvent('on_dir_created', ["$build_path/Base"]);
-                    } else {
-                        throw new RuntimeException("Failed to create '$build_path/Base' directory");
-                    }
-                }
-            } else {
-                throw new InvalidArgumentException("Directory '$build_path' not found");
-            }
-        }
+        return "$build_path/Base";
     }
 }

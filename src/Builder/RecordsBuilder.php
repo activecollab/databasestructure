@@ -57,7 +57,7 @@ class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterfa
         foreach ($this->getStructure()->getRecords() as $record) {
             $insert_statement = $this->prepareInsertStatement($record);
 
-            $this->appendToStructureSql($insert_statement, $record->getComment());
+            $this->appendToInitialDataSql($insert_statement, $record->getComment());
 
             $this->getConnection()->execute($insert_statement);
             $this->triggerEvent('on_record_inserted', [$this->getInsertMessage($record)]);

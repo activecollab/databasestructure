@@ -75,9 +75,22 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
      */
     public function preBuild()
     {
-        if ($structure_sql_path = $this->getStructureSqlPath()) {
+        $structure_sql_path = $this->getStructureSqlPath();
+        $initial_data_sql_path = $this->getInitialDataSqlPath();
+
+        if ($structure_sql_path && $initial_data_sql_path) {
+            $sql_dir = dirname($structure_sql_path);
+
+            if (!is_dir($sql_dir)) {
+                $old_mask = umask();
+                mkdir($sql_dir);
+            }
+
             file_put_contents($structure_sql_path, '');
             $this->triggerEvent('on_structure_sql_built', [$structure_sql_path]);
+
+            file_put_contents($initial_data_sql_path, '');
+            $this->triggerEvent('on_initial_data_sql_built', [$initial_data_sql_path]);
         }
     }
 

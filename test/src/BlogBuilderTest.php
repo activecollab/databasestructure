@@ -134,11 +134,12 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if structure.sql is properly generated.
+     * Test if structure.sql and initial_data.sql files are properly generated.
      */
-    public function testBuildStructureSql()
+    public function testBuildSqlFiles()
     {
-        $this->assertFileExists("$this->build_path/structure.sql");
+        $this->assertFileExists("$this->build_path/SQL/structure.sql");
+        $this->assertFileExists("$this->build_path/SQL/initial_data.sql");
     }
 
     /**
