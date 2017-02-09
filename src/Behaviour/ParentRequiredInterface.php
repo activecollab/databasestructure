@@ -12,11 +12,11 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 use ActiveCollab\DatabaseObject\Entity\EntityInterface;
 
-interface ParentRequiredInterface
+interface ParentRequiredInterface extends ChildInterface
 {
     public function getParent(bool $use_cache = true): EntityInterface;
 
-    public function &setParent(EntityInterface $value): ParentInterface;
+    public function &setParent(EntityInterface $value): ChildInterface;
 
     public function getParentType(): string;
 

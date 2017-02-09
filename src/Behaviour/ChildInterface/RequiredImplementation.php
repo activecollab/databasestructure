@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Behaviour\ParentInterface;
+namespace ActiveCollab\DatabaseStructure\Behaviour\ChildInterface;
 
 use ActiveCollab\DatabaseObject\Entity\EntityInterface;
-use ActiveCollab\DatabaseStructure\Behaviour\ParentInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface;
 use LogicException;
 
 /**
@@ -29,10 +29,10 @@ trait RequiredImplementation
     }
 
     /**
-     * @param  EntityInterface       $value
-     * @return ParentInterface|$this
+     * @param  EntityInterface      $value
+     * @return ChildInterface|$this
      */
-    public function &setParent(EntityInterface $value): ParentInterface
+    public function &setParent(EntityInterface $value): ChildInterface
     {
         if (!$value->isLoaded()) {
             throw new LogicException('Parent needs to be saved to the database.');

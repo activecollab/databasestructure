@@ -8,8 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseStructure\Behaviour\ParentInterface\OptionalImplementation as ParentOptionalInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Behaviour\ParentInterface\RequiredImplementation as ParentRequiredInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface\OptionalImplementation as ParentOptionalInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface\RequiredImplementation as ParentRequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\ParentOptionalInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ParentRequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
