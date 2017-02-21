@@ -128,7 +128,15 @@ class BelongsToAssociation extends Association implements AssociationInterface, 
         $result[] = '     */';
         $result[] = '    public function ' . $getter_name . '(): ' . ($this->isRequired() ? '' : '?') . $returns_and_accepts;
         $result[] = '    {';
-        $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+
+        if ($this->isRequired()) {
+            $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+        } else {
+            $result[] = '        return $this->' . $fk_getter_name . '() ?';
+            $result[] = '            $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '()) :';
+            $result[] = '            null;';
+        }
+
         $result[] = '    }';
 
         $setter_access_level = $this->getProtectSetter() ? 'protected' : 'public';
