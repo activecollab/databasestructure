@@ -55,7 +55,9 @@ class CreatedAtField extends CompositeField implements AddIndexInterface
      */
     public function getFields(): array
     {
-        return [new DateTimeField($this->getName())];
+        return [
+            (new DateTimeField($this->getName()))->required(),
+        ];
     }
 
     /**

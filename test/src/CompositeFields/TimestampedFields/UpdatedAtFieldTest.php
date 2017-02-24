@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Test\CompositeFields\TimestampedFields;
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface\Implementation as UpdatedAtInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
@@ -69,6 +70,20 @@ class UpdatedAtFieldTest extends TestCase
 
         $this->assertArrayHasKey(UpdatedAtInterface::class, $type->getTraits());
         $this->assertContains(UpdatedAtInterfaceImplementation::class, $type->getTraits()[UpdatedAtInterface::class]);
+    }
+
+    public function testFieldProperties()
+    {
+        $fields = (new UpdatedAtField())->getFields();
+
+        $this->assertCount(1, $fields);
+
+        /** @var DateTimeField $field */
+        $field = $fields[0];
+        $this->assertInstanceOf(DateTimeField::class, $field);
+
+        $this->assertSame('updated_at', $field->getName());
+        $this->assertTrue($field->isRequired());
     }
 
     /**

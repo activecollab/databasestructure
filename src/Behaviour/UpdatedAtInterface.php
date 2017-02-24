@@ -18,13 +18,13 @@ interface UpdatedAtInterface
     /**
      * Return value of updated_at field.
      *
-     * @return DateTimeValueInterface|null
+     * @return DateTimeValueInterface
      */
-    public function getUpdatedAt(): ?DateTimeValueInterface;
+    public function getUpdatedAt(): DateTimeValueInterface;
 
     /**
-     * @param  DateTimeValueInterface|null $value
+     * @param  DateTimeValueInterface $value
      * @return $this
      */
-    public function &setUpdatedAt(?DateTimeValueInterface $value);
+    public function &setUpdatedAt(DateTimeValueInterface $value);
 }

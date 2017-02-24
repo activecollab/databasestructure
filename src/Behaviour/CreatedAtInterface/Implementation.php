@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Behaviour\CreatedAtInterface;
 
 use ActiveCollab\DateValue\DateTimeValue;
+use ActiveCollab\DateValue\DateTimeValueInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\CreatedAtInterface
@@ -21,7 +22,7 @@ trait Implementation
     public function ActiveCollabDatabaseStructureBehaviourCreatedAtInterfaceImplementation()
     {
         $this->registerEventHandler('on_before_save', function () {
-            if (empty($this->getCreatedAt())) {
+            if (empty($this->getFieldValue('created_at'))) {
                 $this->setCreatedAt(new DateTimeValue());
             }
         });
@@ -39,16 +40,9 @@ trait Implementation
      */
     abstract protected function registerEventHandler($event, callable $handler);
 
-    /**
-     * Return value of created_at field.
-     *
-     * @return \ActiveCollab\DateValue\DateTimeValueInterface|null
-     */
-    abstract public function getCreatedAt();
+    abstract public function getFieldValue($field, $default = null);
 
-    /**
-     * @param  \ActiveCollab\DateValue\DateTimeValueInterface|null $value
-     * @return $this
-     */
-    abstract public function &setCreatedAt($value);
+    abstract public function getCreatedAt(): DateTimeValueInterface;
+
+    abstract public function &setCreatedAt(DateTimeValueInterface $value);
 }

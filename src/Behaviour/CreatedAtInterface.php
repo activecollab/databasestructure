@@ -16,13 +16,13 @@ interface CreatedAtInterface extends ObjectInterface
     /**
      * Return value of created_at field.
      *
-     * @return DateTimeValueInterface|null
+     * @return DateTimeValueInterface
      */
-    public function getCreatedAt(): ?DateTimeValueInterface;
+    public function getCreatedAt(): DateTimeValueInterface;
 
     /**
-     * @param  DateTimeValueInterface|null $value
+     * @param  DateTimeValueInterface $value
      * @return $this
      */
-    public function &setCreatedAt(?DateTimeValueInterface $value);
+    public function &setCreatedAt(DateTimeValueInterface $value);
 }
