@@ -82,11 +82,11 @@ class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterfa
             foreach ($record->getValues() as $v) {
                 $prepared_values = $this->prepareValues($v);
 
-                if ($record->autoSetCreatedAt()) {
+                if ($record->getAutoSetCreatedAt()) {
                     $prepared_values .= ',UTC_TIMESTAMP()';
                 }
 
-                if ($record->autoSetUpdatedAt()) {
+                if ($record->getAutoSetUpdatedAt()) {
                     $prepared_values .= ',UTC_TIMESTAMP()';
                 }
 
@@ -95,11 +95,11 @@ class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterfa
         } else {
             $prepared_values = $this->prepareValues($record->getValues());
 
-            if ($record->autoSetCreatedAt()) {
+            if ($record->getAutoSetCreatedAt()) {
                 $prepared_values .= ',UTC_TIMESTAMP()';
             }
 
-            if ($record->autoSetUpdatedAt()) {
+            if ($record->getAutoSetUpdatedAt()) {
                 $prepared_values .= ',UTC_TIMESTAMP()';
             }
 

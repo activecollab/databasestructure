@@ -47,15 +47,21 @@ class RecordsTest extends TestCase
             $this->records_structure->build(null, $this->connection);
         }
 
-        if ($this->connection->tableExists('records')) {
-            $this->connection->dropTable('records');
+        foreach (['records', 'only_created_at_records', 'only_updated_at_records'] as $table_name) {
+            if ($this->connection->tableExists($table_name)) {
+                $this->connection->dropTable($table_name);
+            }
         }
 
         $type_table_builder = new TypeTableBuilder($this->records_structure);
         $type_table_builder->setConnection($this->connection);
         $type_table_builder->buildType($this->records_structure->getType('records'));
+        $type_table_builder->buildType($this->records_structure->getType('only_created_at_records'));
+        $type_table_builder->buildType($this->records_structure->getType('only_updated_at_records'));
 
         $this->assertTrue($this->connection->tableExists('records'));
+        $this->assertTrue($this->connection->tableExists('only_created_at_records'));
+        $this->assertTrue($this->connection->tableExists('only_updated_at_records'));
 
         $type_triggers_builder = new RecordsBuilder($this->records_structure);
         $type_triggers_builder->setConnection($this->connection);
