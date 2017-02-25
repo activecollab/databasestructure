@@ -28,6 +28,9 @@ use ActiveCollab\DatabaseStructure\Builder\TypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
+use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
+use ActiveCollab\DateValue\DateTimeValue;
 use InvalidArgumentException;
 
 /**
@@ -124,7 +127,17 @@ abstract class Structure implements StructureInterface
      */
     protected function &addRecord(string $type_name, array $record, string $comment = ''): StructureInterface
     {
-        return $this->addTableRecord($this->getType($type_name)->getTableName(), $record, $comment);
+        $type = $this->getType($type_name);
+
+        foreach ($type->getFields() as $field) {
+            if ($field instanceof CreatedAtField && !array_key_exists('created_at', $record)) {
+                $record['created_at'] = new DateTimeValue();
+            } elseif ($field instanceof UpdatedAtField && !array_key_exists('updated_at', $record)) {
+                $record['updated_at'] = new DateTimeValue();
+            }
+        }
+
+        return $this->addTableRecord($type->getTableName(), $record, $comment);
     }
 
     /**
@@ -138,7 +151,33 @@ abstract class Structure implements StructureInterface
      */
     protected function &addRecords(string $type_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
     {
-        return $this->addTableRecords($this->getType($type_name)->getTableName(), $field_names, $records_to_add, $comment);
+        $type = $this->getType($type_name);
+
+        foreach ($type->getFields() as $field) {
+            if ($field instanceof CreatedAtField) {
+                if (!in_array('created_at', $field_names)) {
+                    $field_names[] = 'created_at';
+                }
+
+                foreach ($records_to_add as $k => $v) {
+                    if (!array_key_exists('created_at', $v)) {
+                        $records_to_add[$k]['created_at'] = new DateTimeValue();
+                    }
+                }
+            } elseif ($field instanceof UpdatedAtField) {
+                if (!in_array('updated_at', $field_names)) {
+                    $field_names[] = 'updated_at';
+                }
+
+                foreach ($records_to_add as $k => $v) {
+                    if (!array_key_exists('updated_at', $v)) {
+                        $records_to_add[$k]['updated_at'] = new DateTimeValue();
+                    }
+                }
+            }
+        }
+
+        return $this->addTableRecords($type->getTableName(), $field_names, $records_to_add, $comment);
     }
 
     /**
@@ -149,7 +188,7 @@ abstract class Structure implements StructureInterface
      * @param  string             $comment
      * @return StructureInterface
      */
-    protected function &addTableRecord(string $table_name, array $record, string $comment = ''): StructureInterface
+    private function &addTableRecord(string $table_name, array $record, string $comment = ''): StructureInterface
     {
         $this->records[] = new SingleRecord($table_name, $record, $comment);
 
@@ -165,7 +204,7 @@ abstract class Structure implements StructureInterface
      * @param  string             $comment
      * @return StructureInterface
      */
-    protected function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
+    private function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
     {
         $this->records[] = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
 

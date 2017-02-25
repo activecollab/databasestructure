@@ -53,7 +53,7 @@ class UpdatedAtField extends CompositeField implements AddIndexInterface
     public function getFields(): array
     {
         return [
-            (new DateTimeField($this->getName()))->required()
+            (new DateTimeField($this->getName()))->required(),
         ];
     }
 

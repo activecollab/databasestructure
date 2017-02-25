@@ -75,4 +75,10 @@ class RecordsTest extends TestCase
         $this->assertContains('Alexander Pushkin', $names);
         $this->assertContains('Fyodor Dostoyevsky', $names);
     }
+
+    public function testTimestampsAreSet()
+    {
+        $this->assertSame(3, $this->connection->count('records', '`created_at` IS NOT NULL'));
+        $this->assertSame(3, $this->connection->count('records', '`updated_at` IS NOT NULL'));
+    }
 }

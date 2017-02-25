@@ -8,7 +8,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Records;
 
+use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
+use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Structure;
@@ -28,6 +30,8 @@ class RecordsStructure extends Structure
             new NameField('name'),
             new DateField('birthday'),
             new BooleanField('was_awesome'),
+            new CreatedAtField(),
+            new UpdatedAtField(),
         ]);
 
         $this->addRecord('records', [
