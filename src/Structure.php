@@ -129,15 +129,18 @@ abstract class Structure implements StructureInterface
     {
         $type = $this->getType($type_name);
 
+        $has_created_at = false;
+        $has_updated_at = false;
+
         foreach ($type->getFields() as $field) {
             if ($field instanceof CreatedAtField && !array_key_exists('created_at', $record)) {
-                $record['created_at'] = new DateTimeValue();
+                $has_created_at = true;
             } elseif ($field instanceof UpdatedAtField && !array_key_exists('updated_at', $record)) {
-                $record['updated_at'] = new DateTimeValue();
+                $has_updated_at = true;
             }
         }
 
-        return $this->addTableRecord($type->getTableName(), $record, $comment);
+        return $this->addTableRecord($type->getTableName(), $record, $comment, $has_created_at, $has_updated_at);
     }
 
     /**
@@ -153,31 +156,18 @@ abstract class Structure implements StructureInterface
     {
         $type = $this->getType($type_name);
 
+        $has_created_at = false;
+        $has_updated_at = false;
+
         foreach ($type->getFields() as $field) {
             if ($field instanceof CreatedAtField) {
-                if (!in_array('created_at', $field_names)) {
-                    $field_names[] = 'created_at';
-                }
-
-                foreach ($records_to_add as $k => $v) {
-                    if (!array_key_exists('created_at', $v)) {
-                        $records_to_add[$k]['created_at'] = new DateTimeValue();
-                    }
-                }
+                $has_created_at = true;
             } elseif ($field instanceof UpdatedAtField) {
-                if (!in_array('updated_at', $field_names)) {
-                    $field_names[] = 'updated_at';
-                }
-
-                foreach ($records_to_add as $k => $v) {
-                    if (!array_key_exists('updated_at', $v)) {
-                        $records_to_add[$k]['updated_at'] = new DateTimeValue();
-                    }
-                }
+                $has_updated_at = true;
             }
         }
 
-        return $this->addTableRecords($type->getTableName(), $field_names, $records_to_add, $comment);
+        return $this->addTableRecords($type->getTableName(), $field_names, $records_to_add, $comment, $has_created_at, $has_updated_at);
     }
 
     /**
@@ -186,11 +176,23 @@ abstract class Structure implements StructureInterface
      * @param  string             $table_name
      * @param  array              $record
      * @param  string             $comment
+     * @param  bool               $auto_set_created_at
+     * @param  bool               $auto_set_updated_at
      * @return StructureInterface
      */
-    private function &addTableRecord(string $table_name, array $record, string $comment = ''): StructureInterface
+    private function &addTableRecord(string $table_name, array $record, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
     {
-        $this->records[] = new SingleRecord($table_name, $record, $comment);
+        $single_record = new SingleRecord($table_name, $record, $comment);;
+
+        if ($auto_set_created_at && !array_key_exists('created_at', $record)) {
+            $single_record->autoSetCreatedAt();
+        }
+
+        if ($auto_set_updated_at && !array_key_exists('updated_at', $record)) {
+            $single_record->autoSetUpdatedAt();
+        }
+
+        $this->records[] = $single_record;
 
         return $this;
     }
@@ -202,11 +204,23 @@ abstract class Structure implements StructureInterface
      * @param  array              $field_names
      * @param  array              $records_to_add
      * @param  string             $comment
+     * @param  bool               $auto_set_created_at
+     * @param  bool               $auto_set_updated_at
      * @return StructureInterface
      */
-    private function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
+    private function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
     {
-        $this->records[] = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
+        $multi_record = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
+
+        if ($auto_set_created_at && !in_array('created_at', $field_names)) {
+            $multi_record->autoSetCreatedAt();
+        }
+
+        if ($auto_set_updated_at && !in_array('updated_at', $field_names)) {
+            $multi_record->autoSetUpdatedAt();
+        }
+
+        $this->records[] = $multi_record;
 
         return $this;
     }

@@ -66,14 +66,44 @@ class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterfa
 
     private function prepareInsertStatement(RecordInterface $record)
     {
-        $statement = "INSERT INTO {$this->getConnection()->escapeTableName($record->getTableName())} ({$this->prepareFieldNames($record->getFields())}) VALUES\n";
+        $prepared_fields = $this->prepareFieldNames($record->getFields());
+
+        if ($record->getAutoSetCreatedAt()) {
+            $prepared_fields .= ',' . $this->getConnection()->escapeFieldName('created_at');
+        }
+
+        if ($record->getAutoSetUpdatedAt()) {
+            $prepared_fields .= ',' . $this->getConnection()->escapeFieldName('updated_at');
+        }
+
+        $statement = "INSERT INTO {$this->getConnection()->escapeTableName($record->getTableName())} ({$prepared_fields}) VALUES\n";
 
         if ($record instanceof MultiRecordInterface) {
             foreach ($record->getValues() as $v) {
-                $statement .= "    ({$this->prepareValues($v)}),\n";
+                $prepared_values = $this->prepareValues($v);
+
+                if ($record->autoSetCreatedAt()) {
+                    $prepared_values .= ',UTC_TIMESTAMP()';
+                }
+
+                if ($record->autoSetUpdatedAt()) {
+                    $prepared_values .= ',UTC_TIMESTAMP()';
+                }
+
+                $statement .= "    ({$prepared_values}),\n";
             }
         } else {
-            $statement .= "    ({$this->prepareValues($record->getValues())}),\n";
+            $prepared_values = $this->prepareValues($record->getValues());
+
+            if ($record->autoSetCreatedAt()) {
+                $prepared_values .= ',UTC_TIMESTAMP()';
+            }
+
+            if ($record->autoSetUpdatedAt()) {
+                $prepared_values .= ',UTC_TIMESTAMP()';
+            }
+
+            $statement .= "    ({$prepared_values}),\n";
         }
 
         return rtrim(rtrim($statement, "\n"), ',') . ";\n";

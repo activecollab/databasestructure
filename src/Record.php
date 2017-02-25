@@ -20,6 +20,10 @@ abstract class Record implements RecordInterface
 
     private $comment;
 
+    private $auto_set_created_at = false;
+
+    private $auto_set_updated_at = false;
+
     public function __construct(string $table_name, array $field_names, string $comment)
     {
         if (empty($table_name)) {
@@ -48,5 +52,29 @@ abstract class Record implements RecordInterface
     public function getComment(): string
     {
         return $this->comment;
+    }
+
+    public function getAutoSetCreatedAt(): bool
+    {
+        return $this->auto_set_created_at;
+    }
+
+    public function &autoSetCreatedAt(bool $value = true): RecordInterface
+    {
+        $this->auto_set_created_at = $value;
+
+        return $this;
+    }
+
+    public function getAutoSetUpdatedAt(): bool
+    {
+        return $this->auto_set_updated_at;
+    }
+
+    public function &autoSetUpdatedAt(bool $value = true): RecordInterface
+    {
+        $this->auto_set_updated_at = $value;
+
+        return $this;
     }
 }

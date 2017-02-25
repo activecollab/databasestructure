@@ -19,4 +19,12 @@ interface RecordInterface
     public function getValues(): array;
 
     public function getComment(): string;
+
+    public function getAutoSetCreatedAt(): bool;
+
+    public function &autoSetCreatedAt(bool $value = true): RecordInterface;
+
+    public function getAutoSetUpdatedAt(): bool;
+
+    public function &autoSetUpdatedAt(bool $value = true): RecordInterface;
 }
