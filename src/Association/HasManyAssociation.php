@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
 use ActiveCollab\DatabaseObject\FinderInterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
@@ -18,9 +19,11 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class HasManyAssociation extends Association implements AssociationInterface
+class HasManyAssociation extends Association implements
+    AssociationInterface,
+    ProgramToInterfaceInterface
 {
-    use AssociationInterface\Implementation;
+    use AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation;
 
     /**
      * Order releated records by.
@@ -84,11 +87,16 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $this->buildGetFinderMethod($structure, $source_type, $target_type, $namespace, $result);
 
+        $returns_and_accepts = $this->getInstanceClassFrom($namespace, $target_type);
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return iterable|null|' . $this->getInstanceClassFrom($namespace, $target_type) . '[]';
+        $result[] = '     * @return iterable|null|' . $returns_and_accepts . '[]';
         $result[] = '     */';
         $result[] = "    public function get{$this->getClassifiedAssociationName()}(): ?iterable";
         $result[] = '    {';

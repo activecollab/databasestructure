@@ -23,7 +23,13 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Association
  */
-class BelongsToAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProgramToInterfaceInterface, ProtectSetterInterface, RequiredInterface
+class BelongsToAssociation extends Association implements
+    AssociationInterface,
+    InjectFieldsInsterface,
+    InjectIndexesInsterface,
+    ProgramToInterfaceInterface,
+    ProtectSetterInterface,
+    RequiredInterface
 {
     use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, RequiredInterfaceImplementation;
 
