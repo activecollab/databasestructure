@@ -109,16 +109,26 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
     {
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
 
-        $longest_docs_param_type_name = max(strlen($target_instance_class), '$this');
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
+        $objects_to_add_param_doscs = $returns_and_accepts . '[]';
+        if ($returns_and_accepts != $target_instance_class) {
+            $objects_to_add_param_doscs .= '|' . $target_instance_class . '[]';
+        }
+
+        $longest_docs_param_type_name = max(strlen($objects_to_add_param_doscs), '$this');
 
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and one or more $objects_to_add.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $objects_to_add';
+        $result[] = '     * @param  ' . str_pad($objects_to_add_param_doscs, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $objects_to_add';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &add' . $this->getClassifiedAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_add)';
+        $result[] = '    public function &add' . $this->getClassifiedAssociationName() . '(' . $returns_and_accepts . ' ...$objects_to_add)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
@@ -147,16 +157,26 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
     {
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
 
-        $longest_docs_param_type_name = max(strlen($target_instance_class), '$this');
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
+        $objects_to_remove_param_doscs = $returns_and_accepts . '[]';
+        if ($returns_and_accepts != $target_instance_class) {
+            $objects_to_remove_param_doscs .= '|' . $target_instance_class . '[]';
+        }
+
+        $longest_docs_param_type_name = max(strlen($objects_to_remove_param_doscs), '$this');
 
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . '[] $objects_to_remove';
+        $result[] = '     * @param  ' . str_pad($objects_to_remove_param_doscs, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $objects_to_remove';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &remove' . $this->getClassifiedAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' ...$objects_to_remove)';
+        $result[] = '    public function &remove' . $this->getClassifiedAssociationName() . '(' . $returns_and_accepts . ' ...$objects_to_remove)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';

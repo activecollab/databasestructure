@@ -87,16 +87,24 @@ class HasManyAssociation extends Association implements
 
         $this->buildGetFinderMethod($structure, $source_type, $target_type, $namespace, $result);
 
-        $returns_and_accepts = $this->getInstanceClassFrom($namespace, $target_type);
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
+
+        $returns_and_accepts = $target_instance_class;
         if ($this->getAccepts()) {
             $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
+        $getter_returns = 'iterable|null|' . $returns_and_accepts . '[]';
+
+        if ($returns_and_accepts != $target_instance_class) {
+            $getter_returns .= '|' . $target_instance_class . '[]';
         }
 
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return iterable|null|' . $returns_and_accepts . '[]';
+        $result[] = '     * @return ' . $getter_returns;
         $result[] = '     */';
         $result[] = "    public function get{$this->getClassifiedAssociationName()}(): ?iterable";
         $result[] = '    {';
