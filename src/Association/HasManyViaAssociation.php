@@ -100,7 +100,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '     * @param  ' . str_pad('array|null', $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $attributes';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $target_instance_class . ' $object_to_add, array $attributes = null)';
+        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $returns_and_accepts . ' $object_to_add, array $attributes = null)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
@@ -152,7 +152,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '     * @param  ' . $objects_to_remove_param_doscs . ' $object_to_remove';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $target_instance_class . ' $object_to_remove)';
+        $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $returns_and_accepts . ' $object_to_remove)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
