@@ -24,7 +24,8 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     {
         $writers = new Type('writers');
         $books = new Type('books');
-        $book_writers = new HasAndBelongsToManyAssociation('writers');
+
+        $book_writers = new HasAndBelongsToManyAssociation($writers->getName());
         $books->addAssociation($book_writers);
 
         $this->assertEquals('book_id', $book_writers->getLeftFieldName());
@@ -38,11 +39,12 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     {
         $writers = new Type('writers');
         $books = new Type('books');
-        $book_writers = new HasAndBelongsToManyAssociation('writers');
+
+        $book_writers = new HasAndBelongsToManyAssociation($writers->getName());
         $books->addAssociation($book_writers);
 
-        $this->assertEquals('book_id_for_writers_constraint', $book_writers->getLeftConstraintName());
-        $this->assertEquals('writer_id_for_writers_constraint', $book_writers->getRightConstraintName());
+        $this->assertEquals('book_id_for_books_writers_constraint', $book_writers->getLeftConstraintName());
+        $this->assertEquals('writer_id_for_books_writers_constraint', $book_writers->getRightConstraintName());
     }
 
     /**

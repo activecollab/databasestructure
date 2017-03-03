@@ -223,9 +223,9 @@ class BlogBuilderTest extends TestCase
         $this->assertInternalType('array', $categories_constraints);
         $this->assertCount(1, $categories_constraints);
 
-        $this->assertArrayHasKey('category_id_for_posts_constraint', $categories_constraints);
+        $this->assertArrayHasKey('category_id_for_categories_posts_constraint', $categories_constraints);
 
-        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints['category_id_for_posts_constraint'];
+        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints['category_id_for_categories_posts_constraint'];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('category_id', $from_field);
@@ -254,9 +254,9 @@ class BlogBuilderTest extends TestCase
         $this->assertInternalType('array', $posts_constraints);
         $this->assertCount(2, $posts_constraints);
 
-        $this->assertArrayHasKey('post_id_for_posts_constraint', $posts_constraints);
+        $this->assertArrayHasKey('post_id_for_categories_posts_constraint', $posts_constraints);
 
-        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_id_for_posts_constraint'];
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_id_for_categories_posts_constraint'];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('post_id', $from_field);

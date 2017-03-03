@@ -48,7 +48,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      */
     public function getLeftConstraintName()
     {
-        return $this->getLeftFieldName() . '_for_' . $this->getName() . '_constraint';
+        return $this->getLeftFieldName() . '_for_' . $this->getConnectionTableName() . '_constraint';
     }
 
     /**
@@ -58,7 +58,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      */
     public function getRightConstraintName()
     {
-        return $this->getRightFieldName() . '_for_' . $this->getName() . '_constraint';
+        return $this->getRightFieldName() . '_for_' . $this->getConnectionTableName() . '_constraint';
     }
 
     /**
