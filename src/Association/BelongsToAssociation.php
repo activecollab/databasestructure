@@ -167,7 +167,7 @@ class BelongsToAssociation extends Association implements
             $result[] = '        return $this;';
         } else {
             $result[] = '        if (empty($value)) {';
-            $result[] = '            $this->' . $fk_setter_name . '(0);';
+            $result[] = '            $this->' . $fk_setter_name . '(null);';
             $result[] = '        } else {';
             $result[] = '            $this->' . $fk_setter_name . '($value->getId());';
             $result[] = '        }';
