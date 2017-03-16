@@ -30,7 +30,6 @@ use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
-use ActiveCollab\DateValue\DateTimeValue;
 use InvalidArgumentException;
 
 /**
@@ -182,7 +181,7 @@ abstract class Structure implements StructureInterface
      */
     private function &addTableRecord(string $table_name, array $record, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
     {
-        $single_record = new SingleRecord($table_name, $record, $comment);;
+        $single_record = new SingleRecord($table_name, $record, $comment);
 
         if ($auto_set_created_at && !array_key_exists('created_at', $record)) {
             $single_record->autoSetCreatedAt();

@@ -8,9 +8,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Behaviour\CreatedByInterface\Implementation as CreatedByInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedByOptionalInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedByRequiredInterface;
-use ActiveCollab\DatabaseStructure\Behaviour\CreatedByInterface\Implementation as CreatedByInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\IdentifiedVisitor;
 
