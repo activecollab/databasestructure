@@ -42,7 +42,5 @@ trait Implementation
 
     abstract public function getFieldValue($field, $default = null);
 
-    abstract public function getCreatedAt(): DateTimeValueInterface;
-
     abstract public function &setCreatedAt(DateTimeValueInterface $value);
 }
