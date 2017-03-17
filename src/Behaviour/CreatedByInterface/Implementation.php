@@ -19,7 +19,11 @@ trait Implementation
     {
         $this->registerEventHandler('on_before_save', function () {
             if (empty($this->getFieldValue('created_by_id'))) {
-                $this->setFieldValue('created_by_id', $this->resolveCreatedById());
+                $resolve_created_by_id = $this->resolveCreatedById();
+
+                if ($resolve_created_by_id) {
+                    $this->setFieldValue('created_by_id', $this->resolveCreatedById());
+                }
             }
         });
     }
