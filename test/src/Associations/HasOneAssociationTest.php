@@ -105,6 +105,7 @@ class HasOneAssociationTest extends TestCase
         $book_writer = new HasOneAssociation('writer');
         $books->addAssociation($book_writer);
 
-        $this->assertEquals('book_writer_constraint', $book_writer->getConstraintName());
+        $this->assertEquals('book_writer_constraint', $book_writer->getVerboseConstraintName());
+        $this->assertEquals('has_one_' . md5('book_writer_constraint'), $book_writer->getConstraintName());
     }
 }

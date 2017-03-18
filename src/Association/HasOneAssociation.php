@@ -81,6 +81,16 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
      */
     public function getConstraintName()
     {
+        return 'has_one_' . md5($this->getVerboseConstraintName());
+    }
+
+    /**
+     * Return verbose constraint name.
+     *
+     * @return string
+     */
+    public function getVerboseConstraintName()
+    {
         return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
     }
 

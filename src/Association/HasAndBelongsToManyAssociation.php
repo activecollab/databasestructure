@@ -48,6 +48,16 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      */
     public function getLeftConstraintName()
     {
+        return 'has_and_belongs_to_many_' . md5($this->getVerboseLeftConstraintName());
+    }
+
+    /**
+     * Return verbose left constraint name.
+     *
+     * @return string
+     */
+    public function getVerboseLeftConstraintName()
+    {
         return $this->getLeftFieldName() . '_for_' . $this->getConnectionTableName() . '_constraint';
     }
 
@@ -57,6 +67,16 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      * @return string
      */
     public function getRightConstraintName()
+    {
+        return 'has_and_belongs_to_many_' . md5($this->getVerboseRightConstraintName());
+    }
+
+    /**
+     * Return verbose right constraint name.
+     *
+     * @return string
+     */
+    public function getVerboseRightConstraintName()
     {
         return $this->getRightFieldName() . '_for_' . $this->getConnectionTableName() . '_constraint';
     }

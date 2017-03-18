@@ -93,6 +93,16 @@ class BelongsToAssociation extends Association implements
      */
     public function getConstraintName()
     {
+        return 'belongs_to_' . md5($this->getVerboseConstraintName());
+    }
+
+    /**
+     * Return verbose constraint name.
+     *
+     * @return string
+     */
+    public function getVerboseConstraintName()
+    {
         return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
     }
 

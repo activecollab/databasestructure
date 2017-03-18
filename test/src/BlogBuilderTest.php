@@ -223,9 +223,13 @@ class BlogBuilderTest extends TestCase
         $this->assertInternalType('array', $categories_constraints);
         $this->assertCount(1, $categories_constraints);
 
-        $this->assertArrayHasKey('category_id_for_categories_posts_constraint', $categories_constraints);
+//        var_dump($categories_constraints);
 
-        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints['category_id_for_categories_posts_constraint'];
+        $constraint_name = 'has_and_belongs_to_many_' . md5('category_id_for_categories_posts_constraint');
+
+        $this->assertArrayHasKey($constraint_name, $categories_constraints);
+
+        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints[$constraint_name];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('category_id', $from_field);
@@ -254,18 +258,22 @@ class BlogBuilderTest extends TestCase
         $this->assertInternalType('array', $posts_constraints);
         $this->assertCount(2, $posts_constraints);
 
-        $this->assertArrayHasKey('post_id_for_categories_posts_constraint', $posts_constraints);
+        $constraint_name = 'has_and_belongs_to_many_' . md5('post_id_for_categories_posts_constraint');
 
-        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_id_for_categories_posts_constraint'];
+        $this->assertArrayHasKey($constraint_name, $posts_constraints);
+
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints[$constraint_name];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('post_id', $from_field);
         $this->assertEquals('posts', $to_table);
         $this->assertEquals('id', $to_field);
 
-        $this->assertArrayHasKey('comment_post_constraint', $posts_constraints);
+        $constraint_name2 = 'belongs_to_' . md5('comment_post_constraint');
 
-        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['comment_post_constraint'];
+        $this->assertArrayHasKey($constraint_name2, $posts_constraints);
+
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints[$constraint_name2];
 
         $this->assertEquals('comments', $from_table);
         $this->assertEquals('post_id', $from_field);
