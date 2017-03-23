@@ -75,24 +75,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
         }
 
-        $result[] = 'abstract class ' . $base_class_name . ' extends ' . $base_class_extends . (empty($interfaces) ? '' : ' implements ' . implode(', ', $interfaces));
+        $this->buildClassDeclaration($base_class_name, $base_class_extends, $interfaces, '', $result);
+
         $result[] = '{';
 
-        if (count($traits)) {
-            $trait_tweaks_count = count($type->getTraitTweaks());
-
-            $result[] = '    use ' . implode(', ', $traits) . ($trait_tweaks_count ? '{' : ';');
-
-            if ($trait_tweaks_count) {
-                for ($i = 0; $i < $trait_tweaks_count - 1; ++$i) {
-                    $result[] = '        ' . $type->getTraitTweaks()[$i] . ($i < $trait_tweaks_count - 2 ? ',' : '');
-                }
-
-                $result[] = '    }';
-            }
-
-            $result[] = '';
-        }
+        $this->buildClassTraits($type, $traits, '    ', $result);
 
         $result[] = '    /**';
         $result[] = '     * Name of the table where records are stored.';
@@ -248,11 +235,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
     }
 
-    /**
-     * @param string $indent
-     * @param array  $result
-     */
-    private function buildBaseClassDocBlockProperties($indent, array &$result)
+    private function buildBaseClassDocBlockProperties(string $indent, array &$result): void
     {
         $base_class_doc_block_properties = $this->getStructure()->getConfig('base_class_doc_block_properties');
 
@@ -262,6 +245,65 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
 
             $result[] = $indent . ' *';
+        }
+    }
+
+    public function buildClassDeclaration(
+        string $base_class_name,
+        string $base_class_extends,
+        array $interfaces,
+        string $indent,
+        array &$result
+    ): void
+    {
+        $result[] = $indent . 'abstract class ' . $base_class_name . ' extends ' . $base_class_extends;
+
+        if (!empty($interfaces)) {
+            $result[count($result) - 1] .= ' implements';
+
+            foreach ($interfaces as $interface) {
+                $result[] = $indent . '    ' . $interface . ',';
+            }
+
+            $this->removeCommaFromLastLine($result);
+        }
+    }
+
+    private function buildClassTraits(TypeInterface $type, array $traits, string $indent, array &$result): void
+    {
+        if (count($traits)) {
+            $result[] = $indent . 'use';
+
+            foreach ($traits as $trait) {
+                $result[] = $indent . '    ' . $trait . ',';
+            }
+
+            $this->removeCommaFromLastLine($result);
+
+            $trait_tweaks_count = count($type->getTraitTweaks());
+
+            if ($trait_tweaks_count) {
+                $result[] = $indent . '    {';
+
+                for ($i = 0; $i < $trait_tweaks_count - 1; ++$i) {
+                    $result[] = $indent . '        ' . $type->getTraitTweaks()[$i] . ($i < $trait_tweaks_count - 2 ? ',' : '');
+                }
+
+                $result[] = $indent . '    }';
+            } else {
+                $result[count($result) - 1] .= ';';
+            }
+
+            $result[] = '';
+        }
+    }
+
+    private function removeCommaFromLastLine(array &$result): void
+    {
+        $last_line_num = count($result) - 1;
+
+        if ($last_line_num >= 0) {
+            $result[$last_line_num] = rtrim($result[$last_line_num], ',');
         }
     }
 
