@@ -335,7 +335,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = $indent . ' *';
         $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $fields = [' . implode(', ', $stringified_field_names) . '];';
+        $result[] = $indent . 'protected $fields = [';
+
+        foreach ($stringified_field_names as $stringified_field_name) {
+            $result[] = $indent . '    ' . $stringified_field_name . ',';
+        }
+        
+        $result[] = $indent . '];';
 
         if (count($fields_with_default_value)) {
             $result[] = '';
