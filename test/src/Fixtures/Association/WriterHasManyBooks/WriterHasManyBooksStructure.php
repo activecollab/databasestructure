@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Association;
+namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooks;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;

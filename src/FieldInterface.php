@@ -6,11 +6,10 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 interface FieldInterface extends ProtectSetterInterface
 {
     const SIZE_TINY = 'tiny';

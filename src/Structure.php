@@ -290,7 +290,7 @@ abstract class Structure implements StructureInterface
     /**
      * Build model at the given path.
      *
-     * If $build_path is null, classes will be generated, evaled and loaded into the memory
+     * If $build_path is null, classes will be generated, evaled and loaded into the memory.
      *
      * @param string|null         $build_path
      * @param ConnectionInterface $connection

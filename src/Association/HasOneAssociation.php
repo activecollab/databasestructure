@@ -94,15 +94,22 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
         return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
     }
 
-    /**
-     * Build class methods.
-     *
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param array              $result
-     */
-    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+    }
+
+    public function buildClassPropertiesAndMethods(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        array &$result
+    )
     {
         $namespace = $structure->getNamespace();
 

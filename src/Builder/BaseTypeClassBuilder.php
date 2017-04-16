@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCaster;
@@ -49,6 +51,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
             $result[] = '';
         }
+
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
 
         $base_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Base' : 'Base';
 
@@ -117,8 +122,16 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $this->buildConfigureMethod($type->getGeneratedFields(), '    ', $result);
 
+        $this->buildAssociatedEntitiesManagers($type, '    ', $result);
+        $this->buildSetAttributes($type, '    ', $result);
+
         foreach ($type->getAssociations() as $association) {
-            $association->buildClassMethods($this->getStructure(), $type, $this->getStructure()->getType($association->getTargetTypeName()), $result);
+            $association->buildClassPropertiesAndMethods(
+                $this->getStructure(),
+                $type,
+                $this->getStructure()->getType($association->getTargetTypeName()),
+                $result
+            );
         }
 
         foreach ($fields as $field) {
@@ -323,7 +336,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
 
-                if ($field->getName() != 'id' && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
+                if ($field->getName() != 'id'
+                    && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
                     $fields_with_default_value[$field->getName()] = $field->getDefaultValue();
                 }
             }
@@ -420,12 +434,103 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
             $result[] = $indent . '    ]));';
             $result[] = $indent . '}';
+        }
+    }
 
-//            $this->setGeneratedFieldsValueCaster(new ValueCaster([
-//                'is_used_on_day' => ValueCasterInterface::CAST_BOOL,
-//                'plan_name' => ValueCasterInterface::CAST_STRING,
-//                'number_of_users' => ValueCasterInterface::CAST_INT,
-//            ]));
+    /**
+     * @param TypeInterface $source_type
+     * @param string        $indent
+     * @param array         $result
+     */
+    public function buildAssociatedEntitiesManagers(
+        TypeInterface $source_type,
+        string $indent,
+        array &$result
+    )
+    {
+        $associations = $source_type->getAssociations();
+
+        if (!empty($associations)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * {@inheritdoc}';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'private $associated_entities_managers;';
+        }
+
+        $result[] = $indent . '';
+        $result[] = $indent . '/**';
+        $result[] = $indent . ' * {@inheritdoc}';
+        $result[] = $indent . ' */';
+        $result[] = $indent . 'protected function getAssociatedEntitiesManagers(): array';
+        $result[] = $indent . '{';
+
+        if (empty($associations)) {
+            $result[] = $indent . '    return [];';
+        } else {
+            $result[] = $indent . '    if ($this->associated_entities_managers === null) {';
+            $result[] = $indent . '        $this->associated_entities_managers  = [';
+
+            foreach ($associations as $association) {
+                $association->buildAssociatedEntitiesManagerConstructionLine(
+                    $this->getStructure(),
+                    $source_type,
+                    $this->getStructure()->getType($association->getTargetTypeName()),
+                    $indent . '            ',
+                    $result
+                );
+            }
+
+            $result[] = $indent . '        ];';
+            $result[] = $indent . '    }';
+            $result[] = '';
+            $result[] = $indent . '    return $this->associated_entities_managers;';
+        }
+
+        $result[] = $indent . '}';
+    }
+
+    /**
+     * Build setAttributes() method.
+     *
+     * @param TypeInterface $source_type
+     * @param string        $indent
+     * @param array         $result
+     */
+    public function buildSetAttributes(TypeInterface $source_type, $indent, array &$result)
+    {
+        $associations = $source_type->getAssociations();
+
+        $attribute_interception_lines = [];
+
+        if (!empty($associations)) {
+            foreach ($associations as $association) {
+                $association->buildAttributeInterception(
+                    $this->getStructure(),
+                    $source_type,
+                    $this->getStructure()->getType($association->getTargetTypeName()),
+                    $indent . '        ',
+                    $attribute_interception_lines
+                );
+            }
+        }
+
+        if (!empty($attribute_interception_lines)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * {@inheritdoc}';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'public function &setAttribute($attribute, $value)';
+            $result[] = $indent . '{';
+            $result[] = $indent . '    switch ($attribute) {';
+
+            foreach ($attribute_interception_lines as $attribute_interception_line) {
+                $result[] = $attribute_interception_line;
+            }
+
+            $result[] = $indent . '    }';
+            $result[] = $indent . '    return parent::setAttribute($attribute, $value);';
+            $result[] = $indent . '}';
         }
     }
 
@@ -791,7 +896,12 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     /**
      * @var array
      */
-    private $getter_names = [], $setter_names = [];
+    private $getter_names = [];
+
+    /**
+     * @var array
+     */
+    private $setter_names = [];
 
     /**
      * @param  string $field_name

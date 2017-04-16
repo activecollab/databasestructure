@@ -6,13 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\StructureInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 abstract class Association implements AssociationInterface
 {
     /**
@@ -41,5 +42,15 @@ abstract class Association implements AssociationInterface
         $this->source_type_name = $source_type_name;
 
         return $this;
+    }
+
+    public function buildAttributeInterception(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
     }
 }

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Blog\BlogStructure;
@@ -34,13 +36,6 @@ class BlogBuilderTest extends TestCase
      */
     private $blog_structure;
 
-    /**
-     * Constructs a test case with the given name.
-     *
-     * @param string $name
-     * @param array  $data
-     * @param string $dataName
-     */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -48,9 +43,6 @@ class BlogBuilderTest extends TestCase
         $this->build_path = __DIR__ . '/Fixtures/Blog';
     }
 
-    /**
-     * Set up test environment.
-     */
     public function setUp()
     {
         parent::setUp();
@@ -65,9 +57,6 @@ class BlogBuilderTest extends TestCase
         $this->blog_structure->build($this->build_path, $this->connection);
     }
 
-    /**
-     * Tear down test environment.
-     */
     public function tearDown()
     {
         $this->filesystem->emptyDir('/', ['BlogStructure.php']);
@@ -222,8 +211,6 @@ class BlogBuilderTest extends TestCase
 
         $this->assertInternalType('array', $categories_constraints);
         $this->assertCount(1, $categories_constraints);
-
-//        var_dump($categories_constraints);
 
         $constraint_name = 'has_and_belongs_to_many_' . md5('category_id_for_categories_posts_constraint');
 

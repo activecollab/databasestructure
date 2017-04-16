@@ -94,10 +94,26 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         return implode('_', $type_names);
     }
 
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    protected function buildGetFinderMethod(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        $namespace,
+        array &$result
+    )
     {
         $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
 

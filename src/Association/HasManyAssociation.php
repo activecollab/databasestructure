@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseObject\FinderInterface;
+use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\HasManyAssociatedEntitiesManager;
 use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
@@ -16,9 +17,6 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 class HasManyAssociation extends Association implements
     AssociationInterface,
     ProgramToInterfaceInterface
@@ -69,15 +67,55 @@ class HasManyAssociation extends Association implements
         return $this;
     }
 
-    /**
-     * Build class methods.
-     *
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param array              $result
-     */
-    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    public function buildAttributeInterception(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+        $exported_association_name =  var_export($this->getName(), true);
+
+        $result[] = $indent . 'case ' . $exported_association_name . ':';
+        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->addAssociatedEntities($value);';
+        $result[] = $indent . '    return $this;';
+        $result[] = $indent . 'case ' . var_export(Inflector::singularize($this->getName()) . '_ids', true) . ':';
+        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->addAssociatedEntityIds($value);';
+        $result[] = $indent . '    return $this;';
+    }
+
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+        $namespace = $structure->getNamespace();
+
+        if ($namespace) {
+            $namespace = '\\' . ltrim($namespace, '\\');
+        }
+
+        $entity_class_name = $namespace ? $namespace . '\\' . $target_type->getClassName() : $target_type->getClassName();
+
+        $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasManyAssociatedEntitiesManager::class . '(';
+        $result[] = $indent . '    $this->connection,';
+        $result[] = $indent . '    $this->pool,';
+        $result[] = $indent . '    ' . var_export($target_type->getTableName(), true) . ',';
+        $result[] = $indent . '    ' . var_export($this->getFkFieldNameFrom($source_type), true) . ',';
+        $result[] = $indent . '    ' . var_export($entity_class_name, true);
+        $result[] = $indent . '),';
+    }
+
+    public function buildClassPropertiesAndMethods(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        array &$result
+    )
     {
         $namespace = $structure->getNamespace();
 

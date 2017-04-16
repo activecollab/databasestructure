@@ -42,6 +42,16 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $this->intermediary_type_name = $intermediary_type_name;
     }
 
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -79,7 +89,13 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     /**
      * {@inheritdoc}
      */
-    public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    public function buildAddRelatedObjectMethod(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        $namespace,
+        array &$result
+    )
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
         $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
