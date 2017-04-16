@@ -340,7 +340,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         foreach ($stringified_field_names as $stringified_field_name) {
             $result[] = $indent . '    ' . $stringified_field_name . ',';
         }
-        
+
         $result[] = $indent . '];';
 
         if (count($fields_with_default_value)) {

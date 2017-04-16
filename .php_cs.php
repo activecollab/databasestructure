@@ -15,7 +15,14 @@ EOF;
 return (new PhpCsFixer\Config('psr2'))
     ->setRiskyAllowed(true)
     ->setRules([
-        'header_comment' => ['header' => $header, 'location' => 'after_open'],
+        'header_comment' =>
+            [
+                'header' => $header,
+                'location' => 'after_open'
+            ],
+        'function_typehint_space' => true,
+        'method_argument_space' => true,
+        'no_trailing_whitespace' => true,
         'no_whitespace_before_comma_in_array' => true,
         'whitespace_after_comma_in_array' => true,
         'no_multiline_whitespace_around_double_arrow' => true,
@@ -24,7 +31,6 @@ return (new PhpCsFixer\Config('psr2'))
         'no_alias_functions' => true,
         'trailing_comma_in_multiline_array' => true,
         'no_leading_namespace_whitespace' => true,
-        'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'phpdoc_scalar' => true,
         'phpdoc_summary' => true,
@@ -43,13 +49,11 @@ return (new PhpCsFixer\Config('psr2'))
         'array_syntax' => ['syntax' => 'short'],
         'phpdoc_align' => true,
         'return_type_declaration' => true,
-        'single_blank_line_at_eof' => true,
-        'single_line_after_imports' => true,
-        'single_quote' => true,
         'phpdoc_separation' => false,
         'phpdoc_no_package' => false,
         'no_mixed_echo_print' => false,
         'concat_space' => false,
         'simplified_null_return' => false,
+        'single_blank_line_at_eof' => true,
     ])
     ->setFinder((new PhpCsFixer\Finder())->in([__DIR__ . '/src', __DIR__ . '/test']));
