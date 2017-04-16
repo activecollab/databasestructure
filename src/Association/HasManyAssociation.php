@@ -76,12 +76,17 @@ class HasManyAssociation extends Association implements
     )
     {
         $exported_association_name =  var_export($this->getName(), true);
+        $exported_association_ids_name = var_export(Inflector::singularize($this->getName()) . '_ids', true);
 
         $result[] = $indent . 'case ' . $exported_association_name . ':';
         $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->addAssociatedEntities($value);';
+        $result[] = $indent . '    $this->recordModifiedAttribute(' . $exported_association_name . ');';
+        $result[] = '';
         $result[] = $indent . '    return $this;';
-        $result[] = $indent . 'case ' . var_export(Inflector::singularize($this->getName()) . '_ids', true) . ':';
+        $result[] = $indent . 'case ' . $exported_association_ids_name . ':';
         $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->addAssociatedEntityIds($value);';
+        $result[] = $indent . '    $this->recordModifiedAttribute(' . $exported_association_ids_name . ');';
+        $result[] = '';
         $result[] = $indent . '    return $this;';
     }
 

@@ -31,7 +31,7 @@ abstract class Entity extends BaseEntity implements EntityInterface
 
             parent::save();
 
-            if ($is_new || !empty($modifications)) {
+            if ($is_new || $this->isModified()) {
                 foreach ($this->getAssociatedEntitiesManagers() as $associated_entities_manager) {
                     if ($is_new) {
                         $associated_entities_manager->afterInsert($this->getId());

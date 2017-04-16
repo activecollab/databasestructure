@@ -529,6 +529,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
 
             $result[] = $indent . '    }';
+            $result[] = '';
             $result[] = $indent . '    return parent::setAttribute($attribute, $value);';
             $result[] = $indent . '}';
         }

@@ -38,32 +38,73 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
         $this->entity_class_name = $entity_class_name;
     }
 
-
     public function afterInsert(int $entity_id)
     {
-        foreach ($this->associated_entities as $associated_entity) {
-            $associated_entity
-                ->setFieldValue($this->field_name, $entity_id)
-                ->save();
-        }
-
-        $this->associated_entities = [];
+        $this->updateAssociatedEntities($entity_id);
 
         if (!empty($this->associated_entity_ids)) {
-            $this->connection->update(
-                $this->table_name,
-                [
-                    $this->field_name => $entity_id,
-                ],
-                ['`id` IN ?', $this->associated_entity_ids]
-            );
+            $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id, true);
         }
 
-        $this->associated_entity_ids = [];
+        $this->resetAssociatedEntities();
     }
 
     public function afterUpdate(int $entity_id, array $modifications)
     {
+        $this->updateAssociatedEntities($entity_id);
+
+        if ($this->associated_entity_ids !== null) {
+            if (empty($this->associated_entity_ids)) {
+                $this->nullifyAssociatedEntities($entity_id);
+            } else {
+                $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id, false);
+            }
+        }
+
+        $this->resetAssociatedEntities();
+    }
+
+    private function updateAssociatedEntities(int $entity_id)
+    {
+        if ($this->associated_entities !== null) {
+            foreach ($this->associated_entities as $associated_entity) {
+                $associated_entity
+                    ->setFieldValue($this->field_name, $entity_id)
+                    ->save();
+            }
+        }
+    }
+
+    private function updateAssociatedEntityIds(array $associated_entity_ids, int $entity_id, bool $is_new)
+    {
+        $this->connection->update(
+            $this->table_name,
+            [
+                $this->field_name => $entity_id,
+            ],
+            ['`id` IN ?', $associated_entity_ids]
+        );
+
+        if (!$is_new) {
+            $this->connection->update(
+                $this->table_name,
+                [
+                    $this->field_name => null,
+                ],
+                ["`{$this->field_name}` = ? AND `id` NOT IN ?", $entity_id, $associated_entity_ids]
+            );
+        }
+    }
+
+    private function nullifyAssociatedEntities(int $entity_id)
+    {
+        $this->connection->update(
+            $this->table_name,
+            [
+                $this->field_name => null,
+            ],
+            ["`{$this->field_name}` = ?", $entity_id]
+        );
     }
 
     public function beforeDelete(int $entity_id)
@@ -77,24 +118,54 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
 
     public function &addAssociatedEntities($values)
     {
-        if (!is_iterable($values)) {
-            throw new InvalidArgumentException('A list of instances expected.');
-        }
+        $this->validateListOfEntities($values);
 
-        foreach ($values as $value) {
-            if (!$value instanceof $this->entity_class_name) {
-                throw new InvalidArgumentException('A list of instances expected.');
-            }
-
-            $this->associated_entities[] = $value;
+        if ($this->associated_entities === null) {
+            $this->associated_entities = $values;
+        } else {
+            $this->associated_entities = array_merge(
+                $this->associated_entities,
+                $values
+            );
         }
 
         return $this;
     }
 
-    private $associated_entity_ids = [];
+    private $associated_entity_ids = null;
 
     public function &addAssociatedEntityIds($values)
+    {
+        $this->validateListOfIds($values);
+
+        if ($this->associated_entity_ids === null) {
+            $this->associated_entity_ids = $values;
+        } else {
+            $this->associated_entity_ids = array_merge(
+                $this->associated_entity_ids,
+                $values
+            );
+
+            $this->associated_entity_ids = array_unique($this->associated_entity_ids);
+        }
+
+        return $this;
+    }
+
+    private function validateListOfEntities($values)
+    {
+        if (!is_iterable($values)) {
+            throw new InvalidArgumentException('A list of entities expected.');
+        }
+
+        foreach ($values as $value) {
+            if (!$value instanceof $this->entity_class_name) {
+                throw new InvalidArgumentException('A list of entities expected.');
+            }
+        }
+    }
+
+    private function validateListOfIds($values)
     {
         if (!is_iterable($values)) {
             throw new InvalidArgumentException('A list of ID-s expected.');
@@ -104,10 +175,12 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
             if (!is_int($value)) {
                 throw new InvalidArgumentException('A list of ID-s expected.');
             }
-
-            $this->associated_entity_ids[] = $value;
         }
+    }
 
-        return $this;
+    private function resetAssociatedEntities()
+    {
+        $this->associated_entities = null;
+        $this->associated_entity_ids = null;
     }
 }
