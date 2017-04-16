@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Associations;
 
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
@@ -15,9 +17,6 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\TestInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class HasOneAssociationTest extends TestCase
 {
     /**

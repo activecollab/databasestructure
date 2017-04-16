@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
@@ -43,7 +45,11 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     /**
      * {@inheritdoc}
      */
-    protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    protected function buildGetFinderMethod(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type, $namespace,
+        array &$result)
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
 

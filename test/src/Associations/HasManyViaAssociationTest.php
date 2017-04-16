@@ -6,14 +6,13 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Associations;
 
 use ActiveCollab\DatabaseStructure\Association\HasManyViaAssociation;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class HasManyViaAssociationTest extends TestCase
 {
     /**
