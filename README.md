@@ -90,6 +90,20 @@ $snapshot->setFieldValue('number_of_active_users', 123);  // Exception!
 
 ### Belongs To
 
+#### Programming to an Interface
+
+Belongs To association supports "programming to an interface" approach. This means that you can set so they accept (and return) instances that implement a specific interface:
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+
+(new BelongsToAssociation('author'))->accepts(AuthorInterface::class);
+```
+
 ### Has Many
 
 ```php
@@ -116,12 +130,14 @@ class HasManyExampleStructure extends Structure
 
 Method that this association will add to `Writer` model are:
 
-* `getBooksFinder(): FinderInterface` - Prepare a finder instance for this writer, with all the defaults set (ordering for example). Use it like you would use any other finder, 
+* `getBooksFinder(): FinderInterface` - Prepare a book finder instance for this writer, with all the defaults set (ordering for example). Use it like you would use any other finder: extend it with extra conditions, use it to count records, fetch all, or first record etc, 
 * `getBooks(): ?iterable` - Return all books that belong to the writer. When no books are found, this method returns `NULL`,
-* `getBookIds(): ?iterable` - Return a list of all book ID-s taht belong to the writer. When no books are found, this method returns `NULL`,
+* `getBookIds(): ?iterable` - Return a list of all book ID-s that belong to the writer. When no books are found, this method returns `NULL`,
 * `countBooks(): int` - Return a total number of books.
 
-Following attributes are also supported by the `Writer` model:
+#### Attributes
+
+Has many association also adds following attributes to the model:
 
 * `books` - Set associated books by providing their instances. These instances can be persisted to the database, or they can be new instances. If new, they will be saved when parent writer object is saved,
 * `book_ids` - Set associated books by providing their ID-s.
@@ -132,28 +148,20 @@ Following attributes are also supported by the `Writer` model:
 namespace App;
 
 // Set books using an attribute:
-
-$writer = $this->pool->produce(Writer::class, [
+$writer = $pool->produce(Writer::class, [
     'name' => 'Leo Tolstoy',
     'books' => [$book1, $book2, $book3],
 ]);
 
 // Or, using ID-s:
-$writer = $this->pool->produce(Writer::class, [
+$writer = $pool->produce(Writer::class, [
     'name' => 'Leo Tolstoy',
     'book_ids' => [1, 2, 3, 4],
 ]);
 ```
+#### Programming to an Interface
 
-### Has One
-
-### Has Many Via
-
-### Has and Belongs to Many
-
-### Programming to an Interface
-
-Belongs to and Has One associations support "programming to an interface" approach. This means that you can set so they accept (and return) instances that implement a specific interface. In this case, code will be generated so arguments, and return types are set to that interface, instead of a concrete class (target type).
+Has Many association support "programming to an interface" approach. This means that you can set so it accepts (and return) instances that implement a specific interface:
 
 Example:
 
@@ -162,12 +170,32 @@ Example:
 
 namespace MyApp;
 
-use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+
+(new HasManyAssociation('books'))->accepts(BookInterface::class);
+```
+
+### Has One
+
+#### Programming to an Interface
+
+Has One association support "programming to an interface" approach. This means that you can set so it accepts (and return) instances that implement a specific interface:
+
+Example:
+
+```php
+<?php
+
+namespace MyApp;
+
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 
-(new BelongsToAssociation('author'))->accepts(AuthorInterface::class);
-(new HasOneAssociation('book'))->accepts(BookInterface::class);
+(new HasOneAssociation('book'))->accepts(WriterInterface::class);
 ```
+
+### Has Many Via
+
+### Has and Belongs to Many
 
 ## Structure Options
 
