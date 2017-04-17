@@ -1,4 +1,4 @@
-### DatabaseStructure Library
+# DatabaseStructure Library
 
 [![Build Status](https://travis-ci.org/activecollab/databasestructure.svg?branch=master)](https://travis-ci.org/activecollab/databasestructure)
 
@@ -190,7 +190,7 @@ namespace MyApp;
 
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 
-(new HasOneAssociation('book'))->accepts(WriterInterface::class);
+(new HasOneAssociation('book'))->accepts(BookInterface::class);
 ```
 
 ### Has Many Via
