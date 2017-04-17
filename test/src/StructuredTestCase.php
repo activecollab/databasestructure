@@ -112,7 +112,7 @@ abstract class StructuredTestCase extends TestCase
 
     public function tearDown()
     {
-        $this->filesystem->emptyDir('/', ['WriterHasManyBooksStructure.php']);
+        $this->filesystem->emptyDir('/', [$this->getStructureClassFileName()]);
 
         parent::tearDown();
     }
