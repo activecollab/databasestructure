@@ -190,13 +190,8 @@ class HasManyAssociation extends Association implements
      */
     protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
-        $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
+        $order_by = $this->getOrderBy() ?  : '';
 
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * @var \\' . FinderInterface::class;
-        $result[] = '     */';
-        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
@@ -205,11 +200,15 @@ class HasManyAssociation extends Association implements
         $result[] = '     */';
         $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
-        $result[] = '        }';
-        $result[] = '';
-        $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
+        $result[] = '        return $this->pool';
+        $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
+        $result[] = '            ->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
+
+        if ($this->getOrderBy()) {
+            $result[] = '            ->orderBy(' . var_export($this->getOrderBy(), true) . ');';
+        } else {
+            $result[count($result) - 1] .= ';';
+        }
         $result[] = '    }';
     }
 
