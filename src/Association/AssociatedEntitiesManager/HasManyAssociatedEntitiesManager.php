@@ -15,27 +15,31 @@ use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Entity\EntityInterface;
 use InvalidArgumentException;
 
-class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
+class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager implements HasManyAssociatedEntitiesManagerInterface
 {
     private $table_name;
 
     private $field_name;
 
-    private $entity_class_name;
+    private $target_entity_class_name;
+
+    private $association_is_required;
 
     public function __construct(
         ConnectionInterface $connection,
         PoolInterface $pool,
         string $table_name,
         string $field_name,
-        string $entity_class_name
+        string $target_entity_class_name,
+        bool $association_is_required = false
     )
     {
         parent::__construct($connection, $pool);
 
         $this->table_name = $table_name;
         $this->field_name = $field_name;
-        $this->entity_class_name = $entity_class_name;
+        $this->target_entity_class_name = $target_entity_class_name;
+        $this->association_is_required = $association_is_required;
     }
 
     public function afterInsert(int $entity_id)
@@ -43,7 +47,7 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
         $this->updateAssociatedEntities($entity_id);
 
         if (!empty($this->associated_entity_ids)) {
-            $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id, true);
+            $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id);
         }
 
         $this->resetAssociatedEntities();
@@ -54,11 +58,7 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
         $this->updateAssociatedEntities($entity_id);
 
         if ($this->associated_entity_ids !== null) {
-            if (empty($this->associated_entity_ids)) {
-                $this->nullifyAssociatedEntities($entity_id);
-            } else {
-                $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id, false);
-            }
+            $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id);
         }
 
         $this->resetAssociatedEntities();
@@ -75,79 +75,80 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
         }
     }
 
-    private function updateAssociatedEntityIds(array $associated_entity_ids, int $entity_id, bool $is_new)
+    private function updateAssociatedEntityIds(array $associated_entity_ids, int $entity_id)
     {
-        $this->connection->update(
-            $this->table_name,
-            [
-                $this->field_name => $entity_id,
-            ],
-            ['`id` IN ?', $associated_entity_ids]
-        );
+        $finder = $this->pool->find($this->target_entity_class_name);
 
-        if (!$is_new) {
-            $this->connection->update(
-                $this->table_name,
-                [
-                    $this->field_name => null,
-                ],
-                ["`{$this->field_name}` = ? AND `id` NOT IN ?", $entity_id, $associated_entity_ids]
-            );
+        if (empty($associated_entity_ids)) {
+            $finder->where("`{$this->field_name}` = ?", $entity_id);
+        } else {
+            $finder->where("`{$this->field_name}` = ? OR `id` IN ?", $entity_id, $associated_entity_ids);
+        }
+
+        /** @var EntityInterface[] $entities_to_update */
+        $entities_to_update = $finder->all();
+
+        if ($entities_to_update) {
+            foreach ($entities_to_update as $entity_to_update) {
+                if (in_array($entity_to_update->getId(), $associated_entity_ids)) {
+                    $this->reassignEntity($entity_to_update, $this->field_name, $entity_id);
+                } else {
+                    $this->releaseEntity($entity_to_update, $this->field_name, $this->association_is_required);
+                }
+            }
         }
     }
 
-    private function nullifyAssociatedEntities(int $entity_id)
+    private function reassignEntity(
+        EntityInterface $entity,
+        string $field_name,
+        int $reassign_to_entity_id
+    ): EntityInterface
     {
-        $this->connection->update(
-            $this->table_name,
-            [
-                $this->field_name => null,
-            ],
-            ["`{$this->field_name}` = ?", $entity_id]
-        );
+        return $entity
+            ->setFieldValue($field_name, $reassign_to_entity_id)
+            ->save();
     }
 
-    public function beforeDelete(int $entity_id)
+    private function releaseEntity(
+        EntityInterface $entity,
+        string $field_name,
+        bool $association_is_required
+    ): EntityInterface
     {
+        if ($association_is_required) {
+            throw new \RuntimeException(sprintf(
+                "Can't release associated entity #%d because it can only be reassigned, not released.",
+                $entity->getId()
+            ));
+        }
+
+        return $entity
+            ->setFieldValue($field_name, null)
+            ->save();
     }
 
     /**
-     * @var EntityInterface[]
+     * @var EntityInterface[]|null
      */
-    private $associated_entities = [];
+    private $associated_entities;
 
-    public function &addAssociatedEntities($values)
+    public function &setAssociatedEntities($values)
     {
         $this->validateListOfEntities($values);
 
-        if ($this->associated_entities === null) {
-            $this->associated_entities = $values;
-        } else {
-            $this->associated_entities = array_merge(
-                $this->associated_entities,
-                $values
-            );
-        }
+        $this->associated_entities = $values;
 
         return $this;
     }
 
-    private $associated_entity_ids = null;
+    private $associated_entity_ids;
 
-    public function &addAssociatedEntityIds($values)
+    public function &setAssociatedEntityIds($values)
     {
         $this->validateListOfIds($values);
 
-        if ($this->associated_entity_ids === null) {
-            $this->associated_entity_ids = $values;
-        } else {
-            $this->associated_entity_ids = array_merge(
-                $this->associated_entity_ids,
-                $values
-            );
-
-            $this->associated_entity_ids = array_unique($this->associated_entity_ids);
-        }
+        $this->associated_entity_ids = $values;
 
         return $this;
     }
@@ -159,7 +160,7 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager
         }
 
         foreach ($values as $value) {
-            if (!$value instanceof $this->entity_class_name) {
+            if (!$value instanceof $this->target_entity_class_name) {
                 throw new InvalidArgumentException('A list of entities expected.');
             }
         }

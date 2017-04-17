@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager;
 
-interface AssociatedEntitiesManagerInterface
+interface HasManyAssociatedEntitiesManagerInterface extends AssociatedEntitiesManagerInterface
 {
-    public function afterInsert(int $entity_id);
+    public function &setAssociatedEntities($values);
 
-    public function afterUpdate(int $entity_id, array $modifications);
+    public function &setAssociatedEntityIds($values);
 }

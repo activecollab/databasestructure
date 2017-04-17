@@ -4,6 +4,7 @@
 
 ## Version 1.0 To Do
 
+- [ ] Get code coverage over 90%,
 - [ ] Add `serialize` method to fields, so they are automatically added to the serialization list when they are added to a type,
 - [ ] Prefix all base classes with `Base`,
 - [ ] Sufix all managers and collections with `Manager` and `Collection` respectively,

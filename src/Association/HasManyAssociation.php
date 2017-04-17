@@ -79,12 +79,12 @@ class HasManyAssociation extends Association implements
         $exported_association_ids_name = var_export(Inflector::singularize($this->getName()) . '_ids', true);
 
         $result[] = $indent . 'case ' . $exported_association_name . ':';
-        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->addAssociatedEntities($value);';
+        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->setAssociatedEntities($value);';
         $result[] = $indent . '    $this->recordModifiedAttribute(' . $exported_association_name . ');';
         $result[] = '';
         $result[] = $indent . '    return $this;';
         $result[] = $indent . 'case ' . $exported_association_ids_name . ':';
-        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->addAssociatedEntityIds($value);';
+        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->setAssociatedEntityIds($value);';
         $result[] = $indent . '    $this->recordModifiedAttribute(' . $exported_association_ids_name . ');';
         $result[] = '';
         $result[] = $indent . '    return $this;';
@@ -190,8 +190,6 @@ class HasManyAssociation extends Association implements
      */
     protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
-        $order_by = $this->getOrderBy() ?  : '';
-
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
