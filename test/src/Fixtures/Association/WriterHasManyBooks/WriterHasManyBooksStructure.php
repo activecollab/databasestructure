@@ -22,7 +22,8 @@ class WriterHasManyBooksStructure extends Structure
         $this->addType('writers')->addFields([
             (new NameField('name', ''))->required(),
         ])->addAssociations([
-            new HasManyAssociation('books'),
+            (new HasManyAssociation('books'))
+                ->required(false),
         ]);
 
         $this->addType('books')->addFields([

@@ -22,9 +22,6 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 class BelongsToAssociation extends Association implements
     AssociationInterface,
     InjectFieldsInsterface,
@@ -33,7 +30,11 @@ class BelongsToAssociation extends Association implements
     ProtectSetterInterface,
     RequiredInterface
 {
-    use ProtectSetterInterfaceImplementation, AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, RequiredInterfaceImplementation;
+    use
+        ProtectSetterInterfaceImplementation,
+        AssociationInterface\Implementation,
+        ProgramToInterfaceInterfaceImplementation,
+        RequiredInterfaceImplementation;
 
     /**
      * $name is in singular. If $target_type_name is empty, it will be set to pluralized value of association name:.

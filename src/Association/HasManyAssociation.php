@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseObject\FinderInterface;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\HasManyAssociatedEntitiesManager;
 use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -19,9 +20,10 @@ use InvalidArgumentException;
 
 class HasManyAssociation extends Association implements
     AssociationInterface,
-    ProgramToInterfaceInterface
+    ProgramToInterfaceInterface,
+    RequiredInterface
 {
-    use AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation;
+    use AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, RequiredInterfaceImplementation;
 
     /**
      * Order releated records by.
@@ -111,7 +113,8 @@ class HasManyAssociation extends Association implements
         $result[] = $indent . '    $this->pool,';
         $result[] = $indent . '    ' . var_export($target_type->getTableName(), true) . ',';
         $result[] = $indent . '    ' . var_export($this->getFkFieldNameFrom($source_type), true) . ',';
-        $result[] = $indent . '    ' . var_export($entity_class_name, true);
+        $result[] = $indent . '    ' . var_export($entity_class_name, true) . ',';
+        $result[] = $indent . '    ' . var_export($this->isRequired(), true);
         $result[] = $indent . '),';
     }
 

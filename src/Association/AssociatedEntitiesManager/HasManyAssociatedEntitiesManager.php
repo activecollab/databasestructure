@@ -67,10 +67,30 @@ class HasManyAssociatedEntitiesManager extends AssociatedEntitiesManager impleme
     private function updateAssociatedEntities(int $entity_id)
     {
         if ($this->associated_entities !== null) {
-            foreach ($this->associated_entities as $associated_entity) {
-                $associated_entity
-                    ->setFieldValue($this->field_name, $entity_id)
-                    ->save();
+            $reassigned_entity_ids = [];
+
+            if (!empty($this->associated_entities)) {
+                foreach ($this->associated_entities as $associated_entity) {
+                    $this->reassignEntity($associated_entity, $this->field_name, $entity_id);
+                    $reassigned_entity_ids[] = $associated_entity->getId();
+                }
+            }
+
+            $finder = $this->pool->find($this->target_entity_class_name);
+
+            if (empty($reassigned_entity_ids)) {
+                $finder->where("`$this->field_name` = ?", $entity_id);
+            } else {
+                $finder->where("`$this->field_name` = ? AND `id` NOT IN ?", $entity_id, $reassigned_entity_ids);
+            }
+
+            /** @var EntityInterface[] $entities_to_release */
+            $entities_to_release = $finder->all();
+
+            if ($entities_to_release) {
+                foreach ($entities_to_release as $entity_to_release) {
+                    $this->releaseEntity($entity_to_release, $this->field_name, $this->association_is_required);
+                }
             }
         }
     }
