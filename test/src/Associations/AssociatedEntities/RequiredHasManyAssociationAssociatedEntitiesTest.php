@@ -15,6 +15,14 @@ use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
 
 class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
 {
+    private $writer;
+
+    private $book1;
+
+    private $book2;
+
+    private $book3;
+
     protected function getStructureClassName(): string
     {
         return WriterHasManyBooksRequiredStructure::class;
@@ -25,356 +33,63 @@ class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredTestCas
         return dirname(dirname(__DIR__)) . '/Fixtures/Association/WriterHasManyBooksRequired';
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of entities expected.
-     */
-    public function testNonIterableAttribute()
+    public function setUp()
     {
-        $this->pool->produce($this->type_entity_class_names['writers'], [
-            'name' => 'Leo Tolstoy',
-            'books' => 123,
-        ]);
-    }
+        parent::setUp();
 
-    public function testAssociatedEntitiesAttributeOnInsert()
-    {
         $writer_entity_class_name = $this->type_entity_class_names['writers'];
         $book_entity_class_name = $this->type_entity_class_names['books'];
 
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ], false);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ], false);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ], false);
-
-        $this->assertFalse($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertFalse($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertFalse($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $writer = $this->pool->produce($writer_entity_class_name, [
+        $this->writer = $this->pool->produce($writer_entity_class_name, [
             'name' => 'Leo Tolstoy',
-            'books' => [$book1, $book2],
         ]);
-        $this->assertTrue($writer->isLoaded());
+        $this->assertTrue($this->writer->isLoaded());
 
-        $this->assertTrue($book1->isLoaded());
-        $this->assertSame($writer->getId(), $book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertSame($writer->getId(), $book2->getWriterId());
-        $this->assertFalse($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $this->assertSame(2, $writer->countBooks());
-    }
-
-    public function testExistingAssociatedEntitiesAttributeOnInsert()
-    {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
+        $this->book1 = $this->pool->produce($book_entity_class_name, [
             'name' => 'War and Peace',
+            'writer_id' => $this->writer->getId(),
         ]);
 
-        $book2 = $this->pool->produce($book_entity_class_name, [
+        $this->book2 = $this->pool->produce($book_entity_class_name, [
             'name' => 'Anna Karenina',
+            'writer_id' => $this->writer->getId(),
         ]);
 
-        $book3 = $this->pool->produce($book_entity_class_name, [
+        $this->book3 = $this->pool->produce($book_entity_class_name, [
             'name' => 'The Government Inspector',
+            'writer_id' => $this->writer->getId(),
         ]);
 
-        $this->assertTrue($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertTrue($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
+        $this->assertTrue($this->book1->isLoaded());
+        $this->assertSame($this->writer->getId(), $this->book1->getWriterId());
+        $this->assertTrue($this->book2->isLoaded());
+        $this->assertSame($this->writer->getId(), $this->book2->getWriterId());
+        $this->assertTrue($this->book3->isLoaded());
+        $this->assertSame($this->writer->getId(), $this->book3->getWriterId());
 
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-            'books' => [$book1, $book2],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $this->assertSame(2, $writer->countBooks());
+        $book_ids = $this->writer->getBookIds();
+        $this->assertCount(3, $book_ids);
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of ID-s expected.
+     * @dataProvider provideAttributesForReleaseTest
+     * @param string $attribute_name
+     * @param mixed  $attribute_value
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Can't release associated entity #1 because it can only be reassigned, not released.
      */
-    public function testNonIterableIdsAttribute()
+    public function testExceptionOnReleaseForRequiredAssociation(string $attribute_name, $attribute_value)
     {
-        $this->pool->produce($this->type_entity_class_names['writers'], [
-            'name' => 'Leo Tolstoy',
-            'book_ids' => 123,
+        $this->pool->modify($this->writer, [
+            $attribute_name => $attribute_value,
         ]);
     }
 
-    public function testAssociatedEntityIdsAttributeOnInsert()
+    public function provideAttributesForReleaseTest(): array
     {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ]);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ]);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ]);
-
-        $this->assertTrue($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertTrue($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-            'book_ids' => [$book1->getId(), $book2->getId()],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $this->assertSame(2, $writer->countBooks());
-    }
-
-    public function testAssociatedEntityIdsAttributeUpdatesOnInsert()
-    {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ]);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ]);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ]);
-
-        $this->assertTrue($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertTrue($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        // Set three books.
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-            'book_ids' => [$book1->getId(), $book2->getId(), $book3->getId()],
-        ], false);
-        $this->assertFalse($writer->isLoaded());
-
-        // Reset to one book
-        $writer->setAttribute('book_ids', [$book2->getId()]);
-        $writer->save();
-
-        $this->assertTrue($writer->isLoaded());
-        $this->assertSame(1, $writer->countBooks());
-    }
-
-    public function testAssociatedEntitiesAttributeOnUpdate()
-    {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-        ]);
-        $this->assertTrue($writer->isLoaded());
-        $this->assertSame(0, $writer->countBooks());
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ], false);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ], false);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ], false);
-
-        $this->assertFalse($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertFalse($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertFalse($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $this->pool->modify($writer, [
-            'books' => [$book1, $book2],
-        ]);
-
-        $this->assertTrue($book1->isLoaded());
-        $this->assertSame($writer->getId(), $book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertSame($writer->getId(), $book2->getWriterId());
-        $this->assertFalse($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $this->assertSame(2, $writer->countBooks());
-    }
-
-    public function testAssociatedEntityIdsAttributeOnUpdate()
-    {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ]);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ]);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ]);
-
-        $this->assertTrue($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertTrue($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-            'book_ids' => [$book1->getId(), $book2->getId()],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $book_ids = $writer->getBookIds();
-        $this->assertCount(2, $book_ids);
-
-        $this->assertContains($book1->getId(), $book_ids);
-        $this->assertContains($book2->getId(), $book_ids);
-        $this->assertNotContains($book3->getId(), $book_ids);
-
-        $writer = $this->pool->modify($writer, [
-            'book_ids' => [$book2->getId(), $book3->getId()],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $book_ids = $writer->getBookIds();
-        $this->assertCount(2, $book_ids);
-
-        $this->assertNotContains($book1->getId(), $book_ids);
-        $this->assertContains($book2->getId(), $book_ids);
-        $this->assertContains($book3->getId(), $book_ids);
-    }
-
-    public function testAssociatedEntityAttributeResetOnUpdate()
-    {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ]);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ]);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ]);
-
-        $this->assertTrue($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertTrue($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-            'books' => [$book1, $book2],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $book_ids = $writer->getBookIds();
-        $this->assertCount(2, $book_ids);
-
-        $this->assertContains($book1->getId(), $book_ids);
-        $this->assertContains($book2->getId(), $book_ids);
-        $this->assertNotContains($book3->getId(), $book_ids);
-
-        $writer = $this->pool->modify($writer, [
-            'books' => [],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $this->assertSame(0, $writer->countBooks());
-    }
-
-    public function testAssociatedEntityIdsAttributeResetOnUpdate()
-    {
-        $writer_entity_class_name = $this->type_entity_class_names['writers'];
-        $book_entity_class_name = $this->type_entity_class_names['books'];
-
-        $book1 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'War and Peace',
-        ]);
-
-        $book2 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'Anna Karenina',
-        ]);
-
-        $book3 = $this->pool->produce($book_entity_class_name, [
-            'name' => 'The Government Inspector',
-        ]);
-
-        $this->assertTrue($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
-        $this->assertTrue($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
-        $this->assertTrue($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
-
-        $writer = $this->pool->produce($writer_entity_class_name, [
-            'name' => 'Leo Tolstoy',
-            'book_ids' => [$book1->getId(), $book2->getId()],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $book_ids = $writer->getBookIds();
-        $this->assertCount(2, $book_ids);
-
-        $this->assertContains($book1->getId(), $book_ids);
-        $this->assertContains($book2->getId(), $book_ids);
-        $this->assertNotContains($book3->getId(), $book_ids);
-
-        $writer = $this->pool->modify($writer, [
-            'book_ids' => [],
-        ]);
-        $this->assertTrue($writer->isLoaded());
-
-        $this->assertSame(0, $writer->countBooks());
+        return [
+            ['books', []],
+            ['book_ids', []],
+        ];
     }
 }
