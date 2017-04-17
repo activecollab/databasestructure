@@ -2,7 +2,12 @@
 
 [![Build Status](https://travis-ci.org/activecollab/databasestructure.svg?branch=master)](https://travis-ci.org/activecollab/databasestructure)
 
-…
+## Version 1.0 To Do
+
+- [ ] Add `release` and `clear` methods to Has Many, and Has Many Via associations, 
+- [ ] Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it,
+- [ ] Associations should automatically add connection fields to the list of fields to be serialized,
+- [ ] Association cascading options and tests,
 
 ## Fields
 
@@ -92,7 +97,7 @@ $snapshot->setFieldValue('number_of_active_users', 123);  // Exception!
 
 #### Programming to an Interface
 
-Belongs To association supports "programming to an interface" approach. This means that you can set so they accept (and return) instances that implement a specific interface:
+Belongs To association supports "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
 
 ```php
 <?php
@@ -161,7 +166,7 @@ $writer = $pool->produce(Writer::class, [
 ```
 #### Programming to an Interface
 
-Has Many association support "programming to an interface" approach. This means that you can set so it accepts (and return) instances that implement a specific interface:
+Has Many association support "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
 
 Example:
 
@@ -179,7 +184,7 @@ use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 
 #### Programming to an Interface
 
-Has One association support "programming to an interface" approach. This means that you can set so it accepts (and return) instances that implement a specific interface:
+Has One association support "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
 
 Example:
 
@@ -340,9 +345,3 @@ class MyStructure extends Structure
     }
 }
 ```
-
-## To Do
-
-1. Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it.
-1. Associations should automatically add connection fields to the list of fields to be serialized
-1. Association cascading options and tests
