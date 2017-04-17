@@ -88,6 +88,69 @@ $snapshot->setFieldValue('number_of_active_users', 123);  // Exception!
 
 ## Associations
 
+### Belongs To
+
+### Has Many
+
+```php
+<?php
+
+namespace App;
+
+use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
+use ActiveCollab\DatabaseStructure\Structure;
+
+class HasManyExampleStructure extends Structure
+{
+    public function configure()
+    {
+        $this->addType('writers')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new HasManyAssociation('books'),
+        ]);
+    }
+}
+```
+
+Method that this association will add to `Writer` model are:
+
+* `getBooksFinder(): FinderInterface` - Prepare a finder instance for this writer, with all the defaults set (ordering for example). Use it like you would use any other finder, 
+* `getBooks(): ?iterable` - Return all books that belong to the writer. When no books are found, this method returns `NULL`,
+* `getBookIds(): ?iterable` - Return a list of all book ID-s taht belong to the writer. When no books are found, this method returns `NULL`,
+* `countBooks(): int` - Return a total number of books.
+
+Following attributes are also supported by the `Writer` model:
+
+* `books` - Set associated books by providing their instances. These instances can be persisted to the database, or they can be new instances. If new, they will be saved when parent writer object is saved,
+* `book_ids` - Set associated books by providing their ID-s.
+
+```php
+<?php
+
+namespace App;
+
+// Set books using an attribute:
+
+$writer = $this->pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'books' => [$book1, $book2, $book3],
+]);
+
+// Or, using ID-s:
+$writer = $this->pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'book_ids' => [1, 2, 3, 4],
+]);
+```
+
+### Has One
+
+### Has Many Via
+
+### Has and Belongs to Many
+
 ### Programming to an Interface
 
 Belongs to and Has One associations support "programming to an interface" approach. This means that you can set so they accept (and return) instances that implement a specific interface. In this case, code will be generated so arguments, and return types are set to that interface, instead of a concrete class (target type).
@@ -175,7 +238,6 @@ namespace Application\Structure\Namespace\Base;
  */
 abstract class Token extends \ActiveCollab\DatabaseObject\Entity\Entity
 {
-    …
 }
 ```
 
