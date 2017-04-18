@@ -10,9 +10,8 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager;
 
-interface HasManyAssociatedEntitiesManagerInterface extends AssociatedEntitiesManagerInterface
-{
-    public function &setAssociatedEntities($values);
+use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\Base\BaseHasManyAssociatedEntitiesManagerInterface;
 
-    public function &setAssociatedEntityIds($values);
+interface HasManyAssociatedEntitiesManagerInterface extends BaseHasManyAssociatedEntitiesManagerInterface
+{
 }

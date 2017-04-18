@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseConnection\BatchInsert\BatchInsert;
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseObject\FinderInterface;
+use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\HasAndBelongsToManyAssociatedEntitiesManager;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -102,6 +103,23 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         array &$result
     )
     {
+        $namespace = $structure->getNamespace();
+
+        if ($namespace) {
+            $namespace = '\\' . ltrim($namespace, '\\');
+        }
+
+        $entity_class_name = $namespace ? $namespace . '\\' . $target_type->getClassName() : $target_type->getClassName();
+
+        $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasAndBelongsToManyAssociatedEntitiesManager::class . '(';
+        $result[] = $indent . '    $this->connection,';
+        $result[] = $indent . '    $this->pool,';
+        $result[] = $indent . '    ' . var_export($this->getConnectionTableName(), true) . ',';
+        $result[] = $indent . '    ' . var_export($this->getLeftFieldName(), true) . ',';
+        $result[] = $indent . '    ' . var_export($this->getRightFieldName(), true) . ',';
+        $result[] = $indent . '    ' . var_export($entity_class_name, true) . ',';
+        $result[] = $indent . '    ' . var_export($this->isRequired(), true);
+        $result[] = $indent . '),';
     }
 
     /**

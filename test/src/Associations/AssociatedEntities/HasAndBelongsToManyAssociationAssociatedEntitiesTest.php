@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
-use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooks\WriterHasAndBelongsToManyBooksStructure;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasAndBelongsToManyBooks\WriterHasAndBelongsToManyBooksStructure;
 use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
 
 class HasAndBelongsToManyAssociationAssociatedEntitiesTest extends StructuredTestCase
@@ -43,11 +43,8 @@ class HasAndBelongsToManyAssociationAssociatedEntitiesTest extends StructuredTes
         ], false);
 
         $this->assertFalse($book1->isLoaded());
-        $this->assertNull($book1->getWriterId());
         $this->assertFalse($book2->isLoaded());
-        $this->assertNull($book2->getWriterId());
         $this->assertFalse($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
 
         $writer = $this->pool->produce($writer_entity_class_name, [
             'name' => 'Leo Tolstoy',
@@ -56,11 +53,8 @@ class HasAndBelongsToManyAssociationAssociatedEntitiesTest extends StructuredTes
         $this->assertTrue($writer->isLoaded());
 
         $this->assertTrue($book1->isLoaded());
-        $this->assertSame($writer->getId(), $book1->getWriterId());
         $this->assertTrue($book2->isLoaded());
-        $this->assertSame($writer->getId(), $book2->getWriterId());
         $this->assertFalse($book3->isLoaded());
-        $this->assertNull($book3->getWriterId());
 
         $this->assertSame(2, $writer->countBooks());
     }
