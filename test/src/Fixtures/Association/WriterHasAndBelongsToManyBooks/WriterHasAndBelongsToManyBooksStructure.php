@@ -21,13 +21,13 @@ class WriterHasAndBelongsToManyBooksStructure extends Structure
         $this->addType('writers')->addFields([
             (new NameField('name', ''))->required(),
         ])->addAssociations([
-            new HasAndBelongsToManyAssociation('books')
+            new HasAndBelongsToManyAssociation('books'),
         ]);
 
         $this->addType('books')->addFields([
             (new NameField('name', ''))->required(),
         ])->addAssociations([
-            new HasAndBelongsToManyAssociation('writers')
+            new HasAndBelongsToManyAssociation('writers'),
         ]);
     }
 }

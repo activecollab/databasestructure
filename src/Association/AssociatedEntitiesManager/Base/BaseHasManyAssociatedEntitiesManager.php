@@ -55,9 +55,9 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
         $this->resetAssociatedEntities();
     }
 
-    abstract protected function updateAssociatedEntities(?iterable $associated_entities, int $entity_id);
+    abstract protected function updateAssociatedEntities(?iterable $associated_entities, int $source_entity_id);
 
-    abstract protected function updateAssociatedEntityIds(?array $associated_entity_ids, int $entity_id);
+    abstract protected function updateAssociatedEntityIds(?array $associated_entity_ids, int $source_entity_id);
 
     protected function resetAssociatedEntities()
     {

@@ -42,16 +42,16 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
 
     /**
      * @param iterable|EntityInterface[]|null $associated_entities
-     * @param int           $entity_id
+     * @param int                             $source_entity_id
      */
-    protected function updateAssociatedEntities(?iterable $associated_entities, int $entity_id)
+    protected function updateAssociatedEntities(?iterable $associated_entities, int $source_entity_id)
     {
         if ($associated_entities !== null) {
             $reassigned_entity_ids = [];
 
             if (!empty($associated_entities)) {
                 foreach ($associated_entities as $associated_entity) {
-                    $this->reassignEntity($associated_entity, $entity_id);
+                    $this->reassignEntity($associated_entity, $source_entity_id);
                     $reassigned_entity_ids[] = $associated_entity->getId();
                 }
             }
@@ -59,9 +59,9 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
             $finder = $this->pool->find($this->target_entity_class_name);
 
             if (empty($reassigned_entity_ids)) {
-                $finder->where("`$this->field_name` = ?", $entity_id);
+                $finder->where("`$this->field_name` = ?", $source_entity_id);
             } else {
-                $finder->where("`$this->field_name` = ? AND `id` NOT IN ?", $entity_id, $reassigned_entity_ids);
+                $finder->where("`$this->field_name` = ? AND `id` NOT IN ?", $source_entity_id, $reassigned_entity_ids);
             }
 
             /** @var EntityInterface[] $entities_to_release */
@@ -75,15 +75,15 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
         }
     }
 
-    protected function updateAssociatedEntityIds(?array $associated_entity_ids, int $entity_id)
+    protected function updateAssociatedEntityIds(?array $associated_entity_ids, int $source_entity_id)
     {
         if ($associated_entity_ids !== null) {
             $finder = $this->pool->find($this->target_entity_class_name);
 
             if (empty($associated_entity_ids)) {
-                $finder->where("`{$this->field_name}` = ?", $entity_id);
+                $finder->where("`{$this->field_name}` = ?", $source_entity_id);
             } else {
-                $finder->where("`{$this->field_name}` = ? OR `id` IN ?", $entity_id, $associated_entity_ids);
+                $finder->where("`{$this->field_name}` = ? OR `id` IN ?", $source_entity_id, $associated_entity_ids);
             }
 
             /** @var EntityInterface[] $entities_to_update */
@@ -92,7 +92,7 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
             if ($entities_to_update) {
                 foreach ($entities_to_update as $entity_to_update) {
                     if (in_array($entity_to_update->getId(), $associated_entity_ids)) {
-                        $this->reassignEntity($entity_to_update, $entity_id);
+                        $this->reassignEntity($entity_to_update, $source_entity_id);
                     } else {
                         $this->releaseEntity($entity_to_update, $this->association_is_required);
                     }
@@ -104,9 +104,9 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
     private function reassignEntity(
         EntityInterface $entity,
         int $reassign_to_entity_id
-    ): EntityInterface
+    ): void
     {
-        return $entity
+        $entity
             ->setFieldValue($this->field_name, $reassign_to_entity_id)
             ->save();
     }
@@ -114,7 +114,7 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
     private function releaseEntity(
         EntityInterface $entity,
         bool $association_is_required
-    ): EntityInterface
+    ): void
     {
         if ($association_is_required) {
             throw new RuntimeException(sprintf(
@@ -123,7 +123,7 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
             ));
         }
 
-        return $entity
+        $entity
             ->setFieldValue($this->field_name, null)
             ->save();
     }

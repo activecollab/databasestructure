@@ -37,6 +37,18 @@ class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
         ]);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage A list of entities expected.
+     */
+    public function testInvalidAttributeInstance()
+    {
+        $this->pool->produce($this->type_entity_class_names['writers'], [
+            'name' => 'Leo Tolstoy',
+            'books' => [new \stdClass],
+        ]);
+    }
+
     public function testAssociatedEntitiesAttributeOnInsert()
     {
         $writer_entity_class_name = $this->type_entity_class_names['writers'];

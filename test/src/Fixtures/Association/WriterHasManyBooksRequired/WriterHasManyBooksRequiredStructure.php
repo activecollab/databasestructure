@@ -22,13 +22,13 @@ class WriterHasManyBooksRequiredStructure extends Structure
         $this->addType('writers')->addFields([
             (new NameField('name', ''))->required(),
         ])->addAssociations([
-            new HasManyAssociation('books')
+            new HasManyAssociation('books'),
         ]);
 
         $this->addType('books')->addFields([
             (new NameField('name', ''))->required(),
         ])->addAssociations([
-            new BelongsToAssociation('writer')
+            new BelongsToAssociation('writer'),
         ]);
     }
 }
