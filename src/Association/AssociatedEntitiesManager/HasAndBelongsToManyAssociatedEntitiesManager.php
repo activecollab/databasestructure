@@ -64,22 +64,32 @@ final class HasAndBelongsToManyAssociatedEntitiesManager extends BaseHasManyAsso
     protected function updateAssociatedEntityIds(?array $associated_entity_ids, int $source_entity_id)
     {
         if ($associated_entity_ids !== null) {
-            $batch = $this->getReplaceBatch();
+            if (!empty($associated_entity_ids)) {
+                $batch = $this->getReplaceBatch();
 
-            foreach ($associated_entity_ids as $associated_entity_id) {
-                $batch->insert($source_entity_id, $associated_entity_id);
+                foreach ($associated_entity_ids as $associated_entity_id) {
+                    $batch->insert($source_entity_id, $associated_entity_id);
+                }
+
+                $batch->done();
+
+                $this->connection->delete(
+                    $this->connection_table,
+                    [
+                        "$this->source_field_name = ? AND $this->target_field_name NOT IN ?",
+                        $source_entity_id,
+                        $associated_entity_ids,
+                    ]
+                );
+            } else {
+                $this->connection->delete(
+                    $this->connection_table,
+                    [
+                        "$this->source_field_name = ?",
+                        $source_entity_id,
+                    ]
+                );
             }
-
-            $batch->done();
-
-            $this->connection->delete(
-                $this->connection_table,
-                [
-                    "$this->source_field_name = ? AND $this->target_field_name NOT IN ?",
-                    $source_entity_id,
-                    $associated_entity_ids,
-                ]
-            );
         }
     }
 
