@@ -458,7 +458,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = $indent . 'private $associated_entities_managers;';
         }
 
-        $result[] = $indent . '';
+        $result[] = '';
         $result[] = $indent . '/**';
         $result[] = $indent . ' * {@inheritdoc}';
         $result[] = $indent . ' */';
