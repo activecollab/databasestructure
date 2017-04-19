@@ -120,6 +120,7 @@ use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 
 namespace App;
 
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Structure;
@@ -132,6 +133,12 @@ class HasManyExampleStructure extends Structure
             (new NameField('name', ''))->required(),
         ])->addAssociations([
             new HasManyAssociation('books'),
+        ]);
+        
+        $this->addType('books')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new BelongsToAssociation('writer'),
         ]);
     }
 }
@@ -168,6 +175,7 @@ $writer = $pool->produce(Writer::class, [
     'book_ids' => [1, 2, 3, 4],
 ]);
 ```
+
 #### Programming to an Interface
 
 Has Many association support "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
@@ -205,6 +213,69 @@ use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 ### Has Many Via
 
 ### Has and Belongs to Many
+
+```php
+<?php
+
+namespace App;
+
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
+use ActiveCollab\DatabaseStructure\Structure;
+
+class HasManyExampleStructure extends Structure
+{
+    public function configure()
+    {
+        $this->addType('writers')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new HasAndBelongsToManyAssociation('books'),
+        ]);
+
+        $this->addType('books')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new HasAndBelongsToManyAssociation('writers'),
+        ]);
+    }
+}
+```
+
+Method that this association will add to `Writer` model are:
+
+* `getBooksFinder(): FinderInterface` - Prepare a book finder instance for this writer, with all the defaults set (ordering for example). Use it like you would use any other finder: extend it with extra conditions, use it to count records, fetch all, or first record etc, 
+* `getBooks(): ?iterable` - Return all books that belong to the writer. When no books are found, this method returns `NULL`,
+* `getBookIds(): ?iterable` - Return a list of all book ID-s that belong to the writer. When no books are found, this method returns `NULL`,
+* `countBooks(): int` - Return a total number of books,
+* `&addBooks(...$books): void` - Add one or more books to the writer,
+* `&removeBooks(...$books): void` - Remove one or more books that are associated with the writer,
+* `&clearBooks(): void` - Clear all book connections that are associated with a writer (book objects are not removed).
+
+#### Attributes
+
+Has and belongs to many association also adds following attributes to the model:
+
+* `books` - Set associated books by providing their instances. These instances can be persisted to the database, or they can be new instances. If new, they will be saved when parent writer object is saved,
+* `book_ids` - Set associated books by providing their ID-s.
+
+```php
+<?php
+
+namespace App;
+
+// Set books using an attribute:
+$writer = $pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'books' => [$book1, $book2, $book3],
+]);
+
+// Or, using ID-s:
+$writer = $pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'book_ids' => [1, 2, 3, 4],
+]);
+```
 
 ## Structure Options
 
