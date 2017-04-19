@@ -40,6 +40,10 @@ final class HasManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntiti
         $this->association_is_required = $association_is_required;
     }
 
+    public function beforeDelete(int $entity_id)
+    {
+    }
+
     /**
      * @param iterable|EntityInterface[]|null $associated_entities
      * @param int                             $source_entity_id

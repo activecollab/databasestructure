@@ -40,6 +40,10 @@ final class HasAndBelongsToManyAssociatedEntitiesManager extends BaseHasManyAsso
         $this->target_field_name = $target_field_name;
     }
 
+    public function beforeDelete(int $entity_id)
+    {
+    }
+
     /**
      * @param iterable|EntityInterface[]|null $associated_entities
      * @param int                             $source_entity_id

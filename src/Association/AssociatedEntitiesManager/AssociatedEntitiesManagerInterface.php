@@ -15,4 +15,6 @@ interface AssociatedEntitiesManagerInterface
     public function afterInsert(int $entity_id);
 
     public function afterUpdate(int $entity_id, array $modifications);
+
+    public function beforeDelete(int $entity_id);
 }
