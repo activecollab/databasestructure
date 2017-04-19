@@ -16,7 +16,7 @@ use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\Base\BaseHasManyAssociatedEntitiesManager;
 use ActiveCollab\DatabaseStructure\Entity\EntityInterface;
 
-final class HasAndBelongsToManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntitiesManager
+final class HasAndBelongsToManyAssociatedEntitiesManager extends BaseHasManyAssociatedEntitiesManager implements HasAndBelongsToManyAssociatedEntitiesManagerInterface
 {
     private $connection_table;
 
