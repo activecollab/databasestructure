@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Association;
 use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\AssociationInterface\Implementation as AssociationInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface;
@@ -20,12 +21,19 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
-class HasOneAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProgramToInterfaceInterface, ProtectSetterInterface, RequiredInterface
+class HasOneAssociation extends Association implements
+    AssociationInterface,
+    InjectFieldsInsterface,
+    InjectIndexesInsterface,
+    ProgramToInterfaceInterface,
+    ProtectSetterInterface,
+    RequiredInterface
 {
-    use AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, ProtectSetterInterfaceImplementation, RequiredInterfaceImplementation;
+    use
+        AssociationInterfaceImplementation,
+        ProgramToInterfaceInterfaceImplementation,
+        ProtectSetterInterfaceImplementation,
+        RequiredInterfaceImplementation;
 
     /**
      * @param string $name
@@ -92,6 +100,11 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
     public function getVerboseConstraintName()
     {
         return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
+    }
+
+    public function getAttributes(): array
+    {
+        return [$this->getName()];
     }
 
     public function buildAssociatedEntitiesManagerConstructionLine(

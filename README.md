@@ -8,6 +8,7 @@
 - [ ] Add `serialize` method to fields, so they are automatically added to the serialization list when they are added to a type,
 - [ ] Prefix all base classes with `Base`,
 - [ ] Sufix all managers and collections with `Manager` and `Collection` respectively,
+- [ ] Check for possible collisions between field and attribute that are added by associations,
 - [ ] Add `release` and `clear` methods to Has Many, and Has Many Via associations, 
 - [ ] Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it,
 - [ ] Associations should automatically add connection fields to the list of fields to be serialized,

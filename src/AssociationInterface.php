@@ -42,6 +42,8 @@ interface AssociationInterface
      */
     public function &setSourceTypeName($source_type_name);
 
+    public function getAttributes(): array;
+
     public function buildAssociatedEntitiesManagerConstructionLine(
         StructureInterface $structure,
         TypeInterface $source_type,

@@ -69,6 +69,14 @@ class HasManyAssociation extends Association implements
         return $this;
     }
 
+    public function getAttributes(): array
+    {
+        return [
+            $this->getName(),
+            Inflector::singularize($this->getName()) . '_ids',
+        ];
+    }
+
     public function buildAttributeInterception(
         StructureInterface $structure,
         TypeInterface $source_type,
@@ -77,8 +85,13 @@ class HasManyAssociation extends Association implements
         array &$result
     )
     {
-        $exported_association_name =  var_export($this->getName(), true);
-        $exported_association_ids_name = var_export(Inflector::singularize($this->getName()) . '_ids', true);
+        [
+            $association_name,
+            $association_ids_name,
+        ] = $this->getAttributes();
+
+        $exported_association_name =  var_export($association_name, true);
+        $exported_association_ids_name = var_export($association_ids_name, true);
 
         $result[] = $indent . 'case ' . $exported_association_name . ':';
         $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->setAssociatedEntities($value);';

@@ -109,6 +109,11 @@ class BelongsToAssociation extends Association implements
         return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
     }
 
+    public function getAttributes(): array
+    {
+        return [$this->getName()];
+    }
+
     public function buildAssociatedEntitiesManagerConstructionLine(
         StructureInterface $structure,
         TypeInterface $source_type,
