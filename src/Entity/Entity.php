@@ -24,14 +24,15 @@ abstract class Entity extends BaseEntity implements EntityInterface
     public function &save()
     {
         $is_new = $this->isNew();
-        $modifications = $this->getModifications();
+        $is_modified = $this->isModified();
+        $modifications = $is_modified ? $this->getModifications() : [];
 
         try {
             $this->connection->beginWork();
 
             parent::save();
 
-            if ($is_new || $this->isModified()) {
+            if ($is_new || $is_modified) {
                 foreach ($this->getAssociatedEntitiesManagers() as $associated_entities_manager) {
                     if ($is_new) {
                         $associated_entities_manager->afterInsert($this->getId());
