@@ -82,12 +82,14 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
         $ids = [];
 
         if ($this->entities_are_set) {
-            foreach ($this->associated_entities as $associated_entity) {
-                if (!$associated_entity->isLoaded()) {
-                    $associated_entity->save();
-                }
+            if (!empty($this->associated_entities)) {
+                foreach ($this->associated_entities as $associated_entity) {
+                    if (!$associated_entity->isLoaded()) {
+                        $associated_entity->save();
+                    }
 
-                $ids[] = $associated_entity->getId();
+                    $ids[] = $associated_entity->getId();
+                }
             }
         } elseif ($this->entity_ids_are_set) {
             $ids = $this->associated_entity_ids;
