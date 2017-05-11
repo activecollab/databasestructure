@@ -12,6 +12,7 @@ namespace ActiveCollab\DatabaseStructure\Entity;
 
 use ActiveCollab\DatabaseObject\Entity\Entity as BaseEntity;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\AssociatedEntitiesManagerInterface;
+use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\Base\BaseHasManyAssociatedEntitiesManager;
 use Exception;
 
 abstract class Entity extends BaseEntity implements EntityInterface
@@ -20,6 +21,21 @@ abstract class Entity extends BaseEntity implements EntityInterface
      * @return array|AssociatedEntitiesManagerInterface[]
      */
     abstract protected function getAssociatedEntitiesManagers(): array;
+
+    public function getIdsFromAssociationAttributes(string $association_name): array
+    {
+        $manager = $this->getAssociatedEntitiesManagers()[$association_name] ?? null;
+
+        if (!$manager instanceof AssociatedEntitiesManagerInterface) {
+            throw new \LogicException("Manager for '$association_name' association not found.");
+        }
+
+        if (!$manager instanceof BaseHasManyAssociatedEntitiesManager) {
+            throw new \LogicException("Association '$association_name' does not handle lists of associated entities.");
+        }
+
+        return $manager->getAssociatedEntityIds();
+    }
 
     public function &save()
     {

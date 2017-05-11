@@ -13,7 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooksRequired\WriterHasManyBooksRequiredStructure;
 use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
 
-class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
+final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
 {
     private $writer;
 

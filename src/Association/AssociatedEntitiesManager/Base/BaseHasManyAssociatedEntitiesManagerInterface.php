@@ -14,6 +14,8 @@ use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\Associa
 
 interface BaseHasManyAssociatedEntitiesManagerInterface extends AssociatedEntitiesManagerInterface
 {
+    public function getAssociatedEntityIds(): array;
+
     public function &setAssociatedEntities($values);
 
     public function &setAssociatedEntityIds($values);

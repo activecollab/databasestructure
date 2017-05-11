@@ -13,7 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooks\WriterHasManyBooksStructure;
 use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
 
-class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
+final class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
 {
     protected function getStructureClassName(): string
     {

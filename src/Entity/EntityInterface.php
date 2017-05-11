@@ -14,4 +14,5 @@ use ActiveCollab\DatabaseObject\Entity\EntityInterface as BaseEntityInterface;
 
 interface EntityInterface extends BaseEntityInterface
 {
+    public function getIdsFromAssociationAttributes(string $association_name): array;
 }

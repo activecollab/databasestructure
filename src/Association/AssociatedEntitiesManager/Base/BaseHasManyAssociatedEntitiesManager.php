@@ -43,15 +43,27 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
 
     public function afterInsert(int $entity_id)
     {
-        $this->updateAssociatedEntities($this->associated_entities, $entity_id);
-        $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id);
+        if ($this->entities_are_set) {
+            $this->updateAssociatedEntities($this->associated_entities, $entity_id);
+        }
+
+        if ($this->entity_ids_are_set) {
+            $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id);
+        }
+
         $this->resetAssociatedEntities();
     }
 
     public function afterUpdate(int $entity_id, array $modifications)
     {
-        $this->updateAssociatedEntities($this->associated_entities, $entity_id);
-        $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id);
+        if ($this->entities_are_set) {
+            $this->updateAssociatedEntities($this->associated_entities, $entity_id);
+        }
+
+        if ($this->entity_ids_are_set) {
+            $this->updateAssociatedEntityIds($this->associated_entity_ids, $entity_id);
+        }
+
         $this->resetAssociatedEntities();
     }
 
@@ -65,20 +77,56 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
         $this->associated_entity_ids = null;
     }
 
+    public function getAssociatedEntityIds(): array
+    {
+        $ids = [];
+
+        if ($this->entities_are_set) {
+            foreach ($this->associated_entities as $associated_entity) {
+                if (!$associated_entity->isLoaded()) {
+                    $associated_entity->save();
+                }
+
+                $ids[] = $associated_entity->getId();
+            }
+        } elseif ($this->entity_ids_are_set) {
+            $ids = $this->associated_entity_ids;
+        }
+
+        if (!empty($ids)) {
+            $ids = array_unique($ids);
+            sort($ids);
+        }
+
+        return $ids;
+    }
+
+    private $entities_are_set = false;
+
     public function &setAssociatedEntities($values)
     {
         $this->validateListOfEntities($values);
 
         $this->associated_entities = $values;
 
+        $this->entities_are_set = true;
+        $this->entity_ids_are_set = false;
+        $this->associated_entity_ids = null;
+
         return $this;
     }
+
+    private $entity_ids_are_set = false;
 
     public function &setAssociatedEntityIds($values)
     {
         $this->validateListOfIds($values);
 
         $this->associated_entity_ids = $values;
+
+        $this->entities_are_set = false;
+        $this->entity_ids_are_set = true;
+        $this->associated_entities = null;
 
         return $this;
     }
