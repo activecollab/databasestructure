@@ -133,13 +133,6 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         array &$result
     )
     {
-        $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * @var \\' . FinderInterface::class;
-        $result[] = '     */';
-        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
@@ -148,11 +141,15 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '     */';
         $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->joinTable(' . var_export($this->getConnectionTableName(), true) . ')->where(\'`' . $this->getConnectionTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
-        $result[] = '        }';
-        $result[] = '';
-        $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
+        $result[] = '        return $this->pool';
+        $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
+        $result[] = '            ->joinTable(' . var_export($this->getConnectionTableName(), true) . ')';
+        $result[] = '            ->where(\'`' . $this->getConnectionTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
+        if ($this->getOrderBy()) {
+            $result[] = '            ->orderBy(' . var_export($this->getOrderBy(), true) . ');';
+        } else {
+            $result[count($result) - 1] .= ';';
+        }
         $result[] = '    }';
     }
 
@@ -188,7 +185,13 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        $batch = new \\' . BatchInsert::class . '($this->connection, ' . var_export($this->getConnectionTableName(), true) . ', [' . var_export($this->getFkFieldNameFrom($source_type), true). ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '], 50, \\' . ConnectionInterface::class . '::REPLACE);';
+        $result[] = '        $batch = new \\' . BatchInsert::class . '(';
+        $result[] = '            $this->connection,';
+        $result[] = '            ' .  var_export($this->getConnectionTableName(), true) . ',';
+        $result[] = '            [' . var_export($this->getFkFieldNameFrom($source_type), true) . ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '],';
+        $result[] = '            50,';
+        $result[] = '            \\ ' . ConnectionInterface::class . '::REPLACE';
+        $result[] = '        );';
         $result[] = '';
         $result[] = '        foreach ($objects_to_add as $object_to_add) {';
         $result[] = '            if ($object_to_add->isNew()) {';

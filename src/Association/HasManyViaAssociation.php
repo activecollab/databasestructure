@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseObject\FinderInterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -63,26 +64,23 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
 
-        $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
-        $result[] = '     */';
-        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
         $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
-        $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
+        $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
-        $result[] = '        }';
-        $result[] = '';
-        $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
+        $result[] = '        return $this->pool';
+        $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
+        $result[] = '            ->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')';
+        $result[] = '            ->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
+        if ($this->getOrderBy()) {
+            $result[] = '            ->orderBy(' . var_export($this->getOrderBy(), true) . ');';
+        } else {
+            $result[count($result) - 1] .= ';';
+        }
         $result[] = '    }';
     }
 
