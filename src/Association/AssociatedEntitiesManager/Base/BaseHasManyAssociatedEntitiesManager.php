@@ -74,7 +74,10 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
     protected function resetAssociatedEntities()
     {
         $this->associated_entities = null;
+        $this->entities_are_set = false;
+
         $this->associated_entity_ids = null;
+        $this->entity_ids_are_set = false;
     }
 
     public function getAssociatedEntityIds(): array
@@ -82,14 +85,12 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
         $ids = [];
 
         if ($this->entities_are_set) {
-            if (!empty($this->associated_entities)) {
-                foreach ($this->associated_entities as $associated_entity) {
-                    if (!$associated_entity->isLoaded()) {
-                        $associated_entity->save();
-                    }
-
-                    $ids[] = $associated_entity->getId();
+            foreach ($this->associated_entities as $associated_entity) {
+                if (!$associated_entity->isLoaded()) {
+                    $associated_entity->save();
                 }
+
+                $ids[] = $associated_entity->getId();
             }
         } elseif ($this->entity_ids_are_set) {
             $ids = $this->associated_entity_ids;
