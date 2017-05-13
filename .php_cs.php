@@ -49,6 +49,7 @@ return (new PhpCsFixer\Config('psr2'))
         'array_syntax' => ['syntax' => 'short'],
         'phpdoc_align' => true,
         'return_type_declaration' => true,
+        'single_quote' => true,
         'phpdoc_separation' => false,
         'phpdoc_no_package' => false,
         'no_mixed_echo_print' => false,
