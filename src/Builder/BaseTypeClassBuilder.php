@@ -19,6 +19,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -135,6 +136,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         foreach ($fields as $field) {
+            if ($field instanceof GeneratedInterface && $field->isGenerated()) {
+                continue;
+            }
+
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
                 $this->buildFieldGetterAndSetter($field, '    ', $result);
             }

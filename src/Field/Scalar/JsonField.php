@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractor;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use InvalidArgumentException;
@@ -22,6 +23,14 @@ class JsonField extends ScalarField implements JsonFieldInterface
     public function getDeserializingCode($variable_name): string
     {
         return 'json_decode($' . $variable_name . ', true)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_JSON;
     }
 
     /**

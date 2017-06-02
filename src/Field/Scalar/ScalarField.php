@@ -8,7 +8,9 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface\Implementation as GeneratedInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
@@ -18,7 +20,11 @@ use InvalidArgumentException;
 
 abstract class ScalarField implements ScalarFieldInterface
 {
-    use ProtectSetterInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
+    use
+        GeneratedInterfaceImplementation,
+        ProtectSetterInterfaceImplementation,
+        RequiredInterfaceImplementation,
+        UniqueInterfaceImplementation;
 
     /**
      * @var string
@@ -60,6 +66,14 @@ abstract class ScalarField implements ScalarFieldInterface
     public function getDeserializingCode($variable_name): string
     {
         return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_STRING;
     }
 
     /**

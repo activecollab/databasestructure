@@ -8,11 +8,12 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
-interface ScalarFieldInterface extends FieldInterface, RequiredInterface, UniqueInterface
+interface ScalarFieldInterface extends FieldInterface, GeneratedInterface, RequiredInterface, UniqueInterface
 {
     /**
      * Return PHP native type.
@@ -30,6 +31,13 @@ interface ScalarFieldInterface extends FieldInterface, RequiredInterface, Unique
      * @return string
      */
     public function getDeserializingCode($variable_name): string;
+
+    /**
+     * Get value caster for this field.
+     *
+     * @return string
+     */
+    public function getValueCaster(): string;
 
     /**
      * Return value casting code, that is called when value is set for a field.

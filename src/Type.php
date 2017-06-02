@@ -22,6 +22,7 @@ use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField as CompositeFi
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use BadMethodCallException;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
@@ -445,7 +446,9 @@ class Type implements TypeInterface
         $result = [];
 
         foreach ($this->getAllFields() as $field) {
-            if ($field instanceof GeneratedFieldsInterface) {
+            if ($field instanceof GeneratedInterface && $field->isGenerated()) {
+                $result[$field->getName()] = $field->getValueCaster();
+            } elseif ($field instanceof GeneratedFieldsInterface) {
                 $result = array_merge($result, $field->getGeneratedFields());
             }
         }

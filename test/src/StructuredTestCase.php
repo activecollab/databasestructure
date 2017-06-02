@@ -146,17 +146,17 @@ abstract class StructuredTestCase extends TestCase
         $type_collection_class_names = [];
 
         foreach ($structure->getTypes() as $type) {
-            $type_entity_class_name = $built_in_namespace . "\\" . $type->getClassName();
+            $type_entity_class_name = $built_in_namespace . '\\' . $type->getClassName();
             $this->assertTrue(class_exists($type_entity_class_name));
 
             $type_entity_class_names[$type->getName()] = $type_entity_class_name;
 
-            $type_manager_class_name = $built_in_namespace . "\\Manager\\" . $type->getManagerClassName();
+            $type_manager_class_name = $built_in_namespace . '\\Manager\\' . $type->getManagerClassName();
             $this->assertTrue(class_exists($type_manager_class_name));
 
             $type_manager_class_names[$type->getName()] = $type_manager_class_name;
 
-            $type_collection_class_name = $built_in_namespace . "\\Collection\\" . $type->getCollectionClassName();
+            $type_collection_class_name = $built_in_namespace . '\\Collection\\' . $type->getCollectionClassName();
             $this->assertTrue(class_exists($type_collection_class_name));
 
             $type_collection_class_names[$type->getName()] = $type_collection_class_name;

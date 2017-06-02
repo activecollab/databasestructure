@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
@@ -26,6 +27,14 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
     public function getNativeType(): string
     {
         return 'int';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_INT;
     }
 
     /**

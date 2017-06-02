@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 
 class DateTimeField extends ScalarField
@@ -18,6 +19,14 @@ class DateTimeField extends ScalarField
     public function getNativeType(): string
     {
         return '\\' . DateTimeValueInterface::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_DATETIME;
     }
 
     /**
