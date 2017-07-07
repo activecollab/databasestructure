@@ -381,7 +381,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
      */
     private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster, $escaped_default_value)
     {
-        $value_extractor_expression = "{$escaped_field_name}->>{$escaped_expression}";
+        $value_extractor_expression = "JSON_UNQUOTE(JSON_EXTRACT({$escaped_field_name}, {$escaped_expression}))";
 
         switch ($caster) {
             case ValueCasterInterface::CAST_BOOL:
