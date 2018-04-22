@@ -687,6 +687,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '';
         $lines[] = '    if (!is_array($modified_value) && !is_null($modified_value)) {';
         $lines[] = "        throw new \\LogicException('Modifier callback should return array or NULL.');";
+        $lines[] = '    }';
         $lines[] = '';
         $lines[] = '    $this->' . $setter_name . '($modified_value);';
         $lines[] = '';
