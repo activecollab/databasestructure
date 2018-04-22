@@ -43,6 +43,30 @@ $this->addType('stats_snapshots')->addFields([
 ]);
 ```
 
+On top of regular getters and setters, JSON field add modify method. This method receives a callback that will be called with decoded JSON value:
+
+```php
+$object->modifyStats(
+    function ($stats) {
+        $stats['something-to-add'] = true;
+        unset($stats['something-to-remove']);
+        
+        return $stats;
+    }
+);
+```
+
+Value passed to callback can be a lot of different types. To ensure that you always get an array, regardless of what is in the field, pass in the second `$force_array` argument:
+
+```php
+$object->modifyStats(
+    function (array $this_will_be_array_for_sure) {
+        return $this_will_be_array_for_sure;
+    },
+    true
+);
+```
+
 System supports value extraction from JSON fields. These values are extracted by MySQL automatically, and they can be stored and indexed. 
 
 There are two ways of adding extractors. First is by constructing extractor instance by yourself, and adding it:
