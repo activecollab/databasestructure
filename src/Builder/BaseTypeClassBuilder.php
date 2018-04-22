@@ -671,7 +671,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '/**';
         $lines[] = ' * Modify value of ' . $field->getName() . ' field.';
         $lines[] = ' *';
-        $lines[] = ' * @param  callable $value';
+        $lines[] = ' * @param  callable $callback';
         $lines[] = ' * @param  bool     $force_array';
         $lines[] = ' * @return $this';
         $lines[] = ' */';
