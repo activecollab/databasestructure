@@ -43,7 +43,7 @@ $this->addType('stats_snapshots')->addFields([
 ]);
 ```
 
-On top of regular getters and setters, JSON field add modify method. This method receives a callback that will be called with decoded JSON value:
+On top of regular getters and setters, JSON fields add a `modify` method. This method receives a callback that will be called with decoded JSON value. Result of the callback is then stored in the field automatically:
 
 ```php
 $object->modifyStats(
@@ -56,7 +56,7 @@ $object->modifyStats(
 );
 ```
 
-Value passed to callback can be a lot of different types. To ensure that you always get an array, regardless of what is in the field, pass in the second `$force_array` argument:
+JSON fields can store a lot of different data types, so you can't always known which type will be passed to the callback. In our everyday use we noticed that arrays are most common data types that are stored in JSON fields. To ensure that you always get an array, regardless of what is in the field, pass in the second `$force_array` argument:
 
 ```php
 $object->modifyStats(
