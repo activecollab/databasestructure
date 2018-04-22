@@ -1,14 +1,17 @@
-dist: trusty
-sudo: required
 language: php
 php:
   - 7.1
 services:
   - mysql
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
 before_install:
   - composer self-update
 install: composer install --dev
 before_script:
-  - bash .travis.install-mysql-5.7.sh
   - mysql -e 'create database activecollab_database_structure_test'
 script: vendor/bin/phpunit
