@@ -16,6 +16,8 @@ use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
@@ -559,7 +561,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * @param string      $indent
      * @param array       $result
      */
-    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result)
+    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result): void
     {
         $setter_access_level = $field->getProtectSetter() ? 'protected' : 'public';
 
@@ -569,8 +571,16 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $default_value = $field instanceof ScalarFieldWithDefaultValueInterface ? $field->getDefaultValue() : null;
 
-        $type_for_executable_code = $this->getTypeForExecutableCode($field->getNativeType(), $default_value, $field->isRequired());
-        $type_for_doc_block = $this->getTypeForDocBlock($field->getNativeType(), $default_value, $field->isRequired());
+        $type_for_executable_code = $this->getTypeForExecutableCode(
+            $field->getNativeType(),
+            $default_value,
+            $field->isRequired()
+        );
+        $type_for_doc_block = $this->getTypeForDocBlock(
+            $field->getNativeType(),
+            $default_value,
+            $field->isRequired()
+        );
 
         if ($field instanceof BooleanField && $this->useShortGetterName($field->getName())) {
             $short_getter = $this->getShortGetterName($field->getName());
@@ -640,9 +650,48 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '    return $this;';
         $lines[] = '}';
 
+        if ($field instanceof JsonFieldInterface) {
+            $this->buildModifier(
+                $field,
+                $this->getGetterName($field->getName()),
+                $this->getSetterName($field->getName()),
+                $setter_access_level,
+                $lines
+            );
+        }
+
         foreach ($lines as $line) {
             $result[] = $line ? $indent . $line : '';
         }
+    }
+
+    private function buildModifier(JsonFieldInterface $field, string $getter_name, string $setter_name, string $setter_access_level, array &$lines): void
+    {
+        $lines[] = '';
+        $lines[] = '/**';
+        $lines[] = ' * Modify value of ' . $field->getName() . ' field.';
+        $lines[] = ' *';
+        $lines[] = ' * @param  callable $value';
+        $lines[] = ' * @param  bool     $force_array';
+        $lines[] = ' * @return $this';
+        $lines[] = ' */';
+        $lines[] = $setter_access_level . ' function &' . $this->getModifierName($field->getName()) . '(callable $callback, bool $force_array = false)';
+        $lines[] = '{';
+        $lines[] = '    $value = $this->' . $getter_name . '();';
+        $lines[] = '';
+        $lines[] = '    if ($force_array && $value === null) {';
+        $lines[] = '        $value = [];';
+        $lines[] = '    }';
+        $lines[] = '';
+        $lines[] = '    $modified_value = call_user_func($callback, $value);';
+        $lines[] = '';
+        $lines[] = '    if (!is_array($modified_value) && !is_null($modified_value)) {';
+        $lines[] = "        throw new \\LogicException('Modifier callback should return array or NULL.');";
+        $lines[] = '';
+        $lines[] = '    $this->' . $setter_name . '($modified_value);';
+        $lines[] = '';
+        $lines[] = '    return $this;';
+        $lines[] = '}';
     }
 
     private function getTypeForExecutableCode(string $native_type, $default_value, bool $field_is_required): string
@@ -950,5 +999,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         return $this->setter_names[$field_name];
+    }
+
+    private function getModifierName($field_name): string
+    {
+        return 'modify' . Inflector::classify($field_name);
     }
 }
