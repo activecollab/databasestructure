@@ -11,12 +11,8 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractor;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
-use ActiveCollab\DatabaseStructure\FieldInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-interface JsonFieldInterface extends FieldInterface, GeneratedFieldsInterface
+interface JsonFieldInterface extends ScalarFieldInterface, GeneratedFieldsInterface
 {
     /**
      * @return ValueExtractorInterface[]

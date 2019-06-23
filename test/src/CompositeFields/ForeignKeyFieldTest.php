@@ -64,7 +64,9 @@ class ForeignKeyFieldTest extends TestCase
     public function testForeignKeyPassesRequiredToField()
     {
         /** @var IntegerField $fk_field */
-        $fk_field = (new ForeignKeyField('application_id'))->required(false)->getFields()[0];
+        $fk_field = (new ForeignKeyField('application_id'))
+            ->required(false)
+            ->getFields()[0];
 
         $this->assertInstanceOf(IntegerField::class, $fk_field);
         $this->assertFalse($fk_field->isRequired());

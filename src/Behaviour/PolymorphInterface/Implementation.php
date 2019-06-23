@@ -28,13 +28,13 @@ trait Implementation
     /**
      * @return string
      */
-    abstract public function getType();
+    abstract public function getType(): string;
 
     /**
      * @param  string $value
      * @return $this
      */
-    abstract public function &settype($value);
+    abstract public function &setType(string $value);
 
     /**
      * Register an internal event handler.

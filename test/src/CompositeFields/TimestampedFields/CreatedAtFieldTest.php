@@ -6,11 +6,12 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
+namespace ActiveCollab\DatabaseStructure\Test\CompositeFields\TimestampedFields;
 
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedAtInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedAtInterface\Implementation as CreatedAtInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
@@ -69,6 +70,20 @@ class CreatedAtFieldTest extends TestCase
 
         $this->assertArrayHasKey(CreatedAtInterface::class, $type->getTraits());
         $this->assertContains(CreatedAtInterfaceImplementation::class, $type->getTraits()[CreatedAtInterface::class]);
+    }
+
+    public function testFieldProperties()
+    {
+        $fields = (new CreatedAtField())->getFields();
+
+        $this->assertCount(1, $fields);
+
+        /** @var DateTimeField $field */
+        $field = $fields[0];
+        $this->assertInstanceOf(DateTimeField::class, $field);
+
+        $this->assertSame('created_at', $field->getName());
+        $this->assertTrue($field->isRequired());
     }
 
     /**

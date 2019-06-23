@@ -125,7 +125,9 @@ class NameFieldTest extends TestCase
      */
     public function testNameProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {
-        $name_field = (new NameField('name'))->required()->unique('context_filed_1');
+        $name_field = (new NameField('name', ''))
+            ->required()
+            ->unique('context_filed_1');
 
         /** @var StringField $string_field */
         $string_field = $name_field->getFields()[0];

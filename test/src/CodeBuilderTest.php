@@ -278,10 +278,13 @@ class CodeBuilderTest extends TestCase
     {
         $default_field_values = $this->base_book_reflection->getDefaultProperties()['default_field_values'];
 
-        $this->assertCount(1, $default_field_values);
+        $this->assertCount(2, $default_field_values);
 
         $this->assertArrayHasKey('title', $default_field_values);
         $this->assertSame('', $default_field_values['title']);
+
+        $this->assertArrayHasKey('author_id', $default_field_values);
+        $this->assertSame(0, $default_field_values['author_id']);
     }
 
     /**
@@ -291,10 +294,14 @@ class CodeBuilderTest extends TestCase
     {
         $default_field_values = $this->base_chapter_reflection->getDefaultProperties()['default_field_values'];
 
-        $this->assertCount(2, $default_field_values);
+        $this->assertCount(3, $default_field_values);
+
+        $this->assertArrayHasKey('book_id', $default_field_values);
+        $this->assertSame(0, $default_field_values['book_id']);
 
         $this->assertArrayHasKey('title', $default_field_values);
         $this->assertSame('', $default_field_values['title']);
+
         $this->assertArrayHasKey('position', $default_field_values);
         $this->assertSame(0, $default_field_values['position']);
     }

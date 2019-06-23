@@ -16,11 +16,11 @@ interface PolymorphInterface
     /**
      * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * @param  string $value
      * @return $this
      */
-    public function &settype($value);
+    public function &setType(string $value);
 }

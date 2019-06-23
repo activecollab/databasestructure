@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Blog\BlogStructure;
@@ -34,13 +36,6 @@ class BlogBuilderTest extends TestCase
      */
     private $blog_structure;
 
-    /**
-     * Constructs a test case with the given name.
-     *
-     * @param string $name
-     * @param array  $data
-     * @param string $dataName
-     */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -48,9 +43,6 @@ class BlogBuilderTest extends TestCase
         $this->build_path = __DIR__ . '/Fixtures/Blog';
     }
 
-    /**
-     * Set up test environment.
-     */
     public function setUp()
     {
         parent::setUp();
@@ -65,9 +57,6 @@ class BlogBuilderTest extends TestCase
         $this->blog_structure->build($this->build_path, $this->connection);
     }
 
-    /**
-     * Tear down test environment.
-     */
     public function tearDown()
     {
         $this->filesystem->emptyDir('/', ['BlogStructure.php']);
@@ -134,11 +123,12 @@ class BlogBuilderTest extends TestCase
     }
 
     /**
-     * Test if structure.sql is properly generated.
+     * Test if structure.sql and initial_data.sql files are properly generated.
      */
-    public function testBuildStructureSql()
+    public function testBuildSqlFiles()
     {
-        $this->assertFileExists("$this->build_path/structure.sql");
+        $this->assertFileExists("$this->build_path/SQL/structure.sql");
+        $this->assertFileExists("$this->build_path/SQL/initial_data.sql");
     }
 
     /**
@@ -222,9 +212,11 @@ class BlogBuilderTest extends TestCase
         $this->assertInternalType('array', $categories_constraints);
         $this->assertCount(1, $categories_constraints);
 
-        $this->assertArrayHasKey('category_id_constraint', $categories_constraints);
+        $constraint_name = 'has_and_belongs_to_many_' . md5('category_id_for_categories_posts_constraint');
 
-        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints['category_id_constraint'];
+        $this->assertArrayHasKey($constraint_name, $categories_constraints);
+
+        list($from_table, $from_field, $to_table, $to_field) = $categories_constraints[$constraint_name];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('category_id', $from_field);
@@ -253,18 +245,22 @@ class BlogBuilderTest extends TestCase
         $this->assertInternalType('array', $posts_constraints);
         $this->assertCount(2, $posts_constraints);
 
-        $this->assertArrayHasKey('post_id_constraint', $posts_constraints);
+        $constraint_name = 'has_and_belongs_to_many_' . md5('post_id_for_categories_posts_constraint');
 
-        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['post_id_constraint'];
+        $this->assertArrayHasKey($constraint_name, $posts_constraints);
+
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints[$constraint_name];
 
         $this->assertEquals('categories_posts', $from_table);
         $this->assertEquals('post_id', $from_field);
         $this->assertEquals('posts', $to_table);
         $this->assertEquals('id', $to_field);
 
-        $this->assertArrayHasKey('comment_post_constraint', $posts_constraints);
+        $constraint_name2 = 'belongs_to_' . md5('comment_post_constraint');
 
-        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints['comment_post_constraint'];
+        $this->assertArrayHasKey($constraint_name2, $posts_constraints);
+
+        list($from_table, $from_field, $to_table, $to_field) = $posts_constraints[$constraint_name2];
 
         $this->assertEquals('comments', $from_table);
         $this->assertEquals('post_id', $from_field);

@@ -8,28 +8,31 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-class DateTimeField extends Field
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+use ActiveCollab\DateValue\DateTimeValueInterface;
+
+class DateTimeField extends ScalarField
 {
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
-        return '\\ActiveCollab\\DateValue\\DateTimeValueInterface' . ($this->getDefaultValue() === null ? '|null' : '');
+        return '\\' . DateTimeValueInterface::class;
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_DATETIME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCastingCode($variable_name): string
     {
         return '$this->getDateTimeValueInstanceFrom($' . $variable_name . ')';
     }

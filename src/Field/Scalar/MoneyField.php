@@ -21,7 +21,7 @@ class MoneyField extends DecimalField
     {
         parent::__construct($name, $default_value);
 
-        $this->length(13);
-        $this->scale(3);
+        $this->length(12);
+        $this->scale(6);
     }
 }

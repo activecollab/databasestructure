@@ -8,7 +8,10 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-use ActiveCollab\DatabaseObject\ObjectInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface\OptionalImplementation as ParentOptionalInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface\RequiredImplementation as ParentRequiredInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Behaviour\ParentOptionalInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\ParentRequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField as ScalarStringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -19,13 +22,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ParentField extends Field implements AddIndexInterface, RequiredInterface, SizeInterface
+class ParentField extends CompositeField implements AddIndexInterface, RequiredInterface, SizeInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
@@ -85,104 +87,22 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         $type_field = (new ScalarStringField($this->type_field_name));
         $id_field = (new IntegerField($this->name, 0))->size($this->getSize())->unsigned();
 
         if ($this->isRequired()) {
-            $type_field->required();
-            $id_field->required();
+            $type_field->defaultValue('')->required();
+            $id_field->defaultValue(0)->required();
         }
 
         return [$type_field, $id_field];
     }
 
-    /**
-     * Return methods that this field needs to inject in base class.
-     *
-     * @param string $indent
-     * @param array  $result
-     */
-    public function getBaseClassMethods($indent, array &$result)
+    protected function autoAddIndexWhenAddedToType(): bool
     {
-        $type_getter_name = 'get' . Inflector::classify($this->type_field_name);
-        $type_setter_name = 'set' . Inflector::classify($this->type_field_name);
-
-        $id_getter_name = 'get' . Inflector::classify($this->name);
-        $id_setter_name = 'set' . Inflector::classify($this->name);
-
-        $instance_getter_name = 'get' . Inflector::classify($this->relation_name);
-        $instance_setter_name = 'set' . Inflector::classify($this->relation_name);
-
-        $type_hint = '\\' . ObjectInterface::class;
-
-        $methods = [];
-
-        $methods[] = '/**';
-        $methods[] = ' * @param  bool' . str_pad('$use_cache', strlen($type_hint) + 7, ' ', STR_PAD_LEFT);
-        $methods[] = ' * @return ' . $type_hint;
-        $methods[] = ' */';
-        $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';
-        $methods[] = '{';
-        $methods[] = '    if ($id = $this->' . $id_getter_name . '()) {';
-        $methods[] = '        return $this->pool->getById($this->' . $type_getter_name . '(), $id, $use_cache);';
-        $methods[] = '    } else {';
-        $methods[] = '        return null;';
-        $methods[] = '    }';
-        $methods[] = '}';
-        $methods[] = '';
-
-        if ($this->isRequired()) {
-            $methods[] = '/**';
-            $methods[] = ' * Set ' . $this->relation_name . '.';
-            $methods[] = ' *';
-            $methods[] = ' * @param  ' . $type_hint . ' $value';
-            $methods[] = ' * @return $this';
-            $methods[] = ' */';
-            $methods[] = 'public function &' . $instance_setter_name . '(\\' . ObjectInterface::class . ' $value)';
-            $methods[] = '{';
-            $methods[] = '    if ($value instanceof \\' . ObjectInterface::class . ' && $value->isLoaded()) {';
-            $methods[] = '        $this->' . $type_setter_name . '(get_class($value));';
-            $methods[] = '        $this->' . $id_setter_name . '($value->getId());';
-            $methods[] = '    } else {';
-            $methods[] = '        throw new \InvalidArgumentException(' . var_export("Instance of '" . ObjectInterface::class . "' expected", true) . ');';
-            $methods[] = '    }';
-            $methods[] = '';
-            $methods[] = '    return $this;';
-            $methods[] = '}';
-        } else {
-            $methods[] = '/**';
-            $methods[] = ' * Set ' . $this->relation_name . '.';
-            $methods[] = ' *';
-            $methods[] = ' * @param  ' . $type_hint . ' $value';
-            $methods[] = ' * @return $this';
-            $methods[] = ' */';
-            $methods[] = 'public function &' . $instance_setter_name . '(\\' . ObjectInterface::class . ' $value = null)';
-            $methods[] = '{';
-            $methods[] = '    if ($value instanceof \\' . ObjectInterface::class . ') {';
-            $methods[] = '        if ($value->isLoaded()) {';
-            $methods[] = '            $this->' . $type_setter_name . '(get_class($value));';
-            $methods[] = '            $this->' . $id_setter_name . '($value->getId());';
-            $methods[] = '        } else {';
-            $methods[] = '            throw new \InvalidArgumentException(' . var_export("Instance of '" . ObjectInterface::class . "' expected", true) . ');';
-            $methods[] = '        }';
-            $methods[] = '    } else {';
-            $methods[] = '        $this->' . $type_setter_name . '(null);';
-            $methods[] = '        $this->' . $id_setter_name . '(0);';
-            $methods[] = '    }';
-            $methods[] = '';
-            $methods[] = '    return $this;';
-            $methods[] = '}';
-        }
-
-        foreach ($methods as $line) {
-            if ($line) {
-                $result[] = "$indent$line";
-            } else {
-                $result[] = '';
-            }
-        }
+        return false;
     }
 
     /**
@@ -191,6 +111,12 @@ class ParentField extends Field implements AddIndexInterface, RequiredInterface,
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
+
+        if ($this->isRequired()) {
+            $type->addTrait(ParentRequiredInterface::class, ParentRequiredInterfaceImplementation::class);
+        } else {
+            $type->addTrait(ParentOptionalInterface::class, ParentOptionalInterfaceImplementation::class);
+        }
 
         if ($this->getAddIndex()) {
             $type->addIndex(new Index($this->relation_name, [$this->type_field_name, $this->name]));

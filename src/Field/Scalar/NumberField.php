@@ -8,10 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-abstract class NumberField extends Field
+abstract class NumberField extends ScalarFieldWithDefaultValue
 {
     /**
      * @var bool

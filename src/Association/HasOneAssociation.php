@@ -8,7 +8,10 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\AssociationInterface\Implementation as AssociationInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface;
@@ -18,12 +21,19 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
-class HasOneAssociation extends Association implements AssociationInterface, InjectFieldsInsterface, InjectIndexesInsterface, ProtectSetterInterface
+class HasOneAssociation extends Association implements
+    AssociationInterface,
+    InjectFieldsInsterface,
+    InjectIndexesInsterface,
+    ProgramToInterfaceInterface,
+    ProtectSetterInterface,
+    RequiredInterface
 {
-    use AssociationInterface\Implementation, ProtectSetterInterfaceImplementation;
+    use
+        AssociationInterfaceImplementation,
+        ProgramToInterfaceInterfaceImplementation,
+        ProtectSetterInterfaceImplementation,
+        RequiredInterfaceImplementation;
 
     /**
      * @param string $name
@@ -44,39 +54,14 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
     }
 
     /**
-     * @var bool
-     */
-    private $is_required = true;
-
-    /**
-     * Return true if this field is required.
-     *
-     * @return bool
-     */
-    public function isRequired()
-    {
-        return $this->is_required;
-    }
-
-    /**
-     * Value of this column is required.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function &required($value = true)
-    {
-        $this->is_required = (bool) $value;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFields()
     {
-        return [(new ForeignKeyField($this->getFieldName()))->required($this->isRequired())];
+        return [
+            (new ForeignKeyField($this->getFieldName()))
+                ->required($this->isRequired()),
+        ];
     }
 
     /**
@@ -104,18 +89,40 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
      */
     public function getConstraintName()
     {
-        return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
+        return 'has_one_' . md5($this->getVerboseConstraintName());
     }
 
     /**
-     * Build class methods.
+     * Return verbose constraint name.
      *
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param array              $result
+     * @return string
      */
-    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    public function getVerboseConstraintName()
+    {
+        return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
+    }
+
+    public function getAttributes(): array
+    {
+        return [$this->getName()];
+    }
+
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+    }
+
+    public function buildClassPropertiesAndMethods(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        array &$result
+    )
     {
         $namespace = $structure->getNamespace();
 
@@ -124,6 +131,11 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
         }
 
         $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
+
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
 
         $classified_association_name = Inflector::classify($this->getName());
 
@@ -136,11 +148,19 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return ' . $target_instance_class;
+        $result[] = '     * @return ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null');
         $result[] = '     */';
-        $result[] = '    public function ' . $getter_name . '()';
+        $result[] = '    public function ' . $getter_name . '(): ' . ($this->isRequired() ? '' : '?') . $returns_and_accepts;
         $result[] = '    {';
-        $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+
+        if ($this->isRequired()) {
+            $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+        } else {
+            $result[] = '        return $this->' . $fk_getter_name . '() ?';
+            $result[] = '            $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '()) :';
+            $result[] = '            null;';
+        }
+
         $result[] = '    }';
 
         $setter_access_level = $this->getProtectSetter() ? 'protected' : 'public';
@@ -149,10 +169,10 @@ class HasOneAssociation extends Association implements AssociationInterface, Inj
         $result[] = '    /**';
         $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . $target_instance_class  . ' $value';
+        $result[] = '     * @param  ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null') . ' $value';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $target_instance_class . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
+        $result[] = '    ' . $setter_access_level . ' function &' . $setter_name . '(' . $returns_and_accepts . ' $value' . ($this->isRequired() ? '' : ' = null') . ')';
         $result[] = '    {';
 
         if ($this->isRequired()) {

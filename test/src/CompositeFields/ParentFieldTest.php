@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Test\CompositeFields;
 
+use ActiveCollab\DatabaseStructure\Behaviour\ParentOptionalInterface;
+use ActiveCollab\DatabaseStructure\Behaviour\ParentRequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\ParentField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
@@ -66,9 +68,9 @@ class ParentFieldTest extends TestCase
     }
 
     /**
-     * Test if parent field adds to fields to type.
+     * Test if parent field adds two fields to type.
      */
-    public function testFieldAddsThreeFieldsToType()
+    public function testFieldAddsTwoFieldsToType()
     {
         $parent_id = new ParentField();
 
@@ -127,6 +129,28 @@ class ParentFieldTest extends TestCase
 
         $this->assertInstanceOf(IntegerField::class, $id_field);
         $this->assertTrue($id_field->isRequired());
+    }
+
+    /**
+     * Check if required adds required interface.
+     */
+    public function testRequiredAddsRequiedInterface()
+    {
+        $type = (new Type('chapters'))->addField((new ParentField())->required());
+
+        $this->assertArrayHasKey(ParentRequiredInterface::class, $type->getTraits());
+        $this->assertArrayNotHasKey(ParentOptionalInterface::class, $type->getTraits());
+    }
+
+    /**
+     * Check if optional adds optional interface.
+     */
+    public function testOptionaAddsOptionalInterface()
+    {
+        $type = (new Type('chapters'))->addField(new ParentField());
+
+        $this->assertArrayNotHasKey(ParentRequiredInterface::class, $type->getTraits());
+        $this->assertArrayHasKey(ParentOptionalInterface::class, $type->getTraits());
     }
 
     /**

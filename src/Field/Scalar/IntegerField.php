@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
@@ -21,22 +22,25 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
     use RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return 'int';
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_INT;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCastingCode($variable_name): string
     {
         return '(int) $' . $variable_name;
     }

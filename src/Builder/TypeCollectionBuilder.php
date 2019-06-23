@@ -9,7 +9,6 @@
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
@@ -21,7 +20,7 @@ class TypeCollectionBuilder extends FileSystemBuilder
      */
     public function buildType(TypeInterface $type)
     {
-        $collection_class_name = Inflector::classify($type->getName());
+        $collection_class_name = $type->getCollectionClassName();
         $base_class_name = 'Base\\' . $collection_class_name;
 
         $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/$collection_class_name.php" : null;
@@ -43,6 +42,9 @@ class TypeCollectionBuilder extends FileSystemBuilder
             $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
             $result[] = '';
         }
+
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {
             $result[] = "namespace $collection_class_namespace;";

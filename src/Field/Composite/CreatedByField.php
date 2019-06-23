@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
+use ActiveCollab\DatabaseStructure\Behaviour\CreatedByInterface\Implementation as CreatedByInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedByOptionalInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedByRequiredInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -36,9 +37,15 @@ class CreatedByField extends ActionByField
         parent::onAddedToType($type);
 
         if ($this->isRequired()) {
-            $type->addTrait(CreatedByRequiredInterface::class);
+            $type->addTrait(
+                CreatedByRequiredInterface::class,
+                CreatedByInterfaceImplementation::class
+            );
         } else {
-            $type->addTrait(CreatedByOptionalInterface::class);
+            $type->addTrait(
+                CreatedByOptionalInterface::class,
+                CreatedByInterfaceImplementation::class
+            );
         }
     }
 }

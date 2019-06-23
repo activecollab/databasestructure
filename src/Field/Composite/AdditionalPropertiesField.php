@@ -17,7 +17,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class AdditionalPropertiesField extends Field
+class AdditionalPropertiesField extends CompositeField
 {
     /**
      * @return string
@@ -38,11 +38,14 @@ class AdditionalPropertiesField extends Field
     }
 
     /**
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
-        return [(new TextField($this->getName(), $this->getDefaultValue()))->size(FieldInterface::SIZE_BIG)->protectSetter()];
+        return [
+            (new TextField($this->getName(), $this->getDefaultValue()))
+                ->size(FieldInterface::SIZE_BIG)->protectSetter(),
+        ];
     }
 
     /**
@@ -54,6 +57,8 @@ class AdditionalPropertiesField extends Field
     {
         parent::onAddedToType($type);
 
-        $type->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class)->protectFields($this->getName());
+        $type
+            ->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class)
+            ->protectFields($this->getName());
     }
 }

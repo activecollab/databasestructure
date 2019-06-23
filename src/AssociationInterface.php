@@ -42,13 +42,28 @@ interface AssociationInterface
      */
     public function &setSourceTypeName($source_type_name);
 
-    /**
-     * Build class methods.
-     *
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param array              $result
-     */
-    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result);
+    public function getAttributes(): array;
+
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    );
+
+    public function buildAttributeInterception(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    );
+
+    public function buildClassPropertiesAndMethods(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        array &$result
+    );
 }

@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
@@ -62,12 +64,25 @@ class DecimalField extends NumberField
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getNativeType(): string
+    {
+        return 'float';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_FLOAT;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCastingCode($variable_name): string
     {
         return '(float) $' . $variable_name;
     }

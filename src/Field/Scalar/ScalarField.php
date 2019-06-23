@@ -8,21 +8,23 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface\Implementation as GeneratedInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-abstract class Field implements FieldInterface, RequiredInterface, UniqueInterface
+abstract class ScalarField implements ScalarFieldInterface
 {
-    use ProtectSetterInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation;
+    use
+        GeneratedInterfaceImplementation,
+        ProtectSetterInterfaceImplementation,
+        RequiredInterfaceImplementation,
+        UniqueInterfaceImplementation;
 
     /**
      * @var string
@@ -30,23 +32,16 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     private $name;
 
     /**
-     * @var mixed
-     */
-    private $default_value;
-
-    /**
      * @param  string                   $name
-     * @param  mixed                    $default_value
      * @throws InvalidArgumentException
      */
-    public function __construct($name, $default_value = null)
+    public function __construct($name)
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid field name");
         }
 
         $this->name = $name;
-        $this->default_value = $default_value;
     }
 
     /**
@@ -58,56 +53,33 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
     }
 
     /**
-     * Return default field value.
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getDefaultValue()
-    {
-        return $this->default_value;
-    }
-
-    /**
-     * @param  mixed $value
-     * @return $this
-     */
-    public function &defaultValue($value)
-    {
-        $this->default_value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Return PHP native type.
-     *
-     * @return string
-     */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return 'mixed';
     }
 
     /**
-     * Return de-serialized value, on get field value.
-     *
-     * This method should be unsed only for fields that store serialized data, like JSON or serialized PHP values.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getDeserializingCode($variable_name)
+    public function getDeserializingCode($variable_name): string
     {
         return '';
     }
 
     /**
-     * Return value casting code, that is called when value is set for a field.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_STRING;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCastingCode($variable_name): string
     {
         return '(string) $' . $variable_name;
     }
@@ -119,6 +91,9 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
      */
     public function onAddedToType(TypeInterface &$type)
     {
+        if ($this instanceof AddIndexInterface && $this->getAddIndex()) {
+            $type->addIndex(new Index($this->getName(), $this->getAddIndexContext(), $this->getAddIndexType()));
+        }
     }
 
     /**
@@ -131,16 +106,16 @@ abstract class Field implements FieldInterface, RequiredInterface, UniqueInterfa
      *
      * @return bool
      */
-    public function getShouldBeAddedToModel()
+    public function getShouldBeAddedToModel(): bool
     {
         return $this->should_be_added_to_model;
     }
 
     /**
-     * @param  bool  $value
-     * @return $this
+     * @param  bool                       $value
+     * @return ScalarFieldInterface|$this
      */
-    public function &setShouldBeAddedToModel($value)
+    public function &setShouldBeAddedToModel(bool $value): ScalarFieldInterface
     {
         $this->should_be_added_to_model = (bool) $value;
 

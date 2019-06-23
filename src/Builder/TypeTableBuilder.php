@@ -15,15 +15,18 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
@@ -72,9 +75,22 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
      */
     public function preBuild()
     {
-        if ($structure_sql_path = $this->getStructureSqlPath()) {
+        $structure_sql_path = $this->getStructureSqlPath();
+        $initial_data_sql_path = $this->getInitialDataSqlPath();
+
+        if ($structure_sql_path && $initial_data_sql_path) {
+            $sql_dir = dirname($structure_sql_path);
+
+            if (!is_dir($sql_dir)) {
+                $old_mask = umask();
+                mkdir($sql_dir);
+            }
+
             file_put_contents($structure_sql_path, '');
             $this->triggerEvent('on_structure_sql_built', [$structure_sql_path]);
+
+            file_put_contents($initial_data_sql_path, '');
+            $this->triggerEvent('on_initial_data_sql_built', [$initial_data_sql_path]);
         }
     }
 
@@ -173,15 +189,28 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     {
         $result = $this->getConnection()->escapeFieldName($field->getName()) . ' ' . $this->prepareTypeDefinition($field);
 
-        if ($field->getDefaultValue() !== null) {
+        if ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null) {
             $result .= ' NOT NULL';
         }
 
-        if (!($field instanceof IntegerField && $field->getName() == 'id')) {
+        if ($this->hasDefaultValue($field)) {
             $result .= ' DEFAULT ' . $this->prepareDefaultValue($field);
         }
 
         return $result;
+    }
+
+    private function hasDefaultValue(FieldInterface $field)
+    {
+        if ($field instanceof IntegerField && $field->getName() == 'id') {
+            return false;
+        }
+
+        if (!$field instanceof DefaultValueInterface) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -249,6 +278,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             return 'JSON';
         } elseif ($field instanceof StringField) {
             return 'VARCHAR(' . $field->getLength() . ')';
+        } elseif ($field instanceof PasswordField) {
+            return 'VARCHAR(191)';
         } elseif ($field instanceof TextField) {
             switch ($field->getSize()) {
                 case FieldInterface::SIZE_TINY:
@@ -270,10 +301,10 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     /**
      * Prepare default value.
      *
-     * @param  ScalarField $field
+     * @param  ScalarFieldWithDefaultValue $field
      * @return string
      */
-    public function prepareDefaultValue(ScalarField $field)
+    public function prepareDefaultValue(ScalarFieldWithDefaultValue $field)
     {
         $default_value = $field->getDefaultValue();
 
@@ -350,7 +381,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
      */
     private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster, $escaped_default_value)
     {
-        $value_extractor_expression = "{$escaped_field_name}->>{$escaped_expression}";
+        $value_extractor_expression = "JSON_UNQUOTE(JSON_EXTRACT({$escaped_field_name}, {$escaped_expression}))";
 
         switch ($caster) {
             case ValueCasterInterface::CAST_BOOL:

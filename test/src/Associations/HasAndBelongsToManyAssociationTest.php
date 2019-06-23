@@ -6,15 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Associations;
 
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class HasAndBelongsToManyAssociationTest extends TestCase
 {
     /**
@@ -24,7 +23,8 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     {
         $writers = new Type('writers');
         $books = new Type('books');
-        $book_writers = new HasAndBelongsToManyAssociation('writers');
+
+        $book_writers = new HasAndBelongsToManyAssociation($writers->getName());
         $books->addAssociation($book_writers);
 
         $this->assertEquals('book_id', $book_writers->getLeftFieldName());
@@ -38,11 +38,20 @@ class HasAndBelongsToManyAssociationTest extends TestCase
     {
         $writers = new Type('writers');
         $books = new Type('books');
-        $book_writers = new HasAndBelongsToManyAssociation('writers');
+
+        $book_writers = new HasAndBelongsToManyAssociation($writers->getName());
         $books->addAssociation($book_writers);
 
-        $this->assertEquals('book_id_constraint', $book_writers->getLeftConstraintName());
-        $this->assertEquals('writer_id_constraint', $book_writers->getRightConstraintName());
+        $this->assertEquals('book_id_for_books_writers_constraint', $book_writers->getVerboseLeftConstraintName());
+        $this->assertEquals(
+            'has_and_belongs_to_many_' . md5('book_id_for_books_writers_constraint'),
+            $book_writers->getLeftConstraintName()
+        );
+        $this->assertEquals('writer_id_for_books_writers_constraint', $book_writers->getVerboseRightConstraintName());
+        $this->assertEquals(
+            'has_and_belongs_to_many_' . md5('writer_id_for_books_writers_constraint'),
+            $book_writers->getRightConstraintName()
+        );
     }
 
     /**

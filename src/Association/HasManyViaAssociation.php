@@ -6,8 +6,11 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseObject\FinderInterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
@@ -40,57 +43,84 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $this->intermediary_type_name = $intermediary_type_name;
     }
 
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    protected function buildGetFinderMethod(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type, $namespace,
+        array &$result)
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
 
-        $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
-        $result[] = '     */';
-        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
         $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
         $result[] = '     */';
-        $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
+        $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
-        $result[] = '        }';
-        $result[] = '';
-        $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
+        $result[] = '        return $this->pool';
+        $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
+        $result[] = '            ->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')';
+        $result[] = '            ->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
+        if ($this->getOrderBy()) {
+            $result[] = '            ->orderBy(' . var_export($this->getOrderBy(), true) . ');';
+        } else {
+            $result[count($result) - 1] .= ';';
+        }
         $result[] = '    }';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildAddRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
+    public function buildAddRelatedObjectMethod(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        $namespace,
+        array &$result
+    )
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
-
-        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
         $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
 
-        $longest_docs_param_type_name = max(strlen($target_instance_class), 'array|null', '$this');
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
+
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
+        $objects_to_add_param_doscs = $returns_and_accepts . '[]';
+        if ($returns_and_accepts != $target_instance_class) {
+            $objects_to_add_param_doscs .= '|' . $target_instance_class . '[]';
+        }
+
+        $longest_docs_param_type_name = max(strlen($objects_to_add_param_doscs), 'array|null', '$this');
 
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_add.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . str_pad($target_instance_class, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
+        $result[] = '     * @param  ' . str_pad($objects_to_add_param_doscs, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $object_to_add';
         $result[] = '     * @param  ' . str_pad('array|null', $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $attributes';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_add, array $attributes = null)';
+        $result[] = '    public function &add' . $this->getClassifiedSingleAssociationName() . '(' . $returns_and_accepts . ' $object_to_add, array $attributes = null)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
@@ -121,18 +151,28 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
     public function buildRemoveRelatedObjectMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
         $intermediary_type = $structure->getType($this->intermediary_type_name);
+        $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
 
         $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
-        $intermediary_instance_class = $this->getInstanceClassFrom($namespace, $intermediary_type);
+
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
+        $objects_to_remove_param_doscs = $returns_and_accepts . '[]';
+        if ($returns_and_accepts != $target_instance_class) {
+            $objects_to_remove_param_doscs .= '|' . $target_instance_class . '[]';
+        }
 
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove.';
         $result[] = '     *';
-        $result[] = '     * @param  ' . $target_instance_class . ' $object_to_remove';
+        $result[] = '     * @param  ' . $objects_to_remove_param_doscs . ' $object_to_remove';
         $result[] = '     * @return $this';
         $result[] = '     */';
-        $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $this->getInstanceClassFrom($namespace, $target_type) . ' $object_to_remove)';
+        $result[] = '    public function &remove' . $this->getClassifiedSingleAssociationName() . '(' . $returns_and_accepts . ' $object_to_remove)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';

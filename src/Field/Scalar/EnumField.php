@@ -13,7 +13,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class EnumField extends Field
+class EnumField extends ScalarFieldWithDefaultValue
 {
     /**
      * @var string[]
@@ -43,5 +43,13 @@ class EnumField extends Field
         $this->possibilities = $possibilities;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNativeType(): string
+    {
+        return 'string';
     }
 }

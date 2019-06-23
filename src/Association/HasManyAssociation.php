@@ -8,18 +8,22 @@
 
 namespace ActiveCollab\DatabaseStructure\Association;
 
+use ActiveCollab\DatabaseObject\FinderInterface;
+use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\HasManyAssociatedEntitiesManager;
+use ActiveCollab\DatabaseStructure\Association\ProgramToInterfaceInterface\Implementation as ProgramToInterfaceInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
-class HasManyAssociation extends Association implements AssociationInterface
+class HasManyAssociation extends Association implements
+    AssociationInterface,
+    ProgramToInterfaceInterface,
+    RequiredInterface
 {
-    use AssociationInterface\Implementation;
+    use AssociationInterface\Implementation, ProgramToInterfaceInterfaceImplementation, RequiredInterfaceImplementation;
 
     /**
      * Order releated records by.
@@ -65,15 +69,74 @@ class HasManyAssociation extends Association implements AssociationInterface
         return $this;
     }
 
-    /**
-     * Build class methods.
-     *
-     * @param StructureInterface $structure
-     * @param TypeInterface      $source_type
-     * @param TypeInterface      $target_type
-     * @param array              $result
-     */
-    public function buildClassMethods(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, array &$result)
+    public function getAttributes(): array
+    {
+        return [
+            $this->getName(),
+            Inflector::singularize($this->getName()) . '_ids',
+        ];
+    }
+
+    public function buildAttributeInterception(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+        [
+            $association_name,
+            $association_ids_name,
+        ] = $this->getAttributes();
+
+        $exported_association_name =  var_export($association_name, true);
+        $exported_association_ids_name = var_export($association_ids_name, true);
+
+        $result[] = $indent . 'case ' . $exported_association_name . ':';
+        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->setAssociatedEntities($value);';
+        $result[] = $indent . '    $this->recordModifiedAttribute(' . $exported_association_name . ');';
+        $result[] = '';
+        $result[] = $indent . '    return $this;';
+        $result[] = $indent . 'case ' . $exported_association_ids_name . ':';
+        $result[] = $indent . '    $this->getAssociatedEntitiesManagers()[' . $exported_association_name . ']->setAssociatedEntityIds($value);';
+        $result[] = $indent . '    $this->recordModifiedAttribute(' . $exported_association_ids_name . ');';
+        $result[] = '';
+        $result[] = $indent . '    return $this;';
+    }
+
+    public function buildAssociatedEntitiesManagerConstructionLine(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        string $indent,
+        array &$result
+    )
+    {
+        $namespace = $structure->getNamespace();
+
+        if ($namespace) {
+            $namespace = '\\' . ltrim($namespace, '\\');
+        }
+
+        $entity_class_name = $namespace ? $namespace . '\\' . $target_type->getClassName() : $target_type->getClassName();
+
+        $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasManyAssociatedEntitiesManager::class . '(';
+        $result[] = $indent . '    $this->connection,';
+        $result[] = $indent . '    $this->pool,';
+        $result[] = $indent . '    ' . var_export($target_type->getTableName(), true) . ',';
+        $result[] = $indent . '    ' . var_export($this->getFkFieldNameFrom($source_type), true) . ',';
+        $result[] = $indent . '    ' . var_export($entity_class_name, true) . ',';
+        $result[] = $indent . '    ' . var_export($this->isRequired(), true);
+        $result[] = $indent . '),';
+    }
+
+    public function buildClassPropertiesAndMethods(
+        StructureInterface $structure,
+        TypeInterface $source_type,
+        TypeInterface $target_type,
+        array &$result
+    )
     {
         $namespace = $structure->getNamespace();
 
@@ -83,13 +146,26 @@ class HasManyAssociation extends Association implements AssociationInterface
 
         $this->buildGetFinderMethod($structure, $source_type, $target_type, $namespace, $result);
 
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
+
+        $returns_and_accepts = $target_instance_class;
+        if ($this->getAccepts()) {
+            $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
+        }
+
+        $getter_returns = 'iterable|null|' . $returns_and_accepts . '[]';
+
+        if ($returns_and_accepts != $target_instance_class) {
+            $getter_returns .= '|' . $target_instance_class . '[]';
+        }
+
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
-        $result[] = '     * @return ' . $this->getInstanceClassFrom($namespace, $target_type) . '[]';
+        $result[] = '     * @return ' . $getter_returns;
         $result[] = '     */';
-        $result[] = "    public function get{$this->getClassifiedAssociationName()}()";
+        $result[] = "    public function get{$this->getClassifiedAssociationName()}(): ?iterable";
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->all();';
         $result[] = '    }';
@@ -98,9 +174,9 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s.';
         $result[] = '     *';
-        $result[] = '     * @return int[]';
+        $result[] = '     * @return iterable|null|int[]';
         $result[] = '     */';
-        $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids()';
+        $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids(): ?iterable';
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->ids();';
         $result[] = '    }';
@@ -111,7 +187,7 @@ class HasManyAssociation extends Association implements AssociationInterface
         $result[] = '     *';
         $result[] = '     * @return int';
         $result[] = '     */';
-        $result[] = "    public function count{$this->getClassifiedAssociationName()}()";
+        $result[] = "    public function count{$this->getClassifiedAssociationName()}(): int";
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->count();';
         $result[] = '    }';
@@ -130,26 +206,23 @@ class HasManyAssociation extends Association implements AssociationInterface
      */
     protected function buildGetFinderMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
-        $order_by = $this->getOrderBy() ? '->orderBy(' . var_export($this->getOrderBy(), true) . ')' : '';
-
-        $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * @var \\ActiveCollab\\DatabaseObject\\Finder';
-        $result[] = '     */';
-        $result[] = '    private $' . $this->getFinderPropertyName() . ';';
         $result[] = '';
         $result[] = '    /**';
         $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
-        $result[] = '     * @return \\ActiveCollab\\DatabaseObject\\Finder';
+        $result[] = '     * @return \\' . FinderInterface::class;
         $result[] = '     */';
-        $result[] = '    protected function ' . $this->getFinderMethodName() . '()';
+        $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        if (empty($this->' . $this->getFinderPropertyName() . ')) {';
-        $result[] = '            $this->' . $this->getFinderPropertyName() . ' = $this->pool->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())' . $order_by . ';';
-        $result[] = '        }';
-        $result[] = '';
-        $result[] = '        return $this->' . $this->getFinderPropertyName() . ';';
+        $result[] = '        return $this->pool';
+        $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
+        $result[] = '            ->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
+
+        if ($this->getOrderBy()) {
+            $result[] = '            ->orderBy(' . var_export($this->getOrderBy(), true) . ');';
+        } else {
+            $result[count($result) - 1] .= ';';
+        }
         $result[] = '    }';
     }
 

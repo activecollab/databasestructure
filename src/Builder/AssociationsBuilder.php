@@ -60,54 +60,69 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
             foreach ($this->getStructure()->getTypes() as $type) {
                 foreach ($type->getAssociations() as $association) {
                     if ($association instanceof BelongsToAssociation) {
-                        $create_constraint_statement = $this->prepareBelongsToConstraintStatement($type, $association);
-                        $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
-
-                        if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
-                            $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . Inflector::singularize($association->getTargetTypeName())]);
-                        } else {
-                            $this->getConnection()->execute($create_constraint_statement);
-                            $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . Inflector::singularize($association->getTargetTypeName())]);
-                        }
+                        $this->postBuildBelongsToAssociation($type, $association);
                     } elseif ($association instanceof HasOneAssociation) {
-                        $create_constraint_statement = $this->prepareHasOneConstraintStatement($type, $association);
-                        $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
-
-                        if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
-                            $this->triggerEvent('on_association_exists', [$type->getName() . ' has one ' . Inflector::singularize($association->getTargetTypeName())]);
-                        } else {
-                            $this->getConnection()->execute($create_constraint_statement);
-                            $this->triggerEvent('on_association_created', [$type->getName() . ' has one ' . Inflector::singularize($association->getTargetTypeName())]);
-                        }
+                        $this->postBuildHasOneAssociation($type, $association);
                     } elseif ($association instanceof HasAndBelongsToManyAssociation) {
-                        $connection_table = $association->getConnectionTableName();
-
-                        $left_field_name = $association->getLeftFieldName();
-                        $create_left_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $association->getLeftConstraintName(), $left_field_name);
-
-                        $this->appendToStructureSql($create_left_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getLeftConstraintName()) . ' constraint');
-
-                        $right_field_name = $association->getRightFieldName();
-                        $create_right_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $association->getRightConstraintName(), $right_field_name);
-
-                        $this->appendToStructureSql($create_right_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint');
-
-                        if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
-                            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
-                        } else {
-                            $this->getConnection()->execute($create_left_field_constraint_statement);
-                            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
-                        }
-
-                        if ($this->constraintExists($association->getRightConstraintName(), $association->getTargetTypeName())) {
-                            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
-                        } else {
-                            $this->getConnection()->execute($create_right_field_constraint_statement);
-                            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
-                        }
+                        $this->postBuildHasAndBelongsToManyAssociation($type, $association);
                     }
                 }
             }
+        }
+    }
+
+    private function postBuildBelongsToAssociation(TypeInterface $type, BelongsToAssociation $association)
+    {
+        $create_constraint_statement = $this->prepareBelongsToConstraintStatement($type, $association);
+        $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
+
+        if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
+            $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . Inflector::singularize($association->getTargetTypeName())]);
+        } else {
+            $this->getConnection()->execute($create_constraint_statement);
+            $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . Inflector::singularize($association->getTargetTypeName())]);
+        }
+    }
+
+    private function postBuildHasOneAssociation(TypeInterface $type, HasOneAssociation $association)
+    {
+        $create_constraint_statement = $this->prepareHasOneConstraintStatement($type, $association);
+        $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
+
+        if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
+            $this->triggerEvent('on_association_exists', [$type->getName() . ' has one ' . Inflector::singularize($association->getTargetTypeName())]);
+        } else {
+            $this->getConnection()->execute($create_constraint_statement);
+            $this->triggerEvent('on_association_created', [$type->getName() . ' has one ' . Inflector::singularize($association->getTargetTypeName())]);
+        }
+    }
+
+    private function postBuildHasAndBelongsToManyAssociation(TypeInterface $type, HasAndBelongsToManyAssociation $association)
+    {
+        $connection_table = $association->getConnectionTableName();
+
+        $left_field_name = $association->getLeftFieldName();
+        $create_left_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $association->getLeftConstraintName(), $left_field_name);
+
+        $this->appendToStructureSql($create_left_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getLeftConstraintName()) . ' constraint');
+
+        $right_field_name = $association->getRightFieldName();
+        $create_right_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $association->getRightConstraintName(), $right_field_name);
+
+        $this->appendToStructureSql($create_right_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint');
+
+        if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
+            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
+        } else {
+            $this->getConnection()->execute($create_left_field_constraint_statement);
+            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
+        }
+
+        if ($this->constraintExists($association->getRightConstraintName(), $association->getTargetTypeName())) {
+            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
+        } else {
+            $this->getConnection()->execute($create_right_field_constraint_statement);
+            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
         }
     }
 

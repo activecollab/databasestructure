@@ -8,24 +8,33 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface\Implementation as LengthInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-class StringField extends Field implements LengthInterface, ModifierInterface
+class StringField extends ScalarFieldWithDefaultValue implements AddIndexInterface, LengthInterface, ModifierInterface
 {
-    use LengthInterfaceImplementation, ModifierInterfaceImplementation;
+    use AddIndexInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation;
 
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * @param string      $name
+     * @param string|null $default_value
+     * @param bool        $add_index
      */
-    public function getNativeType()
+    public function __construct($name, $default_value = null, $add_index = false)
+    {
+        parent::__construct($name, $default_value);
+
+        $this->addIndex($add_index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNativeType(): string
     {
         return 'string';
     }

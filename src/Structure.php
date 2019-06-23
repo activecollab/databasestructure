@@ -20,12 +20,16 @@ use ActiveCollab\DatabaseStructure\Builder\CollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\ManagerDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\RecordsBuilder;
+use ActiveCollab\DatabaseStructure\Builder\SqlDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
+use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use InvalidArgumentException;
 
 /**
@@ -47,27 +51,22 @@ abstract class Structure implements StructureInterface
     abstract protected function configure();
 
     /**
-     * @var Type[]
+     * @var iterable|TypeInterface[]
      */
     private $types = [];
 
     /**
-     * Get all structure type.
-     *
-     * @return Type[]
+     * {@inheritdoc}
      */
-    public function getTypes()
+    public function getTypes(): iterable
     {
         return $this->types;
     }
 
     /**
-     * Return type by type name.
-     *
-     * @param  string $type_name
-     * @return Type
+     * {@internal }.
      */
-    public function getType($type_name)
+    public function getType($type_name): TypeInterface
     {
         if (isset($this->types[$type_name])) {
             return $this->types[$type_name];
@@ -77,10 +76,10 @@ abstract class Structure implements StructureInterface
     }
 
     /**
-     * @param  string $type_name
-     * @return Type
+     * @param  string        $type_name
+     * @return TypeInterface
      */
-    protected function &addType($type_name)
+    protected function &addType(string $type_name): TypeInterface
     {
         if (empty($this->types[$type_name])) {
             $this->types[$type_name] = new Type($type_name);
@@ -105,30 +104,143 @@ abstract class Structure implements StructureInterface
     }
 
     /**
+     * @var RecordInterface|array
+     */
+    private $records = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRecords(): array
+    {
+        return $this->records;
+    }
+
+    /**
+     * Add a record to the initial data set.
+     *
+     * @param  string             $type_name
+     * @param  array              $record
+     * @param  string             $comment
+     * @return StructureInterface
+     */
+    protected function &addRecord(string $type_name, array $record, string $comment = ''): StructureInterface
+    {
+        $type = $this->getType($type_name);
+
+        $has_created_at = false;
+        $has_updated_at = false;
+
+        foreach ($type->getFields() as $field) {
+            if ($field instanceof CreatedAtField && !array_key_exists('created_at', $record)) {
+                $has_created_at = true;
+            } elseif ($field instanceof UpdatedAtField && !array_key_exists('updated_at', $record)) {
+                $has_updated_at = true;
+            }
+        }
+
+        return $this->addTableRecord($type->getTableName(), $record, $comment, $has_created_at, $has_updated_at);
+    }
+
+    /**
+     * Add multiple records to the initial data set.
+     *
+     * @param  string             $type_name
+     * @param  array              $field_names
+     * @param  array              $records_to_add
+     * @param  string             $comment
+     * @return StructureInterface
+     */
+    protected function &addRecords(string $type_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
+    {
+        $type = $this->getType($type_name);
+
+        $has_created_at = false;
+        $has_updated_at = false;
+
+        foreach ($type->getFields() as $field) {
+            if ($field instanceof CreatedAtField) {
+                $has_created_at = true;
+            } elseif ($field instanceof UpdatedAtField) {
+                $has_updated_at = true;
+            }
+        }
+
+        return $this->addTableRecords($type->getTableName(), $field_names, $records_to_add, $comment, $has_created_at, $has_updated_at);
+    }
+
+    /**
+     * Add a record to the initial data set.
+     *
+     * @param  string             $table_name
+     * @param  array              $record
+     * @param  string             $comment
+     * @param  bool               $auto_set_created_at
+     * @param  bool               $auto_set_updated_at
+     * @return StructureInterface
+     */
+    private function &addTableRecord(string $table_name, array $record, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
+    {
+        $single_record = new SingleRecord($table_name, $record, $comment);
+
+        if ($auto_set_created_at && !array_key_exists('created_at', $record)) {
+            $single_record->autoSetCreatedAt();
+        }
+
+        if ($auto_set_updated_at && !array_key_exists('updated_at', $record)) {
+            $single_record->autoSetUpdatedAt();
+        }
+
+        $this->records[] = $single_record;
+
+        return $this;
+    }
+
+    /**
+     * Add multiple records to the initial data set.
+     *
+     * @param  string             $table_name
+     * @param  array              $field_names
+     * @param  array              $records_to_add
+     * @param  string             $comment
+     * @param  bool               $auto_set_created_at
+     * @param  bool               $auto_set_updated_at
+     * @return StructureInterface
+     */
+    private function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
+    {
+        $multi_record = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
+
+        if ($auto_set_created_at && !in_array('created_at', $field_names)) {
+            $multi_record->autoSetCreatedAt();
+        }
+
+        if ($auto_set_updated_at && !in_array('updated_at', $field_names)) {
+            $multi_record->autoSetUpdatedAt();
+        }
+
+        $this->records[] = $multi_record;
+
+        return $this;
+    }
+
+    /**
      * @var array
      */
     private $config = [];
 
     /**
-     * Return a config option value.
-     *
-     * @param  string $name
-     * @param  mixed  $default
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getConfig($name, $default = null)
+    public function getConfig(string $name, $default = null)
     {
         return array_key_exists($name, $this->config) ? $this->config[$name] : $default;
     }
 
     /**
-     * Set a config option option value.
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     * @return $this
+     * {@inheritdoc}
      */
-    public function &setConfig($name, $value)
+    public function &setConfig($name, $value): StructureInterface
     {
         $this->config[$name] = $value;
 
@@ -178,7 +290,7 @@ abstract class Structure implements StructureInterface
     /**
      * Build model at the given path.
      *
-     * If $build_path is null, classes will be generated, evaled and loaded into the memory
+     * If $build_path is null, classes will be generated, evaled and loaded into the memory.
      *
      * @param string|null         $build_path
      * @param ConnectionInterface $connection
@@ -220,6 +332,7 @@ abstract class Structure implements StructureInterface
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDirBuilder($this);
+            $this->builders[] = new SqlDirBuilder($this);
 
             $this->builders[] = new TypesBuilder($this);
             $this->builders[] = new BaseTypeClassBuilder($this);
@@ -228,6 +341,7 @@ abstract class Structure implements StructureInterface
 
             $this->builders[] = new AssociationsBuilder($this);
             $this->builders[] = new TriggersBuilder($this);
+            $this->builders[] = new RecordsBuilder($this);
 
             $this->builders[] = new ManagerDirBuilder($this);
             $this->builders[] = new BaseManagerDirBuilder($this);

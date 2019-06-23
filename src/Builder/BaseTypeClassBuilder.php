@@ -6,15 +6,22 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCaster;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Field as ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
@@ -48,6 +55,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '';
         }
 
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
+
         $base_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Base' : 'Base';
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
@@ -73,24 +83,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
         }
 
-        $result[] = 'abstract class ' . $base_class_name . ' extends ' . $base_class_extends . (empty($interfaces) ? '' : ' implements ' . implode(', ', $interfaces));
+        $this->buildClassDeclaration($base_class_name, $base_class_extends, $interfaces, '', $result);
+
         $result[] = '{';
 
-        if (count($traits)) {
-            $trait_tweaks_count = count($type->getTraitTweaks());
-
-            $result[] = '    use ' . implode(', ', $traits) . ($trait_tweaks_count ? '{' : ';');
-
-            if ($trait_tweaks_count) {
-                for ($i = 0; $i < $trait_tweaks_count - 1; ++$i) {
-                    $result[] = '        ' . $type->getTraitTweaks()[$i] . ($i < $trait_tweaks_count - 2 ? ',' : '');
-                }
-
-                $result[] = '    }';
-            }
-
-            $result[] = '';
-        }
+        $this->buildClassTraits($type, $traits, '    ', $result);
 
         $result[] = '    /**';
         $result[] = '     * Name of the table where records are stored.';
@@ -128,11 +125,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $this->buildConfigureMethod($type->getGeneratedFields(), '    ', $result);
 
+        $this->buildAssociatedEntitiesManagers($type, '    ', $result);
+        $this->buildSetAttributes($type, '    ', $result);
+
         foreach ($type->getAssociations() as $association) {
-            $association->buildClassMethods($this->getStructure(), $type, $this->getStructure()->getType($association->getTargetTypeName()), $result);
+            $association->buildClassPropertiesAndMethods(
+                $this->getStructure(),
+                $type,
+                $this->getStructure()->getType($association->getTargetTypeName()),
+                $result
+            );
         }
 
         foreach ($fields as $field) {
+            if ($field instanceof GeneratedInterface && $field->isGenerated()) {
+                continue;
+            }
+
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && $field->getName() != 'id') {
                 $this->buildFieldGetterAndSetter($field, '    ', $result);
             }
@@ -246,11 +255,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
     }
 
-    /**
-     * @param string $indent
-     * @param array  $result
-     */
-    private function buildBaseClassDocBlockProperties($indent, array &$result)
+    private function buildBaseClassDocBlockProperties(string $indent, array &$result): void
     {
         $base_class_doc_block_properties = $this->getStructure()->getConfig('base_class_doc_block_properties');
 
@@ -260,6 +265,65 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
 
             $result[] = $indent . ' *';
+        }
+    }
+
+    public function buildClassDeclaration(
+        string $base_class_name,
+        string $base_class_extends,
+        array $interfaces,
+        string $indent,
+        array &$result
+    ): void
+    {
+        $result[] = $indent . 'abstract class ' . $base_class_name . ' extends ' . $base_class_extends;
+
+        if (!empty($interfaces)) {
+            $result[count($result) - 1] .= ' implements';
+
+            foreach ($interfaces as $interface) {
+                $result[] = $indent . '    ' . $interface . ',';
+            }
+
+            $this->removeCommaFromLastLine($result);
+        }
+    }
+
+    private function buildClassTraits(TypeInterface $type, array $traits, string $indent, array &$result): void
+    {
+        if (count($traits)) {
+            $result[] = $indent . 'use';
+
+            foreach ($traits as $trait) {
+                $result[] = $indent . '    ' . $trait . ',';
+            }
+
+            $this->removeCommaFromLastLine($result);
+
+            $trait_tweaks_count = count($type->getTraitTweaks());
+
+            if ($trait_tweaks_count) {
+                $result[] = $indent . '    {';
+
+                for ($i = 0; $i < $trait_tweaks_count - 1; ++$i) {
+                    $result[] = $indent . '        ' . $type->getTraitTweaks()[$i] . ($i < $trait_tweaks_count - 2 ? ',' : '');
+                }
+
+                $result[] = $indent . '    }';
+            } else {
+                $result[count($result) - 1] .= ';';
+            }
+
+            $result[] = '';
+        }
+    }
+
+    private function removeCommaFromLastLine(array &$result): void
+    {
+        $last_line_num = count($result) - 1;
+
+        if ($last_line_num >= 0) {
+            $result[$last_line_num] = rtrim($result[$last_line_num], ',');
         }
     }
 
@@ -279,7 +343,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
 
-                if ($field->getName() != 'id' && $field->getDefaultValue() !== null) {
+                if ($field->getName() != 'id'
+                    && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
                     $fields_with_default_value[$field->getName()] = $field->getDefaultValue();
                 }
             }
@@ -291,7 +356,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = $indent . ' *';
         $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $fields = [' . implode(', ', $stringified_field_names) . '];';
+        $result[] = $indent . 'protected $fields = [';
+
+        foreach ($stringified_field_names as $stringified_field_name) {
+            $result[] = $indent . '    ' . $stringified_field_name . ',';
+        }
+
+        $result[] = $indent . '];';
 
         if (count($fields_with_default_value)) {
             $result[] = '';
@@ -370,12 +441,104 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
             $result[] = $indent . '    ]));';
             $result[] = $indent . '}';
+        }
+    }
 
-//            $this->setGeneratedFieldsValueCaster(new ValueCaster([
-//                'is_used_on_day' => ValueCasterInterface::CAST_BOOL,
-//                'plan_name' => ValueCasterInterface::CAST_STRING,
-//                'number_of_users' => ValueCasterInterface::CAST_INT,
-//            ]));
+    /**
+     * @param TypeInterface $source_type
+     * @param string        $indent
+     * @param array         $result
+     */
+    public function buildAssociatedEntitiesManagers(
+        TypeInterface $source_type,
+        string $indent,
+        array &$result
+    )
+    {
+        $associations = $source_type->getAssociations();
+
+        if (!empty($associations)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * {@inheritdoc}';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'private $associated_entities_managers;';
+        }
+
+        $result[] = '';
+        $result[] = $indent . '/**';
+        $result[] = $indent . ' * {@inheritdoc}';
+        $result[] = $indent . ' */';
+        $result[] = $indent . 'protected function getAssociatedEntitiesManagers(): array';
+        $result[] = $indent . '{';
+
+        if (empty($associations)) {
+            $result[] = $indent . '    return [];';
+        } else {
+            $result[] = $indent . '    if ($this->associated_entities_managers === null) {';
+            $result[] = $indent . '        $this->associated_entities_managers  = [';
+
+            foreach ($associations as $association) {
+                $association->buildAssociatedEntitiesManagerConstructionLine(
+                    $this->getStructure(),
+                    $source_type,
+                    $this->getStructure()->getType($association->getTargetTypeName()),
+                    $indent . '            ',
+                    $result
+                );
+            }
+
+            $result[] = $indent . '        ];';
+            $result[] = $indent . '    }';
+            $result[] = '';
+            $result[] = $indent . '    return $this->associated_entities_managers;';
+        }
+
+        $result[] = $indent . '}';
+    }
+
+    /**
+     * Build setAttributes() method.
+     *
+     * @param TypeInterface $source_type
+     * @param string        $indent
+     * @param array         $result
+     */
+    public function buildSetAttributes(TypeInterface $source_type, $indent, array &$result)
+    {
+        $associations = $source_type->getAssociations();
+
+        $attribute_interception_lines = [];
+
+        if (!empty($associations)) {
+            foreach ($associations as $association) {
+                $association->buildAttributeInterception(
+                    $this->getStructure(),
+                    $source_type,
+                    $this->getStructure()->getType($association->getTargetTypeName()),
+                    $indent . '        ',
+                    $attribute_interception_lines
+                );
+            }
+        }
+
+        if (!empty($attribute_interception_lines)) {
+            $result[] = '';
+            $result[] = $indent . '/**';
+            $result[] = $indent . ' * {@inheritdoc}';
+            $result[] = $indent . ' */';
+            $result[] = $indent . 'public function &setAttribute($attribute, $value)';
+            $result[] = $indent . '{';
+            $result[] = $indent . '    switch ($attribute) {';
+
+            foreach ($attribute_interception_lines as $attribute_interception_line) {
+                $result[] = $attribute_interception_line;
+            }
+
+            $result[] = $indent . '    }';
+            $result[] = '';
+            $result[] = $indent . '    return parent::setAttribute($attribute, $value);';
+            $result[] = $indent . '}';
         }
     }
 
@@ -398,13 +561,26 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * @param string      $indent
      * @param array       $result
      */
-    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result)
+    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result): void
     {
         $setter_access_level = $field->getProtectSetter() ? 'protected' : 'public';
 
         $lines = [];
 
         $short_getter = null;
+
+        $default_value = $field instanceof ScalarFieldWithDefaultValueInterface ? $field->getDefaultValue() : null;
+
+        $type_for_executable_code = $this->getTypeForExecutableCode(
+            $field->getNativeType(),
+            $default_value,
+            $field->isRequired()
+        );
+        $type_for_doc_block = $this->getTypeForDocBlock(
+            $field->getNativeType(),
+            $default_value,
+            $field->isRequired()
+        );
 
         if ($field instanceof BooleanField && $this->useShortGetterName($field->getName())) {
             $short_getter = $this->getShortGetterName($field->getName());
@@ -413,11 +589,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $lines[] = '/**';
             $lines[] = ' * Return value of ' . $field->getName() . ' field.';
             $lines[] = ' *';
-            $lines[] = ' * @return ' . $field->getNativeType();
+            $lines[] = ' * @return ' . $type_for_doc_block;
             $lines[] = ' */';
-            $lines[] = 'public function ' . $short_getter . '()';
+            $lines[] = 'public function ' . $short_getter . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
             $lines[] = '{';
-            $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+
+            if ($field->isRequired()) {
+                $lines[] = '    $field_value = $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+                $lines[] = '';
+                $lines[] = '    if ($field_value === null) {';
+                $lines[] = "        throw new \\LogicException(\"Value of '{$field->getName()}' should not be accessed prior to being set.\");";
+                $lines[] = '    }';
+                $lines[] = '';
+                $lines[] = '    return $field_value;';
+            } else {
+                $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+            }
+
             $lines[] = '}';
         }
 
@@ -425,34 +613,106 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '/**';
         $lines[] = ' * Return value of ' . $field->getName() . ' field.';
         $lines[] = ' *';
-        $lines[] = ' * @return ' . $field->getNativeType();
+        $lines[] = ' * @return ' . $type_for_doc_block;
 
         if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
             $lines[] = " * @deprecated use $short_getter()";
         }
 
         $lines[] = ' */';
-        $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()';
+        $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
         $lines[] = '{';
-        $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+
+        if ($field->isRequired()) {
+            $lines[] = '    $field_value = $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+            $lines[] = '';
+            $lines[] = '    if ($field_value === null) {';
+            $lines[] = "        throw new \\LogicException(\"Value of '{$field->getName()}' should not be accessed prior to being set.\");";
+            $lines[] = '    }';
+            $lines[] = '';
+            $lines[] = '    return $field_value;';
+        } else {
+            $lines[] = '    return $this->getFieldValue(' . var_export($field->getName(), true) . ');';
+        }
+
         $lines[] = '}';
         $lines[] = '';
         $lines[] = '/**';
         $lines[] = ' * Set value of ' . $field->getName() . ' field.';
         $lines[] = ' *';
-        $lines[] = ' * @param  ' . str_pad($field->getNativeType(), 5, ' ', STR_PAD_RIGHT) . ' $value';
+        $lines[] = ' * @param  ' . str_pad($type_for_doc_block, 5, ' ', STR_PAD_RIGHT) . ' $value';
         $lines[] = ' * @return $this';
         $lines[] = ' */';
-        $lines[] = $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '($value)';
+        $lines[] = $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '(' . $type_for_executable_code . ($type_for_executable_code ? ' ' : '') . '$value)';
         $lines[] = '{';
         $lines[] = '    $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
         $lines[] = '';
         $lines[] = '    return $this;';
         $lines[] = '}';
 
+        if ($field instanceof JsonFieldInterface) {
+            $this->buildModifier(
+                $field,
+                $this->getGetterName($field->getName()),
+                $this->getSetterName($field->getName()),
+                $setter_access_level,
+                $lines
+            );
+        }
+
         foreach ($lines as $line) {
             $result[] = $line ? $indent . $line : '';
         }
+    }
+
+    private function buildModifier(JsonFieldInterface $field, string $getter_name, string $setter_name, string $setter_access_level, array &$lines): void
+    {
+        $lines[] = '';
+        $lines[] = '/**';
+        $lines[] = ' * Modify value of ' . $field->getName() . ' field.';
+        $lines[] = ' *';
+        $lines[] = ' * @param  callable $callback';
+        $lines[] = ' * @param  bool     $force_array';
+        $lines[] = ' * @return $this';
+        $lines[] = ' */';
+        $lines[] = $setter_access_level . ' function &' . $this->getModifierName($field->getName()) . '(callable $callback, bool $force_array = false)';
+        $lines[] = '{';
+        $lines[] = '    $value = $this->' . $getter_name . '();';
+        $lines[] = '';
+        $lines[] = '    if ($force_array && $value === null) {';
+        $lines[] = '        $value = [];';
+        $lines[] = '    }';
+        $lines[] = '';
+        $lines[] = '    $modified_value = call_user_func($callback, $value);';
+        $lines[] = '';
+        $lines[] = '    if (!is_array($modified_value) && !is_null($modified_value)) {';
+        $lines[] = "        throw new \\LogicException('Modifier callback should return array or NULL.');";
+        $lines[] = '    }';
+        $lines[] = '';
+        $lines[] = '    $this->' . $setter_name . '($modified_value);';
+        $lines[] = '';
+        $lines[] = '    return $this;';
+        $lines[] = '}';
+    }
+
+    private function getTypeForExecutableCode(string $native_type, $default_value, bool $field_is_required): string
+    {
+        $result = '';
+
+        if ($native_type != 'mixed') {
+            $result = ($default_value !== null || $field_is_required ? '' : '?') . $native_type;
+        }
+
+        return $result;
+    }
+
+    private function getTypeForDocBlock(string $native_type, $default_value, bool $field_is_required): string
+    {
+        if ($native_type === 'mixed') {
+            return $native_type;
+        }
+
+        return $native_type . ($default_value !== null || $field_is_required ? '' : '|null');
     }
 
     /**
@@ -692,7 +952,12 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     /**
      * @var array
      */
-    private $getter_names = [], $setter_names = [];
+    private $getter_names = [];
+
+    /**
+     * @var array
+     */
+    private $setter_names = [];
 
     /**
      * @param  string $field_name
@@ -735,5 +1000,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         return $this->setter_names[$field_name];
+    }
+
+    private function getModifierName($field_name): string
+    {
+        return 'modify' . Inflector::classify($field_name);
     }
 }

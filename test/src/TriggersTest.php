@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseConnection\Result\Result;
@@ -13,7 +15,6 @@ use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
-use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail\PositionTailStructure;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers\TriggersStructure;
 
 /**
@@ -32,7 +33,7 @@ class TriggersTest extends TestCase
     private $pool;
 
     /**
-     * @var PositionTailStructure
+     * @var TriggersStructure
      */
     private $triggers_structure;
 

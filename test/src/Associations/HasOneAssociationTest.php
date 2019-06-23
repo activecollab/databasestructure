@@ -6,17 +6,17 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Associations;
 
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\TestInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class HasOneAssociationTest extends TestCase
 {
     /**
@@ -52,6 +52,29 @@ class HasOneAssociationTest extends TestCase
     }
 
     /**
+     * @dataProvider invalidInterfacesProvider
+     * @expectedException \InvalidArgumentException
+     * @param string $invalid_interface
+     */
+    public function testAcceptsRequiresInterface(string $invalid_interface)
+    {
+        (new HasOneAssociation('book'))->accepts($invalid_interface);
+    }
+
+    public function invalidInterfacesProvider()
+    {
+        return [
+            [\stdClass::class],
+            ['not an interface'],
+        ];
+    }
+
+    public function testHasOneCanTypeHintDifferentReturnType()
+    {
+        $this->assertSame(TestInterface::class, (new HasOneAssociation('book'))->accepts(TestInterface::class)->getAccepts());
+    }
+
+    /**
      * Test if has one association properly passes info whether it is required or not.
      */
     public function testHasOneProperlyPassesRequiredToFk()
@@ -81,6 +104,7 @@ class HasOneAssociationTest extends TestCase
         $book_writer = new HasOneAssociation('writer');
         $books->addAssociation($book_writer);
 
-        $this->assertEquals('book_writer_constraint', $book_writer->getConstraintName());
+        $this->assertEquals('book_writer_constraint', $book_writer->getVerboseConstraintName());
+        $this->assertEquals('has_one_' . md5('book_writer_constraint'), $book_writer->getConstraintName());
     }
 }

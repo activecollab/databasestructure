@@ -13,7 +13,7 @@ use LogicException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Scalar
  */
-class BooleanField extends Field
+class BooleanField extends ScalarFieldWithDefaultValue
 {
     /**
      * @param string $name
@@ -35,7 +35,7 @@ class BooleanField extends Field
     /**
      * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
         return 'bool';
     }
@@ -43,7 +43,7 @@ class BooleanField extends Field
     /**
      * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getCastingCode($variable_name): string
     {
         return '(bool) $' . $variable_name;
     }

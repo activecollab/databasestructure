@@ -8,28 +8,31 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
-class DateField extends Field
+use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+use ActiveCollab\DateValue\DateValueInterface;
+
+class DateField extends ScalarField
 {
     /**
-     * Return PHP native type.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getNativeType()
+    public function getNativeType(): string
     {
-        return '\\ActiveCollab\\DateValue\\DateValueInterface' . ($this->getDefaultValue() === null ? '|null' : '');
+        return '\\' . DateValueInterface::class;
     }
 
     /**
-     * Return value casting code.
-     *
-     * @param  string $variable_name
-     * @return string
+     * {@inheritdoc}
      */
-    public function getCastingCode($variable_name)
+    public function getValueCaster(): string
+    {
+        return ValueCasterInterface::CAST_DATE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCastingCode($variable_name): string
     {
         return '$this->getDateValueInstanceFrom($' . $variable_name . ')';
     }

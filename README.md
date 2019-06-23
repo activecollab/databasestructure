@@ -1,12 +1,37 @@
-### DatabaseStructure Library
+# DatabaseStructure Library
 
 [![Build Status](https://travis-ci.org/activecollab/databasestructure.svg?branch=master)](https://travis-ci.org/activecollab/databasestructure)
 
-…
+## Version 1.0 To Do
+
+- [ ] Get code coverage over 90%,
+- [ ] Add `serialize` method to fields, so they are automatically added to the serialization list when they are added to a type,
+- [ ] Prefix all base classes with `Base`,
+- [ ] Sufix all managers and collections with `Manager` and `Collection` respectively,
+- [ ] Check for possible collisions between field and attribute that are added by associations,
+- [ ] Add `release` and `clear` methods to Has Many, and Has Many Via associations, 
+- [ ] Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it,
+- [ ] Associations should automatically add connection fields to the list of fields to be serialized,
+- [ ] Association cascading options and tests,
 
 ## Fields
 
 Boolean fields with names that start with `is_`, `has_`, `had_`, `was_`, `were_` and `have_` also get a short getter. For example, if field name is `is_awesome`, builder will product two getters: `getIsAwesome()` and `isAwesome()`.
+
+### Password Field
+
+Password field is field meant for storing password hashes. By default, it sets `password` as field name. It is similar to `StringField` (uses `VARCHAR` columns), but it can't have default value (doh!), and it does not have methods for easy indexing (you can still add an index by yourself, if you wish).
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
+
+new PasswordField(); // Use default name (password).
+new PasswordField('psswd_hash'); // Specify field name. 
+```
 
 ### JSON Field
 
@@ -16,6 +41,30 @@ JSON field add a JSON field to the type. It will be automatically serialized and
 $this->addType('stats_snapshots')->addFields([
     new JsonField('stats')
 ]);
+```
+
+On top of regular getters and setters, JSON fields add a `modify` method. This method receives a callback that will be called with decoded JSON value. Result of the callback is then stored in the field automatically:
+
+```php
+$object->modifyStats(
+    function ($stats) {
+        $stats['something-to-add'] = true;
+        unset($stats['something-to-remove']);
+        
+        return $stats;
+    }
+);
+```
+
+JSON fields can store a lot of different data types, so you can't always known which type will be passed to the callback. In our everyday use we noticed that arrays are most common data types that are stored in JSON fields. To ensure that you always get an array, regardless of what is in the field, pass in the second `$force_array` argument:
+
+```php
+$object->modifyStats(
+    function (array $this_will_be_array_for_sure) {
+        return $this_will_be_array_for_sure;
+    },
+    true
+);
 ```
 
 System supports value extraction from JSON fields. These values are extracted by MySQL automatically, and they can be stored and indexed. 
@@ -69,6 +118,188 @@ Note that values of generated fields can't be set directly. This code will raise
 ```php
 $snapshot = $pool->getById(StatsSnapshot::class, 1);
 $snapshot->setFieldValue('number_of_active_users', 123);  // Exception!
+```
+
+## Associations
+
+### Belongs To
+
+#### Programming to an Interface
+
+Belongs To association supports "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+
+(new BelongsToAssociation('author'))->accepts(AuthorInterface::class);
+```
+
+### Has Many
+
+```php
+<?php
+
+namespace App;
+
+use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
+use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
+use ActiveCollab\DatabaseStructure\Structure;
+
+class HasManyExampleStructure extends Structure
+{
+    public function configure()
+    {
+        $this->addType('writers')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new HasManyAssociation('books'),
+        ]);
+        
+        $this->addType('books')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new BelongsToAssociation('writer'),
+        ]);
+    }
+}
+```
+
+Method that this association will add to `Writer` model are:
+
+* `getBooksFinder(): FinderInterface` - Prepare a book finder instance for this writer, with all the defaults set (ordering for example). Use it like you would use any other finder: extend it with extra conditions, use it to count records, fetch all, or first record etc, 
+* `getBooks(): ?iterable` - Return all books that belong to the writer. When no books are found, this method returns `NULL`,
+* `getBookIds(): ?iterable` - Return a list of all book ID-s that belong to the writer. When no books are found, this method returns `NULL`,
+* `countBooks(): int` - Return a total number of books.
+
+#### Attributes
+
+Has many association also adds following attributes to the model:
+
+* `books` - Set associated books by providing their instances. These instances can be persisted to the database, or they can be new instances. If new, they will be saved when parent writer object is saved,
+* `book_ids` - Set associated books by providing their ID-s.
+
+```php
+<?php
+
+namespace App;
+
+// Set books using an attribute:
+$writer = $pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'books' => [$book1, $book2, $book3],
+]);
+
+// Or, using ID-s:
+$writer = $pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'book_ids' => [1, 2, 3, 4],
+]);
+```
+
+#### Programming to an Interface
+
+Has Many association support "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
+
+Example:
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+
+(new HasManyAssociation('books'))->accepts(BookInterface::class);
+```
+
+### Has One
+
+#### Programming to an Interface
+
+Has One association support "programming to an interface" approach. This means that you can set so it accepts (and returns) instances that implement a specific interface:
+
+Example:
+
+```php
+<?php
+
+namespace MyApp;
+
+use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
+
+(new HasOneAssociation('book'))->accepts(BookInterface::class);
+```
+
+### Has Many Via
+
+### Has and Belongs to Many
+
+```php
+<?php
+
+namespace App;
+
+use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
+use ActiveCollab\DatabaseStructure\Structure;
+
+class HasManyExampleStructure extends Structure
+{
+    public function configure()
+    {
+        $this->addType('writers')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new HasAndBelongsToManyAssociation('books'),
+        ]);
+
+        $this->addType('books')->addFields([
+            (new NameField('name', ''))->required(),
+        ])->addAssociations([
+            new HasAndBelongsToManyAssociation('writers'),
+        ]);
+    }
+}
+```
+
+Method that this association will add to `Writer` model are:
+
+* `getBooksFinder(): FinderInterface` - Prepare a book finder instance for this writer, with all the defaults set (ordering for example). Use it like you would use any other finder: extend it with extra conditions, use it to count records, fetch all, or first record etc, 
+* `getBooks(): ?iterable` - Return all books that belong to the writer. When no books are found, this method returns `NULL`,
+* `getBookIds(): ?iterable` - Return a list of all book ID-s that belong to the writer. When no books are found, this method returns `NULL`,
+* `countBooks(): int` - Return a total number of books,
+* `&addBooks(...$books): void` - Add one or more books to the writer,
+* `&removeBooks(...$books): void` - Remove one or more books that are associated with the writer,
+* `&clearBooks(): void` - Clear all book connections that are associated with a writer (book objects are not removed).
+
+#### Attributes
+
+Has and belongs to many association also adds following attributes to the model:
+
+* `books` - Set associated books by providing their instances. These instances can be persisted to the database, or they can be new instances. If new, they will be saved when parent writer object is saved,
+* `book_ids` - Set associated books by providing their ID-s.
+
+```php
+<?php
+
+namespace App;
+
+// Set books using an attribute:
+$writer = $pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'books' => [$book1, $book2, $book3],
+]);
+
+// Or, using ID-s:
+$writer = $pool->produce(Writer::class, [
+    'name' => 'Leo Tolstoy',
+    'book_ids' => [1, 2, 3, 4],
+]);
 ```
 
 ## Structure Options
@@ -140,7 +371,6 @@ namespace Application\Structure\Namespace\Base;
  */
 abstract class Token extends \ActiveCollab\DatabaseObject\Entity\Entity
 {
-    …
 }
 ```
 
@@ -215,9 +445,3 @@ class MyStructure extends Structure
     }
 }
 ```
-
-## To Do
-
-1. Add `ChildInterface`, and make sure that `ParentField` adds it to models that include it.
-1. Associations should automatically add connection fields to the list of fields to be serialized
-1. Association cascading options and tests

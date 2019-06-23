@@ -11,16 +11,15 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface\Implementation as PositionInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class PositionField extends Field
+class PositionField extends CompositeField implements AddIndexInterface
 {
     use AddIndexInterfaceImplementation;
 
@@ -92,7 +91,7 @@ class PositionField extends Field
     /**
      * Set context in which position is calculated and maintained (usually within context of a foreign key).
      *
-     * @param  string $fields
+     * @param  string[] $fields
      * @return $this
      */
     public function &context(...$fields)
@@ -137,13 +136,15 @@ class PositionField extends Field
     }
 
     /**
-     * Return fields that this field is composed of.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
-        return [(new IntegerField('position', 0))->unsigned(true)];
+        return [
+            (new IntegerField('position', 0))
+                ->unsigned(true)
+                ->required(true),
+        ];
     }
 
     /**
@@ -152,7 +153,7 @@ class PositionField extends Field
      * @param string $indent
      * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result)
+    public function getBaseClassMethods($indent, array &$result): void
     {
         $methods = [];
 
@@ -200,10 +201,6 @@ class PositionField extends Field
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
-        }
 
         $type->addTrait(PositionInterface::class, PositionInterfaceImplementation::class);
     }

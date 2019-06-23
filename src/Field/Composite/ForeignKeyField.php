@@ -15,15 +15,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Index;
-use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterface, SizeInterface
+class ForeignKeyField extends CompositeField implements AddIndexInterface, RequiredInterface, SizeInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
@@ -56,26 +53,18 @@ class ForeignKeyField extends Field implements AddIndexInterface, RequiredInterf
     }
 
     /**
-     * Return fields that this field is composed of.
-     *
-     * @return FieldInterface[]
+     * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
-        return [(new IntegerField($this->getName()))->unsigned(true)->size($this->getSize())->required($this->isRequired())];
-    }
+        $fk_field = (new IntegerField($this->getName()))
+            ->unsigned(true)
+            ->size($this->getSize());
 
-    /**
-     * Method that is called when field is added to a type.
-     *
-     * @param TypeInterface $type
-     */
-    public function onAddedToType(TypeInterface &$type)
-    {
-        parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
+        if ($this->isRequired()) {
+            $fk_field->defaultValue(0)->required(true);
         }
+
+        return [$fk_field];
     }
 }

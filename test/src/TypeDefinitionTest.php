@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test;
 
-use ActiveCollab\DatabaseObject\Entity\Entity;
+use ActiveCollab\DatabaseStructure\Entity\Entity;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ObjectClassDescendent;
 use ActiveCollab\DatabaseStructure\Type;

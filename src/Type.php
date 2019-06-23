@@ -8,7 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseObject\Entity\Entity;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\Association\InjectIndexesInsterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
@@ -18,16 +17,16 @@ use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation as PolymorphInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Field\Composite\Field as CompositeField;
+use ActiveCollab\DatabaseStructure\Entity\Entity;
+use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use BadMethodCallException;
+use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 class Type implements TypeInterface
 {
     /**
@@ -150,9 +149,18 @@ class Type implements TypeInterface
         $this->permissions_are_permissive = (bool) $permissions_are_permissive;
 
         if ($this->permissions) {
-            $this->removeTrait(PermissionsInterface::class, [PermissiveImplementation::class, RestrictiveImplementation::class]);
+            $this->removeTrait(
+                PermissionsInterface::class,
+                [
+                    PermissiveImplementation::class,
+                    RestrictiveImplementation::class,
+                ]
+            );
 
-            $this->addTrait(PermissionsInterface::class, ($this->permissions_are_permissive ? PermissiveImplementation::class : RestrictiveImplementation::class));
+            $this->addTrait(
+                PermissionsInterface::class,
+                ($this->permissions_are_permissive ? PermissiveImplementation::class : RestrictiveImplementation::class)
+            );
         } else {
             $this->removeInterface(PermissionsInterface::class);
         }
@@ -185,7 +193,10 @@ class Type implements TypeInterface
         }
 
         if (!empty($this->protected_fields)) {
-            $this->addTrait(ProtectedFieldsInterface::class, ProtectedFieldsInterfaceImplementation::class);
+            $this->addTrait(
+                ProtectedFieldsInterface::class,
+                ProtectedFieldsInterfaceImplementation::class
+            );
         }
 
         return $this;
@@ -205,7 +216,10 @@ class Type implements TypeInterface
         }
 
         if (empty($this->protected_fields)) {
-            $this->removeTrait(ProtectedFieldsInterface::class, ProtectedFieldsInterfaceImplementation::class);
+            $this->removeTrait(
+                ProtectedFieldsInterface::class,
+                ProtectedFieldsInterfaceImplementation::class
+            );
         } else {
             $this->protected_fields = array_values($this->protected_fields); // Reindex keys
         }
@@ -219,22 +233,44 @@ class Type implements TypeInterface
     private $fields = [];
 
     /**
+     * {@inheritdoc}
+     */
+    public function getClassName(): string
+    {
+        return Inflector::classify(Inflector::singularize($this->getName()));
+    }
+
+    /**
      * @var string
      */
     private $base_class_extends;
 
     /**
-     * Return name of a class that base type class should extend.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getBaseClassExtends()
+    public function getBaseClassExtends(): string
     {
         if (empty($this->base_class_extends)) {
             $this->base_class_extends = Entity::class;
         }
 
         return $this->base_class_extends;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getManagerClassName(): string
+    {
+        return Inflector::classify($this->getName());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCollectionClassName(): string
+    {
+        return Inflector::classify($this->getName());
     }
 
     /**
@@ -247,7 +283,9 @@ class Type implements TypeInterface
      */
     public function &setBaseClassExtends($class_name)
     {
-        if ($class_name && class_exists($class_name) && (new \ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
+        if ($class_name
+            && class_exists($class_name)
+            && (new \ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
         } else {
             throw new InvalidArgumentException("Class name '$class_name' is not valid");
         }
@@ -332,7 +370,7 @@ class Type implements TypeInterface
     {
         if ($this->getPolymorph()) {
             if (empty($this->type_field)) {
-                $this->type_field = new StringField('type', '');
+                $this->type_field = (new StringField('type', ''))->required();
             }
 
             return $this->type_field;
@@ -408,7 +446,9 @@ class Type implements TypeInterface
         $result = [];
 
         foreach ($this->getAllFields() as $field) {
-            if ($field instanceof GeneratedFieldsInterface) {
+            if ($field instanceof GeneratedInterface && $field->isGenerated()) {
+                $result[$field->getName()] = $field->getValueCaster();
+            } elseif ($field instanceof GeneratedFieldsInterface) {
                 $result = array_merge($result, $field->getGeneratedFields());
             }
         }

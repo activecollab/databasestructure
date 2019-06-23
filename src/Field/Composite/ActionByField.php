@@ -14,7 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
-use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\IdentifiedVisitor;
 use ActiveCollab\User\UserInterface;
@@ -24,7 +23,7 @@ use InvalidArgumentException;
 /**
  * @package ActiveCollab\DatabaseStructure\Field\Composite
  */
-class ActionByField extends Field implements AddIndexInterface, RequiredInterface
+class ActionByField extends CompositeField implements AddIndexInterface, RequiredInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation;
 
@@ -102,9 +101,10 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
-        $id_field = (new IntegerField($this->getName(), 0))->unsigned();
+        $id_field = (new IntegerField($this->getName(), 0))
+            ->unsigned();
 
         if ($this->isRequired()) {
             $id_field->required();
@@ -123,7 +123,7 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
      * @param string $indent
      * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result)
+    public function getBaseClassMethods($indent, array &$result): void
     {
         $id_getter_name = 'get' . Inflector::classify($this->name);
         $id_setter_name = 'set' . Inflector::classify($this->name);
@@ -241,10 +241,6 @@ class ActionByField extends Field implements AddIndexInterface, RequiredInterfac
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
-
-        if ($this->getAddIndex()) {
-            $type->addIndex(new Index($this->name));
-        }
 
         $type->serialize($this->name);
     }

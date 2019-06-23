@@ -124,7 +124,9 @@ class EmailFieldTest extends TestCase
      */
     public function testEmailProducesRequiredAndUniqueStringWhenRequiredAndUnique()
     {
-        $email_field = (new EmailField('email_address'))->required()->unique('context_filed_1');
+        $email_field = (new EmailField('email_address', ''))
+            ->required()
+            ->unique('context_filed_1');
 
         /** @var StringField $string_field */
         $string_field = $email_field->getFields()[0];
