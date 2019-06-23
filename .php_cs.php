@@ -15,10 +15,9 @@ EOF;
 return (new PhpCsFixer\Config('psr2'))
     ->setRiskyAllowed(true)
     ->setRules([
-        'header_comment' =>
-            [
+        'header_comment' => [
                 'header' => $header,
-                'location' => 'after_open'
+                'location' => 'after_open',
             ],
         'function_typehint_space' => true,
         'method_argument_space' => true,
@@ -57,4 +56,11 @@ return (new PhpCsFixer\Config('psr2'))
         'simplified_null_return' => false,
         'single_blank_line_at_eof' => true,
     ])
-    ->setFinder((new PhpCsFixer\Finder())->in([__DIR__ . '/src', __DIR__ . '/test']));
+    ->setFinder(
+        (new PhpCsFixer\Finder())->in(
+            [
+                __DIR__ . '/src',
+                __DIR__ . '/test',
+            ]
+        )
+    );
