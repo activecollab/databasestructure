@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de06204196c43c413802958733bc8be2",
+    "content-hash": "0c6672c468eb3c387f6b5b017f8f94ca",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -396,16 +396,16 @@
         },
         {
             "name": "activecollab/user",
-            "version": "v4.0.x-dev",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/user.git",
-                "reference": "b1631b1c627b52ac8bace388322d287a123ca7d9"
+                "reference": "6fa07d4a3e345cefce0491d2efe5d83b3867169b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/user/zipball/b1631b1c627b52ac8bace388322d287a123ca7d9",
-                "reference": "b1631b1c627b52ac8bace388322d287a123ca7d9",
+                "url": "https://api.github.com/repos/activecollab/user/zipball/6fa07d4a3e345cefce0491d2efe5d83b3867169b",
+                "reference": "6fa07d4a3e345cefce0491d2efe5d83b3867169b",
                 "shasum": ""
             },
             "require": {
@@ -439,7 +439,7 @@
             "keywords": [
                 "activecollab"
             ],
-            "time": "2017-07-08T11:50:12+00:00"
+            "time": "2019-06-23T18:22:56+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -3386,9 +3386,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "activecollab/user": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
