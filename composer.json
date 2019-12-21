@@ -17,15 +17,16 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
-        "activecollab/databaseobject": "^4.0",
+        "php": ">=7.3",
+        "activecollab/databaseobject": "^5.0",
         "activecollab/filesystem": "^0.10",
         "activecollab/user": "^4.0",
         "doctrine/inflector": "^1.0"
     },
     "require-dev": {
+        "ext-mysqli": "*",
         "friendsofphp/php-cs-fixer": "^2.0",
-        "phpunit/phpunit": "^5.0"
+        "phpunit/phpunit": "^7.0"
     },
     "autoload": {
         "psr-4": {

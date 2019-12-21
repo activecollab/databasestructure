@@ -13,11 +13,9 @@ use ActiveCollab\DateValue\DateTimeValue;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use mysqli;
 use RuntimeException;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * @var mysqli
@@ -41,7 +39,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->link = new \MySQLi('localhost', 'root', '');
+        $this->link = new \MySQLi('localhost', 'root', $this->getValidMySqlPassword());
 
         if ($this->link->connect_error) {
             throw new RuntimeException('Failed to connect to database. MySQL said: ' . $this->link->connect_error);
@@ -108,5 +106,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->now = $now;
         DateTimeValue::setTestNow($this->now);
+    }
+
+    protected function getValidMySqlPassword(): string
+    {
+        return (string) getenv('DATABASE_CONNECTION_TEST_PASSWORD');
     }
 }
