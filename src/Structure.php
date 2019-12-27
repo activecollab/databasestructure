@@ -45,9 +45,6 @@ abstract class Structure implements StructureInterface
 
     abstract protected function configure();
 
-    /**
-     * @var iterable|TypeInterface[]
-     */
     private $types = [];
 
     /**
@@ -67,11 +64,7 @@ abstract class Structure implements StructureInterface
         }
     }
 
-    /**
-     * @param  string        $type_name
-     * @return TypeInterface
-     */
-    protected function &addType(string $type_name): TypeInterface
+    protected function addType(string $type_name): TypeInterface
     {
         if (empty($this->types[$type_name])) {
             $this->types[$type_name] = new Type($type_name);
@@ -95,28 +88,21 @@ abstract class Structure implements StructureInterface
         }
     }
 
-    /**
-     * @var RecordInterface|array
-     */
     private $records = [];
 
     /**
-     * {@inheritdoc}
+     * @return RecordInterface[]|array
      */
     public function getRecords(): array
     {
         return $this->records;
     }
 
-    /**
-     * Add a record to the initial data set.
-     *
-     * @param  string             $type_name
-     * @param  array              $record
-     * @param  string             $comment
-     * @return StructureInterface
-     */
-    protected function &addRecord(string $type_name, array $record, string $comment = ''): StructureInterface
+    protected function addRecord(
+        string $type_name,
+        array $record,
+        string $comment = ''
+    ): StructureInterface
     {
         $type = $this->getType($type_name);
 
@@ -134,16 +120,12 @@ abstract class Structure implements StructureInterface
         return $this->addTableRecord($type->getTableName(), $record, $comment, $has_created_at, $has_updated_at);
     }
 
-    /**
-     * Add multiple records to the initial data set.
-     *
-     * @param  string             $type_name
-     * @param  array              $field_names
-     * @param  array              $records_to_add
-     * @param  string             $comment
-     * @return StructureInterface
-     */
-    protected function &addRecords(string $type_name, array $field_names, array $records_to_add, string $comment = ''): StructureInterface
+    protected function addRecords(
+        string $type_name,
+        array $field_names,
+        array $records_to_add,
+        string $comment = ''
+    ): StructureInterface
     {
         $type = $this->getType($type_name);
 
@@ -158,20 +140,23 @@ abstract class Structure implements StructureInterface
             }
         }
 
-        return $this->addTableRecords($type->getTableName(), $field_names, $records_to_add, $comment, $has_created_at, $has_updated_at);
+        return $this->addTableRecords(
+            $type->getTableName(),
+            $field_names,
+            $records_to_add,
+            $comment,
+            $has_created_at,
+            $has_updated_at
+        );
     }
 
-    /**
-     * Add a record to the initial data set.
-     *
-     * @param  string             $table_name
-     * @param  array              $record
-     * @param  string             $comment
-     * @param  bool               $auto_set_created_at
-     * @param  bool               $auto_set_updated_at
-     * @return StructureInterface
-     */
-    private function &addTableRecord(string $table_name, array $record, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
+    private function addTableRecord(
+        string $table_name,
+        array $record,
+        string $comment = '',
+        bool $auto_set_created_at = false,
+        bool $auto_set_updated_at = false
+    ): StructureInterface
     {
         $single_record = new SingleRecord($table_name, $record, $comment);
 
@@ -188,18 +173,14 @@ abstract class Structure implements StructureInterface
         return $this;
     }
 
-    /**
-     * Add multiple records to the initial data set.
-     *
-     * @param  string             $table_name
-     * @param  array              $field_names
-     * @param  array              $records_to_add
-     * @param  string             $comment
-     * @param  bool               $auto_set_created_at
-     * @param  bool               $auto_set_updated_at
-     * @return StructureInterface
-     */
-    private function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
+    private function addTableRecords(
+        string $table_name,
+        array $field_names,
+        array $records_to_add,
+        string $comment = '',
+        bool $auto_set_created_at = false,
+        bool $auto_set_updated_at = false
+    ): StructureInterface
     {
         $multi_record = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
 
@@ -216,9 +197,6 @@ abstract class Structure implements StructureInterface
         return $this;
     }
 
-    /**
-     * @var array
-     */
     private $config = [];
 
     public function getConfig(string $name, $default = null)
