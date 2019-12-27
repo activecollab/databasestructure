@@ -13,7 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Builder\Types;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-class TypeClassBuilder extends FileSystemBuilder
+class TypeClassBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
@@ -42,7 +42,7 @@ class TypeClassBuilder extends FileSystemBuilder
         $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {
-            $result[] = 'namespace ' . $this->getStructure()->getNamespace() . ';';
+            $result[] = 'namespace ' . $this->getTypeNamespace($type) . ';';
             $result[] = '';
         }
 

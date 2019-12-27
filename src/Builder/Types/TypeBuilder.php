@@ -15,7 +15,14 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 abstract class TypeBuilder extends FileSystemBuilder
 {
-    protected function getBaseNamespace(TypeInterface $type): string
+    protected function getTypeNamespace(TypeInterface $type): ?string
+    {
+        return $this->getStructure()->getNamespace()
+            ? $this->getStructure()->getNamespace() . '\\' . $type->getClassName()
+            : 'Base';
+    }
+
+    protected function getBaseNamespace(TypeInterface $type): ?string
     {
         return $this->getStructure()->getNamespace()
             ? $this->getStructure()->getNamespace() . '\\' . $type->getClassName() . '\\Base'
