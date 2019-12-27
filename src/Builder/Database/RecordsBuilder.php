@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder\Database;
 
 use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilder;
@@ -14,37 +16,18 @@ use ActiveCollab\DatabaseStructure\Builder\Database\StructureSql;
 use ActiveCollab\DatabaseStructure\MultiRecordInterface;
 use ActiveCollab\DatabaseStructure\RecordInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
     use StructureSql;
 
-    /**
-     * Build path. If empty, class will be built to memory.
-     *
-     * @var string
-     */
     private $build_path;
 
-    /**
-     * Return build path.
-     *
-     * @return string
-     */
-    public function getBuildPath()
+    public function getBuildPath(): ?string
     {
         return $this->build_path;
     }
 
-    /**
-     * Set build path. If empty, class will be built in memory.
-     *
-     * @param  string $value
-     * @return $this
-     */
-    public function &setBuildPath($value)
+    public function setBuildPath(string $value)
     {
         $this->build_path = $value;
 

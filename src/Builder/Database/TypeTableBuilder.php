@@ -6,13 +6,13 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder\Database;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
-use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilder;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
-use ActiveCollab\DatabaseStructure\Builder\Database\StructureSql;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
@@ -36,37 +36,18 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
     use StructureSql;
 
-    /**
-     * Build path. If empty, class will be built to memory.
-     *
-     * @var string
-     */
     private $build_path;
 
-    /**
-     * Return build path.
-     *
-     * @return string
-     */
-    public function getBuildPath()
+    public function getBuildPath(): ?string
     {
         return $this->build_path;
     }
 
-    /**
-     * Set build path. If empty, class will be built in memory.
-     *
-     * @param  string $value
-     * @return $this
-     */
-    public function &setBuildPath($value)
+    public function setBuildPath(string $value)
     {
         $this->build_path = $value;
 

@@ -6,11 +6,10 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder\Database;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 trait StructureSql
 {
     /**
@@ -79,8 +78,5 @@ trait StructureSql
         }
     }
 
-    /**
-     * @return string
-     */
-    abstract public function getBuildPath();
+    abstract public function getBuildPath(): ?string;
 }
