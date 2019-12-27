@@ -19,7 +19,7 @@ class TypeCollectionBuilder extends TypeBuilder
         $collection_class_name = $type->getCollectionClassName();
         $base_class_name = 'Base\\' . $collection_class_name;
 
-        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$collection_class_name.php" : null;
+        $class_build_path = $this->getCollectionBuildPath($type);
 
         if ($class_build_path && is_file($class_build_path)) {
             $this->triggerEvent('on_class_build_skipped', [$collection_class_name, $class_build_path]);

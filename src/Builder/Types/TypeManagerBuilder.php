@@ -19,7 +19,7 @@ class TypeManagerBuilder extends TypeBuilder
         $manager_class_name = $type->getManagerClassName();
         $base_class_name = 'Base\\' . $manager_class_name;
 
-        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$manager_class_name.php" : null;
+        $class_build_path = $this->getManagerBuildPath($type);
 
         if ($class_build_path && is_file($class_build_path)) {
             $this->triggerEvent('on_class_build_skipped', [$manager_class_name, $class_build_path]);

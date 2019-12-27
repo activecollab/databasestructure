@@ -20,7 +20,7 @@ class TypeClassBuilder extends TypeBuilder
         $class_name = $type->getClassName();
         $base_class_name = 'Base\\' . $class_name;
 
-        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$class_name.php" : null;
+        $class_build_path = $this->getTypeClassBuildPath($type);
 
         if ($class_build_path && is_file($class_build_path)) {
             $this->triggerEvent('on_class_build_skipped', [$class_name, $class_build_path]);
