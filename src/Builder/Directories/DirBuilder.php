@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -42,4 +43,5 @@ abstract class DirBuilder extends FileSystemBuilder
     }
 
     abstract protected function getDirToPreBuild(string $build_path): string;
+    abstract protected function getDirToBuildForType(string $build_path, TypeInterface $type): string;
 }

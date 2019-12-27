@@ -10,10 +10,17 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
+use ActiveCollab\DatabaseStructure\TypeInterface;
+
 class SqlDirBuilder extends DirBuilder
 {
     protected function getDirToPreBuild(string $build_path): string
     {
         return "$build_path/SQL";
+    }
+
+    protected function getDirToBuildForType(string $build_path, TypeInterface $type): string
+    {
+        return '';
     }
 }
