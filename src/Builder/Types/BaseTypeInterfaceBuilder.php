@@ -17,8 +17,7 @@ class BaseTypeInterfaceBuilder extends TypeBuilder
     public function buildType(TypeInterface $type)
     {
         $base_interface_name = $type->getBaseInterfaceName();
-
-        $base_class_build_path = $this->getBaseTypeClassBuildPath($type);
+        $base_class_build_path = $this->getBaseTypeInterfaceBuildPath($type);
 
         $result = [];
 
@@ -80,7 +79,7 @@ class BaseTypeInterfaceBuilder extends TypeBuilder
         array &$result
     ): void
     {
-        $result[] = $indent . 'interface ' . $base_interface_name . ' implements';
+        $result[] = $indent . 'interface ' . $base_interface_name . ' extends';
 
         if (!empty($interfaces)) {
             foreach ($interfaces as $interface) {
