@@ -8,19 +8,13 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Entities;
+namespace ActiveCollab\DatabaseStructure\Builder\Types;
 
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TypeClassBuilder extends FileSystemBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
     public function buildType(TypeInterface $type)
     {
         $class_name = $type->getClassName();

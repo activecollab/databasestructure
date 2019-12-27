@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Entities;
+namespace ActiveCollab\DatabaseStructure\Builder\Types;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCaster;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
@@ -30,14 +30,8 @@ use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class BaseTypeClassBuilder extends FileSystemBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
     public function buildType(TypeInterface $type)
     {
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
