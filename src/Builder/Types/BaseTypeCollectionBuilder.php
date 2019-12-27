@@ -10,18 +10,14 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder\Types;
 
-use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
 
-class BaseTypeCollectionBuilder extends FileSystemBuilder
+class BaseTypeCollectionBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $base_collection_class_name = Inflector::classify($type->getName());
-        $type_class_name = Inflector::classify(Inflector::singularize($type->getName()));
-
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/Base/$base_collection_class_name.php" : null;
+        $base_collection_class_name = $type->getManagerClassName();
+        $base_class_build_path = $this->getBaseManagerBuildPath($type);
 
         $result = [];
 
@@ -30,20 +26,29 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
         $this->renderHeaderComment($result);
 
+        $types_to_use = [
+            'ActiveCollab\DatabaseObject\Collection\Type as TypeCollection',
+        ];
+
         if ($this->getStructure()->getNamespace()) {
-            $base_class_namespace = $this->getStructure()->getNamespace() . '\\Collection\\Base';
-            $type_class_name = '\\' . ltrim($this->getStructure()->getNamespace(), '\\') . '\\' . $type_class_name;
-        } else {
-            $base_class_namespace = 'Collection\\Base';
+            $result[] = 'namespace ' . $this->getBaseNamespace($type) . ';';
+            $result[] = '';
+
+            $types_to_use[] = $this->getTypeNamespace($type) . '\\' . $type->getClassName();
         }
 
-        $result[] = 'namespace ' . $base_class_namespace . ';';
-        $result[] = '';
-        $result[] = '/**';
-        $result[] = ' * @package ' . $base_class_namespace;
-        $result[] = ' */';
+        if (!empty($types_to_use)) {
+            sort($types_to_use);
 
-        $interfaces = $traits = [];
+            foreach ($types_to_use as $type_to_use) {
+                $result[] = 'use ' . $type_to_use . ';';
+            }
+
+            $result[] = '';
+        }
+
+        $interfaces = [];
+        $traits = [];
 
         foreach ($type->getTraits() as $interface => $implementations) {
             if ($interface != '--just-paste-trait--') {
@@ -57,7 +62,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
             }
         }
 
-        $result[] = 'abstract class ' . $base_collection_class_name . ' extends \ActiveCollab\DatabaseObject\Collection\Type';
+        $result[] = 'abstract class ' . $base_collection_class_name . ' extends TypeCollection';
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this collection works with.';
@@ -66,7 +71,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         $result[] = '     */';
         $result[] = '    public function getType()';
         $result[] = '    {';
-        $result[] = '        return ' . var_export($type_class_name, true) . ';';
+        $result[] = '        return ' . $type->getClassName() . '::class;';
         $result[] = '    }';
         $result[] = '}';
         $result[] = '';
