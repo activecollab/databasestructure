@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
-use ActiveCollab\DatabaseStructure\Builder\BuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\AssociationsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Directories\BaseCollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Directories\BaseDirBuilder;
@@ -34,6 +33,7 @@ use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use InvalidArgumentException;
+use ReflectionClass;
 
 abstract class Structure implements StructureInterface
 {
@@ -220,46 +220,30 @@ abstract class Structure implements StructureInterface
      */
     private $config = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfig(string $name, $default = null)
     {
         return array_key_exists($name, $this->config) ? $this->config[$name] : $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &setConfig($name, $value): StructureInterface
+    public function setConfig(string $name, $value): StructureInterface
     {
         $this->config[$name] = $value;
 
         return $this;
     }
 
-    /**
-     * @var string
-     */
     private $namespace = null;
 
-    /**
-     * @return string
-     */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         if ($this->namespace === null) {
-            $this->namespace = (new \ReflectionClass(get_class($this)))->getNamespaceName();
+            $this->namespace = (new ReflectionClass(get_class($this)))->getNamespaceName();
         }
 
         return $this->namespace;
     }
 
-    /**
-     * @param  string|null $namespace
-     * @return $this
-     */
-    public function &setNamespace($namespace)
+    public function setNamespace($namespace): StructureInterface
     {
         if ($namespace === null || is_string($namespace)) {
             $this->namespace = $namespace;
