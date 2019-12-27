@@ -126,7 +126,7 @@ class CodeBuilderTest extends TestCase
 
         $this->structure = new WritersStructure();
 
-        if (!class_exists("{$this->namespace}\\Writer", false)) {
+        if (!class_exists("{$this->namespace}\\Writer\\Writer", false)) {
             $this->structure->build();
         }
 
@@ -218,7 +218,7 @@ class CodeBuilderTest extends TestCase
     {
         $this->assertTrue($this->writers_collection_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\WritersCollection"));
         $this->assertTrue($this->books_collection_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BooksCollection"));
-        $this->assertTrue($this->chapters_collection_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\Chapters\\Collection"));
+        $this->assertTrue($this->chapters_collection_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\ChaptersCollection"));
     }
 
     /**
@@ -503,13 +503,13 @@ class CodeBuilderTest extends TestCase
 
         $json_serialize = $this->base_book_reflection->getMethod('jsonSerialize');
         $this->assertEquals(
-            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Book',
+            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Book\Base\Book',
             $json_serialize->getDeclaringClass()->getName()
         );
 
         $json_serialize = $this->base_chapter_reflection->getMethod('jsonSerialize');
         $this->assertEquals(
-            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Chapter',
+            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Chapter\Base\Chapter',
             $json_serialize->getDeclaringClass()->getName()
         );
     }
