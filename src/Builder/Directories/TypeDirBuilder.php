@@ -18,6 +18,7 @@ class TypeDirBuilder extends DirBuilder
     {
         return [
             $build_path . '/' . $type->getClassName(),
+            $build_path . '/' . $type->getClassName() . '/Base',
         ];
     }
 }
