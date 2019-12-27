@@ -6,37 +6,25 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\BuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\BuilderInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 abstract class Builder implements BuilderInterface
 {
-    /**
-     * @var StructureInterface
-     */
     private $structure;
 
-    /**
-     * Construct a new builder instance.
-     *
-     * @param StructureInterface $structure
-     */
     public function __construct(StructureInterface $structure)
     {
         $this->structure = $structure;
     }
 
-    /**
-     * @return StructureInterface
-     */
-    public function getStructure()
+    public function getStructure(): StructureInterface
     {
         return $this->structure;
     }
@@ -71,13 +59,7 @@ abstract class Builder implements BuilderInterface
     {
     }
 
-    /**
-     * Register an internal event handler.
-     *
-     * @param string   $event
-     * @param callable $handler
-     */
-    public function registerEventHandler($event, callable $handler)
+    public function registerEventHandler(string $event, callable $handler): void
     {
         if (empty($event)) {
             throw new InvalidArgumentException('Event name is required');

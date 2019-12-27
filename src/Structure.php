@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
+use ActiveCollab\DatabaseStructure\Builder\BuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\AssociationsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Directories\BaseCollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Directories\BaseDirBuilder;
