@@ -59,7 +59,8 @@ class BaseTypeClassBuilder extends TypeBuilder
             $result[] = ' */';
         }
 
-        $interfaces = $traits = [];
+        $interfaces = [];
+        $traits = [];
 
         foreach ($type->getTraits() as $interface => $implementations) {
             if ($interface != '--just-paste-trait--') {
@@ -310,15 +311,6 @@ class BaseTypeClassBuilder extends TypeBuilder
             }
 
             $result[] = '';
-        }
-    }
-
-    private function removeCommaFromLastLine(array &$result): void
-    {
-        $last_line_num = count($result) - 1;
-
-        if ($last_line_num >= 0) {
-            $result[$last_line_num] = rtrim($result[$last_line_num], ',');
         }
     }
 

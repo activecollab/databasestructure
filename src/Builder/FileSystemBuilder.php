@@ -39,4 +39,13 @@ abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInt
             $result[] = '';
         }
     }
+
+    protected function removeCommaFromLastLine(array &$result): void
+    {
+        $last_line_num = count($result) - 1;
+
+        if ($last_line_num >= 0) {
+            $result[$last_line_num] = rtrim($result[$last_line_num], ',');
+        }
+    }
 }
