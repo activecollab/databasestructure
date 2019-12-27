@@ -14,11 +14,6 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\Blog\BlogStructure;
 use ActiveCollab\FileSystem\Adapter\LocalAdapter;
 use ActiveCollab\FileSystem\FileSystem;
 
-/**
- * Purpose of this test is to see if files and tables are properly build from BlogStructure.
- *
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class BlogBuilderTest extends TestCase
 {
     /**
@@ -64,14 +59,14 @@ class BlogBuilderTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * Test if all structure directories are added.
-     */
     public function testDirectories()
     {
-        $this->assertFileExists("$this->build_path/Base");
-        $this->assertFileExists("$this->build_path/Collection");
-        $this->assertFileExists("$this->build_path/Collection/Base");
+        $this->assertFileExists("$this->build_path/Category");
+        $this->assertFileExists("$this->build_path/Category/Base");
+        $this->assertFileExists("$this->build_path/Post");
+        $this->assertFileExists("$this->build_path/Post/Base");
+        $this->assertFileExists("$this->build_path/Comment");
+        $this->assertFileExists("$this->build_path/Comment/Base");
     }
 
     /**
@@ -79,9 +74,9 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildBaseTypes()
     {
-        $this->assertFileExists("$this->build_path/Base/Category.php");
-        $this->assertFileExists("$this->build_path/Base/Post.php");
-        $this->assertFileExists("$this->build_path/Base/Comment.php");
+        $this->assertFileExists("$this->build_path/Category/Base/Category.php");
+        $this->assertFileExists("$this->build_path/Post/Base/Post.php");
+        $this->assertFileExists("$this->build_path/Comment/Base/Comment.php");
     }
 
     /**
@@ -89,9 +84,9 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildTypes()
     {
-        $this->assertFileExists("$this->build_path/Category.php");
-        $this->assertFileExists("$this->build_path/Post.php");
-        $this->assertFileExists("$this->build_path/Comment.php");
+        $this->assertFileExists("$this->build_path/Category/Category.php");
+        $this->assertFileExists("$this->build_path/Post/Post.php");
+        $this->assertFileExists("$this->build_path/Comment/Comment.php");
     }
 
     /**
@@ -99,9 +94,9 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildBaseTypeCollections()
     {
-        $this->assertFileExists("$this->build_path/Collection/Base/Categories.php");
-        $this->assertFileExists("$this->build_path/Collection/Base/Posts.php");
-        $this->assertFileExists("$this->build_path/Collection/Base/Comments.php");
+        $this->assertFileExists("$this->build_path/Category/Base/CategoriesCollection.php");
+        $this->assertFileExists("$this->build_path/Post/Base/PostsCollection.php");
+        $this->assertFileExists("$this->build_path/Comment/Base/CommentsCollection.php");
     }
 
     /**
@@ -109,9 +104,9 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildTypeCollections()
     {
-        $this->assertFileExists("$this->build_path/Collection/Categories.php");
-        $this->assertFileExists("$this->build_path/Collection/Posts.php");
-        $this->assertFileExists("$this->build_path/Collection/Comments.php");
+        $this->assertFileExists("$this->build_path/Category/CategoriesCollection.php");
+        $this->assertFileExists("$this->build_path/Posts/PostsCollection.php");
+        $this->assertFileExists("$this->build_path/Comments/CommentsCollection.php");
     }
 
     /**
