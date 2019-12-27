@@ -19,7 +19,7 @@ use ActiveCollab\DatabaseStructure\Builder\Entities\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Collection\BaseTypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Manager\BaseTypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Collection\CollectionDirBuilder;
-use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\Directories\ManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Database\RecordsBuilder;
