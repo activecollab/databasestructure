@@ -18,7 +18,7 @@ class TypeClassBuilder extends TypeBuilder
     public function buildType(TypeInterface $type)
     {
         $class_name = $type->getClassName();
-        $base_class_name = 'Base\\' . $class_name;
+        $base_class_name = 'Base\\' . $type->getBaseClassName();
 
         $class_build_path = $this->getTypeClassBuildPath($type);
 

@@ -131,33 +131,33 @@ class CodeBuilderTest extends TestCase
         }
 
         // Managers
-        $this->base_writers_manager_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\WritersManager");
+        $this->base_writers_manager_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWritersManager");
         $this->writers_manager_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WritersManager");
 
-        $this->base_books_manager_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BooksManager");
+        $this->base_books_manager_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBooksManager");
         $this->books_manager_reflection = new ReflectionClass("{$this->namespace}\\Book\\BooksManager");
 
-        $this->base_chapters_manager_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\ChaptersManager");
+        $this->base_chapters_manager_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChaptersManager");
         $this->chapters_manager_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChaptersManager");
 
         // Collections
-        $this->base_writers_collection_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\WritersCollection");
+        $this->base_writers_collection_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWritersCollection");
         $this->writers_collection_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WritersCollection");
 
-        $this->base_books_collection_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BooksCollection");
+        $this->base_books_collection_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBooksCollection");
         $this->books_collection_reflection = new ReflectionClass("{$this->namespace}\\Book\\BooksCollection");
 
-        $this->base_chapters_collection_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\ChaptersCollection");
+        $this->base_chapters_collection_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChaptersCollection");
         $this->chapters_collection_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChaptersCollection");
 
         // Types
-        $this->base_writer_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\Writer");
+        $this->base_writer_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWriter");
         $this->writer_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Writer");
 
-        $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\Book");
+        $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBook");
         $this->book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Book");
 
-        $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\Chapter");
+        $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChapter");
         $this->chapter_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Chapter");
     }
 
@@ -186,9 +186,9 @@ class CodeBuilderTest extends TestCase
      */
     public function testManagerClassInheritance()
     {
-        $this->assertTrue($this->writers_manager_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\WritersManager"));
-        $this->assertTrue($this->books_manager_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BooksManager"));
-        $this->assertTrue($this->chapters_manager_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\ChaptersManager"));
+        $this->assertTrue($this->writers_manager_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\BaseWritersManager"));
+        $this->assertTrue($this->books_manager_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BaseBooksManager"));
+        $this->assertTrue($this->chapters_manager_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\BaseChaptersManager"));
     }
 
     /**
@@ -216,9 +216,9 @@ class CodeBuilderTest extends TestCase
      */
     public function testCollectionClassInheritance()
     {
-        $this->assertTrue($this->writers_collection_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\WritersCollection"));
-        $this->assertTrue($this->books_collection_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BooksCollection"));
-        $this->assertTrue($this->chapters_collection_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\ChaptersCollection"));
+        $this->assertTrue($this->writers_collection_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\BaseWritersCollection"));
+        $this->assertTrue($this->books_collection_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BaseBooksCollection"));
+        $this->assertTrue($this->chapters_collection_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\BaseChaptersCollection"));
     }
 
     /**
@@ -246,9 +246,9 @@ class CodeBuilderTest extends TestCase
      */
     public function testTypeClassInhritance()
     {
-        $this->assertTrue($this->writer_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\Writer"));
-        $this->assertTrue($this->book_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\Book"));
-        $this->assertTrue($this->chapter_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\Chapter"));
+        $this->assertTrue($this->writer_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\BaseWriter"));
+        $this->assertTrue($this->book_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BaseBook"));
+        $this->assertTrue($this->chapter_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\BaseChapter"));
     }
 
     /**
@@ -503,13 +503,13 @@ class CodeBuilderTest extends TestCase
 
         $json_serialize = $this->base_book_reflection->getMethod('jsonSerialize');
         $this->assertEquals(
-            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Book\Base\Book',
+            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Book\Base\BaseBook',
             $json_serialize->getDeclaringClass()->getName()
         );
 
         $json_serialize = $this->base_chapter_reflection->getMethod('jsonSerialize');
         $this->assertEquals(
-            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Chapter\Base\Chapter',
+            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Chapter\Base\BaseChapter',
             $json_serialize->getDeclaringClass()->getName()
         );
     }

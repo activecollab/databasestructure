@@ -55,13 +55,13 @@ class ProtectSetterTest extends TestCase
             $this->structure->build();
         }
 
-        $this->base_user_reflection = new ReflectionClass("{$this->namespace}\\User\\Base\\User");
+        $this->base_user_reflection = new ReflectionClass("{$this->namespace}\\User\\Base\\BaseUser");
         $this->user_reflection = new ReflectionClass("{$this->namespace}\\User\\User");
 
-        $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\Book");
+        $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBook");
         $this->book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Book");
 
-        $this->base_note_reflection = new ReflectionClass("{$this->namespace}\\Note\\Base\\Note");
+        $this->base_note_reflection = new ReflectionClass("{$this->namespace}\\Note\\Base\\BaseNote");
         $this->note_reflection = new ReflectionClass("{$this->namespace}\\Note\\Note");
     }
 

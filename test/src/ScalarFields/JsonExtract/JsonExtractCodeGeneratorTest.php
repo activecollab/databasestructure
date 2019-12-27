@@ -49,7 +49,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
             $this->structure->build();
         }
 
-        $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\Base\\StatsSnapshot");
+        $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\Base\\BaseStatsSnapshot");
         $this->stats_snapshot_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\StatsSnapshot");
     }
 

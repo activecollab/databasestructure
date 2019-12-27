@@ -34,40 +34,18 @@ interface TypeInterface
      */
     public function &setTableName($table_name);
 
-    /**
-     * Return type class name.
-     *
-     * @return string
-     */
     public function getClassName(): string;
-
-    /**
-     * Return name of a class that base type class should extend.
-     *
-     * @return string
-     */
+    public function getBaseClassName(): string;
     public function getBaseClassExtends(): string;
-
-    /**
-     * Return manager class name.
-     *
-     * @return string
-     */
-    public function getManagerClassName(): string;
-
-    /**
-     * Return collection class name.
-     *
-     * @return string
-     */
-    public function getCollectionClassName(): string;
-
     public function setBaseClassExtends(string $class_name): TypeInterface;
 
-    /**
-     * @return bool
-     */
-    public function getPolymorph();
+    public function getManagerClassName(): string;
+    public function getBaseManagerClassName(): string;
+
+    public function getCollectionClassName(): string;
+    public function getBaseCollectionClassName(): string;
+
+    public function getPolymorph(): bool;
 
     /**
      * Set this model to be polymorph (type field is added and used to store instance's class name).

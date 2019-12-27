@@ -74,9 +74,9 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildBaseTypes()
     {
-        $this->assertFileExists("$this->build_path/Category/Base/Category.php");
-        $this->assertFileExists("$this->build_path/Post/Base/Post.php");
-        $this->assertFileExists("$this->build_path/Comment/Base/Comment.php");
+        $this->assertFileExists("$this->build_path/Category/Base/BaseCategory.php");
+        $this->assertFileExists("$this->build_path/Post/Base/BasePost.php");
+        $this->assertFileExists("$this->build_path/Comment/Base/BaseComment.php");
     }
 
     /**
@@ -94,9 +94,9 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildBaseTypeCollections()
     {
-        $this->assertFileExists("$this->build_path/Category/Base/CategoriesCollection.php");
-        $this->assertFileExists("$this->build_path/Post/Base/PostsCollection.php");
-        $this->assertFileExists("$this->build_path/Comment/Base/CommentsCollection.php");
+        $this->assertFileExists("$this->build_path/Category/Base/BaseCategoriesCollection.php");
+        $this->assertFileExists("$this->build_path/Post/Base/BasePostsCollection.php");
+        $this->assertFileExists("$this->build_path/Comment/Base/BaseCommentsCollection.php");
     }
 
     /**

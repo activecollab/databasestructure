@@ -33,10 +33,10 @@ class BaseTypeClassBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $base_class_name = $type->getClassName();
+        $base_class_name = $type->getBaseClassName();
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
 
-        $base_class_build_path = $this->getBaseTypeBuildPath($type);
+        $base_class_build_path = $this->getBaseTypeClassBuildPath($type);
 
         $result = [];
 

@@ -17,7 +17,7 @@ class TypeManagerBuilder extends TypeBuilder
     public function buildType(TypeInterface $type)
     {
         $manager_class_name = $type->getManagerClassName();
-        $base_class_name = 'Base\\' . $manager_class_name;
+        $base_class_name = 'Base\\' . $type->getBaseManagerClassName();
 
         $class_build_path = $this->getManagerBuildPath($type);
 

@@ -61,16 +61,16 @@ class PermissionsCodeBuilderTest extends TestCase
             $this->structure->build();
         }
 
-        $this->element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Element\\Base\\Element");
+        $this->element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Element\\Base\\BaseElement");
         $this->element_class_reflection = new ReflectionClass("{$this->namespace}\\Element\\Element");
 
-        $this->restrictive_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\RestrictiveElement\\Base\\RestrictiveElement");
+        $this->restrictive_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\RestrictiveElement\\Base\\BaseRestrictiveElement");
         $this->restrictive_element_class_reflection = new ReflectionClass("{$this->namespace}\\RestrictiveElement\\RestrictiveElement");
 
-        $this->reverted_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\RevertedElement\\Base\\RevertedElement");
+        $this->reverted_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\RevertedElement\\Base\\BaseRevertedElement");
         $this->reverted_element_class_reflection = new ReflectionClass("{$this->namespace}\\RevertedElement\\RevertedElement");
 
-        $this->changed_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\ChangedElement\\Base\\ChangedElement");
+        $this->changed_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\ChangedElement\\Base\\BaseChangedElement");
         $this->changed_element_class_reflection = new ReflectionClass("{$this->namespace}\\ChangedElement\\ChangedElement");
     }
 

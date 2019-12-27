@@ -68,7 +68,7 @@ class JsonExtractTest extends TestCase
 
         $this->stats_snapshot_class_name = "{$this->namespace}\\StatsSnapshot\\StatsSnapshot";
 
-        $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\Base\\StatsSnapshot");
+        $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\Base\\BaseStatsSnapshot");
         $this->stats_snapshot_class_reflection = new ReflectionClass($this->stats_snapshot_class_name);
 
         $type_table_build = new TypeTableBuilder($this->structure);

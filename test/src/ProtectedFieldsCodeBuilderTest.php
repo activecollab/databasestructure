@@ -57,13 +57,13 @@ class ProtectedFieldsCodeBuilderTest extends TestCase
             $this->structure->build();
         }
 
-        $this->no_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\NoProtectedField\\Base\\NoProtectedField");
+        $this->no_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\NoProtectedField\\Base\\BaseNoProtectedField");
         $this->no_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\NoProtectedField\\NoProtectedField");
 
-        $this->has_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\HasProtectedField\\Base\\HasProtectedField");
+        $this->has_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\HasProtectedField\\Base\\BaseHasProtectedField");
         $this->has_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\HasProtectedField\\HasProtectedField");
 
-        $this->multi_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\MultiProtectedField\\Base\\MultiProtectedField");
+        $this->multi_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\MultiProtectedField\\Base\\BaseMultiProtectedField");
         $this->multi_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\MultiProtectedField\\MultiProtectedField");
     }
 

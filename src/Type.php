@@ -85,15 +85,9 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @var bool
-     */
     private $polymorph = false;
 
-    /**
-     * @return bool
-     */
-    public function getPolymorph()
+    public function getPolymorph(): bool
     {
         return $this->polymorph;
     }
@@ -233,12 +227,14 @@ class Type implements TypeInterface
      */
     private $fields = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName(): string
     {
         return Inflector::classify(Inflector::singularize($this->getName()));
+    }
+
+    public function getBaseClassName(): string
+    {
+        return 'Base' . $this->getClassName();
     }
 
     public function getBaseClassExtends(): string
@@ -255,9 +251,19 @@ class Type implements TypeInterface
         return Inflector::classify($this->getName()) . 'Manager';
     }
 
+    public function getBaseManagerClassName(): string
+    {
+        return 'Base' . $this->getManagerClassName();
+    }
+
     public function getCollectionClassName(): string
     {
         return Inflector::classify($this->getName()) . 'Collection';
+    }
+
+    public function getBaseCollectionClassName(): string
+    {
+        return 'Base' . $this->getCollectionClassName();
     }
 
     public function setBaseClassExtends(string $class_name): TypeInterface
