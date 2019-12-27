@@ -53,4 +53,16 @@ abstract class Association implements AssociationInterface
     )
     {
     }
+
+    /**
+     * Return full instance class from namespace and type.
+     *
+     * @param  string        $namespace
+     * @param  TypeInterface $type
+     * @return string
+     */
+    protected function getInstanceClassFrom($namespace, TypeInterface $type)
+    {
+        return $namespace . '\\' . $type->getClassName() . '\\' . $type->getClassName();
+    }
 }

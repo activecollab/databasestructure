@@ -119,7 +119,7 @@ class HasManyAssociation extends Association implements
             $namespace = '\\' . ltrim($namespace, '\\');
         }
 
-        $entity_class_name = $namespace ? $namespace . '\\' . $target_type->getClassName() : $target_type->getClassName();
+        $entity_class_name = $this->getInstanceClassFrom($namespace, $target_type);
 
         $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasManyAssociatedEntitiesManager::class . '(';
         $result[] = $indent . '    $this->connection,';
@@ -321,17 +321,5 @@ class HasManyAssociation extends Association implements
     protected function getFkFieldNameFrom(TypeInterface $type)
     {
         return Inflector::singularize($type->getName()) . '_id';
-    }
-
-    /**
-     * Return full instance class from namespace and type.
-     *
-     * @param  string        $namespace
-     * @param  TypeInterface $type
-     * @return string
-     */
-    protected function getInstanceClassFrom($namespace, TypeInterface $type)
-    {
-        return $namespace . '\\' . Inflector::classify(Inflector::singularize($type->getName()));
     }
 }

@@ -16,7 +16,7 @@ class BaseTypeCollectionBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $base_collection_class_name = $type->getManagerClassName();
+        $base_collection_class_name = $type->getCollectionClassName();
         $base_class_build_path = $this->getBaseCollectionBuildPath($type);
 
         $result = [];

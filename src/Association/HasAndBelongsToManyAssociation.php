@@ -109,7 +109,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
             $namespace = '\\' . ltrim($namespace, '\\');
         }
 
-        $entity_class_name = $namespace ? $namespace . '\\' . $target_type->getClassName() : $target_type->getClassName();
+        $entity_class_name = $this->getInstanceClassFrom($namespace, $target_type);
 
         $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasAndBelongsToManyAssociatedEntitiesManager::class . '(';
         $result[] = $indent . '    $this->connection,';

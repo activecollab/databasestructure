@@ -14,6 +14,7 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
+use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\FileSystem\Adapter\LocalAdapter;
 use ActiveCollab\FileSystem\FileSystem;
 use ActiveCollab\FileSystem\FileSystemInterface;
@@ -145,18 +146,19 @@ abstract class StructuredTestCase extends TestCase
         $type_manager_class_names = [];
         $type_collection_class_names = [];
 
+        /** @var TypeInterface $type */
         foreach ($structure->getTypes() as $type) {
-            $type_entity_class_name = $built_in_namespace . '\\' . $type->getClassName();
+            $type_entity_class_name = $built_in_namespace . '\\' . $type->getClassName() . '\\' . $type->getClassName();
             $this->assertTrue(class_exists($type_entity_class_name));
 
             $type_entity_class_names[$type->getName()] = $type_entity_class_name;
 
-            $type_manager_class_name = $built_in_namespace . '\\Manager\\' . $type->getManagerClassName();
+            $type_manager_class_name = $built_in_namespace . '\\' . $type->getClassName() . '\\' . $type->getManagerClassName();
             $this->assertTrue(class_exists($type_manager_class_name));
 
             $type_manager_class_names[$type->getName()] = $type_manager_class_name;
 
-            $type_collection_class_name = $built_in_namespace . '\\Collection\\' . $type->getCollectionClassName();
+            $type_collection_class_name = $built_in_namespace . '\\' . $type->getClassName() . '\\' . $type->getCollectionClassName();
             $this->assertTrue(class_exists($type_collection_class_name));
 
             $type_collection_class_names[$type->getName()] = $type_collection_class_name;

@@ -137,7 +137,7 @@ class BelongsToAssociation extends Association implements
             $namespace = '\\' . ltrim($namespace, '\\');
         }
 
-        $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
+        $target_instance_class = $this->getInstanceClassFrom($namespace, $target_type);
 
         $returns_and_accepts = $target_instance_class;
         if ($this->getAccepts()) {
