@@ -280,53 +280,127 @@ class CodeBuilderTest extends TestCase
      */
     public function testWriterClassFields()
     {
-        $this->assertEquals(['id', 'name', 'birthday', 'is_awesome'], $this->base_writer_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(
+            [
+                'id',
+                'name',
+                'birthday',
+                'is_awesome'
+            ],
+            $this->base_writer_reflection->getDefaultProperties()['fields']
+        );
 
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getName'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setName'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getBirthday'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getIsAwesome'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setIsAwesome'));
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('getId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('setId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('getName')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('setName')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('getBirthday')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('getIsAwesome')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('setIsAwesome')
+        );
     }
 
-    /**
-     * Test if boolean fields have shortcut getter.
-     */
     public function testBooleanFieldHasShortcutGetter()
     {
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('isAwesome'));
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_writer_reflection->getMethod('isAwesome')
+        );
     }
 
-    /**
-     * Test book class fields.
-     */
     public function testBookClassFields()
     {
-        $this->assertEquals(['id', 'author_id', 'title'], $this->base_book_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(
+            [
+                'id',
+                'author_id',
+                'title'
+            ],
+            $this->base_book_reflection->getDefaultProperties()['fields']
+        );
 
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('getId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('setId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('getAuthorId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('setAuthorId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('getTitle'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('setTitle'));
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_book_reflection->getMethod('getId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_book_reflection->getMethod('setId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_book_reflection->getMethod('getAuthorId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_book_reflection->getMethod('setAuthorId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_book_reflection->getMethod('getTitle')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_book_reflection->getMethod('setTitle')
+        );
     }
 
-    /**
-     * Test chapter class fileds.
-     */
     public function testChapterClassFields()
     {
-        $this->assertEquals(['id', 'book_id', 'title', 'position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(
+            [
+                'id',
+                'book_id',
+                'title',
+                'position'
+            ],
+            $this->base_chapter_reflection->getDefaultProperties()['fields']
+        );
 
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getBookId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setBookId'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getTitle'));
-        $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setTitle'));
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_chapter_reflection->getMethod('getId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_chapter_reflection->getMethod('setId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_chapter_reflection->getMethod('getBookId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_chapter_reflection->getMethod('setBookId')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_chapter_reflection->getMethod('getTitle')
+        );
+        $this->assertInstanceOf(
+            ReflectionMethod::class,
+            $this->base_chapter_reflection->getMethod('setTitle')
+        );
     }
 
     /**
@@ -422,12 +496,21 @@ class CodeBuilderTest extends TestCase
     public function testJsonSerializeIsDefinedInBookClass()
     {
         $json_serialize = $this->base_writer_reflection->getMethod('jsonSerialize');
-        $this->assertEquals($this->base_writer_reflection->getName(), $json_serialize->getDeclaringClass()->getName());
+        $this->assertEquals(
+            $this->base_writer_reflection->getName(),
+            $json_serialize->getDeclaringClass()->getName()
+        );
 
         $json_serialize = $this->base_book_reflection->getMethod('jsonSerialize');
-        $this->assertEquals('ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Book', $json_serialize->getDeclaringClass()->getName());
+        $this->assertEquals(
+            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Book',
+            $json_serialize->getDeclaringClass()->getName()
+        );
 
         $json_serialize = $this->base_chapter_reflection->getMethod('jsonSerialize');
-        $this->assertEquals('ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Chapter', $json_serialize->getDeclaringClass()->getName());
+        $this->assertEquals(
+            'ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\Base\Chapter',
+            $json_serialize->getDeclaringClass()->getName()
+        );
     }
 }
