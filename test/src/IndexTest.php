@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Index;
@@ -32,11 +34,10 @@ class IndexTest extends TestCase
         $this->assertContains('is_awesome', $index->getFields());
     }
 
-    /**
-     * Test valid field arguments.
-     */
     public function testNullOrArrayAllowedForFields()
     {
+        $this->doesNotPerformAssertions();
+
         new Index('is_awesome', null);
         new Index('is_awesome', []);
         new Index('is_awesome', ['name']);
