@@ -21,7 +21,29 @@ abstract class DirBuilder extends FileSystemBuilder
 
         if ($build_path) {
             if (is_dir($build_path)) {
-                $this->makeDir($this->getDirToPreBuild(rtrim($build_path, DIRECTORY_SEPARATOR)));
+                $this->makeDir(
+                    $this->getDirToPreBuild(
+                        rtrim($build_path, DIRECTORY_SEPARATOR)
+                    )
+                );
+            } else {
+                throw new InvalidArgumentException("Directory '$build_path' not found");
+            }
+        }
+    }
+
+    public function buildType(TypeInterface $type)
+    {
+        $build_path = $this->getBuildPath();
+
+        if ($build_path) {
+            if (is_dir($build_path)) {
+                $this->makeDir(
+                    $this->getDirToBuildForType(
+                        rtrim($build_path, DIRECTORY_SEPARATOR),
+                        $type
+                    )
+                );
             } else {
                 throw new InvalidArgumentException("Directory '$build_path' not found");
             }
