@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
@@ -26,13 +28,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use BadMethodCallException;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
+use ReflectionClass;
 
 class Type implements TypeInterface
 {
-    /**
-     * @var string
-     */
     private $name;
+    private $base_class_extends;
 
     /**
      * @param string $name
@@ -240,14 +241,6 @@ class Type implements TypeInterface
         return Inflector::classify(Inflector::singularize($this->getName()));
     }
 
-    /**
-     * @var string
-     */
-    private $base_class_extends;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseClassExtends(): string
     {
         if (empty($this->base_class_extends)) {
@@ -257,42 +250,27 @@ class Type implements TypeInterface
         return $this->base_class_extends;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getManagerClassName(): string
     {
-        return Inflector::classify($this->getName());
+        return Inflector::classify($this->getName()) . 'Manager';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCollectionClassName(): string
     {
-        return Inflector::classify($this->getName());
+        return Inflector::classify($this->getName()) . 'Collection';
     }
 
-    /**
-     * Set name of a class that base type class should extend.
-     *
-     * Note: This class needs to descened from Object class of DatabaseObject package
-     *
-     * @param  string $class_name
-     * @return $this
-     */
-    public function &setBaseClassExtends($class_name)
+    public function setBaseClassExtends(string $class_name): TypeInterface
     {
         if ($class_name
             && class_exists($class_name)
-            && (new \ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
+            && (new ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
+            $this->base_class_extends = $class_name;
+
+            return $this;
         } else {
             throw new InvalidArgumentException("Class name '$class_name' is not valid");
         }
-
-        $this->base_class_extends = $class_name;
-
-        return $this;
     }
 
     /**

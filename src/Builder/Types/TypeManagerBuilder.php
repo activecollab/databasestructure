@@ -6,25 +6,20 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder\Manager;
+declare(strict_types=1);
 
-use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
+namespace ActiveCollab\DatabaseStructure\Builder\Types;
+
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
-class TypeManagerBuilder extends FileSystemBuilder
+class TypeManagerBuilder extends TypeBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
     public function buildType(TypeInterface $type)
     {
         $manager_class_name = $type->getManagerClassName();
         $base_class_name = 'Base\\' . $manager_class_name;
 
-        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Manager/$manager_class_name.php" : null;
+        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$manager_class_name.php" : null;
 
         if ($class_build_path && is_file($class_build_path)) {
             $this->triggerEvent('on_class_build_skipped', [$manager_class_name, $class_build_path]);
@@ -32,27 +27,19 @@ class TypeManagerBuilder extends FileSystemBuilder
             return;
         }
 
-        $manager_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Manager' : 'Manager';
-
         $result = [];
 
         $result[] = '<?php';
         $result[] = '';
 
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
+        $this->renderHeaderComment($result);
 
         $result[] = 'declare(strict_types=1);';
         $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {
-            $result[] = "namespace $manager_class_namespace;";
+            $result[] = "namespace " . $this->getTypeNamespace($type) . ";";
             $result[] = '';
-            $result[] = '/**';
-            $result[] = ' * @package ' . $manager_class_namespace;
-            $result[] = ' */';
         }
 
         $result[] = 'class ' . $manager_class_name . ' extends ' . $base_class_name;

@@ -31,8 +31,23 @@ abstract class TypeBuilder extends FileSystemBuilder
 
     protected function getBaseTypeBuildPath(TypeInterface $type): ?string
     {
+        return $this->getBaseClassBuildPath($type, $type->getClassName());
+    }
+
+    protected function getBaseManagerBuildPath(TypeInterface $type): ?string
+    {
+        return $this->getBaseClassBuildPath($type, $type->getManagerClassName());
+    }
+
+    protected function getBaseCollectionBuildPath(TypeInterface $type): ?string
+    {
+        return $this->getBaseClassBuildPath($type, $type->getCollectionClassName());
+    }
+
+    protected function getBaseClassBuildPath(TypeInterface $type, string $class): ?string
+    {
         return $this->getBuildPath()
-            ? sprintf('%s/%s/Base/%s.php', $this->getBuildPath(), $type->getClassName(), $type->getClassName())
+            ? sprintf('%s/%s/Base/%s.php', $this->getBuildPath(), $type->getClassName(), $class)
             : null;
     }
 }

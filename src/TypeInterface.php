@@ -62,15 +62,7 @@ interface TypeInterface
      */
     public function getCollectionClassName(): string;
 
-    /**
-     * Set name of a class that base type class should extend.
-     *
-     * Note: This class needs to descened from Object class of DatabaseObject package
-     *
-     * @param  string $class_name
-     * @return $this
-     */
-    public function &setBaseClassExtends($class_name);
+    public function setBaseClassExtends(string $class_name): TypeInterface;
 
     /**
      * @return bool

@@ -25,4 +25,18 @@ abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInt
 
         return $this;
     }
+
+    protected function renderHeaderComment(array &$result): void
+    {
+        if ($this->getStructure()->getConfig('header_comment')) {
+            $result = array_merge(
+                $result,
+                explode(
+                    "\n",
+                    $this->getStructure()->getConfig('header_comment')
+                )
+            );
+            $result[] = '';
+        }
+    }
 }

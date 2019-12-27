@@ -33,10 +33,7 @@ class TypeClassBuilder extends TypeBuilder
         $result[] = '<?php';
         $result[] = '';
 
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
+        $this->renderHeaderComment($result);
 
         $result[] = 'declare(strict_types=1);';
         $result[] = '';
