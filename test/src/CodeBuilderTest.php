@@ -95,7 +95,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_writer_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $writer_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $writer_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -105,7 +115,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_book_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $book_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $book_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -115,7 +135,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_chapter_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $chapter_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $chapter_interface_reflection;
 
     /**
      * Set up test environment.
@@ -152,13 +182,22 @@ class CodeBuilderTest extends TestCase
 
         // Types
         $this->base_writer_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWriter");
+        $this->base_writer_interface_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWriterInterface");
+
         $this->writer_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Writer");
+        $this->writer_interface_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WriterInterface");
 
         $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBook");
+        $this->base_book_interface_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBookInterface");
+
         $this->book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Book");
+        $this->book_interface_reflection = new ReflectionClass("{$this->namespace}\\Book\\BookInterface");
 
         $this->base_chapter_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChapter");
+        $this->base_chapter_interface_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChapterInterface");
+
         $this->chapter_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Chapter");
+        $this->chapter_interface_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChapterInterface");
     }
 
     /**
@@ -285,7 +324,7 @@ class CodeBuilderTest extends TestCase
                 'id',
                 'name',
                 'birthday',
-                'is_awesome'
+                'is_awesome',
             ],
             $this->base_writer_reflection->getDefaultProperties()['fields']
         );
@@ -334,7 +373,7 @@ class CodeBuilderTest extends TestCase
             [
                 'id',
                 'author_id',
-                'title'
+                'title',
             ],
             $this->base_book_reflection->getDefaultProperties()['fields']
         );
@@ -372,7 +411,7 @@ class CodeBuilderTest extends TestCase
                 'id',
                 'book_id',
                 'title',
-                'position'
+                'position',
             ],
             $this->base_chapter_reflection->getDefaultProperties()['fields']
         );

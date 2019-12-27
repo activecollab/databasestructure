@@ -276,8 +276,8 @@ abstract class Structure implements StructureInterface
 
             $this->builders[] = new TypeDirBuilder($this);
             $this->builders[] = new BaseTypeInterfaceBuilder($this);
-            $this->builders[] = new BaseTypeClassBuilder($this);
             $this->builders[] = new TypeInterfaceBuilder($this);
+            $this->builders[] = new BaseTypeClassBuilder($this);
             $this->builders[] = new TypeClassBuilder($this);
             $this->builders[] = new TypeTableBuilder($this);
 

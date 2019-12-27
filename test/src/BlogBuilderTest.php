@@ -75,8 +75,13 @@ class BlogBuilderTest extends TestCase
     public function testBuildBaseTypes()
     {
         $this->assertFileExists("$this->build_path/Category/Base/BaseCategory.php");
+        $this->assertFileExists("$this->build_path/Category/Base/BaseCategoryInterface.php");
+
         $this->assertFileExists("$this->build_path/Post/Base/BasePost.php");
+        $this->assertFileExists("$this->build_path/Post/Base/BasePostInterface.php");
+
         $this->assertFileExists("$this->build_path/Comment/Base/BaseComment.php");
+        $this->assertFileExists("$this->build_path/Comment/Base/BaseCommentInterface.php");
     }
 
     /**
@@ -85,8 +90,13 @@ class BlogBuilderTest extends TestCase
     public function testBuildTypes()
     {
         $this->assertFileExists("$this->build_path/Category/Category.php");
+        $this->assertFileExists("$this->build_path/Category/CategoryInterface.php");
+
         $this->assertFileExists("$this->build_path/Post/Post.php");
+        $this->assertFileExists("$this->build_path/Post/PostInterface.php");
+
         $this->assertFileExists("$this->build_path/Comment/Comment.php");
+        $this->assertFileExists("$this->build_path/Comment/CommentInterface.php");
     }
 
     /**
