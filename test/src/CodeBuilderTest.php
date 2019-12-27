@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Structure;
@@ -13,9 +15,6 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 use ReflectionClass;
 use ReflectionMethod;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class CodeBuilderTest extends TestCase
 {
     /**
@@ -31,17 +30,92 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
-    private $base_writers_manager_reflection, $writers_manager_reflection, $base_books_manager_reflection, $books_manager_reflection, $base_chapters_manager_reflection, $chapters_manager_reflection;
+    private $base_writers_manager_reflection;
 
     /**
      * @var ReflectionClass
      */
-    private $base_writers_collection_reflection, $writers_collection_reflection, $base_books_collection_reflection, $books_collection_reflection, $base_chapters_collection_reflection, $chapters_collection_reflection;
+    private $writers_manager_reflection;
 
     /**
      * @var ReflectionClass
      */
-    private $base_writer_reflection, $writer_reflection, $base_book_reflection, $book_reflection, $base_chapter_reflection, $chapter_reflection;
+    private $base_books_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $books_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_chapters_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $chapters_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_writers_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $writers_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_books_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $books_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_chapters_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $chapters_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_writer_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $writer_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_book_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $book_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $base_chapter_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $chapter_reflection;
 
     /**
      * Set up test environment.
