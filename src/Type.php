@@ -20,6 +20,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation a
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Entity\Entity;
+use ActiveCollab\DatabaseStructure\Entity\EntityInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
@@ -34,6 +35,7 @@ class Type implements TypeInterface
 {
     private $name;
     private $base_class_extends;
+    private $base_interface_extends;
 
     /**
      * @param string $name
@@ -256,6 +258,15 @@ class Type implements TypeInterface
         return $this->base_class_extends;
     }
 
+    public function getBaseInterfaceExtends(): string
+    {
+        if (empty($this->base_interface_extends)) {
+            $this->base_interface_extends = EntityInterface::class;
+        }
+
+        return $this->base_interface_extends;
+    }
+
     public function getManagerClassName(): string
     {
         return Inflector::classify($this->getName()) . 'Manager';
@@ -285,7 +296,20 @@ class Type implements TypeInterface
 
             return $this;
         } else {
-            throw new InvalidArgumentException("Class name '$class_name' is not valid");
+            throw new InvalidArgumentException("Class name '$class_name' is not valid.");
+        }
+    }
+
+    public function setBaseInterfaceExtends(string $interface_name): TypeInterface
+    {
+        if ($interface_name
+            && interface_exists($interface_name)
+            && (new ReflectionClass($interface_name))->isSubclassOf(EntityInterface::class)) {
+            $this->base_interface_extends = $interface_name;
+
+            return $this;
+        } else {
+            throw new InvalidArgumentException("Interface name '$interface_name' is not valid.");
         }
     }
 

@@ -35,7 +35,7 @@ class BaseTypeInterfaceBuilder extends TypeBuilder
         $result[] = '';
 
         $interfaces = [
-            '\ActiveCollab\DatabaseStructure\Entity\EntityInterface'
+            '\\' . ltrim($type->getBaseInterfaceExtends(), '\\'),
         ];
 
         foreach ($type->getTraits() as $interface => $implementations) {

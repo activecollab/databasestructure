@@ -40,6 +40,8 @@ interface TypeInterface
     public function getBaseInterfaceName(): string;
     public function getBaseClassExtends(): string;
     public function setBaseClassExtends(string $class_name): TypeInterface;
+    public function getBaseInterfaceExtends(): string;
+    public function setBaseInterfaceExtends(string $interface_name): TypeInterface;
 
     public function getManagerClassName(): string;
     public function getBaseManagerClassName(): string;

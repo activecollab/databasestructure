@@ -10,7 +10,8 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Entity\Entity;
 use ActiveCollab\DatabaseStructure\FieldInterface;
-use ActiveCollab\DatabaseStructure\Test\Fixtures\ObjectClassDescendent;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\EntityClassDescendent;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\EntityInterfaceDescendent;
 use ActiveCollab\DatabaseStructure\Type;
 use DateTime;
 
@@ -28,20 +29,37 @@ class TypeDefinitionTest extends TestCase
     }
 
     /**
-     * Test if types can extend any class that descends from Object class of DatabaseObject package.
+     * Test if types can extend any class that descends from Entity class of DatabaseObject package.
      */
-    public function testBaseClassCanExtendObjectClassDescendent()
+    public function testBaseClassCanExtendEntityClassDescendent()
     {
-        $type = (new Type('writers'))->setBaseClassExtends(ObjectClassDescendent::class);
-        $this->assertEquals(ObjectClassDescendent::class, $type->getBaseClassExtends());
+        $type = (new Type('writers'))->setBaseClassExtends(EntityClassDescendent::class);
+        $this->assertEquals(EntityClassDescendent::class, $type->getBaseClassExtends());
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testBaseClassCantExtendNonObjectClassDescendent()
+    public function testBaseClassCantExtendNonEntityClassDescendent()
     {
         (new Type('writers'))->setBaseClassExtends(DateTime::class);
+    }
+
+    /**
+     * Test if types can extend any class that descends from EntityInterface class of DatabaseObject package.
+     */
+    public function testBaseInterfaceCanExtendEntityInterfaceDescendent()
+    {
+        $type = (new Type('writers'))->setBaseInterfaceExtends(EntityInterfaceDescendent::class);
+        $this->assertEquals(EntityInterfaceDescendent::class, $type->getBaseInterfaceExtends());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testBaseInterfaceCantExtendNonEntityInterfaceDescendent()
+    {
+        (new Type('writers'))->setBaseInterfaceExtends(DateTime::class);
     }
 
     /**
