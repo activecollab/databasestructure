@@ -8,9 +8,8 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Entities;
+namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
-use ActiveCollab\DatabaseStructure\Builder\Directories\DirBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class TypeDirBuilder extends DirBuilder
