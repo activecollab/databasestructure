@@ -53,20 +53,12 @@ class BaseTypeClassBuilder extends TypeBuilder
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
 
-        if ($this->hasBaseClassDocBlockProperties()) {
-            $result[] = '/**';
-            $this->buildBaseClassDocBlockProperties('', $result);
-            $result[] = ' */';
-        }
-
-        $interfaces = [];
+        $interfaces = [
+            '\\' . $this->getTypeNamespace($type) . '\\' . $type->getInterfaceName(),
+        ];
         $traits = [];
 
         foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-
             if (count($implementations)) {
                 foreach ($implementations as $implementation) {
                     $traits[] = '\\' . ltrim($implementation, '\\');
@@ -74,7 +66,19 @@ class BaseTypeClassBuilder extends TypeBuilder
             }
         }
 
-        $this->buildClassDeclaration($base_class_name, $base_class_extends, $interfaces, '', $result);
+        if ($this->hasBaseClassDocBlockProperties()) {
+            $result[] = '/**';
+            $this->buildBaseClassDocBlockProperties('', $result);
+            $result[] = ' */';
+        }
+
+        $this->buildClassDeclaration(
+            $base_class_name,
+            $base_class_extends,
+            $interfaces,
+            '',
+            $result
+        );
 
         $result[] = '{';
 

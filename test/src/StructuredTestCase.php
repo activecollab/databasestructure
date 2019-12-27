@@ -109,8 +109,6 @@ abstract class StructuredTestCase extends TestCase
             $this->connection,
             $this->pool
         );
-
-        die();
     }
 
     public function tearDown()
