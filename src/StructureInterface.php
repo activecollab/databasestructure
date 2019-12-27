@@ -18,20 +18,8 @@ interface StructureInterface
     const ADD_PERMISSIVE_PERMISSIONS = 'permissive';
     const ADD_RESTRICTIVE_PERMISSIONS = 'restrictive';
 
-    /**
-     * Get all structure type.
-     *
-     * @return iterable|TypeInterface[]
-     */
     public function getTypes(): iterable;
-
-    /**
-     * Return type by type name.
-     *
-     * @param  string        $type_name
-     * @return TypeInterface
-     */
-    public function getType($type_name): TypeInterface;
+    public function getType(string $type_name): TypeInterface;
 
     /**
      * Return a list of initial records, indexed by the table name.
@@ -78,5 +66,9 @@ interface StructureInterface
      * @param ConnectionInterface $connection
      * @param array|null          $event_handlers
      */
-    public function build($build_path = null, ConnectionInterface $connection = null, array $event_handlers = []);
+    public function build(
+        string $build_path = null,
+        ConnectionInterface $connection = null,
+        array $event_handlers = []
+    ): void;
 }

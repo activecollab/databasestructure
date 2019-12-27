@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
@@ -33,22 +35,13 @@ use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 abstract class Structure implements StructureInterface
 {
-    /**
-     * Construct a new instance.
-     */
     public function __construct()
     {
         $this->configure();
     }
 
-    /**
-     * Configure types, fields and associations.
-     */
     abstract protected function configure();
 
     /**
@@ -57,17 +50,14 @@ abstract class Structure implements StructureInterface
     private $types = [];
 
     /**
-     * {@inheritdoc}
+     * @return iterable|TypeInterface[]
      */
     public function getTypes(): iterable
     {
         return $this->types;
     }
 
-    /**
-     * {@internal }.
-     */
-    public function getType($type_name): TypeInterface
+    public function getType(string $type_name): TypeInterface
     {
         if (isset($this->types[$type_name])) {
             return $this->types[$type_name];
@@ -297,7 +287,11 @@ abstract class Structure implements StructureInterface
      * @param ConnectionInterface $connection
      * @param array|null          $event_handlers
      */
-    public function build($build_path = null, ConnectionInterface $connection = null, array $event_handlers = [])
+    public function build(
+        string $build_path = null,
+        ConnectionInterface $connection = null,
+        array $event_handlers = []
+    ): void
     {
         $builders = $this->getBuilders($build_path, $connection, $event_handlers);
 
@@ -316,20 +310,13 @@ abstract class Structure implements StructureInterface
         }
     }
 
-    /**
-     * @var BuilderInterface[]|FileSystemBuilderInterface[]|DatabaseBuilderInterface[]
-     */
     private $builders = [];
 
-    /**
-     * Return a list of prepared builder instances.
-     *
-     * @param  string|null         $build_path
-     * @param  ConnectionInterface $connection
-     * @param  array               $event_handlers
-     * @return BuilderInterface[]
-     */
-    private function getBuilders($build_path, ConnectionInterface $connection = null, array $event_handlers)
+    private function getBuilders(
+        string $build_path = null,
+        ConnectionInterface $connection = null,
+        array $event_handlers = []
+    ): array
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDirBuilder($this);
