@@ -21,23 +21,24 @@ abstract class DirBuilder extends FileSystemBuilder
 
         if ($build_path) {
             if (is_dir($build_path)) {
-                $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
-
-                $dir_to_create = $this->getDirToPreBuild($build_path);
-
-                if (!is_dir($dir_to_create)) {
-                    $old_umask = umask(0);
-                    $dir_created = mkdir($dir_to_create);
-                    umask($old_umask);
-
-                    if ($dir_created) {
-                        $this->triggerEvent('on_dir_created', [$dir_to_create]);
-                    } else {
-                        throw new RuntimeException("Failed to create '$dir_to_create' directory");
-                    }
-                }
+                $this->makeDir($this->getDirToPreBuild(rtrim($build_path, DIRECTORY_SEPARATOR)));
             } else {
                 throw new InvalidArgumentException("Directory '$build_path' not found");
+            }
+        }
+    }
+
+    private function makeDir(string $dir_to_create)
+    {
+        if ($dir_to_create && !is_dir($dir_to_create)) {
+            $old_umask = umask(0);
+            $dir_created = mkdir($dir_to_create);
+            umask($old_umask);
+
+            if ($dir_created) {
+                $this->triggerEvent('on_dir_created', [$dir_to_create]);
+            } else {
+                throw new RuntimeException("Failed to create '$dir_to_create' directory");
             }
         }
     }
