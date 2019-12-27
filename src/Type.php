@@ -232,9 +232,19 @@ class Type implements TypeInterface
         return Inflector::classify(Inflector::singularize($this->getName()));
     }
 
+    public function getInterfaceName(): string
+    {
+        return $this->getClassName() . 'Interface';
+    }
+
     public function getBaseClassName(): string
     {
         return 'Base' . $this->getClassName();
+    }
+
+    public function getBaseInterfaceName(): string
+    {
+        return $this->getBaseClassName() . 'Interface';
     }
 
     public function getBaseClassExtends(): string

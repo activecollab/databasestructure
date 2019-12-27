@@ -35,7 +35,9 @@ interface TypeInterface
     public function &setTableName($table_name);
 
     public function getClassName(): string;
+    public function getInterfaceName(): string;
     public function getBaseClassName(): string;
+    public function getBaseInterfaceName(): string;
     public function getBaseClassExtends(): string;
     public function setBaseClassExtends(string $class_name): TypeInterface;
 
