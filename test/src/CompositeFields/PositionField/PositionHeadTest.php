@@ -11,7 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Test\CompositeFields\PositionField;
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionHead\PositionHeadStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 

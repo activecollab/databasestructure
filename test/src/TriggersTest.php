@@ -13,8 +13,8 @@ namespace ActiveCollab\DatabaseStructure\Test;
 use ActiveCollab\DatabaseConnection\Result\Result;
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
-use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TriggersBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers\TriggersStructure;
 
 /**

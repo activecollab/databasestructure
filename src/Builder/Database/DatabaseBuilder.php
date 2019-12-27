@@ -6,9 +6,11 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\Database;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
+use ActiveCollab\DatabaseStructure\Builder\Builder;
+use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder

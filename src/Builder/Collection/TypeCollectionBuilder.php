@@ -6,32 +6,33 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-declare(strict_types=1);
+namespace ActiveCollab\DatabaseStructure\Builder\Collection;
 
-namespace ActiveCollab\DatabaseStructure\Builder;
-
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class TypeClassBuilder extends FileSystemBuilder
+class TypeCollectionBuilder extends FileSystemBuilder
 {
     /**
      * @param TypeInterface $type
      */
     public function buildType(TypeInterface $type)
     {
-        $class_name = $type->getClassName();
-        $base_class_name = 'Base\\' . $class_name;
+        $collection_class_name = $type->getCollectionClassName();
+        $base_class_name = 'Base\\' . $collection_class_name;
 
-        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$class_name.php" : null;
+        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/$collection_class_name.php" : null;
 
         if ($class_build_path && is_file($class_build_path)) {
-            $this->triggerEvent('on_class_build_skipped', [$class_name, $class_build_path]);
+            $this->triggerEvent('on_class_build_skipped', [$collection_class_name, $class_build_path]);
 
             return;
         }
+
+        $collection_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Collection' : 'Collection';
 
         $result = [];
 
@@ -47,11 +48,14 @@ class TypeClassBuilder extends FileSystemBuilder
         $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {
-            $result[] = 'namespace ' . $this->getStructure()->getNamespace() . ';';
+            $result[] = "namespace $collection_class_namespace;";
             $result[] = '';
+            $result[] = '/**';
+            $result[] = ' * @package ' . $collection_class_namespace;
+            $result[] = ' */';
         }
 
-        $result[] = 'class ' . $class_name . ' extends ' . $base_class_name;
+        $result[] = 'class ' . $collection_class_name . ' extends ' . $base_class_name;
         $result[] = '{';
         $result[] = '}';
         $result[] = '';
@@ -64,6 +68,6 @@ class TypeClassBuilder extends FileSystemBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$class_name, $class_build_path]);
+        $this->triggerEvent('on_class_built', [$collection_class_name, $class_build_path]);
     }
 }

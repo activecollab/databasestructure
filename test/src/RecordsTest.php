@@ -12,8 +12,8 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
-use ActiveCollab\DatabaseStructure\Builder\RecordsBuilder;
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\RecordsBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Records\RecordsStructure;
 
 class RecordsTest extends TestCase

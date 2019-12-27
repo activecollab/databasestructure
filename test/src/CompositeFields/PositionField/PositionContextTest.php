@@ -12,7 +12,7 @@ use ActiveCollab\DatabaseObject\ObjectInterface;
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext\PositionContextStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 

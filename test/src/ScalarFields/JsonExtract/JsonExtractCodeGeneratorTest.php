@@ -8,7 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test\ScalarFields\JsonExtract;
 
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\JsonField\JsonFieldStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\TypeInterface;

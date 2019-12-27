@@ -6,8 +6,9 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use InvalidArgumentException;
 use RuntimeException;
 

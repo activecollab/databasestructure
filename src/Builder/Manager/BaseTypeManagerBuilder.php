@@ -6,8 +6,9 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\Manager;
 
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 

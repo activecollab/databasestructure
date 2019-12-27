@@ -6,18 +6,20 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\Directories;
+
+use ActiveCollab\DatabaseStructure\Builder\Directories\DirBuilder;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder
  */
-class BaseManagerDirBuilder extends DirBuilder
+class BaseDirBuilder extends DirBuilder
 {
     /**
      * {@inheritdoc}
      */
     protected function getDirToBuildPath($build_path)
     {
-        return "$build_path/Manager/Base";
+        return "$build_path/Base";
     }
 }

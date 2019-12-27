@@ -6,10 +6,13 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\Database;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
+use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilder;
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\Database\StructureSql;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;

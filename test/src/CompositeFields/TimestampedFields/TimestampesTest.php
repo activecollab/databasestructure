@@ -13,7 +13,7 @@ use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\CreatedAtInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Timestamps\TimestampsStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DateValue\DateTimeValue;

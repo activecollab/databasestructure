@@ -6,7 +6,7 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\Database;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Builder

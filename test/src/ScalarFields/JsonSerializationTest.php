@@ -10,7 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
-use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\JsonSerialization\JsonSerializationStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
