@@ -14,7 +14,6 @@ use ActiveCollab\DatabaseConnection\Record\ValueCaster;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
-use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
@@ -53,12 +52,12 @@ class BaseTypeClassBuilder extends TypeBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
-        $result[] = '/**';
 
-        $this->buildBaseClassDocBlockProperties('', $result);
-
-        $result[] = ' * @package ' . $base_class_namespace;
-        $result[] = ' */';
+        if ($this->hasBaseClassDocBlockProperties()) {
+            $result[] = '/**';
+            $this->buildBaseClassDocBlockProperties('', $result);
+            $result[] = ' */';
+        }
 
         $interfaces = $traits = [];
 
@@ -244,6 +243,11 @@ class BaseTypeClassBuilder extends TypeBuilder
         }
 
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
+    }
+
+    private function hasBaseClassDocBlockProperties(): bool
+    {
+        return !empty($this->getStructure()->getConfig('base_class_doc_block_properties'));
     }
 
     private function buildBaseClassDocBlockProperties(string $indent, array &$result): void
