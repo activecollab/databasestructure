@@ -6,9 +6,10 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\CompositeFields\PositionField;
 
-use ActiveCollab\DatabaseObject\ObjectInterface;
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
@@ -16,22 +17,17 @@ use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext\PositionContextStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
-/**
- * Purpose of this test is to see if files and tables are properly build from BlogStructure.
- *
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class PositionContextTest extends TestCase
 {
     /**
      * @var string
      */
-    private $head_type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionContext\\PositionContextHeadEntry';
+    private $head_type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionContext\\PositionContextHeadEntry\\PositionContextHeadEntry';
 
     /**
      * @var string
      */
-    private $tail_type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionContext\\PositionContextTailEntry';
+    private $tail_type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionContext\\PositionContextTailEntry\\PositionContextTailEntry';
 
     /**
      * @var PoolInterface

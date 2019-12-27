@@ -17,15 +17,12 @@ use ActiveCollab\DatabaseStructure\Builder\Database\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers\TriggersStructure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class TriggersTest extends TestCase
 {
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Triggers\\Trigger';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Triggers\\Trigger\\Trigger';
 
     /**
      * @var PoolInterface
@@ -37,9 +34,6 @@ class TriggersTest extends TestCase
      */
     private $triggers_structure;
 
-    /**
-     * Set up test environment.
-     */
     public function setUp()
     {
         parent::setUp();
@@ -70,9 +64,6 @@ class TriggersTest extends TestCase
         $this->assertTrue($this->pool->isTypeRegistered($this->type_class_name));
     }
 
-    /**
-     * Tear down test environment.
-     */
     public function tearDown()
     {
         if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {

@@ -21,7 +21,7 @@ class RecordsTest extends TestCase
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Records\\Record';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Records\\Record\\Record';
 
     /**
      * @var PoolInterface

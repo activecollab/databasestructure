@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\ScalarFields\JsonExtract;
 
 use ActiveCollab\DatabaseObject\Pool;
@@ -19,9 +21,6 @@ use ActiveCollab\DateValue\DateValue;
 use ActiveCollab\DateValue\DateValueInterface;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\ScalarFields
- */
 class JsonExtractTest extends TestCase
 {
     /**
@@ -63,13 +62,13 @@ class JsonExtractTest extends TestCase
 
         $this->structure = new JsonFieldStructure();
 
-        if (!class_exists("{$this->namespace}\\StatsSnapshot", false)) {
+        if (!class_exists("{$this->namespace}\\StatsSnapshot\\StatsSnapshot", false)) {
             $this->structure->build();
         }
 
-        $this->stats_snapshot_class_name = "{$this->namespace}\\StatsSnapshot";
+        $this->stats_snapshot_class_name = "{$this->namespace}\\StatsSnapshot\\StatsSnapshot";
 
-        $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\StatsSnapshot");
+        $this->stats_snapshot_base_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\Base\\StatsSnapshot");
         $this->stats_snapshot_class_reflection = new ReflectionClass($this->stats_snapshot_class_name);
 
         $type_table_build = new TypeTableBuilder($this->structure);

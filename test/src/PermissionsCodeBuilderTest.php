@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
@@ -14,9 +16,6 @@ use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImp
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions\PermissionsStructure;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class PermissionsCodeBuilderTest extends TestCase
 {
     /**
@@ -58,21 +57,21 @@ class PermissionsCodeBuilderTest extends TestCase
 
         $this->structure = new PermissionsStructure();
 
-        if (!class_exists("{$this->namespace}\\Element", false)) {
+        if (!class_exists("{$this->namespace}\\Element\\Element", false)) {
             $this->structure->build();
         }
 
-        $this->element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\Element");
-        $this->element_class_reflection = new ReflectionClass("{$this->namespace}\\Element");
+        $this->element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Element\\Base\\Element");
+        $this->element_class_reflection = new ReflectionClass("{$this->namespace}\\Element\\Element");
 
-        $this->restrictive_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\RestrictiveElement");
-        $this->restrictive_element_class_reflection = new ReflectionClass("{$this->namespace}\\RestrictiveElement");
+        $this->restrictive_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\RestrictiveElement\\Base\\RestrictiveElement");
+        $this->restrictive_element_class_reflection = new ReflectionClass("{$this->namespace}\\RestrictiveElement\\RestrictiveElement");
 
-        $this->reverted_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\RevertedElement");
-        $this->reverted_element_class_reflection = new ReflectionClass("{$this->namespace}\\RevertedElement");
+        $this->reverted_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\RevertedElement\\Base\\RevertedElement");
+        $this->reverted_element_class_reflection = new ReflectionClass("{$this->namespace}\\RevertedElement\\RevertedElement");
 
-        $this->changed_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\ChangedElement");
-        $this->changed_element_class_reflection = new ReflectionClass("{$this->namespace}\\ChangedElement");
+        $this->changed_element_base_class_reflection = new ReflectionClass("{$this->namespace}\\ChangedElement\\Base\\ChangedElement");
+        $this->changed_element_class_reflection = new ReflectionClass("{$this->namespace}\\ChangedElement\\ChangedElement");
     }
 
     /**

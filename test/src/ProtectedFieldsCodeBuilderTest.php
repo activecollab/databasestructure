@@ -53,18 +53,18 @@ class ProtectedFieldsCodeBuilderTest extends TestCase
 
         $this->structure = new ProtectedFieldsStructure();
 
-        if (!class_exists("{$this->namespace}\\NoProtectedField", false)) {
+        if (!class_exists("{$this->namespace}\\NoProtectedField\\NoProtectedField", false)) {
             $this->structure->build();
         }
 
-        $this->no_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\NoProtectedField");
-        $this->no_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\NoProtectedField");
+        $this->no_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\NoProtectedField\\Base\\NoProtectedField");
+        $this->no_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\NoProtectedField\\NoProtectedField");
 
-        $this->has_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\HasProtectedField");
-        $this->has_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\HasProtectedField");
+        $this->has_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\HasProtectedField\\Base\\HasProtectedField");
+        $this->has_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\HasProtectedField\\HasProtectedField");
 
-        $this->multi_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\Base\\MultiProtectedField");
-        $this->multi_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\MultiProtectedField");
+        $this->multi_protected_fields_base_class_reflection = new ReflectionClass("{$this->namespace}\\MultiProtectedField\\Base\\MultiProtectedField");
+        $this->multi_protected_fields_class_reflection = new ReflectionClass("{$this->namespace}\\MultiProtectedField\\MultiProtectedField");
     }
 
     /**

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseObject\Pool;
@@ -15,15 +17,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\JsonSerialization\JsonSerializationStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
-/**
- *  @package ActiveCollab\DatabaseStructure\Test\ScalarFields
- */
 class JsonSerializationTest extends TestCase
 {
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\JsonSerialization\\KeyValue';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\JsonSerialization\\KeyValue\\KeyValue';
 
     /**
      * @var PoolInterface

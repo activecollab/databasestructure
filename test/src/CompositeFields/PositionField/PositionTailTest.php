@@ -23,7 +23,7 @@ class PositionTailTest extends TestCase
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionTail\\PositionTailEntry';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionTail\\PositionTailEntry\\PositionTailEntry';
 
     /**
      * @var PoolInterface

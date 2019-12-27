@@ -23,7 +23,7 @@ class TimestampesTest extends TestCase
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Timestamps\\TimestampedEntry';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Timestamps\\TimestampedEntry\\TimestampedEntry';
 
     /**
      * @var PoolInterface

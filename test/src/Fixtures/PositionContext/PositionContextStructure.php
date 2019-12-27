@@ -6,20 +6,16 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail
- */
 class PositionContextStructure extends Structure
 {
-    /**
-     * Configure the structure.
-     */
     public function configure()
     {
         $this->addType('position_context_tail_entries')->addFields([

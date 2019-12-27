@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
@@ -13,9 +15,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectSetter\ProtectSetter;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class ProtectSetterTest extends TestCase
 {
     /**
@@ -52,18 +51,18 @@ class ProtectSetterTest extends TestCase
 
         $this->structure = new ProtectSetter();
 
-        if (!class_exists("{$this->namespace}\\User", false)) {
+        if (!class_exists("{$this->namespace}\\User\\User", false)) {
             $this->structure->build();
         }
 
-        $this->base_user_reflection = new ReflectionClass("{$this->namespace}\\Base\\User");
-        $this->user_reflection = new ReflectionClass("{$this->namespace}\\User");
+        $this->base_user_reflection = new ReflectionClass("{$this->namespace}\\User\\Base\\User");
+        $this->user_reflection = new ReflectionClass("{$this->namespace}\\User\\User");
 
-        $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Base\\Book");
-        $this->book_reflection = new ReflectionClass("{$this->namespace}\\Book");
+        $this->base_book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\Book");
+        $this->book_reflection = new ReflectionClass("{$this->namespace}\\Book\\Book");
 
-        $this->base_note_reflection = new ReflectionClass("{$this->namespace}\\Base\\Note");
-        $this->note_reflection = new ReflectionClass("{$this->namespace}\\Note");
+        $this->base_note_reflection = new ReflectionClass("{$this->namespace}\\Note\\Base\\Note");
+        $this->note_reflection = new ReflectionClass("{$this->namespace}\\Note\\Note");
     }
 
     /**

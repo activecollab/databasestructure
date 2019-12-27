@@ -25,7 +25,7 @@ class PositionHeadTest extends TestCase
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionHead\\PositionHeadEntry';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\PositionHead\\PositionHeadEntry\\PositionHeadEntry';
 
     /**
      * @var PoolInterface

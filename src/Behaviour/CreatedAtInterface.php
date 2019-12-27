@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 use ActiveCollab\DateValue\DateTimeValueInterface;
@@ -13,16 +15,6 @@ use ActiveCollab\Object\ObjectInterface;
 
 interface CreatedAtInterface extends ObjectInterface
 {
-    /**
-     * Return value of created_at field.
-     *
-     * @return DateTimeValueInterface
-     */
     public function getCreatedAt(): DateTimeValueInterface;
-
-    /**
-     * @param  DateTimeValueInterface $value
-     * @return $this
-     */
     public function &setCreatedAt(DateTimeValueInterface $value);
 }

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseObject\Pool;
@@ -15,15 +17,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\JsonSerialization\RequiredJsonSerializationStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
-/**
- *  @package ActiveCollab\DatabaseStructure\Test\ScalarFields
- */
 class RequiredJsonSerializationTest extends TestCase
 {
     /**
      * @var string
      */
-    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\JsonSerialization\\RequiredKeyValue';
+    private $type_class_name = 'ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\JsonSerialization\\RequiredKeyValue\\RequiredKeyValue';
 
     /**
      * @var PoolInterface
@@ -35,9 +34,6 @@ class RequiredJsonSerializationTest extends TestCase
      */
     private $required_json_serialization_structure;
 
-    /**
-     * Set up test environment.
-     */
     public function setUp()
     {
         parent::setUp();
@@ -64,9 +60,6 @@ class RequiredJsonSerializationTest extends TestCase
         $this->assertTrue($this->pool->isTypeRegistered($this->type_class_name));
     }
 
-    /**
-     * Tear down test environment.
-     */
     public function tearDown()
     {
         if ($this->connection->tableExists('required_key_values')) {

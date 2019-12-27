@@ -105,8 +105,8 @@ class BlogBuilderTest extends TestCase
     public function testBuildTypeCollections()
     {
         $this->assertFileExists("$this->build_path/Category/CategoriesCollection.php");
-        $this->assertFileExists("$this->build_path/Posts/PostsCollection.php");
-        $this->assertFileExists("$this->build_path/Comments/CommentsCollection.php");
+        $this->assertFileExists("$this->build_path/Post/PostsCollection.php");
+        $this->assertFileExists("$this->build_path/Comment/CommentsCollection.php");
     }
 
     /**

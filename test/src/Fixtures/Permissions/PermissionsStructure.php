@@ -6,18 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions;
 
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions
- */
 class PermissionsStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure()
     {
         $this->addType('elements')->permissions();
