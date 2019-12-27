@@ -262,15 +262,6 @@ abstract class Structure implements StructureInterface
     //  Class Builder
     // ---------------------------------------------------
 
-    /**
-     * Build model at the given path.
-     *
-     * If $build_path is null, classes will be generated, evaled and loaded into the memory.
-     *
-     * @param string|null         $build_path
-     * @param ConnectionInterface $connection
-     * @param array|null          $event_handlers
-     */
     public function build(
         string $build_path = null,
         ConnectionInterface $connection = null,

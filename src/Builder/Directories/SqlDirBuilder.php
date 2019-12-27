@@ -6,19 +6,13 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
-use ActiveCollab\DatabaseStructure\Builder\Directories\DirBuilder;
-
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class SqlDirBuilder extends DirBuilder
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDirToBuildPath($build_path)
+    protected function getDirToBuildPath(string $build_path): string
     {
         return "$build_path/SQL";
     }
