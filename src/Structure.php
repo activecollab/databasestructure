@@ -12,17 +12,12 @@ namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\AssociationsBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Directories\BaseCollectionDirBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Directories\BaseDirBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Directories\BaseManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Collection\BaseTypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Directories\TypeDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Manager\BaseTypeManagerBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Directories\CollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
-use ActiveCollab\DatabaseStructure\Builder\Directories\ManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Database\RecordsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Directories\SqlDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Database\TriggersBuilder;
@@ -273,7 +268,6 @@ abstract class Structure implements StructureInterface
     ): array
     {
         if (empty($this->builders)) {
-            $this->builders[] = new BaseDirBuilder($this);
             $this->builders[] = new SqlDirBuilder($this);
 
             $this->builders[] = new TypesBuilder($this);
@@ -287,13 +281,9 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new TriggersBuilder($this);
             $this->builders[] = new RecordsBuilder($this);
 
-            $this->builders[] = new ManagerDirBuilder($this);
-            $this->builders[] = new BaseManagerDirBuilder($this);
             $this->builders[] = new BaseTypeManagerBuilder($this);
             $this->builders[] = new TypeManagerBuilder($this);
-
-            $this->builders[] = new CollectionDirBuilder($this);
-            $this->builders[] = new BaseCollectionDirBuilder($this);
+            
             $this->builders[] = new BaseTypeCollectionBuilder($this);
             $this->builders[] = new TypeCollectionBuilder($this);
 

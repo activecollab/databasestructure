@@ -30,14 +30,14 @@ use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-class BaseTypeClassBuilder extends FileSystemBuilder
+class BaseTypeClassBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
+        $base_class_name = $type->getClassName();
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
 
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Base/$base_class_name.php" : null;
+        $base_class_build_path = $this->getBaseTypeBuildPath($type);
 
         $result = [];
 
@@ -45,14 +45,20 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '';
 
         if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
+            $result = array_merge(
+                $result,
+                explode(
+                    "\n",
+                    $this->getStructure()->getConfig('header_comment')
+                )
+            );
             $result[] = '';
         }
 
         $result[] = 'declare(strict_types=1);';
         $result[] = '';
 
-        $base_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Base' : 'Base';
+        $base_class_namespace = $this->getBaseNamespace($type);
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
