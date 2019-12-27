@@ -22,7 +22,7 @@ abstract class DirBuilder extends FileSystemBuilder
             if (is_dir($build_path)) {
                 $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
 
-                $dir_to_create = $this->getDirToBuildPath($build_path);
+                $dir_to_create = $this->getDirToPreBuild($build_path);
 
                 if (!is_dir($dir_to_create)) {
                     $old_umask = umask(0);
@@ -41,5 +41,5 @@ abstract class DirBuilder extends FileSystemBuilder
         }
     }
 
-    abstract protected function getDirToBuildPath(string $build_path): string;
+    abstract protected function getDirToPreBuild(string $build_path): string;
 }
