@@ -341,25 +341,17 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new BaseTypeCollectionBuilder($this);
             $this->builders[] = new TypeCollectionBuilder($this);
 
-            if ($build_path) {
-                foreach ($this->builders as $k => $v) {
-                    if ($v instanceof FileSystemBuilderInterface) {
-                        $this->builders[$k]->setBuildPath($build_path);
-                    }
-                }
-            }
-
-            if ($connection) {
-                foreach ($this->builders as $k => $v) {
-                    if ($v instanceof DatabaseBuilderInterface) {
-                        $this->builders[$k]->setConnection($connection);
-                    }
-                }
-            }
-
-            foreach ($event_handlers as $event => $handler) {
-                foreach ($this->builders as $k => $v) {
+            foreach ($this->builders as $k => $v) {
+                foreach ($event_handlers as $event => $handler) {
                     $v->registerEventHandler($event, $handler);
+                }
+
+                if ($build_path && $v instanceof FileSystemBuilderInterface) {
+                    $this->builders[$k]->setBuildPath($build_path);
+                }
+
+                if ($connection && $v instanceof DatabaseBuilderInterface) {
+                    $this->builders[$k]->setConnection($connection);
                 }
             }
         }
