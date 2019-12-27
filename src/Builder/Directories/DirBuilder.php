@@ -65,6 +65,13 @@ abstract class DirBuilder extends FileSystemBuilder
         }
     }
 
-    abstract protected function getDirToPreBuild(string $build_path): string;
-    abstract protected function getDirToBuildForType(string $build_path, TypeInterface $type): string;
+    protected function getDirToPreBuild(string $build_path): string
+    {
+        return '';
+    }
+
+    protected function getDirToBuildForType(string $build_path, TypeInterface $type): string
+    {
+        return '';
+    }
 }
