@@ -14,8 +14,10 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class TypeDirBuilder extends DirBuilder
 {
-    protected function getDirToBuildForType(string $build_path, TypeInterface $type): string
+    protected function getDirToBuildForType(string $build_path, TypeInterface $type): array
     {
-        return $build_path . '/' . $type->getClassName();
+        return [
+            $build_path . '/' . $type->getClassName(),
+        ];
     }
 }

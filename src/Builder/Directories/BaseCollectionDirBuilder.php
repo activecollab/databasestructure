@@ -12,8 +12,10 @@ namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
 class BaseCollectionDirBuilder extends DirBuilder
 {
-    protected function getDirToPreBuild(string $build_path): string
+    protected function getDirToPreBuild(string $build_path): array
     {
-        return "$build_path/Collection/Base";
+        return [
+            "$build_path/Collection/Base",
+        ];
     }
 }

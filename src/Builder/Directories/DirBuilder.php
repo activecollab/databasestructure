@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
@@ -21,11 +23,11 @@ abstract class DirBuilder extends FileSystemBuilder
 
         if ($build_path) {
             if (is_dir($build_path)) {
-                $this->makeDir(
-                    $this->getDirToPreBuild(
-                        rtrim($build_path, DIRECTORY_SEPARATOR)
-                    )
-                );
+                $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
+
+                foreach ($this->getDirToPreBuild($build_path) as $dir_to_create) {
+                    $this->createDir($dir_to_create);
+                }
             } else {
                 throw new InvalidArgumentException("Directory '$build_path' not found");
             }
@@ -38,19 +40,18 @@ abstract class DirBuilder extends FileSystemBuilder
 
         if ($build_path) {
             if (is_dir($build_path)) {
-                $this->makeDir(
-                    $this->getDirToBuildForType(
-                        rtrim($build_path, DIRECTORY_SEPARATOR),
-                        $type
-                    )
-                );
+                $build_path = rtrim($build_path, DIRECTORY_SEPARATOR);
+
+                foreach ($this->getDirToBuildForType($build_path, $type) as $dir_to_create) {
+                    $this->createDir($dir_to_create);
+                }
             } else {
                 throw new InvalidArgumentException("Directory '$build_path' not found");
             }
         }
     }
 
-    private function makeDir(string $dir_to_create)
+    private function createDir(string $dir_to_create): void
     {
         if ($dir_to_create && !is_dir($dir_to_create)) {
             $old_umask = umask(0);
@@ -65,13 +66,13 @@ abstract class DirBuilder extends FileSystemBuilder
         }
     }
 
-    protected function getDirToPreBuild(string $build_path): string
+    protected function getDirToPreBuild(string $build_path): array
     {
-        return '';
+        return [];
     }
 
-    protected function getDirToBuildForType(string $build_path, TypeInterface $type): string
+    protected function getDirToBuildForType(string $build_path, TypeInterface $type): array
     {
-        return '';
+        return [];
     }
 }

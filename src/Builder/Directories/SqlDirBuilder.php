@@ -12,8 +12,10 @@ namespace ActiveCollab\DatabaseStructure\Builder\Directories;
 
 class SqlDirBuilder extends DirBuilder
 {
-    protected function getDirToPreBuild(string $build_path): string
+    protected function getDirToPreBuild(string $build_path): array
     {
-        return "$build_path/SQL";
+        return [
+            "$build_path/SQL",
+        ];
     }
 }
