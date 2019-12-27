@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use ActiveCollab\DatabaseStructure\Builder\BuilderInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
@@ -18,6 +17,7 @@ use InvalidArgumentException;
 abstract class Builder implements BuilderInterface
 {
     private $structure;
+    private $event_handlers = [];
 
     public function __construct(StructureInterface $structure)
     {
@@ -28,13 +28,6 @@ abstract class Builder implements BuilderInterface
     {
         return $this->structure;
     }
-
-    /**
-     * Registered event handlers.
-     *
-     * @var array
-     */
-    private $event_handlers = [];
 
     public function preBuild(): void
     {
