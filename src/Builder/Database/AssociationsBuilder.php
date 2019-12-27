@@ -37,10 +37,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
         return $this;
     }
 
-    /**
-     * Execute after types are built.
-     */
-    public function postBuild()
+    public function postBuild(): void
     {
         if ($this->getConnection()) {
             foreach ($this->getStructure()->getTypes() as $type) {

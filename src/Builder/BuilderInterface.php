@@ -17,8 +17,8 @@ interface BuilderInterface
 {
     public function getStructure(): StructureInterface;
 
-    public function preBuild();
-    public function postBuild();
+    public function preBuild(): void;
+    public function postBuild(): void;
 
     public function buildType(TypeInterface $type);
 

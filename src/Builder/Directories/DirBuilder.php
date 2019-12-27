@@ -12,15 +12,9 @@ use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use InvalidArgumentException;
 use RuntimeException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 abstract class DirBuilder extends FileSystemBuilder
 {
-    /**
-     * Execute prior to type build.
-     */
-    public function preBuild()
+    public function preBuild(): void
     {
         $build_path = $this->getBuildPath();
 

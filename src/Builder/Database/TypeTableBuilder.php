@@ -54,10 +54,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $this;
     }
 
-    /**
-     * Execute prior to type build.
-     */
-    public function preBuild()
+    public function preBuild(): void
     {
         $structure_sql_path = $this->getStructureSqlPath();
         $initial_data_sql_path = $this->getInitialDataSqlPath();

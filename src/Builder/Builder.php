@@ -36,26 +36,15 @@ abstract class Builder implements BuilderInterface
      */
     private $event_handlers = [];
 
-    /**
-     * Execute prior to type build.
-     */
-    public function preBuild()
+    public function preBuild(): void
     {
     }
 
-    /**
-     * Build type.
-     *
-     * @param \ActiveCollab\DatabaseStructure\TypeInterface $type
-     */
     public function buildType(TypeInterface $type)
     {
     }
 
-    /**
-     * Execute after types are built.
-     */
-    public function postBuild()
+    public function postBuild(): void
     {
     }
 
