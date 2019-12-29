@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-use Doctrine\Common\Inflector\Inflector;
-
 class TypesBuilder extends FileSystemBuilder
 {
     public function postBuild(): void
@@ -24,10 +22,10 @@ class TypesBuilder extends FileSystemBuilder
             $result[] = '<?php';
             $result[] = '';
 
-            if ($this->getStructure()->getConfig('header_comment')) {
-                $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-                $result[] = '';
-            }
+            $this->renderHeaderComment($result);
+
+            $result[] = 'declare(strict_types=1);';
+            $result[] = '';
 
             $namespace = $this->getStructure()->getNamespace();
 
@@ -35,16 +33,14 @@ class TypesBuilder extends FileSystemBuilder
                 $namespace = ltrim($namespace, '\\');
             }
 
-            if ($this->getStructure()->getNamespace()) {
-                $result[] = '/**';
-                $result[] = ' * @package ' . $this->getStructure()->getNamespace();
-                $result[] = ' */';
+            foreach ($this->getStructure()->getTypes() as $current_type) {
+                $result[] = 'use \\' . $namespace . '\\' . $current_type->getClassName() . '\\$current_type->getClassName();';
             }
 
             $result[] = 'return [';
 
             foreach ($this->getStructure()->getTypes() as $current_type) {
-                $result[] = '    ' . var_export($namespace . '\\' . Inflector::classify(Inflector::singularize($current_type->getName())), true) . ',';
+                $result[] = '    ' . $current_type->getClassName() . '::class,';
             }
 
             $result[] = '];';

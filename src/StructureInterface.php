@@ -17,6 +17,9 @@ interface StructureInterface
     const ADD_PERMISSIVE_PERMISSIONS = 'permissive';
     const ADD_RESTRICTIVE_PERMISSIONS = 'restrictive';
 
+    /**
+     * @return TypeInterface[]|Iterable
+     */
     public function getTypes(): iterable;
     public function getType(string $type_name): TypeInterface;
     public function getRecords(): array;
