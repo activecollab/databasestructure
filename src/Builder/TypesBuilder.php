@@ -33,8 +33,14 @@ class TypesBuilder extends FileSystemBuilder
                 $namespace = ltrim($namespace, '\\');
             }
 
+            $types_to_use = [];
             foreach ($this->getStructure()->getTypes() as $current_type) {
-                $result[] = 'use ' . $namespace . '\\' . $current_type->getClassName() . '\\' . $current_type->getClassName() . ';';
+                $types_to_use[] = $namespace . '\\' . $current_type->getClassName() . '\\' . $current_type->getClassName();
+            }
+            sort($types_to_use);
+
+            foreach ($types_to_use as $type_to_use) {
+                $result[] = sprintf('use %s;', $type_to_use);
             }
 
             $result[] = '';
