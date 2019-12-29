@@ -154,10 +154,10 @@ class HasOneAssociation extends Association implements
         $result[] = '    {';
 
         if ($this->isRequired()) {
-            $result[] = '        return $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
+            $result[] = '        return $this->getPool()->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '());';
         } else {
             $result[] = '        return $this->' . $fk_getter_name . '() ?';
-            $result[] = '            $this->pool->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '()) :';
+            $result[] = '            $this->getPool()->getById(' . var_export($target_instance_class, true) . ', $this->' . $fk_getter_name . '()) :';
             $result[] = '            null;';
         }
 

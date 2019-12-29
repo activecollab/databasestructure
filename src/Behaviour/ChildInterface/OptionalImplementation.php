@@ -11,27 +11,21 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure\Behaviour\ChildInterface;
 
 use ActiveCollab\DatabaseObject\Entity\EntityInterface;
+use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface;
 use LogicException;
 
-/**
- * @property \ActiveCollab\DatabaseObject\PoolInterface $pool
- */
 trait OptionalImplementation
 {
     public function getParent(bool $use_cache = true): ?EntityInterface
     {
         if ($id = $this->getParentId()) {
-            return $this->pool->getById($this->getParentType(), $id, $use_cache);
+            return $this->getPool()->getById($this->getParentType(), $id, $use_cache);
         } else {
             return null;
         }
     }
 
-    /**
-     * @param  EntityInterface|null $value
-     * @return ChildInterface|$this
-     */
     public function &setParent(?EntityInterface $value): ChildInterface
     {
         if ($value === null) {
@@ -50,10 +44,8 @@ trait OptionalImplementation
     }
 
     abstract public function getParentType(): ?string;
-
     abstract public function &setParentType(?string $value);
-
     abstract public function getParentId(): ?int;
-
     abstract public function &setParentId(?int $value);
+    abstract protected function getPool(): PoolInterface;
 }

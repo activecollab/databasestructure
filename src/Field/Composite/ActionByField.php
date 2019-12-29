@@ -148,7 +148,7 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
         $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true)';
         $methods[] = '{';
         $methods[] = '    if ($id = $this->' . $id_getter_name . '()) {';
-        $methods[] = '        return $this->pool->getById(' . var_export($this->user_class_name, true). ', $id, $use_cache);';
+        $methods[] = '        return $this->getPool()->getById(' . var_export($this->user_class_name, true). ', $id, $use_cache);';
         $methods[] = '    } elseif ($email = $this->' . $email_getter_name . '()) {';
         $methods[] = '        return new ' . $this->identified_visitor_class_name . '($this->' . $name_getter_name . '(), $email);';
         $methods[] = '    } else {';
