@@ -34,7 +34,7 @@ class TypesBuilder extends FileSystemBuilder
             }
 
             foreach ($this->getStructure()->getTypes() as $current_type) {
-                $result[] = 'use \\' . $namespace . '\\' . $current_type->getClassName() . '\\$current_type->getClassName();';
+                $result[] = 'use ' . $namespace . '\\' . $current_type->getClassName() . '\\' . $current_type->getClassName() . ';';
             }
 
             $result[] = 'return [';
