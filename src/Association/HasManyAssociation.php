@@ -122,8 +122,8 @@ class HasManyAssociation extends Association implements
         $entity_class_name = $this->getInstanceClassFrom($namespace, $target_type);
 
         $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasManyAssociatedEntitiesManager::class . '(';
-        $result[] = $indent . '    $this->getConnection(),';
-        $result[] = $indent . '    $this->getPool(),';
+        $result[] = $indent . '    $this->connection,';
+        $result[] = $indent . '    $this->pool,';
         $result[] = $indent . '    ' . var_export($target_type->getTableName(), true) . ',';
         $result[] = $indent . '    ' . var_export($this->getFkFieldNameFrom($source_type), true) . ',';
         $result[] = $indent . '    ' . var_export($entity_class_name, true) . ',';
@@ -214,7 +214,7 @@ class HasManyAssociation extends Association implements
         $result[] = '     */';
         $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        return $this->getPool()';
+        $result[] = '        return $this->pool';
         $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
         $result[] = '            ->where(\'`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
 

@@ -72,7 +72,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '     */';
         $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        return $this->getPool()';
+        $result[] = '        return $this->pool';
         $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
         $result[] = '            ->join(' . var_export($this->getInstanceClassFrom($namespace, $intermediary_type), true) . ')';
         $result[] = '            ->where(\'`' . $intermediary_type->getTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
@@ -139,7 +139,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '            $produce_attributes = array_merge($produce_attributes, $attributes);';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        $this->getPool()->produce(' . var_export($intermediary_instance_class, true) . ', $produce_attributes);';
+        $result[] = '        $this->pool->produce(' . var_export($intermediary_instance_class, true) . ', $produce_attributes);';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
@@ -182,10 +182,10 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        $intermediary_object = $this->getPool()->find(' . var_export($intermediary_instance_class, true) . ')->where(\'' . $this->getFkFieldNameFrom($source_type) . ' = ? AND ' . $this->getFkFieldNameFrom($target_type) . ' = ?\', $this->getId(), $object_to_remove->getId())->first();';
+        $result[] = '        $intermediary_object = $this->pool->find(' . var_export($intermediary_instance_class, true) . ')->where(\'' . $this->getFkFieldNameFrom($source_type) . ' = ? AND ' . $this->getFkFieldNameFrom($target_type) . ' = ?\', $this->getId(), $object_to_remove->getId())->first();';
         $result[] = '';
         $result[] = '        if ($intermediary_object instanceof ' . $intermediary_instance_class . ') {';
-        $result[] = '            $this->getPool()->scrap($intermediary_object, true);';
+        $result[] = '            $this->pool->scrap($intermediary_object, true);';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';
@@ -211,14 +211,14 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '        if ($objects = $this->get' . $this->getClassifiedAssociationName() . '()) {';
         $result[] = '            $object_ids = [];';
         $result[] = '';
-        $result[] = '            $this->getConnection()->transact(function () use ($objects, &$object_ids) {';
+        $result[] = '            $this->connection->transact(function () use ($objects, &$object_ids) {';
         $result[] = '                foreach ($objects as $object) {';
         $result[] = '                    $object_ids[] = $object->getId();';
         $result[] = '                    $object->delete(true);';
         $result[] = '                }';
         $result[] = '            });';
         $result[] = '';
-        $result[] = '            $this->getPool()->forget(' . var_export($intermediary_instance_class, true) . ', $object_ids);';
+        $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', $object_ids);';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';

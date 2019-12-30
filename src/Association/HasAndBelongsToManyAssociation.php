@@ -112,8 +112,8 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $entity_class_name = $this->getInstanceClassFrom($namespace, $target_type);
 
         $result[] = $indent . var_export($this->getName(), true) . ' => new \\' . HasAndBelongsToManyAssociatedEntitiesManager::class . '(';
-        $result[] = $indent . '    $this->getConnection(),';
-        $result[] = $indent . '    $this->getPool(),';
+        $result[] = $indent . '    $this->connection,';
+        $result[] = $indent . '    $this->pool,';
         $result[] = $indent . '    ' . var_export($this->getConnectionTableName(), true) . ',';
         $result[] = $indent . '    ' . var_export($this->getLeftFieldName(), true) . ',';
         $result[] = $indent . '    ' . var_export($this->getRightFieldName(), true) . ',';
@@ -141,7 +141,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '     */';
         $result[] = '    protected function ' . $this->getFinderMethodName() . '(): \\' . FinderInterface::class;
         $result[] = '    {';
-        $result[] = '        return $this->getPool()';
+        $result[] = '        return $this->pool';
         $result[] = '            ->find(' . var_export($this->getInstanceClassFrom($namespace, $target_type), true) . ')';
         $result[] = '            ->joinTable(' . var_export($this->getConnectionTableName(), true) . ')';
         $result[] = '            ->where(\'`' . $this->getConnectionTableName() . '`.`' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId())';
@@ -186,7 +186,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '        }';
         $result[] = '';
         $result[] = '        $batch = new \\' . BatchInsert::class . '(';
-        $result[] = '            $this->getConnection(),';
+        $result[] = '            $this->connection,';
         $result[] = '            ' .  var_export($this->getConnectionTableName(), true) . ',';
         $result[] = '            [' . var_export($this->getFkFieldNameFrom($source_type), true) . ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '],';
         $result[] = '            50,';
@@ -250,7 +250,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '        }';
         $result[] = '';
         $result[] = '        if (!empty($ids_to_remove)) {';
-        $result[] = '            $this->getConnection()->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ? AND `' . $this->getFkFieldNameFrom($target_type) . '` IN ?\', $this->getId(), $ids_to_remove);';
+        $result[] = '            $this->connection->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ? AND `' . $this->getFkFieldNameFrom($target_type) . '` IN ?\', $this->getId(), $ids_to_remove);';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';
@@ -274,7 +274,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        $this->getConnection()->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId());';
+        $result[] = '        $this->connection->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId());';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';

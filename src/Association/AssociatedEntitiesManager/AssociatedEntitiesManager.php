@@ -15,7 +15,14 @@ use ActiveCollab\DatabaseObject\PoolInterface;
 
 abstract class AssociatedEntitiesManager implements AssociatedEntitiesManagerInterface
 {
+    /**
+     * @var ConnectionInterface
+     */
     protected $connection;
+
+    /**
+     * @var PoolInterface
+     */
     protected $pool;
 
     public function __construct(ConnectionInterface $connection, PoolInterface $pool)

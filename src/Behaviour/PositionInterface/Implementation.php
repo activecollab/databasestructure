@@ -8,12 +8,12 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 
-use ActiveCollab\DatabaseConnection\ConnectionInterface;
-use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\PositionInterface
+ * @property \ActiveCollab\DatabaseConnection\ConnectionInterface $connection
+ * @property \ActiveCollab\DatabaseObject\PoolInterface $pool
  */
 trait Implementation
 {
@@ -24,17 +24,17 @@ trait Implementation
     {
         $this->registerEventHandler('on_before_save', function () {
             if (!$this->getPosition()) {
-                $table_name = $this->getConnection()->escapeTableName($this->getTableName());
+                $table_name = $this->connection->escapeTableName($this->getTableName());
                 $conditions = $this->getPositionContextConditions();
 
                 if ($this->getPositionMode() == PositionInterface::POSITION_MODE_HEAD) {
                     $this->setPosition(1);
 
-                    if ($ids = $this->getConnection()->executeFirstColumn("SELECT `id` FROM $table_name $conditions")) {
-                        $this->getConnection()->execute("UPDATE $table_name SET `position` = `position` + 1 $conditions");
+                    if ($ids = $this->connection->executeFirstColumn("SELECT `id` FROM $table_name $conditions")) {
+                        $this->connection->execute("UPDATE $table_name SET `position` = `position` + 1 $conditions");
                     }
                 } else {
-                    $this->setPosition($this->getConnection()->executeFirstCell("SELECT MAX(`position`) FROM $table_name $conditions") + 1);
+                    $this->setPosition($this->connection->executeFirstCell("SELECT MAX(`position`) FROM $table_name $conditions") + 1);
                 }
             }
         });
@@ -47,11 +47,11 @@ trait Implementation
      */
     private function getPositionContextConditions()
     {
-        $pattern = $this->getPool()->getTypeProperty(get_class($this), 'position_context_conditions_pattern', function () {
+        $pattern = $this->pool->getTypeProperty(get_class($this), 'position_context_conditions_pattern', function () {
             $conditions = [];
 
             foreach ($this->getPositionContext() as $field_name) {
-                $conditions[] = $this->getConnection()->escapeFieldName($field_name) . ' = ?';
+                $conditions[] = $this->connection->escapeFieldName($field_name) . ' = ?';
             }
 
             return count($conditions) ? implode(' AND ', $conditions) : '';
@@ -64,7 +64,7 @@ trait Implementation
                 $to_prepare[] = $this->getFieldValue($field_name);
             }
 
-            return 'WHERE ' . call_user_func_array([$this->getConnection(), 'prepare'], $to_prepare);
+            return 'WHERE ' . call_user_func_array([&$this->connection, 'prepare'], $to_prepare);
         }
 
         return '';
@@ -123,7 +123,4 @@ trait Implementation
      * @param callable $handler
      */
     abstract protected function registerEventHandler($event, callable $handler);
-
-    abstract protected function getConnection(): ConnectionInterface;
-    abstract protected function getPool(): PoolInterface;
 }

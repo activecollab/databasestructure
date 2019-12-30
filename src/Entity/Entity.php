@@ -10,25 +10,13 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Entity;
 
-use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseObject\Entity\Entity as BaseEntity;
-use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\AssociatedEntitiesManagerInterface;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\Base\BaseHasManyAssociatedEntitiesManager;
 use Exception;
 
 abstract class Entity extends BaseEntity implements EntityInterface
 {
-    protected function getConnection(): ConnectionInterface
-    {
-        return $this->connection;
-    }
-
-    protected function getPool(): PoolInterface
-    {
-        return $this->pool;
-    }
-
     /**
      * @return array|AssociatedEntitiesManagerInterface[]
      */
