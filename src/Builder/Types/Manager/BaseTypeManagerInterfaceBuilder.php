@@ -36,21 +36,14 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
 
-        $interfaces = [
-            '\\' . ltrim($type->getBaseInterfaceExtends(), '\\'),
-        ];
-
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-        }
-
-        $result[] = sprintf(
-            'interface %s extends %s',
-            $base_interface_name,
-            '\\' . ManagerInterface::class
+        $this->renderTypesToUse(
+            [
+                ManagerInterface::class,
+            ],
+            $result
         );
+
+        $result[] = sprintf('interface %s extends ManagerInterface', $base_interface_name);
 
         $result[] = '{';
         $result[] = '}';

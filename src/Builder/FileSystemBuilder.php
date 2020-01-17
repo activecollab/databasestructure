@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+
 abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInterface
 {
     private $build_path;
@@ -36,6 +37,19 @@ abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInt
                     $this->getStructure()->getConfig('header_comment')
                 )
             );
+            $result[] = '';
+        }
+    }
+
+    protected function renderTypesToUse(array $types_to_use, array &$result): void
+    {
+        if (!empty($types_to_use)) {
+            sort($types_to_use);
+
+            foreach ($types_to_use as $type_to_use) {
+                $result[] = 'use ' . $type_to_use . ';';
+            }
+
             $result[] = '';
         }
     }

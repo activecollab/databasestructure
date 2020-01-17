@@ -36,21 +36,14 @@ class BaseTypeCollectionInterfaceBuilder extends TypeBuilder
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
 
-        $interfaces = [
-            '\\' . ltrim($type->getBaseInterfaceExtends(), '\\'),
-        ];
-
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-        }
-
-        $result[] = sprintf(
-            'interface %s extends %s',
-            $base_interface_name,
-            '\\' . CollectionInterface::class
+        $this->renderTypesToUse(
+            [
+                CollectionInterface::class,
+            ],
+            $result
         );
+
+        $result[] = sprintf('interface %s extends CollectionInterface', $base_interface_name);
 
         $result[] = '{';
         $result[] = '}';
