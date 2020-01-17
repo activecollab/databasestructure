@@ -1,0 +1,12 @@
+Add reflection tests
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch next
+# Your branch is ahead of 'origin/next' by 1 commit.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   test/src/CodeBuilderTest.php
+#

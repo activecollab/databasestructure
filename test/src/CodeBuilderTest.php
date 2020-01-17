@@ -282,6 +282,49 @@ class CodeBuilderTest extends TestCase
         $this->assertTrue($this->base_chapters_manager_reflection->isAbstract());
     }
 
+    public function testManagerInterfacesExtendBaseManagerInterfaces()
+    {
+        $this->assertTrue(
+            $this->writers_manager_interface_reflection->isSubclassOf(
+                $this->base_writers_manager_interface_reflection->getName()
+            )
+        );
+
+        $this->assertTrue(
+            $this->books_manager_interface_reflection->isSubclassOf(
+                $this->base_books_manager_interface_reflection->getName()
+            )
+        );
+
+        $this->assertTrue(
+            $this->chapters_manager_interface_reflection->isSubclassOf(
+                $this->base_chapters_manager_interface_reflection->getName()
+            )
+        );
+    }
+
+    /**
+     * Test base manager classes implement manager interface.
+     */
+    public function testBaseManagerClassesImplementManagerInterfaces()
+    {
+        $this->assertTrue(
+            $this->base_writers_manager_reflection->implementsInterface(
+                $this->writers_manager_interface_reflection->getName()
+            )
+        );
+        $this->assertTrue(
+            $this->base_books_manager_reflection->implementsInterface(
+                $this->books_manager_interface_reflection->getName()
+            )
+        );
+        $this->assertTrue(
+            $this->base_chapters_manager_reflection->implementsInterface(
+                $this->chapters_manager_interface_reflection->getName()
+            )
+        );
+    }
+
     /**
      * Test manager classes are not abstract.
      */
