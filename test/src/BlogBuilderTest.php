@@ -104,8 +104,13 @@ class BlogBuilderTest extends TestCase
      */
     public function testBuildBaseTypeCollections()
     {
+        $this->assertFileExists("$this->build_path/Category/Base/BaseCategoriesCollectionInterface.php");
         $this->assertFileExists("$this->build_path/Category/Base/BaseCategoriesCollection.php");
+
+        $this->assertFileExists("$this->build_path/Post/Base/BasePostsCollectionInterface.php");
         $this->assertFileExists("$this->build_path/Post/Base/BasePostsCollection.php");
+
+        $this->assertFileExists("$this->build_path/Comment/Base/BaseCommentsCollectionInterface.php");
         $this->assertFileExists("$this->build_path/Comment/Base/BaseCommentsCollection.php");
     }
 
@@ -115,8 +120,43 @@ class BlogBuilderTest extends TestCase
     public function testBuildTypeCollections()
     {
         $this->assertFileExists("$this->build_path/Category/CategoriesCollection.php");
+        $this->assertFileExists("$this->build_path/Category/CategoriesCollectionInterface.php");
+
+        $this->assertFileExists("$this->build_path/Post/PostsCollectionInterface.php");
         $this->assertFileExists("$this->build_path/Post/PostsCollection.php");
+
+        $this->assertFileExists("$this->build_path/Comment/CommentsCollectionInterface.php");
         $this->assertFileExists("$this->build_path/Comment/CommentsCollection.php");
+    }
+
+    /**
+     * Test if base type managers are properly build.
+     */
+    public function testBuildBaseTypeManagers()
+    {
+        $this->assertFileExists("$this->build_path/Category/Base/BaseCategoriesManagerInterface.php");
+        $this->assertFileExists("$this->build_path/Category/Base/BaseCategoriesManager.php");
+
+        $this->assertFileExists("$this->build_path/Post/Base/BasePostsManagerInterface.php");
+        $this->assertFileExists("$this->build_path/Post/Base/BasePostsManager.php");
+
+        $this->assertFileExists("$this->build_path/Comment/Base/BaseCommentsManagerInterface.php");
+        $this->assertFileExists("$this->build_path/Comment/Base/BaseCommentsManager.php");
+    }
+
+    /**
+     * Test if type managers are properly build.
+     */
+    public function testBuildTypeManagers()
+    {
+        $this->assertFileExists("$this->build_path/Category/CategoriesManager.php");
+        $this->assertFileExists("$this->build_path/Category/CategoriesManagerInterface.php");
+
+        $this->assertFileExists("$this->build_path/Post/PostsManagerInterface.php");
+        $this->assertFileExists("$this->build_path/Post/PostsManager.php");
+
+        $this->assertFileExists("$this->build_path/Comment/CommentsManagerInterface.php");
+        $this->assertFileExists("$this->build_path/Comment/CommentsManager.php");
     }
 
     /**
