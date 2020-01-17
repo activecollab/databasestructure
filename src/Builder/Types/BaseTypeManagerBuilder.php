@@ -28,6 +28,7 @@ class BaseTypeManagerBuilder extends TypeBuilder
 
         $types_to_use = [
             'ActiveCollab\DatabaseObject\Entity\Manager',
+            $this->getTypeNamespace($type) . '\\' . $type->getManagerInterfaceName(),
         ];
 
         if ($this->getStructure()->getNamespace()) {
@@ -47,21 +48,12 @@ class BaseTypeManagerBuilder extends TypeBuilder
             $result[] = '';
         }
 
-        $interfaces = $traits = [];
+        $result[] = sprintf(
+            'abstract class %s extends Manager implements %s',
+            $base_manager_class_name,
+            $type->getManagerInterfaceName()
+        );
 
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-
-            if (count($implementations)) {
-                foreach ($implementations as $implementation) {
-                    $traits[] = '\\' . ltrim($implementation, '\\');
-                }
-            }
-        }
-
-        $result[] = 'abstract class ' . $base_manager_class_name . ' extends Manager';
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this manager works with.';

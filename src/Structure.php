@@ -288,8 +288,8 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new RecordsBuilder($this);
 
             $this->builders[] = new BaseTypeManagerInterfaceBuilder($this);
-            $this->builders[] = new BaseTypeManagerBuilder($this);
             $this->builders[] = new TypeManagerInterfaceBuilder($this);
+            $this->builders[] = new BaseTypeManagerBuilder($this);
             $this->builders[] = new TypeManagerBuilder($this);
 
             $this->builders[] = new BaseTypeCollectionBuilder($this);
