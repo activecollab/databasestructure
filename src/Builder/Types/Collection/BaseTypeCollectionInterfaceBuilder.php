@@ -8,18 +8,18 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Types\Manager;
+namespace ActiveCollab\DatabaseStructure\Builder\Types\Collection;
 
-use ActiveCollab\DatabaseObject\Entity\ManagerInterface;
+use ActiveCollab\DatabaseObject\CollectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\Types\TypeBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-class BaseTypeManagerInterfaceBuilder extends TypeBuilder
+class BaseTypeCollectionInterfaceBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $base_interface_name = $type->getBaseManagerInterfaceName();
-        $base_interface_build_path = $this->getBaseManagerInterfaceBuildPath($type);
+        $base_interface_name = $type->getBaseCollectionInterfaceName();
+        $base_interface_build_path = $this->getBaseCollectionInterfaceBuildPath($type);
 
         $result = [];
 
@@ -49,7 +49,7 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
         $result[] = sprintf(
             'interface %s extends %s',
             $base_interface_name,
-            '\\' . ManagerInterface::class
+            '\\' . CollectionInterface::class
         );
 
         $result[] = '{';

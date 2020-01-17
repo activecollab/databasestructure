@@ -22,6 +22,7 @@ use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\Collection\BaseTypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeInterfaceBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Types\Collection\BaseTypeCollectionInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\Manager\BaseTypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\Manager\BaseTypeManagerInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\TypeClassBuilder;
@@ -292,6 +293,7 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new BaseTypeManagerBuilder($this);
             $this->builders[] = new TypeManagerBuilder($this);
 
+            $this->builders[] = new BaseTypeCollectionInterfaceBuilder($this);
             $this->builders[] = new BaseTypeCollectionBuilder($this);
             $this->builders[] = new TypeCollectionBuilder($this);
 

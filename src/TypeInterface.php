@@ -49,7 +49,9 @@ interface TypeInterface
     public function getBaseManagerInterfaceName(): string;
 
     public function getCollectionClassName(): string;
+    public function getCollectionInterfaceName(): string;
     public function getBaseCollectionClassName(): string;
+    public function getBaseCollectionInterfaceName(): string;
 
     public function getPolymorph(): bool;
 

@@ -292,9 +292,19 @@ class Type implements TypeInterface
         return Inflector::classify($this->getName()) . 'Collection';
     }
 
+    public function getCollectionInterfaceName(): string
+    {
+        return $this->getCollectionClassName() . 'Interface';
+    }
+
     public function getBaseCollectionClassName(): string
     {
         return 'Base' . $this->getCollectionClassName();
+    }
+
+    public function getBaseCollectionInterfaceName(): string
+    {
+        return $this->getBaseCollectionClassName() . 'Interface';
     }
 
     public function setBaseClassExtends(string $class_name): TypeInterface
