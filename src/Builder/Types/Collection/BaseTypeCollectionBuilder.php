@@ -29,6 +29,7 @@ class BaseTypeCollectionBuilder extends TypeBuilder
 
         $types_to_use = [
             'ActiveCollab\DatabaseObject\Collection\Type as TypeCollection',
+            $this->getTypeNamespace($type) . '\\' . $type->getCollectionInterfaceName(),
         ];
 
         if ($this->getStructure()->getNamespace()) {
@@ -48,22 +49,12 @@ class BaseTypeCollectionBuilder extends TypeBuilder
             $result[] = '';
         }
 
-        $interfaces = [];
-        $traits = [];
+        $result[] = sprintf(
+            'abstract class %s extends TypeCollection implements %s',
+            $base_collection_class_name,
+            $type->getCollectionInterfaceName()
+        );
 
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-
-            if (count($implementations)) {
-                foreach ($implementations as $implementation) {
-                    $traits[] = '\\' . ltrim($implementation, '\\');
-                }
-            }
-        }
-
-        $result[] = 'abstract class ' . $base_collection_class_name . ' extends TypeCollection';
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this collection works with.';
@@ -85,6 +76,12 @@ class BaseTypeCollectionBuilder extends TypeBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$base_collection_class_name, $base_class_build_path]);
+        $this->triggerEvent(
+            'on_class_built',
+            [
+                $base_collection_class_name,
+                $base_class_build_path,
+            ]
+        );
     }
 }
