@@ -340,9 +340,21 @@ class CodeBuilderTest extends TestCase
      */
     public function testManagerClassInheritance()
     {
-        $this->assertTrue($this->writers_manager_reflection->isSubclassOf("{$this->namespace}\\Writer\\Base\\BaseWritersManager"));
-        $this->assertTrue($this->books_manager_reflection->isSubclassOf("{$this->namespace}\\Book\\Base\\BaseBooksManager"));
-        $this->assertTrue($this->chapters_manager_reflection->isSubclassOf("{$this->namespace}\\Chapter\\Base\\BaseChaptersManager"));
+        $this->assertTrue(
+            $this->writers_manager_reflection->isSubclassOf(
+                $this->base_writers_manager_reflection->getName()
+            )
+        );
+        $this->assertTrue(
+            $this->books_manager_reflection->isSubclassOf(
+                $this->base_books_manager_reflection->getName()
+            )
+        );
+        $this->assertTrue(
+            $this->chapters_manager_reflection->isSubclassOf(
+                $this->base_chapters_manager_reflection->getName()
+            )
+        );
     }
 
     /**
@@ -353,6 +365,48 @@ class CodeBuilderTest extends TestCase
         $this->assertTrue($this->base_writers_collection_reflection->isAbstract());
         $this->assertTrue($this->base_books_collection_reflection->isAbstract());
         $this->assertTrue($this->base_chapters_collection_reflection->isAbstract());
+    }
+
+    public function testCollectionInterfacesExtendBaseCollectionInterfaces()
+    {
+        $this->assertTrue(
+            $this->writers_collection_interface_reflection->isSubclassOf(
+                $this->base_writers_collection_interface_reflection->getName()
+            )
+        );
+
+        $this->assertTrue(
+            $this->books_collection_reflection->isSubclassOf(
+                $this->base_books_collection_reflection->getName()
+            )
+        );
+
+        $this->assertTrue(
+            $this->chapters_collection_reflection->isSubclassOf(
+                $this->base_chapters_collection_reflection->getName()
+            )
+        );
+    }
+
+    public function testBaseCollectionClassesImplementCollectionInterfaces()
+    {
+        $this->assertTrue(
+            $this->base_writers_collection_reflection->implementsInterface(
+                $this->writers_collection_interface_reflection->getName()
+            )
+        );
+
+        $this->assertTrue(
+            $this->base_books_collection_reflection->implementsInterface(
+                $this->books_collection_interface_reflection->getName()
+            )
+        );
+
+        $this->assertTrue(
+            $this->base_chapters_collection_reflection->implementsInterface(
+                $this->chapters_collection_interface_reflection->getName()
+            )
+        );
     }
 
     /**
