@@ -27,6 +27,9 @@ class BaseTypeManagerBuilder extends TypeBuilder
 
         $this->renderHeaderComment($result);
 
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
+
         $types_to_use = [
             'ActiveCollab\DatabaseObject\Entity\Manager',
             $this->getTypeNamespace($type) . '\\' . $type->getManagerInterfaceName(),

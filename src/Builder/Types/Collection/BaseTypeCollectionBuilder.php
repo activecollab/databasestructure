@@ -27,6 +27,9 @@ class BaseTypeCollectionBuilder extends TypeBuilder
 
         $this->renderHeaderComment($result);
 
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
+
         $types_to_use = [
             'ActiveCollab\DatabaseObject\Collection\Type as TypeCollection',
             $this->getTypeNamespace($type) . '\\' . $type->getCollectionInterfaceName(),
