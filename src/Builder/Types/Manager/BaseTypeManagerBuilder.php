@@ -42,15 +42,7 @@ class BaseTypeManagerBuilder extends TypeBuilder
             $types_to_use[] = $this->getTypeNamespace($type) . '\\' . $type->getClassName();
         }
 
-        if (!empty($types_to_use)) {
-            sort($types_to_use);
-
-            foreach ($types_to_use as $type_to_use) {
-                $result[] = 'use ' . $type_to_use . ';';
-            }
-
-            $result[] = '';
-        }
+        $this->renderTypesToUse($types_to_use, $result);
 
         $result[] = sprintf(
             'abstract class %s extends Manager implements %s',
