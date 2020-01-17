@@ -272,9 +272,19 @@ class Type implements TypeInterface
         return Inflector::classify($this->getName()) . 'Manager';
     }
 
+    public function getManagerInterfaceName(): string
+    {
+        return $this->getManagerClassName() . 'Interface';
+    }
+
     public function getBaseManagerClassName(): string
     {
         return 'Base' . $this->getManagerClassName();
+    }
+
+    public function getBaseManagerInterfaceName(): string
+    {
+        return $this->getBaseManagerClassName() . 'Interface';
     }
 
     public function getCollectionClassName(): string

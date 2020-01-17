@@ -29,6 +29,24 @@ abstract class TypeBuilder extends FileSystemBuilder
             : 'Base';
     }
 
+    protected function getOverridableClassBuildPath(TypeInterface $type, string $class): ?string
+    {
+        return $this->getBuildPath()
+            ? sprintf('%s/%s/%s.php', $this->getBuildPath(), $type->getClassName(), $class)
+            : null;
+    }
+
+    protected function getBaseClassBuildPath(TypeInterface $type, string $class): ?string
+    {
+        return $this->getBuildPath()
+            ? sprintf('%s/%s/Base/%s.php', $this->getBuildPath(), $type->getClassName(), $class)
+            : null;
+    }
+
+    // ---------------------------------------------------
+    //  Type interface and class.
+    // ---------------------------------------------------
+
     protected function getTypeClassBuildPath(TypeInterface $type): ?string
     {
         return $this->getOverridableClassBuildPath($type, $type->getClassName());
@@ -49,15 +67,33 @@ abstract class TypeBuilder extends FileSystemBuilder
         return $this->getBaseClassBuildPath($type, $type->getBaseInterfaceName());
     }
 
-    protected function getManagerBuildPath(TypeInterface $type): ?string
+    // ---------------------------------------------------
+    //  Manager interface and class.
+    // ---------------------------------------------------
+
+    protected function getManagerClassBuildPath(TypeInterface $type): ?string
     {
         return $this->getOverridableClassBuildPath($type, $type->getManagerClassName());
     }
 
-    protected function getBaseManagerBuildPath(TypeInterface $type): ?string
+    protected function getManagerInterfaceBuildPath(TypeInterface $type): ?string
+    {
+        return $this->getOverridableClassBuildPath($type, $type->getManagerClassName());
+    }
+
+    protected function getBaseManagerClassBuildPath(TypeInterface $type): ?string
     {
         return $this->getBaseClassBuildPath($type, $type->getBaseManagerClassName());
     }
+
+    protected function getBaseManagerInterfaceBuildPath(TypeInterface $type): ?string
+    {
+        return $this->getBaseClassBuildPath($type, $type->getBaseManagerClassName());
+    }
+
+    // ---------------------------------------------------
+    //  Collection interface and class.
+    // ---------------------------------------------------
 
     protected function getCollectionBuildPath(TypeInterface $type): ?string
     {
@@ -67,19 +103,5 @@ abstract class TypeBuilder extends FileSystemBuilder
     protected function getBaseCollectionBuildPath(TypeInterface $type): ?string
     {
         return $this->getBaseClassBuildPath($type, $type->getBaseCollectionClassName());
-    }
-
-    protected function getOverridableClassBuildPath(TypeInterface $type, string $class): ?string
-    {
-        return $this->getBuildPath()
-            ? sprintf('%s/%s/%s.php', $this->getBuildPath(), $type->getClassName(), $class)
-            : null;
-    }
-
-    protected function getBaseClassBuildPath(TypeInterface $type, string $class): ?string
-    {
-        return $this->getBuildPath()
-            ? sprintf('%s/%s/Base/%s.php', $this->getBuildPath(), $type->getClassName(), $class)
-            : null;
     }
 }
