@@ -35,7 +35,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_writers_manager_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $writers_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $writers_manager_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -45,7 +55,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_books_manager_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $books_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $books_manager_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -55,7 +75,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_chapters_manager_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $chapters_manager_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $chapters_manager_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -65,7 +95,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_writers_collection_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $writers_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $writers_collection_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -75,7 +115,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_books_collection_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $books_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $books_collection_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -85,7 +135,17 @@ class CodeBuilderTest extends TestCase
     /**
      * @var ReflectionClass
      */
+    private $base_chapters_collection_interface_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
     private $chapters_collection_reflection;
+
+    /**
+     * @var ReflectionClass
+     */
+    private $chapters_collection_interface_reflection;
 
     /**
      * @var ReflectionClass
@@ -161,23 +221,35 @@ class CodeBuilderTest extends TestCase
         }
 
         // Managers
+        $this->base_writers_manager_interface_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWritersManagerInterface");
         $this->base_writers_manager_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWritersManager");
+        $this->writers_manager_interface_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WritersManagerInterface");
         $this->writers_manager_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WritersManager");
 
+        $this->base_books_manager_interface_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBooksManagerInterface");
         $this->base_books_manager_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBooksManager");
+        $this->books_manager_interface_reflection = new ReflectionClass("{$this->namespace}\\Book\\BooksManagerInterface");
         $this->books_manager_reflection = new ReflectionClass("{$this->namespace}\\Book\\BooksManager");
 
+        $this->base_chapters_manager_interface_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChaptersManagerInterface");
         $this->base_chapters_manager_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChaptersManager");
+        $this->chapters_manager_interface_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChaptersManagerInterface");
         $this->chapters_manager_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChaptersManager");
 
         // Collections
+        $this->base_writers_collection_interface_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWritersCollectionInterface");
         $this->base_writers_collection_reflection = new ReflectionClass("{$this->namespace}\\Writer\\Base\\BaseWritersCollection");
+        $this->writers_collection_interface_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WritersCollectionInterface");
         $this->writers_collection_reflection = new ReflectionClass("{$this->namespace}\\Writer\\WritersCollection");
 
+        $this->base_books_collection_interface_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBooksCollectionInterface");
         $this->base_books_collection_reflection = new ReflectionClass("{$this->namespace}\\Book\\Base\\BaseBooksCollection");
+        $this->books_collection_interface_reflection = new ReflectionClass("{$this->namespace}\\Book\\BooksCollectionInterface");
         $this->books_collection_reflection = new ReflectionClass("{$this->namespace}\\Book\\BooksCollection");
 
+        $this->base_chapters_collection_interface_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChaptersCollectionInterface");
         $this->base_chapters_collection_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\Base\\BaseChaptersCollection");
+        $this->chapters_collection_interface_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChaptersCollectionInterface");
         $this->chapters_collection_reflection = new ReflectionClass("{$this->namespace}\\Chapter\\ChaptersCollection");
 
         // Types
