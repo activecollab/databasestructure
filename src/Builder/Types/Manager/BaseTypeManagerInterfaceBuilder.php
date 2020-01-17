@@ -8,9 +8,10 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Types;
+namespace ActiveCollab\DatabaseStructure\Builder\Types\Manager;
 
 use ActiveCollab\DatabaseObject\Entity\ManagerInterface;
+use ActiveCollab\DatabaseStructure\Builder\Types\TypeBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class BaseTypeManagerInterfaceBuilder extends TypeBuilder

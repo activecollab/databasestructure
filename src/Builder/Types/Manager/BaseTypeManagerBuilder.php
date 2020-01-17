@@ -8,16 +8,17 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Types;
+namespace ActiveCollab\DatabaseStructure\Builder\Types\Manager;
 
+use ActiveCollab\DatabaseStructure\Builder\Types\TypeBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-class BaseTypeCollectionBuilder extends TypeBuilder
+class BaseTypeManagerBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $base_collection_class_name = $type->getBaseCollectionClassName();
-        $base_class_build_path = $this->getBaseCollectionBuildPath($type);
+        $base_manager_class_name = $type->getBaseManagerClassName();
+        $base_manager_class_build_path = $this->getBuildPath() ? $this->getBaseManagerClassBuildPath($type) : null;
 
         $result = [];
 
@@ -27,7 +28,8 @@ class BaseTypeCollectionBuilder extends TypeBuilder
         $this->renderHeaderComment($result);
 
         $types_to_use = [
-            'ActiveCollab\DatabaseObject\Collection\Type as TypeCollection',
+            'ActiveCollab\DatabaseObject\Entity\Manager',
+            $this->getTypeNamespace($type) . '\\' . $type->getManagerInterfaceName(),
         ];
 
         if ($this->getStructure()->getNamespace()) {
@@ -47,25 +49,15 @@ class BaseTypeCollectionBuilder extends TypeBuilder
             $result[] = '';
         }
 
-        $interfaces = [];
-        $traits = [];
+        $result[] = sprintf(
+            'abstract class %s extends Manager implements %s',
+            $base_manager_class_name,
+            $type->getManagerInterfaceName()
+        );
 
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-
-            if (count($implementations)) {
-                foreach ($implementations as $implementation) {
-                    $traits[] = '\\' . ltrim($implementation, '\\');
-                }
-            }
-        }
-
-        $result[] = 'abstract class ' . $base_collection_class_name . ' extends TypeCollection';
         $result[] = '{';
         $result[] = '    /**';
-        $result[] = '     * Return type that this collection works with.';
+        $result[] = '     * Return type that this manager works with.';
         $result[] = '     *';
         $result[] = '     * @return string';
         $result[] = '     */';
@@ -79,11 +71,11 @@ class BaseTypeCollectionBuilder extends TypeBuilder
         $result = implode("\n", $result);
 
         if ($this->getBuildPath()) {
-            file_put_contents($base_class_build_path, $result);
+            file_put_contents($base_manager_class_build_path, $result);
         } else {
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$base_collection_class_name, $base_class_build_path]);
+        $this->triggerEvent('on_class_built', [$base_manager_class_name, $base_manager_class_build_path]);
     }
 }

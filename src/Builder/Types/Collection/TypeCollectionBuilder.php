@@ -8,8 +8,9 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder\Types;
+namespace ActiveCollab\DatabaseStructure\Builder\Types\Collection;
 
+use ActiveCollab\DatabaseStructure\Builder\Types\TypeBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class TypeCollectionBuilder extends TypeBuilder
