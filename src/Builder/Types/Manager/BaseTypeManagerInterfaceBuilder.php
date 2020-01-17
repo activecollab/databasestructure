@@ -39,6 +39,8 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
         $this->renderTypesToUse(
             [
                 ManagerInterface::class,
+                $this->getTypeNamespace($type) . '\\' . $type->getInterfaceName(),
+                $this->getTypeNamespace($type) . '\\' . $type->getClassName(),
             ],
             $result
         );
@@ -46,6 +48,7 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
         $result[] = sprintf('interface %s extends ManagerInterface', $base_interface_name);
 
         $result[] = '{';
+        $this->buildProduceEntityMethodSignature($type, $result, '    ');
         $result[] = '}';
         $result[] = '';
 
@@ -63,6 +66,16 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
                 $base_interface_name,
                 $base_interface_build_path,
             ]
+        );
+    }
+
+    private function buildProduceEntityMethodSignature(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function produce%s(array $params, bool $save = true): %s;',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
         );
     }
 }

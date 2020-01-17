@@ -33,6 +33,7 @@ class BaseTypeManagerBuilder extends TypeBuilder
         $types_to_use = [
             'ActiveCollab\DatabaseObject\Entity\Manager',
             $this->getTypeNamespace($type) . '\\' . $type->getManagerInterfaceName(),
+            $this->getTypeNamespace($type) . '\\' . $type->getInterfaceName(),
         ];
 
         if ($this->getStructure()->getNamespace()) {
@@ -51,15 +52,14 @@ class BaseTypeManagerBuilder extends TypeBuilder
         );
 
         $result[] = '{';
-        $result[] = '    /**';
-        $result[] = '     * Return type that this manager works with.';
-        $result[] = '     *';
-        $result[] = '     * @return string';
-        $result[] = '     */';
-        $result[] = '    public function getType()';
+        $result[] = '    public function getType(): string';
         $result[] = '    {';
         $result[] = '        return ' . $type->getClassName() . '::class;';
         $result[] = '    }';
+        $result[] = '';
+
+        $this->buildProduceEntityMethod($type, $result, '    ');
+
         $result[] = '}';
         $result[] = '';
 
@@ -71,6 +71,30 @@ class BaseTypeManagerBuilder extends TypeBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$base_manager_class_name, $base_manager_class_build_path]);
+        $this->triggerEvent(
+            'on_class_built',
+            [
+                $base_manager_class_name,
+                $base_manager_class_build_path,
+            ]
+        );
+    }
+
+    private function buildProduceEntityMethod(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function produce%s(array $params, bool $save = true): %s',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+        $result[] = $indent . '{';
+        $result[] = sprintf(
+            '%s    return $this->pool->produce(%s::class, $params, $save);',
+            $indent,
+            $type->getClassName()
+        );
+        $result[] = $indent . '}';
+        $result[] = '';
     }
 }
