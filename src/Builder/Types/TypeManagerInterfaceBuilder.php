@@ -12,17 +12,23 @@ namespace ActiveCollab\DatabaseStructure\Builder\Types;
 
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-class TypeInterfaceBuilder extends TypeBuilder
+class TypeManagerInterfaceBuilder extends TypeBuilder
 {
     public function buildType(TypeInterface $type)
     {
-        $interface_name = $type->getInterfaceName();
-        $base_interface_name = 'Base\\' . $type->getBaseInterfaceName();
+        $interface_name = $type->getManagerInterfaceName();
+        $base_interface_name = 'Base\\' . $type->getBaseManagerInterfaceName();
 
-        $interface_build_path = $this->getTypeInterfaceBuildPath($type);
+        $interface_build_path = $this->getManagerInterfaceBuildPath($type);
 
         if ($interface_build_path && is_file($interface_build_path)) {
-            $this->triggerEvent('on_class_build_skipped', [$interface_name, $interface_build_path]);
+            $this->triggerEvent(
+                'on_class_build_skipped',
+                [
+                    $interface_name,
+                    $interface_build_path,
+                ]
+            );
 
             return;
         }

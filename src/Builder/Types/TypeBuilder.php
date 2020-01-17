@@ -78,7 +78,7 @@ abstract class TypeBuilder extends FileSystemBuilder
 
     protected function getManagerInterfaceBuildPath(TypeInterface $type): ?string
     {
-        return $this->getOverridableClassBuildPath($type, $type->getManagerClassName());
+        return $this->getOverridableClassBuildPath($type, $type->getManagerInterfaceName());
     }
 
     protected function getBaseManagerClassBuildPath(TypeInterface $type): ?string
@@ -88,7 +88,7 @@ abstract class TypeBuilder extends FileSystemBuilder
 
     protected function getBaseManagerInterfaceBuildPath(TypeInterface $type): ?string
     {
-        return $this->getBaseClassBuildPath($type, $type->getBaseManagerClassName());
+        return $this->getBaseClassBuildPath($type, $type->getBaseManagerInterfaceName());
     }
 
     // ---------------------------------------------------

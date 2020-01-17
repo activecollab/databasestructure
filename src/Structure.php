@@ -12,22 +12,24 @@ namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\AssociationsBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\Database\RecordsBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TriggersBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Directories\SqlDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Directories\TypeDirBuilder;
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeCollectionBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Directories\TypeDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeManagerBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Database\DatabaseBuilderInterface;
-use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilderInterface;
-use ActiveCollab\DatabaseStructure\Builder\Database\RecordsBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Directories\SqlDirBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Database\TriggersBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Types\BaseTypeManagerInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\TypeCollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\TypeInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Types\TypeManagerBuilder;
+use ActiveCollab\DatabaseStructure\Builder\Types\TypeManagerInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
-use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use InvalidArgumentException;
@@ -285,7 +287,9 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new TriggersBuilder($this);
             $this->builders[] = new RecordsBuilder($this);
 
+            $this->builders[] = new BaseTypeManagerInterfaceBuilder($this);
             $this->builders[] = new BaseTypeManagerBuilder($this);
+            $this->builders[] = new TypeManagerInterfaceBuilder($this);
             $this->builders[] = new TypeManagerBuilder($this);
 
             $this->builders[] = new BaseTypeCollectionBuilder($this);
