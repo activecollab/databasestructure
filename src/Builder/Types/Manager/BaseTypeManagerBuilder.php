@@ -64,6 +64,11 @@ class BaseTypeManagerBuilder extends TypeBuilder
             $this->buildProduceEntityMethod($type, $result, '    ');
         }
 
+        $result[] = '';
+        $this->buildByIdGetter($type, $result, '    ');
+        $result[] = '';
+        $this->buildByIdMustGetter($type, $result, '    ');
+
         $result[] = '}';
         $result[] = '';
 
@@ -95,6 +100,40 @@ class BaseTypeManagerBuilder extends TypeBuilder
         $result[] = $indent . '{';
         $result[] = sprintf(
             '%s    return $this->pool->produce(%s::class, $params, $save);',
+            $indent,
+            $type->getClassName()
+        );
+        $result[] = $indent . '}';
+    }
+
+    private function buildByIdGetter(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function get%sById(int $id, $useCache = true): %s',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+        $result[] = $indent . '{';
+        $result[] = sprintf(
+            '%s    return $this->pool->getById(%s::class, $id, $useCache);',
+            $indent,
+            $type->getClassName()
+        );
+        $result[] = $indent . '}';
+    }
+
+    private function buildByIdMustGetter(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function mustGet%sById(int $id, $useCache = true): %s',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+        $result[] = $indent . '{';
+        $result[] = sprintf(
+            '%s    return $this->pool->mustGetById(%s::class, $id, $useCache);',
             $indent,
             $type->getClassName()
         );
