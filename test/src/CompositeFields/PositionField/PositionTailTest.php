@@ -14,6 +14,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail\PositionTailStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -42,7 +43,10 @@ class PositionTailTest extends TestCase
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        /** @var LoggerInterface $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $this->pool = new Pool($this->connection, $logger);
         $this->position_tail_structure = new PositionTailStructure();
 
         if (!class_exists($this->type_class_name, false)) {

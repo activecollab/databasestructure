@@ -19,6 +19,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValue;
 use ActiveCollab\DateValue\DateValueInterface;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 
 class JsonExtractTest extends TestCase
@@ -81,7 +82,10 @@ class JsonExtractTest extends TestCase
 
         $this->connection->execute($create_table_statement);
 
-        $this->pool = new Pool($this->connection);
+        /** @var LoggerInterface $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $this->pool = new Pool($this->connection, $logger);
         $this->pool->registerType($this->stats_snapshot_class_name);
     }
 

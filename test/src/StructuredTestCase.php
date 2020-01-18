@@ -19,6 +19,9 @@ use ActiveCollab\FileSystem\Adapter\LocalAdapter;
 use ActiveCollab\FileSystem\FileSystem;
 use ActiveCollab\FileSystem\FileSystemInterface;
 use InvalidArgumentException;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerAwareInterface;
 use ReflectionClass;
 
 abstract class StructuredTestCase extends TestCase
@@ -64,6 +67,11 @@ abstract class StructuredTestCase extends TestCase
     protected $type_collection_class_names;
 
     /**
+     * @var LoggerAwareInterface
+     */
+    private $logger;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -90,10 +98,13 @@ abstract class StructuredTestCase extends TestCase
         $this->filesystem = new FileSystem(new LocalAdapter($this->build_path));
         $this->filesystem->emptyDir('/', [$structure_class_file_name]);
 
+        $this->logger = new Logger('DatabaseObject test');
+        $this->logger->pushHandler(new TestHandler());
+
         $this->assertEquals([$structure_class_file_name], $this->filesystem->files('/'));
         $this->assertEquals([], $this->filesystem->subdirs('/'));
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->logger);
 
         $this->structure = new $structure_class_name();
         $this->structure->build($this->build_path, $this->connection);

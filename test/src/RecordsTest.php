@@ -15,6 +15,7 @@ use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\RecordsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Records\RecordsStructure;
+use Psr\Log\LoggerInterface;
 
 class RecordsTest extends TestCase
 {
@@ -40,7 +41,10 @@ class RecordsTest extends TestCase
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        /** @var LoggerInterface $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $this->pool = new Pool($this->connection, $logger);
         $this->records_structure = new RecordsStructure();
 
         if (!class_exists($this->type_class_name, false)) {

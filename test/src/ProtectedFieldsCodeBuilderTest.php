@@ -12,6 +12,7 @@ use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectedFields\ProtectedFieldsStructure;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 
 /**
@@ -92,9 +93,18 @@ class ProtectedFieldsCodeBuilderTest extends TestCase
      */
     public function testBaseClassesImplementProtectedFieldsTrait()
     {
-        $this->assertNotContains(ProtectedFieldsInterfaceImplementation::class, $this->no_protected_fields_base_class_reflection->getTraitNames());
-        $this->assertContains(ProtectedFieldsInterfaceImplementation::class, $this->has_protected_fields_base_class_reflection->getTraitNames());
-        $this->assertContains(ProtectedFieldsInterfaceImplementation::class, $this->multi_protected_fields_base_class_reflection->getTraitNames());
+        $this->assertNotContains(
+            ProtectedFieldsInterfaceImplementation::class,
+            $this->no_protected_fields_base_class_reflection->getTraitNames()
+        );
+        $this->assertContains(
+            ProtectedFieldsInterfaceImplementation::class,
+            $this->has_protected_fields_base_class_reflection->getTraitNames()
+        );
+        $this->assertContains(
+            ProtectedFieldsInterfaceImplementation::class,
+            $this->multi_protected_fields_base_class_reflection->getTraitNames()
+        );
     }
 
     /**
@@ -102,9 +112,18 @@ class ProtectedFieldsCodeBuilderTest extends TestCase
      */
     public function testInstancesReturnListsOfProtectedFields()
     {
-        $pool = new Pool($this->connection);
+        /** @var LoggerInterface $logger */
+        $logger = $this->createMock(LoggerInterface::class);
 
-        $this->assertEquals(['field_1', 'field_2'], $this->has_protected_fields_class_reflection->newInstance($this->connection, $pool)->getProtectedFields());
-        $this->assertEquals(['field_1', 'field_2', 'field_3'], $this->multi_protected_fields_class_reflection->newInstance($this->connection, $pool)->getProtectedFields());
+        $pool = new Pool($this->connection, $logger);
+
+        $this->assertEquals(
+            ['field_1', 'field_2'],
+            $this->has_protected_fields_class_reflection->newInstance($this->connection, $pool, $logger)->getProtectedFields()
+        );
+        $this->assertEquals(
+            ['field_1', 'field_2', 'field_3'],
+            $this->multi_protected_fields_class_reflection->newInstance($this->connection, $pool, $logger)->getProtectedFields()
+        );
     }
 }

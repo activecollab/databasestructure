@@ -16,6 +16,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\Database\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext\PositionContextStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use Psr\Log\LoggerInterface;
 
 class PositionContextTest extends TestCase
 {
@@ -46,7 +47,10 @@ class PositionContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        /** @var LoggerInterface $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $this->pool = new Pool($this->connection, $logger);
         $this->position_context_structure = new PositionContextStructure();
 
         if (!class_exists($this->head_type_class_name, false) && !class_exists($this->tail_type_class_name, false)) {
