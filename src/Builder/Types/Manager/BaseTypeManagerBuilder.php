@@ -58,7 +58,11 @@ class BaseTypeManagerBuilder extends TypeBuilder
         $result[] = '    }';
         $result[] = '';
 
-        $this->buildProduceEntityMethod($type, $result, '    ');
+        if ($type->getPolymorph()) {
+            $this->buildPolymorphProduceEntityMethod($type, $result, '    ');
+        } else {
+            $this->buildProduceEntityMethod($type, $result, '    ');
+        }
 
         $result[] = '}';
         $result[] = '';
@@ -91,6 +95,24 @@ class BaseTypeManagerBuilder extends TypeBuilder
         $result[] = $indent . '{';
         $result[] = sprintf(
             '%s    return $this->pool->produce(%s::class, $params, $save);',
+            $indent,
+            $type->getClassName()
+        );
+        $result[] = $indent . '}';
+        $result[] = '';
+    }
+
+    private function buildPolymorphProduceEntityMethod(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function produce%s(string $type, array $params, bool $save = true): %s',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+        $result[] = $indent . '{';
+        $result[] = sprintf(
+            '%s    return $this->pool->produce(%s::class, array_merge($params, [\'type\' => $type]), $save);',
             $indent,
             $type->getClassName()
         );

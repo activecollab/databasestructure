@@ -48,7 +48,13 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
         $result[] = sprintf('interface %s extends ManagerInterface', $base_interface_name);
 
         $result[] = '{';
-        $this->buildProduceEntityMethodSignature($type, $result, '    ');
+
+        if ($type->getPolymorph()) {
+            $this->buildPolymorphProduceEntityMethodSignature($type, $result, '    ');
+        } else {
+            $this->buildProduceEntityMethodSignature($type, $result, '    ');
+        }
+
         $result[] = '}';
         $result[] = '';
 
@@ -73,6 +79,20 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
     {
         $result[] = sprintf(
             '%spublic function produce%s(array $params, bool $save = true): %s;',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+    }
+
+    private function buildPolymorphProduceEntityMethodSignature(
+        TypeInterface $type,
+        array &$result,
+        string $indent
+    ): void
+    {
+        $result[] = sprintf(
+            '%spublic function produce%s(string $type, array $params, bool $save = true): %s;',
             $indent,
             $type->getClassName(),
             $type->getInterfaceName(),
