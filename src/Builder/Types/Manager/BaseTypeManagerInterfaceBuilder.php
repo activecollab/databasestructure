@@ -54,6 +54,8 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
         } else {
             $this->buildProduceEntityMethodSignature($type, $result, '    ');
         }
+        $this->buildByIdGetterSignature($type, $result, '    ');
+        $this->buildByIdMustGetterSignature($type, $result, '    ');
 
         $result[] = '}';
         $result[] = '';
@@ -93,6 +95,26 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
     {
         $result[] = sprintf(
             '%spublic function produce%s(string $type, array $params, bool $save = true): %s;',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+    }
+
+    private function buildByIdGetterSignature(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function get%sById(int $id, $useCache = true): %s;',
+            $indent,
+            $type->getClassName(),
+            $type->getInterfaceName(),
+        );
+    }
+
+    private function buildByIdMustGetterSignature(TypeInterface $type, array &$result, string $indent): void
+    {
+        $result[] = sprintf(
+            '%spublic function mustGet%sById(int $id, $useCache = true): %s;',
             $indent,
             $type->getClassName(),
             $type->getInterfaceName(),
