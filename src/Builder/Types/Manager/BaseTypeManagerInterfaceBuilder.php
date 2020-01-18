@@ -104,7 +104,7 @@ class BaseTypeManagerInterfaceBuilder extends TypeBuilder
     private function buildByIdGetterSignature(TypeInterface $type, array &$result, string $indent): void
     {
         $result[] = sprintf(
-            '%spublic function get%sById(int $id, $useCache = true): %s;',
+            '%spublic function get%sById(int $id, $useCache = true): ?%s;',
             $indent,
             $type->getClassName(),
             $type->getInterfaceName(),
