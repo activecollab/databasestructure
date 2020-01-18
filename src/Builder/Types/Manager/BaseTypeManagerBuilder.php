@@ -99,7 +99,6 @@ class BaseTypeManagerBuilder extends TypeBuilder
             $type->getClassName()
         );
         $result[] = $indent . '}';
-        $result[] = '';
     }
 
     private function buildPolymorphProduceEntityMethod(TypeInterface $type, array &$result, string $indent): void
@@ -117,6 +116,5 @@ class BaseTypeManagerBuilder extends TypeBuilder
             $type->getClassName()
         );
         $result[] = $indent . '}';
-        $result[] = '';
     }
 }
