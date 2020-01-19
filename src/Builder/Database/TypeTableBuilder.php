@@ -96,12 +96,9 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
             foreach ($type->getAssociations() as $association) {
                 if ($association instanceof HasAndBelongsToManyAssociation) {
-                    $target_type = $this->getStructure()->getType($association->getTargetTypeName());
-
-                    $connection_table = $this->getConnectionTableName($type, $target_type);
+                    $connection_table = $association->getConnectionTableName();
 
                     if (!$this->isConnectionTableAppended($connection_table)) {
-
                         $create_table_statement = $this->prepareConnectionCreateTableStatement(
                             $type,
                             $this->getStructure()->getType($association->getTargetTypeName()),
@@ -431,18 +428,6 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $result . ' (' . implode(', ', array_map(function ($field_name) {
             return $this->getConnection()->escapeFieldName($field_name);
         }, $index->getFields())) . ')';
-    }
-
-    /**
-     * Return name of the connection that will be created for has and belongs to many association.
-     *
-     * @param  TypeInterface $source
-     * @param  TypeInterface $target
-     * @return string
-     */
-    private function getConnectionTableName(TypeInterface $source, TypeInterface $target)
-    {
-        return $source->getName() . '_' . $target->getName();
     }
 
     public function prepareConnectionCreateTableStatement(
