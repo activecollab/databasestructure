@@ -22,6 +22,8 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     use StructureSql;
 
     private $build_path;
+    private $appended_constraints = [];
+    private $added_connection_tables = [];
 
     public function getBuildPath(): ?string
     {
@@ -55,10 +57,13 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     private function postBuildBelongsToAssociation(TypeInterface $type, BelongsToAssociation $association): void
     {
         $create_constraint_statement = $this->prepareBelongsToConstraintStatement($type, $association);
+
         $this->appendToStructureSql(
             $create_constraint_statement,
             'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint'
         );
+
+        $this->recordAppendedConstraints($association->getConstraintName());
 
         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
             $this->triggerEvent(
@@ -80,10 +85,13 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     private function postBuildHasOneAssociation(TypeInterface $type, HasOneAssociation $association): void
     {
         $create_constraint_statement = $this->prepareHasOneConstraintStatement($type, $association);
+
         $this->appendToStructureSql(
             $create_constraint_statement,
             'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint'
         );
+
+        $this->recordAppendedConstraints($association->getConstraintName());
 
         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
             $this->triggerEvent(
@@ -110,64 +118,74 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     {
         $connection_table = $association->getConnectionTableName();
 
-        $left_field_name = $association->getLeftFieldName();
-        $create_left_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement(
-            $type->getName(),
-            $connection_table,
-            $association->getLeftConstraintName(),
-            $left_field_name
-        );
+        if (!$this->isAppendedConstraint($association->getLeftConstraintName())) {
+            $left_field_name = $association->getLeftFieldName();
 
-        $this->appendToStructureSql(
-            $create_left_field_constraint_statement,
-            'Create ' . $this->getConnection()->escapeTableName($association->getLeftConstraintName()) . ' constraint'
-        );
-
-        $right_field_name = $association->getRightFieldName();
-        $create_right_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement(
-            $association->getTargetTypeName(),
-            $connection_table,
-            $association->getRightConstraintName(),
-            $right_field_name
-        );
-
-        $this->appendToStructureSql(
-            $create_right_field_constraint_statement,
-            'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint'
-        );
-
-        if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
-            $this->triggerEvent(
-                'on_association_skipped',
-                [
-                    Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName(),
-                ]
+            $create_left_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement(
+                $type->getName(),
+                $connection_table,
+                $association->getLeftConstraintName(),
+                $left_field_name
             );
-        } else {
-            $this->getConnection()->execute($create_left_field_constraint_statement);
-            $this->triggerEvent(
-                'on_association_created',
-                [
-                    Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName(),
-                ]
+
+            $this->appendToStructureSql(
+                $create_left_field_constraint_statement,
+                'Create ' . $this->getConnection()->escapeTableName($association->getLeftConstraintName()) . ' constraint'
             );
+
+            $this->recordAppendedConstraints($association->getLeftConstraintName());
+
+            if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
+                $this->triggerEvent(
+                    'on_association_skipped',
+                    [
+                        Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName(),
+                    ]
+                );
+            } else {
+                $this->getConnection()->execute($create_left_field_constraint_statement);
+                $this->triggerEvent(
+                    'on_association_created',
+                    [
+                        Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName(),
+                    ]
+                );
+            }
         }
 
-        if ($this->constraintExists($association->getRightConstraintName(), $association->getTargetTypeName())) {
-            $this->triggerEvent(
-                'on_association_skipped',
-                [
-                    Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName(),
-                ]
+        if (!$this->isAppendedConstraint($association->getRightConstraintName())) {
+            $right_field_name = $association->getRightFieldName();
+
+            $create_right_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement(
+                $association->getTargetTypeName(),
+                $connection_table,
+                $association->getRightConstraintName(),
+                $right_field_name
             );
-        } else {
-            $this->getConnection()->execute($create_right_field_constraint_statement);
-            $this->triggerEvent(
-                'on_association_created',
-                [
-                    Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName(),
-                ]
+
+            $this->appendToStructureSql(
+                $create_right_field_constraint_statement,
+                'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint'
             );
+
+            $this->recordAppendedConstraints($association->getRightConstraintName());
+
+            if ($this->constraintExists($association->getRightConstraintName(), $association->getTargetTypeName())) {
+                $this->triggerEvent(
+                    'on_association_skipped',
+                    [
+                        Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName(),
+                    ]
+                );
+            } else {
+                $this->getConnection()->execute($create_right_field_constraint_statement);
+                $this->triggerEvent(
+                    'on_association_created',
+                    [
+                        Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName(),
+                    ]
+                );
+            }
         }
     }
 
@@ -236,5 +254,15 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
             $constraint_name,
             $referencing_table
         );
+    }
+
+    private function isAppendedConstraint(string $constraint_name): bool
+    {
+        return in_array($constraint_name, $this->appended_constraints);
+    }
+
+    private function recordAppendedConstraints(string $constraint_name): void
+    {
+        $this->appended_constraints[] = $constraint_name;
     }
 }
