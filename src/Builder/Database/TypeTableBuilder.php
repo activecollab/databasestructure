@@ -75,6 +75,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         }
     }
 
+    private $connection_tables_appended = [];
+
     /**
      * @param TypeInterface $type
      */
@@ -98,18 +100,41 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
                     $connection_table = $this->getConnectionTableName($type, $target_type);
 
-                    $create_table_statement = $this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association);
-                    $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table');
+                    if (!$this->isConnectionTableAppended($connection_table)) {
 
-                    if ($this->getConnection()->tableExists($connection_table)) {
-                        $this->triggerEvent('on_table_exists', [$connection_table]);
-                    } else {
-                        $this->getConnection()->execute($create_table_statement);
-                        $this->triggerEvent('on_table_created', [$connection_table]);
+                        $create_table_statement = $this->prepareConnectionCreateTableStatement(
+                            $type,
+                            $this->getStructure()->getType($association->getTargetTypeName()),
+                            $association
+                        );
+
+                        $this->appendToStructureSql(
+                            $create_table_statement, 
+                            'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table'
+                        );
+                        
+                        $this->recordConnectionTableAppended($connection_table);
+
+                        if ($this->getConnection()->tableExists($connection_table)) {
+                            $this->triggerEvent('on_table_exists', [$connection_table]);
+                        } else {
+                            $this->getConnection()->execute($create_table_statement);
+                            $this->triggerEvent('on_table_created', [$connection_table]);
+                        }
                     }
                 }
             }
         }
+    }
+
+    private function isConnectionTableAppended(string $connection_table): bool
+    {
+        return in_array($connection_table, $this->connection_tables_appended);
+    }
+
+    private function recordConnectionTableAppended(string $connection_table): void
+    {
+        $this->connection_tables_appended[] = $connection_table;
     }
 
     /**
@@ -420,15 +445,11 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $source->getName() . '_' . $target->getName();
     }
 
-    /**
-     * Prepare create connection table statement.
-     *
-     * @param  TypeInterface                  $source
-     * @param  TypeInterface                  $target
-     * @param  HasAndBelongsToManyAssociation $association
-     * @return string
-     */
-    public function prepareConnectionCreateTableStatement(TypeInterface $source, TypeInterface $target, HasAndBelongsToManyAssociation $association)
+    public function prepareConnectionCreateTableStatement(
+        TypeInterface $source,
+        TypeInterface $target,
+        HasAndBelongsToManyAssociation $association
+    ): string
     {
         $result = [];
 
