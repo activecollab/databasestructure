@@ -116,9 +116,8 @@ class BaseTypeManagerBuilder extends TypeBuilder
         );
         $result[] = $indent . '{';
         $result[] = sprintf(
-            '%s    return $this->pool->produce(%s::class, array_merge($params, [\'type\' => $type]), $save);',
-            $indent,
-            $type->getClassName()
+            '%s    return $this->pool->produce($type, $params, $save);',
+            $indent
         );
         $result[] = $indent . '}';
     }
