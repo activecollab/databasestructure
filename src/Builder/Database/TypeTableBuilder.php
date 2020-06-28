@@ -21,6 +21,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\IntValueExtractor;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
@@ -366,6 +367,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             $this->getConnection()->escapeFieldName($source_field->getName()),
             var_export($extractor->getExpression(), true),
             $extractor->getValueCaster(),
+            $extractor instanceof IntValueExtractor && $extractor->isUnsigned(),
             $this->getConnection()->escapeValue($extractor->getDefaultValue())
         );
         $storage = $extractor->getStoreValue() ? 'STORED' : 'VIRTUAL';
@@ -379,10 +381,17 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
      * @param  string $escaped_field_name
      * @param  string $escaped_expression
      * @param  string $caster
+     * @param  bool   $unsigned
      * @param  mixed  $escaped_default_value
      * @return string
      */
-    private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster, $escaped_default_value)
+    private function prepareGeneratedFieldExpression(
+        string $escaped_field_name,
+        string $escaped_expression,
+        string $caster,
+        bool $unsigned,
+        $escaped_default_value
+    ): string
     {
         $value_extractor_expression = "JSON_UNQUOTE(JSON_EXTRACT({$escaped_field_name}, {$escaped_expression}))";
 
@@ -394,7 +403,13 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             case ValueCasterInterface::CAST_DATETIME:
                 return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATETIME))";
             case ValueCasterInterface::CAST_INT:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS SIGNED INTEGER))";
+                return sprintf(
+                    "IF(%s IS NULL, %s, CAST(%s AS %s INTEGER))",
+                    $value_extractor_expression,
+                    $escaped_default_value,
+                    $value_extractor_expression,
+                    $unsigned ? 'UNSIGNED' : 'SIGNED'
+                );
             case ValueCasterInterface::CAST_FLOAT:
                 return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DECIMAL(12, 2)))";
             default:
