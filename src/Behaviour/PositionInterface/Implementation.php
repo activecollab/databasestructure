@@ -79,7 +79,7 @@ trait Implementation
      * @param  int   $value
      * @return $this
      */
-    abstract public function &setPosition($value);
+    abstract public function &setPosition(int $value);
 
     /**
      * Return position mode.

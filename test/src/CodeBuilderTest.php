@@ -580,6 +580,7 @@ class CodeBuilderTest extends TestCase
                 'id',
                 'book_id',
                 'title',
+                'raw_additional_properties',
                 'position',
             ],
             $this->base_chapter_reflection->getDefaultProperties()['fields']
@@ -609,6 +610,7 @@ class CodeBuilderTest extends TestCase
             ReflectionMethod::class,
             $this->base_chapter_reflection->getMethod('setTitle')
         );
+
     }
 
     /**
