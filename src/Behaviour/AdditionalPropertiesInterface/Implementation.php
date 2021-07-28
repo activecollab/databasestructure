@@ -106,8 +106,8 @@ trait Implementation
     /**
      * Set raw additional properties value.
      *
-     * @param  string $value
+     * @param null|string $value
      * @return $this
      */
-    abstract public function &setRawAdditionalProperties($value);
+    abstract public function &setRawAdditionalProperties(?string $value);
 }

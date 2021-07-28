@@ -10,6 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Writers;
 
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\AdditionalPropertiesField;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
@@ -46,6 +47,7 @@ class WritersStructure extends Structure
 
         $this->addType('chapters')->addFields([
             (new NameField('title', '', true))->required()->unique('book_id'),
+            new AdditionalPropertiesField(),
             new PositionField(),
         ])->addAssociations([
             new BelongsToAssociation('book'),
