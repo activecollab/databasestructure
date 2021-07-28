@@ -13,6 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Blog;
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
+use ActiveCollab\DatabaseStructure\Field\Composite\AdditionalPropertiesField;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
@@ -44,6 +45,7 @@ class BlogStructure extends Structure
             new TextField('body'),
             new DateTimeField('created_at'),
             new DateTimeField('published_at'),
+            new AdditionalPropertiesField(),
             (new EnumField('is_featured', 'no'))->possibilities('yes', 'no'),
         ])->addIndexes([
             new Index('published_at'),

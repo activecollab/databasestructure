@@ -145,7 +145,7 @@ class JsonSerializationTest extends TestCase
 
         $this->assertInternalType('array', $row);
         $this->assertEquals('xyz', $row['name']);
-        $this->assertSame('[1, 2, 3]', $row['value']);
+        $this->assertSame('[1,2,3]', $row['value']);
     }
 
     /**
@@ -165,6 +165,6 @@ class JsonSerializationTest extends TestCase
 
         $this->assertInternalType('array', $row);
         $this->assertEquals('xyz', $row['name']);
-        $this->assertSame('{"one": "two"}', $row['value']);
+        $this->assertSame('{"one":"two"}', $row['value']);
     }
 }
