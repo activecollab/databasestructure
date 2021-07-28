@@ -190,7 +190,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '            ' .  var_export($this->getConnectionTableName(), true) . ',';
         $result[] = '            [' . var_export($this->getFkFieldNameFrom($source_type), true) . ', ' . var_export($this->getFkFieldNameFrom($target_type), true) . '],';
         $result[] = '            50,';
-        $result[] = '            \\ ' . ConnectionInterface::class . '::REPLACE';
+        $result[] = '            \\' . ConnectionInterface::class . '::REPLACE';
         $result[] = '        );';
         $result[] = '';
         $result[] = '        foreach ($objects_to_add as $object_to_add) {';

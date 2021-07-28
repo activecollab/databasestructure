@@ -245,7 +245,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testChapterClassFields()
     {
-        $this->assertEquals(['id', 'book_id', 'title', 'position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'book_id', 'title', 'raw_additional_properties','position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setId'));
