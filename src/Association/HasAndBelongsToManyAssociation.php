@@ -170,7 +170,10 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
             $objects_to_add_param_doscs .= '|' . $target_instance_class . '[]';
         }
 
-        $longest_docs_param_type_name = max(strlen($objects_to_add_param_doscs), '$this');
+        $longest_docs_param_type_name = max(
+            strlen($objects_to_add_param_doscs),
+            strlen('$this')
+        );
 
         $result[] = '';
         $result[] = '    /**';
@@ -224,7 +227,10 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
             $objects_to_remove_param_doscs .= '|' . $target_instance_class . '[]';
         }
 
-        $longest_docs_param_type_name = max(strlen($objects_to_remove_param_doscs), '$this');
+        $longest_docs_param_type_name = max(
+            strlen($objects_to_remove_param_doscs),
+            strlen('$this')
+        );
 
         $result[] = '';
         $result[] = '    /**';
