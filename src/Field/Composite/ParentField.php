@@ -90,7 +90,7 @@ class ParentField extends CompositeField implements AddIndexInterface, RequiredI
     public function getFields(): array
     {
         $type_field = (new ScalarStringField($this->type_field_name));
-        $id_field = (new IntegerField($this->name, 0))->size($this->getSize())->unsigned();
+        $id_field = (new IntegerField($this->name))->size($this->getSize())->unsigned();
 
         if ($this->isRequired()) {
             $type_field->defaultValue('')->required();
