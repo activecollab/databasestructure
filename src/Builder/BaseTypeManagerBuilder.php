@@ -67,10 +67,8 @@ class BaseTypeManagerBuilder extends FileSystemBuilder
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this manager works with.';
-        $result[] = '     *';
-        $result[] = '     * @return string';
         $result[] = '     */';
-        $result[] = '    public function getType()';
+        $result[] = '    public function getType(): string';
         $result[] = '    {';
         $result[] = '        return ' . var_export($type_class_name, true) . ';';
         $result[] = '    }';
