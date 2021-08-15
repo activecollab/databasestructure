@@ -38,7 +38,7 @@ class JsonSerializationTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -70,7 +70,7 @@ class JsonSerializationTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('key_values')) {
             $this->connection->dropTable('key_values');
@@ -103,7 +103,7 @@ class JsonSerializationTest extends TestCase
 
         $row = $this->connection->executeFirstRow('SELECT * FROM `key_values` WHERE `id` = ?', $key_value->getId());
 
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertEquals('xyz', $row['name']);
         $this->assertNull($row['value']);
     }
@@ -123,7 +123,7 @@ class JsonSerializationTest extends TestCase
 
         $row = $this->connection->executeFirstRow('SELECT * FROM `key_values` WHERE `id` = ?', $key_value->getId());
 
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertEquals('xyz', $row['name']);
         $this->assertSame('123', $row['value']);
     }
@@ -143,9 +143,9 @@ class JsonSerializationTest extends TestCase
 
         $row = $this->connection->executeFirstRow('SELECT * FROM `key_values` WHERE `id` = ?', $key_value->getId());
 
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertEquals('xyz', $row['name']);
-        $this->assertSame('[1,2,3]', $row['value']);
+        $this->assertSame('[1, 2, 3]', $row['value']);
     }
 
     /**
@@ -163,8 +163,8 @@ class JsonSerializationTest extends TestCase
 
         $row = $this->connection->executeFirstRow('SELECT * FROM `key_values` WHERE `id` = ?', $key_value->getId());
 
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertEquals('xyz', $row['name']);
-        $this->assertSame('{"one":"two"}', $row['value']);
+        $this->assertSame('{"one": "two"}', $row['value']);
     }
 }

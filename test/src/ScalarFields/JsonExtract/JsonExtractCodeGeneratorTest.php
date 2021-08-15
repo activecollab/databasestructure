@@ -39,7 +39,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
      */
     private $stats_snapshot_class_reflection;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -53,7 +53,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
         $this->stats_snapshot_class_reflection = new ReflectionClass("{$this->namespace}\\StatsSnapshot\\StatsSnapshot");
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->connection->dropTable('stats_snapshots');
 
@@ -64,7 +64,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
     {
         $generated_fields = $this->stats_snapshot_base_class_reflection->getDefaultProperties()['generated_fields'];
 
-        $this->assertInternalType('array', $generated_fields);
+        $this->assertIsArray($generated_fields);
         $this->assertContains('number_of_active_users', $generated_fields);
     }
 
@@ -95,11 +95,11 @@ class JsonExtractCodeGeneratorTest extends TestCase
 
         $create_table_statement = $type_table_build->prepareCreateTableStatement($stats_snapshots_type);
 
-        $this->assertContains("`plan_name` VARCHAR(191) AS (IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.plan_name')) IS NULL, NULL, JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.plan_name')))) STORED", $create_table_statement);
-        $this->assertContains("`number_of_active_users` INT AS (IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.users.num_active')) IS NULL, NULL, CAST(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.users.num_active')) AS SIGNED INTEGER))) STORED", $create_table_statement);
-        $this->assertContains("`is_used_on_day` TINYINT(1) UNSIGNED AS (IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) IS NULL, NULL, IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) = 'true' OR (JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) REGEXP '^-?[0-9]+$' AND CAST(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) AS SIGNED) != 0), 1, 0))) VIRTUAL", $create_table_statement);
-        $this->assertContains('INDEX `plan_name` (`plan_name`)', $create_table_statement);
-        $this->assertNotContains('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
-        $this->assertNotContains('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
+        $this->assertStringContainsString("`plan_name` VARCHAR(191) AS (IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.plan_name')) IS NULL, NULL, JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.plan_name')))) STORED", $create_table_statement);
+        $this->assertStringContainsString("`number_of_active_users` INT AS (IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.users.num_active')) IS NULL, NULL, CAST(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.users.num_active')) AS SIGNED INTEGER))) STORED", $create_table_statement);
+        $this->assertStringContainsString("`is_used_on_day` TINYINT(1) UNSIGNED AS (IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) IS NULL, NULL, IF(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) = 'true' OR (JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) REGEXP '^-?[0-9]+$' AND CAST(JSON_UNQUOTE(JSON_EXTRACT(`stats`, '$.is_used_on_day')) AS SIGNED) != 0), 1, 0))) VIRTUAL", $create_table_statement);
+        $this->assertStringContainsString('INDEX `plan_name` (`plan_name`)', $create_table_statement);
+        $this->assertStringNotContainsString('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
+        $this->assertStringNotContainsString('INDEX `number_of_active_users` (`number_of_active_users`)', $create_table_statement);
     }
 }

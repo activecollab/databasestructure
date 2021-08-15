@@ -35,7 +35,7 @@ class TriggersTest extends TestCase
      */
     private $triggers_structure;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -68,7 +68,7 @@ class TriggersTest extends TestCase
         $this->assertTrue($this->pool->isTypeRegistered($this->type_class_name));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
             foreach ($triggers as $trigger) {

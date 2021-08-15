@@ -41,7 +41,7 @@ class PolymorphTypeTest extends TestCase
 
         $fields = $writers->getAllFields();
 
-        $this->assertInternalType('array', $fields);
+        $this->assertIsArray($fields);
 
         $type_field_found = false;
         $type_field_is_required = false;
@@ -70,7 +70,7 @@ class PolymorphTypeTest extends TestCase
 
         $indexes = $writers->getAllIndexes();
 
-        $this->assertInternalType('array', $indexes);
+        $this->assertIsArray($indexes);
 
         $type_index_found = false;
 

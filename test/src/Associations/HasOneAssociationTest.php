@@ -16,6 +16,8 @@ use ActiveCollab\DatabaseStructure\Field\Composite\ForeignKeyField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\TestInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
+use InvalidArgumentException;
+use stdClass;
 
 class HasOneAssociationTest extends TestCase
 {
@@ -53,18 +55,18 @@ class HasOneAssociationTest extends TestCase
 
     /**
      * @dataProvider invalidInterfacesProvider
-     * @expectedException \InvalidArgumentException
-     * @param string $invalid_interface
      */
     public function testAcceptsRequiresInterface(string $invalid_interface)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new HasOneAssociation('book'))->accepts($invalid_interface);
     }
 
-    public function invalidInterfacesProvider()
+    public function invalidInterfacesProvider(): array
     {
         return [
-            [\stdClass::class],
+            [stdClass::class],
             ['not an interface'],
         ];
     }

@@ -54,6 +54,7 @@ interface TypeInterface
     public function getBaseCollectionInterfaceName(): string;
 
     public function getPolymorph(): bool;
+    public function isClassAbstract(): bool;
 
     /**
      * Set this model to be polymorph (type field is added and used to store instance's class name).

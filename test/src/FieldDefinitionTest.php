@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+use LogicException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -31,12 +32,11 @@ class FieldDefinitionTest extends TestCase
         $this->assertFalse((new StringField('is_important'))->setShouldBeAddedToModel(false)->getShouldBeAddedToModel());
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Default value can't NULL empty for required fields.
-     */
     public function testDefaultValueCantBeNullForRequiredFields()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("Default value can't NULL empty for required fields.");
+
         (new StringField('should_not_be_null', null))->required();
     }
 }

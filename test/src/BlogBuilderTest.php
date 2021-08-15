@@ -38,7 +38,7 @@ class BlogBuilderTest extends TestCase
         $this->build_path = __DIR__ . '/Fixtures/Blog';
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -52,7 +52,7 @@ class BlogBuilderTest extends TestCase
         $this->blog_structure->build($this->build_path, $this->connection);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->filesystem->emptyDir('/', ['BlogStructure.php']);
 
@@ -196,7 +196,7 @@ class BlogBuilderTest extends TestCase
     {
         $indexes = $this->getTableIndexes('categories');
 
-        $this->assertInternalType('array', $indexes);
+        $this->assertIsArray($indexes);
         $this->assertCount(2, $indexes);
 
         $this->assertContains('PRIMARY', $indexes);
@@ -210,7 +210,7 @@ class BlogBuilderTest extends TestCase
     {
         $indexes = $this->getTableIndexes('posts');
 
-        $this->assertInternalType('array', $indexes);
+        $this->assertIsArray($indexes);
         $this->assertCount(2, $indexes);
 
         $this->assertContains('PRIMARY', $indexes);
@@ -224,7 +224,7 @@ class BlogBuilderTest extends TestCase
     {
         $indexes = $this->getTableIndexes('comments');
 
-        $this->assertInternalType('array', $indexes);
+        $this->assertIsArray($indexes);
         $this->assertCount(3, $indexes);
 
         $this->assertContains('PRIMARY', $indexes);
@@ -239,7 +239,7 @@ class BlogBuilderTest extends TestCase
     {
         $indexes = $this->getTableIndexes('categories_posts');
 
-        $this->assertInternalType('array', $indexes);
+        $this->assertIsArray($indexes);
 
         $this->assertCount(2, $indexes);
 
@@ -254,7 +254,7 @@ class BlogBuilderTest extends TestCase
     {
         $categories_constraints = $this->getConstraintsPointingAtTable('categories');
 
-        $this->assertInternalType('array', $categories_constraints);
+        $this->assertIsArray($categories_constraints);
         $this->assertCount(1, $categories_constraints);
 
         $constraint_name = 'has_and_belongs_to_many_' . md5('category_id_for_categories_posts_constraint');
@@ -276,7 +276,7 @@ class BlogBuilderTest extends TestCase
     {
         $comments_constraints = $this->getConstraintsPointingAtTable('categories_posts');
 
-        $this->assertInternalType('array', $comments_constraints);
+        $this->assertIsArray($comments_constraints);
         $this->assertCount(0, $comments_constraints);
     }
 
@@ -287,7 +287,7 @@ class BlogBuilderTest extends TestCase
     {
         $posts_constraints = $this->getConstraintsPointingAtTable('posts');
 
-        $this->assertInternalType('array', $posts_constraints);
+        $this->assertIsArray($posts_constraints);
         $this->assertCount(2, $posts_constraints);
 
         $constraint_name = 'has_and_belongs_to_many_' . md5('post_id_for_categories_posts_constraint');
@@ -320,7 +320,7 @@ class BlogBuilderTest extends TestCase
     {
         $comments_constraints = $this->getConstraintsPointingAtTable('comments');
 
-        $this->assertInternalType('array', $comments_constraints);
+        $this->assertIsArray($comments_constraints);
         $this->assertCount(0, $comments_constraints);
     }
 

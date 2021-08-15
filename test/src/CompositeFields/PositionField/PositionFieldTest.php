@@ -86,7 +86,7 @@ class PositionFieldTest extends TestCase
     {
         $context = (new PositionField())->getContext();
 
-        $this->assertInternalType('array', $context);
+        $this->assertIsArray($context);
         $this->assertEmpty($context);
     }
 
@@ -97,7 +97,7 @@ class PositionFieldTest extends TestCase
     {
         $context = (new PositionField())->context('field_1', 'field_2')->getContext();
 
-        $this->assertInternalType('array', $context);
+        $this->assertIsArray($context);
         $this->assertCount(2, $context);
         $this->assertContains('field_1', $context);
         $this->assertContains('field_2', $context);
@@ -110,7 +110,7 @@ class PositionFieldTest extends TestCase
     {
         $context = (new PositionField())->context()->getContext();
 
-        $this->assertInternalType('array', $context);
+        $this->assertIsArray($context);
         $this->assertEmpty($context);
     }
 }

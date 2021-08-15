@@ -32,7 +32,7 @@ class JsonFieldTest extends TestCase
      */
     public function testCastingUsesJsonDecode()
     {
-        $this->assertContains('json_encode', (new JsonField('test_field'))->getCastingCode('value'));
+        $this->assertStringContainsString('json_encode', (new JsonField('test_field'))->getCastingCode('value'));
     }
 
     public function testGetValueExtractors()
@@ -55,7 +55,7 @@ class JsonFieldTest extends TestCase
 
         $generated_fields = $field->getGeneratedFields();
 
-        $this->assertInternalType('array', $generated_fields);
+        $this->assertIsArray($generated_fields);
         $this->assertCount(3, $generated_fields);
         $this->assertArrayHasKey('plan_name', $generated_fields);
         $this->assertContains(ValueCasterInterface::CAST_STRING, $generated_fields);

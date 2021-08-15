@@ -88,7 +88,7 @@ abstract class StructuredTestCase extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -122,7 +122,7 @@ abstract class StructuredTestCase extends TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->filesystem->emptyDir('/', [$this->getStructureClassFileName()]);
 

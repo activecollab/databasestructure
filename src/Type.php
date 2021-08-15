@@ -33,14 +33,11 @@ use ReflectionClass;
 
 class Type implements TypeInterface
 {
-    private $name;
+    private string $name;
     private $base_class_extends;
     private $base_interface_extends;
 
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
@@ -87,7 +84,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    private $polymorph = false;
+    private bool $polymorph = false;
 
     public function getPolymorph(): bool
     {
@@ -109,6 +106,11 @@ class Type implements TypeInterface
         }
 
         return $this;
+    }
+
+    public function isClassAbstract(): bool
+    {
+        return $this->getPolymorph();
     }
 
     /**
@@ -336,7 +338,7 @@ class Type implements TypeInterface
     /**
      * @var string
      */
-    private $expected_dataset_size = FieldInterface::SIZE_NORMAL;
+    private string $expected_dataset_size = FieldInterface::SIZE_NORMAL;
 
     /**
      * Get expected dataset size.
@@ -377,10 +379,7 @@ class Type implements TypeInterface
         return $this->fields;
     }
 
-    /**
-     * @var IntegerField
-     */
-    private $id_field;
+    private ?IntegerField $id_field = null;
 
     /**
      * Return ID field for this type.
@@ -390,16 +389,15 @@ class Type implements TypeInterface
     public function getIdField()
     {
         if (empty($this->id_field)) {
-            $this->id_field = (new IntegerField('id', 0))->unsigned(true)->size($this->getExpectedDatasetSize());
+            $this->id_field = (new IntegerField('id', 0))
+                ->unsigned(true)
+                ->size($this->getExpectedDatasetSize());
         }
 
         return $this->id_field;
     }
 
-    /**
-     * @var StringField
-     */
-    private $type_field;
+    private ?StringField $type_field = null;
 
     /**
      * @return StringField
@@ -412,9 +410,9 @@ class Type implements TypeInterface
             }
 
             return $this->type_field;
-        } else {
-            throw new BadMethodCallException(__METHOD__ . ' is available only for polymorph types');
         }
+
+        throw new BadMethodCallException(__METHOD__ . ' is available only for polymorph types');
     }
 
     /**

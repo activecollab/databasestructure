@@ -36,7 +36,7 @@ class IndexTest extends TestCase
 
     public function testNullOrArrayAllowedForFields()
     {
-        $this->doesNotPerformAssertions();
+        $this->expectNotToPerformAssertions();
 
         new Index('is_awesome', null);
         new Index('is_awesome', []);
@@ -61,11 +61,10 @@ class IndexTest extends TestCase
         $this->assertEquals(IndexInterface::PRIMARY, $index->getIndexType());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidIndexTypeThrowsAnException()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new Index('is_awesome', null, 'invalid index type');
     }
 }

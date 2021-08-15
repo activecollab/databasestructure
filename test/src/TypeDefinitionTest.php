@@ -14,6 +14,7 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\EntityClassDescendent;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\EntityInterfaceDescendent;
 use ActiveCollab\DatabaseStructure\Type;
 use DateTime;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -37,11 +38,10 @@ class TypeDefinitionTest extends TestCase
         $this->assertEquals(EntityClassDescendent::class, $type->getBaseClassExtends());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testBaseClassCantExtendNonEntityClassDescendent()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new Type('writers'))->setBaseClassExtends(DateTime::class);
     }
 
@@ -54,11 +54,10 @@ class TypeDefinitionTest extends TestCase
         $this->assertEquals(EntityInterfaceDescendent::class, $type->getBaseInterfaceExtends());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testBaseInterfaceCantExtendNonEntityInterfaceDescendent()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new Type('writers'))->setBaseInterfaceExtends(DateTime::class);
     }
 
@@ -116,19 +115,17 @@ class TypeDefinitionTest extends TestCase
         $this->assertEquals(['id'], (new Type('writers'))->getOrderBy());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOrderByNeedsToBeAnArray()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new Type('writers'))->orderBy(false);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOrderByCantBeEmpty()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new Type('writers'))->orderBy([]);
     }
 

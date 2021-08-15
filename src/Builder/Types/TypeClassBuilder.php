@@ -43,7 +43,13 @@ class TypeClassBuilder extends TypeBuilder
             $result[] = '';
         }
 
-        $result[] = 'class ' . $class_name . ' extends ' . $base_class_name;
+        $result[] = sprintf(
+            '%sclass %s extends %s',
+            $type->isClassAbstract() ? 'abstract ' : '',
+            $class_name,
+            $base_class_name
+        );
+
         $result[] = '{';
         $result[] = '}';
         $result[] = '';

@@ -39,7 +39,7 @@ class PositionTailTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -71,7 +71,7 @@ class PositionTailTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('position_tail_entries')) {
             $this->connection->dropTable('position_tail_entries');

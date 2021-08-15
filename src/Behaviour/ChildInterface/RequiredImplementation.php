@@ -13,6 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\ChildInterface;
 use ActiveCollab\DatabaseObject\Entity\EntityInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ChildInterface;
 use LogicException;
+use RuntimeException;
 
 /**
  * @property \ActiveCollab\DatabaseObject\PoolInterface $pool
@@ -23,9 +24,9 @@ trait RequiredImplementation
     {
         if ($id = $this->getParentId()) {
             return $this->pool->getById($this->getParentType(), $id, $use_cache);
-        } else {
-            return null;
         }
+
+        throw new RuntimeException('Parent not found.');
     }
 
     /**
@@ -45,10 +46,7 @@ trait RequiredImplementation
     }
 
     abstract public function getParentType(): string;
-
     abstract public function &setParentType(string $value);
-
     abstract public function getParentId(): int;
-
     abstract public function &setParentId(int $value);
 }
