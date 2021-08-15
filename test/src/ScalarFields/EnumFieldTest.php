@@ -23,7 +23,7 @@ class EnumFieldTest extends TestCase
     {
         $default_possibilities = (new EnumField('one_of_many'))->getPossibilities();
 
-        $this->assertInternalType('array', $default_possibilities);
+        $this->assertIsArray($default_possibilities);
         $this->assertCount(0, $default_possibilities);
     }
 
@@ -34,7 +34,7 @@ class EnumFieldTest extends TestCase
     {
         $possibilities = (new EnumField('one_of_many'))->possibilities('one', 'two', 'three')->getPossibilities();
 
-        $this->assertInternalType('array', $possibilities);
+        $this->assertIsArray($possibilities);
         $this->assertCount(3, $possibilities);
         $this->assertEquals(['one', 'two', 'three'], $possibilities);
     }

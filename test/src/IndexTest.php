@@ -40,6 +40,8 @@ class IndexTest extends TestCase
      */
     public function testNullOrArrayAllowedForFields()
     {
+        $this->expectNotToPerformAssertions();
+
         new Index('is_awesome', null);
         new Index('is_awesome', []);
         new Index('is_awesome', ['name']);

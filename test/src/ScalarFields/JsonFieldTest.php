@@ -55,7 +55,7 @@ class JsonFieldTest extends TestCase
 
         $generated_fields = $field->getGeneratedFields();
 
-        $this->assertInternalType('array', $generated_fields);
+        $this->assertIsArray($generated_fields);
         $this->assertCount(3, $generated_fields);
         $this->assertArrayHasKey('plan_name', $generated_fields);
         $this->assertContains(ValueCasterInterface::CAST_STRING, $generated_fields);

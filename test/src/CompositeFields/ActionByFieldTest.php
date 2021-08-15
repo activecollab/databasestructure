@@ -88,7 +88,7 @@ class ActionByFieldTest extends TestCase
 
         $fields = $created_by_id->getFields();
 
-        $this->assertInternalType('array', $fields);
+        $this->assertIsArray($fields);
         $this->assertCount(3, $fields);
 
         $this->assertInstanceOf(IntegerField::class, $fields[0]);

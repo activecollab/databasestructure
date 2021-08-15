@@ -76,7 +76,7 @@ class ParentFieldTest extends TestCase
 
         $fields = $parent_id->getFields();
 
-        $this->assertInternalType('array', $fields);
+        $this->assertIsArray($fields);
         $this->assertCount(2, $fields);
 
         $this->assertInstanceOf(StringField::class, $fields[0]);
