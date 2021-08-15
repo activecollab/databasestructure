@@ -15,33 +15,28 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test\CompositeFields
  */
 class ActionByFieldTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNameMustNotBeEmpty()
     {
+        $this->expectException(InvalidArgumentException::class);
         new ActionByField('', 'User', 'IdentifiedVisitor');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNameMustEndWithById()
     {
+        $this->expectException(InvalidArgumentException::class);
         new ActionByField('wooops', 'User', 'IdentifiedVisitor');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testUserClassMustNotBeEmpty()
     {
+        $this->expectException(InvalidArgumentException::class);
         new ActionByField('wooops', '', 'IdentifiedVisitor');
     }
 
@@ -54,11 +49,9 @@ class ActionByFieldTest extends TestCase
         $this->assertEquals('\User', (new ActionByField('created_by_id', '\User', 'IdentifiedVisitor'))->getUserClassName());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testIdentifiedVisitorClassMustNotBeEmpty()
     {
+        $this->expectException(InvalidArgumentException::class);
         new ActionByField('wooops', 'User', '');
     }
 

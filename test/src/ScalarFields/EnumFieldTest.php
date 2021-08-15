@@ -10,6 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -39,11 +40,9 @@ class EnumFieldTest extends TestCase
         $this->assertEquals(['one', 'two', 'three'], $possibilities);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testDefaultValueNeedsToBeInPossibilities()
     {
+        $this->expectException(InvalidArgumentException::class);
         $one_of_many = new EnumField('one_of_many', 'default_one');
         $one_of_many->possibilities('one', 'two', 'three');
     }

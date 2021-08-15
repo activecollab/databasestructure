@@ -10,17 +10,16 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
  */
 class IndexTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testIndexNameIsRequired()
     {
+        $this->expectException(InvalidArgumentException::class);
         new Index('');
     }
 
@@ -65,11 +64,9 @@ class IndexTest extends TestCase
         $this->assertEquals(IndexInterface::PRIMARY, $index->getIndexType());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInvalidIndexTypeThrowsAnException()
     {
+        $this->expectException(InvalidArgumentException::class);
         new Index('is_awesome', null, 'invalid index type');
     }
 }

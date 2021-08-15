@@ -13,6 +13,7 @@ use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ObjectClassDescendent;
 use ActiveCollab\DatabaseStructure\Type;
 use DateTime;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -36,11 +37,9 @@ class TypeDefinitionTest extends TestCase
         $this->assertEquals(ObjectClassDescendent::class, $type->getBaseClassExtends());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testBaseClassCantExtendNonObjectClassDescendent()
     {
+        $this->expectException(InvalidArgumentException::class);
         (new Type('writers'))->setBaseClassExtends(DateTime::class);
     }
 
@@ -98,19 +97,15 @@ class TypeDefinitionTest extends TestCase
         $this->assertEquals(['id'], (new Type('writers'))->getOrderBy());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOrderByNeedsToBeAnArray()
     {
+        $this->expectException(InvalidArgumentException::class);
         (new Type('writers'))->orderBy(false);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOrderByCantBeEmpty()
     {
+        $this->expectException(InvalidArgumentException::class);
         (new Type('writers'))->orderBy([]);
     }
 

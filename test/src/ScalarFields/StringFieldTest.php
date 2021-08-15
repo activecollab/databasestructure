@@ -12,17 +12,16 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
  */
 class StringFieldTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionWhenModifierFunctionDoesNotExist()
     {
+        $this->expectException(InvalidArgumentException::class);
         (new StringField('name'))->modifier('this function does not exist');
     }
 
@@ -51,19 +50,15 @@ class StringFieldTest extends TestCase
         $this->assertEquals(15, (new StringField('some_string'))->length(15)->getLength());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnLengthToSmall()
     {
+        $this->expectException(InvalidArgumentException::class);
         (new StringField('some_string'))->length(-1);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnLengthToLarge()
     {
+        $this->expectException(InvalidArgumentException::class);
         (new StringField('some_string'))->length(255);
     }
 

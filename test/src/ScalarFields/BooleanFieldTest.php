@@ -10,17 +10,16 @@ namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use LogicException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
  */
 class BooleanFieldTest extends TestCase
 {
-    /**
-     * @expectedException \LogicException
-     */
     public function testExceptionWhenBooleanFieldIsUnique()
     {
+        $this->expectException(LogicException::class);
         (new BooleanField('should_not_be_required'))->unique();
     }
 
