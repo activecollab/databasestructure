@@ -17,6 +17,7 @@ use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Timestamps\TimestampsStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DateValue\DateTimeValue;
+use Psr\Log\LoggerInterface;
 
 class TimestampesTest extends TestCase
 {
@@ -38,11 +39,11 @@ class TimestampesTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->createMock(LoggerInterface::class));
         $this->structure = new TimestampsStructure();
 
         if (!class_exists($this->type_class_name, false)) {

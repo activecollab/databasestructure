@@ -18,6 +18,7 @@ use ActiveCollab\FileSystem\Adapter\LocalAdapter;
 use ActiveCollab\FileSystem\FileSystem;
 use ActiveCollab\FileSystem\FileSystemInterface;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 
 abstract class StructuredTestCase extends TestCase
@@ -79,7 +80,7 @@ abstract class StructuredTestCase extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -92,7 +93,7 @@ abstract class StructuredTestCase extends TestCase
         $this->assertEquals([$structure_class_file_name], $this->filesystem->files('/'));
         $this->assertEquals([], $this->filesystem->subdirs('/'));
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->createMock(LoggerInterface::class));
 
         $this->structure = new $structure_class_name();
         $this->structure->build($this->build_path, $this->connection);
@@ -110,7 +111,7 @@ abstract class StructuredTestCase extends TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->filesystem->emptyDir('/', [$this->getStructureClassFileName()]);
 

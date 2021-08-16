@@ -34,7 +34,7 @@ final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredT
         return dirname(dirname(__DIR__)) . '/Fixtures/Association/WriterHasManyBooksRequired';
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

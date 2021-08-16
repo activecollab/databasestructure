@@ -43,7 +43,7 @@ class BlogBuilderTest extends TestCase
         $this->build_path = __DIR__ . '/Fixtures/Blog';
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -57,7 +57,7 @@ class BlogBuilderTest extends TestCase
         $this->blog_structure->build($this->build_path, $this->connection);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->filesystem->emptyDir('/', ['BlogStructure.php']);
 

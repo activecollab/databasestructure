@@ -14,6 +14,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionHead\PositionHeadStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * Purpose of this test is to see if files and tables are properly build from BlogStructure.
@@ -40,11 +41,11 @@ class PositionHeadTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->createMock(LoggerInterface::class));
         $this->position_head_structure = new PositionHeadStructure();
 
         if (!class_exists($this->type_class_name, false)) {
@@ -69,7 +70,7 @@ class PositionHeadTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('position_head_entries')) {
             $this->connection->dropTable('position_head_entries');

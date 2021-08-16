@@ -222,7 +222,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '                }';
         $result[] = '            });';
         $result[] = '';
-        $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', $object_ids);';
+        $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', ...$object_ids);';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';

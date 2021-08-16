@@ -15,6 +15,7 @@ use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\JsonSerialization\RequiredJsonSerializationStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  *  @package ActiveCollab\DatabaseStructure\Test\ScalarFields
@@ -39,11 +40,11 @@ class RequiredJsonSerializationTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->createMock(LoggerInterface::class));
         $this->required_json_serialization_structure = new RequiredJsonSerializationStructure();
 
         if (!class_exists($this->type_class_name, false)) {
@@ -68,7 +69,7 @@ class RequiredJsonSerializationTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('required_key_values')) {
             $this->connection->dropTable('required_key_values');
