@@ -24,8 +24,6 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 /**
  * Blog structure is used for testing how builers are doing their job.
- *
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Blog
  */
 class BlogStructure extends Structure
 {

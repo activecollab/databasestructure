@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\MultiRecordInterface;
 use ActiveCollab\DatabaseStructure\RecordInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
     use StructureSql;

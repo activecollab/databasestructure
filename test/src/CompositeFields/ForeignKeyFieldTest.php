@@ -15,9 +15,6 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class ForeignKeyFieldTest extends TestCase
 {
     /**

@@ -36,9 +36,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 abstract class Structure implements StructureInterface
 {
     /**

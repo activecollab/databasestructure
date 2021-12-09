@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class EnumFieldTest extends TestCase
 {
     /**

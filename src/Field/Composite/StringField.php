@@ -25,9 +25,6 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 abstract class StringField extends CompositeField implements DefaultValueInterface, RequiredInterface, UniqueInterface, LengthInterface, ModifierInterface, AddIndexInterface
 {
     use DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;

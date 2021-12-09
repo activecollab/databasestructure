@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class AdditionalPropertiesField extends CompositeField
 {
     /**

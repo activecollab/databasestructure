@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\AddPermissions;
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\AddPermissions
- */
 class AddPermissionsStructure extends Structure
 {
     /**

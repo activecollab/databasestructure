@@ -13,9 +13,6 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 use ReflectionClass;
 use ReflectionMethod;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class CodeBuilderTest extends TestCase
 {
     /**

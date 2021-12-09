@@ -17,9 +17,6 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class AddressField extends CompositeField implements RequiredInterface
 {
     use RequiredInterfaceImplementation;

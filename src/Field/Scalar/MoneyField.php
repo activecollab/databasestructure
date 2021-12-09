@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 class MoneyField extends DecimalField
 {
     /**

@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\JsonField
- */
 interface ValueExtractorInterface
 {
     /**

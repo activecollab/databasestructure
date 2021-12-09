@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
     use StructureSql;

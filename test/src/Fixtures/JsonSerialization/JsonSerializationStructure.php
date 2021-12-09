@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\JsonSerialization
- */
 class JsonSerializationStructure extends Structure
 {
     /**

@@ -6,18 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use Doctrine\Common\Inflector\Inflector;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TypesBuilder extends FileSystemBuilder
 {
-    /**
-     * Execute after types are built.
-     */
     public function postBuild()
     {
         $types_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/types.php" : null;
@@ -37,12 +33,6 @@ class TypesBuilder extends FileSystemBuilder
 
             if ($namespace) {
                 $namespace = ltrim($namespace, '\\');
-            }
-
-            if ($this->getStructure()->getNamespace()) {
-                $result[] = '/**';
-                $result[] = ' * @package ' . $this->getStructure()->getNamespace();
-                $result[] = ' */';
             }
 
             $result[] = 'return [';

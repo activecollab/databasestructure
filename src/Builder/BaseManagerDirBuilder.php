@@ -8,14 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class BaseManagerDirBuilder extends DirBuilder
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getDirToBuildPath($build_path)
     {
         return "$build_path/Manager/Base";

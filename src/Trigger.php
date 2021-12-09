@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure;
 
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 abstract class Trigger implements TriggerInterface
 {
     /**

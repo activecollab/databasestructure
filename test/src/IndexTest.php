@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class IndexTest extends TestCase
 {
     public function testIndexNameIsRequired()

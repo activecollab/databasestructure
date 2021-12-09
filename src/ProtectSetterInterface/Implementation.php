@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\ProtectSetterInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\ProtectSetterInterface
- */
 trait Implementation
 {
     /**

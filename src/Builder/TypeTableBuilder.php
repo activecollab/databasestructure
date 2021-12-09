@@ -33,9 +33,6 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
     use StructureSql;

@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class DecimalFieldTest extends TestCase
 {
     public function testNativeType()

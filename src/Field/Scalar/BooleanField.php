@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use LogicException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 class BooleanField extends ScalarFieldWithDefaultValue
 {
     /**

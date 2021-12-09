@@ -18,9 +18,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Writers
- */
 class WritersStructure extends Structure
 {
     /**

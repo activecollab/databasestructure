@@ -13,9 +13,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectSetter\ProtectSetter;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class ProtectSetterTest extends TestCase
 {
     /**

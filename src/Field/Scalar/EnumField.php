@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 class EnumField extends ScalarFieldWithDefaultValue
 {
     /**

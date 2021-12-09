@@ -13,9 +13,6 @@ use ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface\Implementation 
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class IsArchivedField extends CompositeField
 {
     /**

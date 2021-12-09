@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class StringFieldTest extends TestCase
 {
     public function testExceptionWhenModifierFunctionDoesNotExist()

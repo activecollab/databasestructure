@@ -12,9 +12,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TypeClassBuilder extends FileSystemBuilder
 {
     /**

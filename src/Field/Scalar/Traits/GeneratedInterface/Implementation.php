@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
- */
 trait Implementation
 {
     /**

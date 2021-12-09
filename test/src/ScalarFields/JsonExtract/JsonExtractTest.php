@@ -20,9 +20,6 @@ use ActiveCollab\DateValue\DateValueInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\ScalarFields
- */
 class JsonExtractTest extends TestCase
 {
     /**

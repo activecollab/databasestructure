@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class UrlField extends StringField
 {
     /**

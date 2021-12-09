@@ -12,9 +12,6 @@ namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class StructureDefinitionTest extends TestCase
 {
     /**

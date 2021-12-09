@@ -16,9 +16,6 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail\PositionTailStruct
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use Psr\Log\LoggerInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class PositionTailTest extends TestCase
 {
     /**

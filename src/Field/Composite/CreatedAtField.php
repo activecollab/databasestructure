@@ -16,9 +16,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Impleme
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class CreatedAtField extends CompositeField implements AddIndexInterface
 {
     use AddIndexInterfaceImplementation;

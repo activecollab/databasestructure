@@ -15,9 +15,6 @@ use ActiveCollab\DatabaseStructure\Type;
 use DateTime;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class TypeDefinitionTest extends TestCase
 {
     /**

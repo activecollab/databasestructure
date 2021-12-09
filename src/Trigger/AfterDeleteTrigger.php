@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Trigger;
 
 use ActiveCollab\DatabaseStructure\Trigger;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Trigger
- */
 class AfterDeleteTrigger extends Trigger
 {
     /**

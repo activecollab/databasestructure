@@ -13,7 +13,6 @@ use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 
 /**
- * @package ActiveCollab\DatabaseStructure\Behaviour\PositionInterface
  * @property ConnectionInterface $connection
  * @property PoolInterface $pool
  */

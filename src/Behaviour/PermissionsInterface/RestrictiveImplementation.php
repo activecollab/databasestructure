@@ -12,9 +12,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
 
 use ActiveCollab\User\UserInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface
- */
 trait RestrictiveImplementation
 {
     public function canCreate(UserInterface $user)

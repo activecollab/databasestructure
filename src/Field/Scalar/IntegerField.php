@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Impleme
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface\Implementation as SizeInterfaceImplementation;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 class IntegerField extends NumberField implements RequiredInterface, SizeInterface
 {
     use RequiredInterfaceImplementation, SizeInterfaceImplementation;

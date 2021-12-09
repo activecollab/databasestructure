@@ -15,9 +15,6 @@ use ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectedFields\ProtectedFields
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class ProtectedFieldsCodeBuilderTest extends TestCase
 {
     /**

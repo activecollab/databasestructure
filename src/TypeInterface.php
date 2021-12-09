@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 interface TypeInterface
 {
     /**

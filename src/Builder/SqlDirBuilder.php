@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class SqlDirBuilder extends DirBuilder
 {
     /**

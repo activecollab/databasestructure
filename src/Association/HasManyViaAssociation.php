@@ -17,9 +17,6 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 class HasManyViaAssociation extends HasManyAssociation implements AssociationInterface
 {
     /**

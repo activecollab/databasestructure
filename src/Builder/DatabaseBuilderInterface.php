@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 interface DatabaseBuilderInterface
 {
     /**

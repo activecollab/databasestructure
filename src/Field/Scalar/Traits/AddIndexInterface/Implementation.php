@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 
 use ActiveCollab\DatabaseStructure\IndexInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
- */
 trait Implementation
 {
     /**

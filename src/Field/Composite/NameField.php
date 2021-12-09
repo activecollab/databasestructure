@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class NameField extends StringField
 {
     /**

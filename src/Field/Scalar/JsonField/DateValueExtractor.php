@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\JsonField
- */
 class DateValueExtractor extends ValueExtractor
 {
     /**

@@ -19,9 +19,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractor;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\JsonSerialization
- */
 class JsonFieldStructure extends Structure
 {
     /**

@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail
- */
 class PositionContextStructure extends Structure
 {
     /**

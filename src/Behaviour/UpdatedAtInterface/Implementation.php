@@ -13,9 +13,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
 use ActiveCollab\DateValue\DateTimeValue;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface
- */
 trait Implementation
 {
     /**

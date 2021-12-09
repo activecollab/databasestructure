@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\CreatedByField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\CompositeFields
- */
 class CreatedByFieldTest extends TestCase
 {
     /**

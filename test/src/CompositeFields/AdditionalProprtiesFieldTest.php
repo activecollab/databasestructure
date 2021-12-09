@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\AdditionalPropertiesField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class AdditionalProprtiesFieldTest extends TestCase
 {
     /**

@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\IndexInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 interface InjectIndexesInsterface
 {
     /**

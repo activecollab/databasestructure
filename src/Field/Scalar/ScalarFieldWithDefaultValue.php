@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface\Implementation as DefaultValueInterfaceImplementation;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 abstract class ScalarFieldWithDefaultValue extends ScalarField implements ScalarFieldWithDefaultValueInterface
 {
     use DefaultValueInterfaceImplementation;

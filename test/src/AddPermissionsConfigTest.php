@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Test;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\AddPermissions\AddPermissionsStructure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class AddPermissionsConfigTest extends TestCase
 {
     /**

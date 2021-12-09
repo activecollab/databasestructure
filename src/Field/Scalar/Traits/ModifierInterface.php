@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
- */
 interface ModifierInterface extends FieldTraitInterface
 {
     /**

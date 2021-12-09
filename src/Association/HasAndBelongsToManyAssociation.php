@@ -17,9 +17,6 @@ use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 class HasAndBelongsToManyAssociation extends HasManyAssociation implements AssociationInterface
 {
     /**

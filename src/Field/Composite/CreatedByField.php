@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Behaviour\CreatedByRequiredInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\IdentifiedVisitor;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class CreatedByField extends ActionByField
 {
     /**

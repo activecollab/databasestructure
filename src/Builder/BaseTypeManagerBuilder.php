@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class BaseTypeManagerBuilder extends FileSystemBuilder
 {
     /**
@@ -45,11 +42,9 @@ class BaseTypeManagerBuilder extends FileSystemBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
-        $result[] = '/**';
-        $result[] = ' * @package ' . $base_class_namespace;
-        $result[] = ' */';
 
-        $interfaces = $traits = [];
+        $interfaces = [];
+        $traits = [];
 
         foreach ($type->getTraits() as $interface => $implementations) {
             if ($interface != '--just-paste-trait--') {

@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 interface GeneratedFieldsInterface
 {
     /**

@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TypeCollectionBuilder extends FileSystemBuilder
 {
     /**
@@ -49,9 +46,6 @@ class TypeCollectionBuilder extends FileSystemBuilder
         if ($this->getStructure()->getNamespace()) {
             $result[] = "namespace $collection_class_namespace;";
             $result[] = '';
-            $result[] = '/**';
-            $result[] = ' * @package ' . $collection_class_namespace;
-            $result[] = ' */';
         }
 
         $result[] = 'class ' . $collection_class_name . ' extends ' . $base_class_name;

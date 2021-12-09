@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use InvalidArgumentException;
 use RuntimeException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 abstract class DirBuilder extends FileSystemBuilder
 {
     /**

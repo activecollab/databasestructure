@@ -10,9 +10,6 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\CreatedByInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour\CreatedByInterface
- */
 trait Implementation
 {
     public function ActiveCollabDatabaseStructureBehaviourCreatedByInterfaceImplementation()

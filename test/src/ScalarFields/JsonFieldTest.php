@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\BoolValueExtractor;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\IntValueExtractor;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class JsonFieldTest extends TestCase
 {
     /**

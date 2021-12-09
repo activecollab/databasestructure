@@ -13,9 +13,6 @@ use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 abstract class Builder implements BuilderInterface
 {
     /**

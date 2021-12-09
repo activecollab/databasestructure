@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\TriggerInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
     use StructureSql;

@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use LogicException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
- */
 trait Implementation
 {
     /**

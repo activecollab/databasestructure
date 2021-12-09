@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\Entity\Entity;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\BaseClassExtends\BaseClassExtendsStructure;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\ExtendThisObject;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class BaseClassExtendsTest extends TestCase
 {
     /**

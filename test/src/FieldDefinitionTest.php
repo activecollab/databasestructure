@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Test;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use LogicException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class FieldDefinitionTest extends TestCase
 {
     /**

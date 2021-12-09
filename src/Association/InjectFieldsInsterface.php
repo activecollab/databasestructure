@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Association;
 
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Association
- */
 interface InjectFieldsInsterface
 {
     /**

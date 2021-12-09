@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 interface TriggerInterface
 {
     const BEFORE = 'before';

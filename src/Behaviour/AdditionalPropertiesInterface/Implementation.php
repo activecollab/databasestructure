@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface
 
 use ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour\AdditionalPropertiesInterface
- */
 trait Implementation
 {
     /**

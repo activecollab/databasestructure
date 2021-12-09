@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface;
 
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface
- */
 trait Implementation
 {
     /**

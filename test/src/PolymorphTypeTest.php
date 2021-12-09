@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Test;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class PolymorphTypeTest extends TestCase
 {
     /**

@@ -13,9 +13,6 @@ use ActiveCollab\DatabaseStructure\Association\HasManyAssociation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectSetter
- */
 class ProtectSetter extends Structure
 {
     /**

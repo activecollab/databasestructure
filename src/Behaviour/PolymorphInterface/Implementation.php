@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface
- */
 trait Implementation
 {
     /**

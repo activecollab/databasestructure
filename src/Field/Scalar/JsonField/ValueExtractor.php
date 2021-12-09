@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\JsonField
- */
 class ValueExtractor implements ValueExtractorInterface
 {
     /**

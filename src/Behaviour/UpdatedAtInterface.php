@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour;
 
 use ActiveCollab\DateValue\DateTimeValueInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour
- */
 interface UpdatedAtInterface
 {
     /**

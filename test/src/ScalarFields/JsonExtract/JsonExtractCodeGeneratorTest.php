@@ -15,9 +15,6 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\ScalarFields
- */
 class JsonExtractCodeGeneratorTest extends TestCase
 {
     /**

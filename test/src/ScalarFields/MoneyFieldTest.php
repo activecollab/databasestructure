@@ -12,10 +12,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\MoneyField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\NumberField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class MoneyFieldTest extends TestCase
 {
     /**
@@ -23,8 +21,8 @@ class MoneyFieldTest extends TestCase
      */
     public function testIntegerExtendsNumber()
     {
-        $this->assertTrue((new \ReflectionClass(MoneyField::class))->isSubclassOf(NumberField::class));
-        $this->assertTrue((new \ReflectionClass(MoneyField::class))->isSubclassOf(DecimalField::class));
+        $this->assertTrue((new ReflectionClass(MoneyField::class))->isSubclassOf(NumberField::class));
+        $this->assertTrue((new ReflectionClass(MoneyField::class))->isSubclassOf(DecimalField::class));
     }
 
     /**

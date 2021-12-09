@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\IsArchivedField;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class IsArchivedFieldTest extends TestCase
 {
     /**

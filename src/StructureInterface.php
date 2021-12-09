@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 interface StructureInterface
 {
     const ADD_PERMISSIVE_PERMISSIONS = 'permissive';

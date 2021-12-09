@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures;
 
 use ActiveCollab\DatabaseStructure\Entity\Entity;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures
- */
 class ObjectClassDescendent extends Entity
 {
     protected function getAssociatedEntitiesManagers(): array

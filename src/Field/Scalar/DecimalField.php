@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 class DecimalField extends NumberField
 {
     /**

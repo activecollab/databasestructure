@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class IntegerFieldTest extends TestCase
 {
     /**

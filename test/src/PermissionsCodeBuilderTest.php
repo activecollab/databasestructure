@@ -14,9 +14,6 @@ use ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface\RestrictiveImp
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions\PermissionsStructure;
 use ReflectionClass;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class PermissionsCodeBuilderTest extends TestCase
 {
     /**

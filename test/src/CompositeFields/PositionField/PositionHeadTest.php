@@ -18,8 +18,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Purpose of this test is to see if files and tables are properly build from BlogStructure.
- *
- * @package ActiveCollab\DatabaseStructure\Test
  */
 class PositionHeadTest extends TestCase
 {

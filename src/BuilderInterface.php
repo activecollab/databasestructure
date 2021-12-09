@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 interface BuilderInterface
 {
     /**

@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class EmailField extends StringField
 {
     /**

@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions;
 
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\Permissions
- */
 class PermissionsStructure extends Structure
 {
     /**

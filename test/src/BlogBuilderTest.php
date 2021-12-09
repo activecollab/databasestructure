@@ -16,8 +16,6 @@ use ActiveCollab\FileSystem\FileSystem;
 
 /**
  * Purpose of this test is to see if files and tables are properly build from BlogStructure.
- *
- * @package ActiveCollab\DatabaseStructure\Test
  */
 class BlogBuilderTest extends TestCase
 {

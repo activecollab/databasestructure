@@ -18,9 +18,6 @@ use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers\TriggersStructure;
 use Psr\Log\LoggerInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class TriggersTest extends TestCase
 {
     /**

@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInterface
 {
     /**

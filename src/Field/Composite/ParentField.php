@@ -24,9 +24,6 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class ParentField extends CompositeField implements AddIndexInterface, RequiredInterface, SizeInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation, SizeInterfaceImplementation;

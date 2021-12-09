@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar\Traits
- */
 trait Implementation
 {
     /**

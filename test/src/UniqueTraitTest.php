@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\Field\Composite\NameField;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test
- */
 class UniqueTraitTest extends TestCase
 {
     /**

@@ -8,9 +8,6 @@
 
 namespace ActiveCollab\DatabaseStructure\AssociationInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\AssociationInterface
- */
 trait Implementation
 {
     /**

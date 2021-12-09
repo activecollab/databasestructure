@@ -11,9 +11,6 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail;
 use ActiveCollab\DatabaseStructure\Field\Composite\PositionField;
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail
- */
 class PositionTailStructure extends Structure
 {
     /**

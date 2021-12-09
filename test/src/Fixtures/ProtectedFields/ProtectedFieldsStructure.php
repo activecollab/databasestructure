@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectedFields;
 
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectedFields
- */
 class ProtectedFieldsStructure extends Structure
 {
     /**

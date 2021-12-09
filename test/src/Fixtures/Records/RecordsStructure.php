@@ -16,9 +16,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DateValue\DateValue;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail
- */
 class RecordsStructure extends Structure
 {
     /**

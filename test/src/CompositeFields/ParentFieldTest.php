@@ -19,9 +19,6 @@ use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\CompositeFields
- */
 class ParentFieldTest extends TestCase
 {
     public function testNameMustNotBeEmpty()

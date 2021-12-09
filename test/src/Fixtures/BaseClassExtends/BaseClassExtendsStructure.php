@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Test\Fixtures\BaseClassExtends;
 
 use ActiveCollab\DatabaseStructure\Structure;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\BaseClassExtends
- */
 class BaseClassExtendsStructure extends Structure
 {
     /**

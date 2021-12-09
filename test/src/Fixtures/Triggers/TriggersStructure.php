@@ -13,9 +13,6 @@ use ActiveCollab\DatabaseStructure\Structure;
 use ActiveCollab\DatabaseStructure\Trigger\BeforeInsertTrigger;
 use ActiveCollab\DatabaseStructure\Trigger\BeforeUpdateTrigger;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\Fixtures\PositionTail
- */
 class TriggersStructure extends Structure
 {
     /**

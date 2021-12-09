@@ -10,9 +10,6 @@ namespace ActiveCollab\DatabaseStructure;
 
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure
- */
 class Index implements IndexInterface
 {
     /**

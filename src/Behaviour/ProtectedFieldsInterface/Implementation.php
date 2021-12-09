@@ -10,7 +10,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 
 /**
  * @property array $protected_fields
- * @package ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface
  */
 trait Implementation
 {
