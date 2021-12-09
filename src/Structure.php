@@ -28,6 +28,7 @@ use ActiveCollab\DatabaseStructure\Builder\SqlDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeCollectionBuilder;
+use ActiveCollab\DatabaseStructure\Builder\TypeInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypesBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
@@ -338,8 +339,9 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new SqlDirBuilder($this);
 
             $this->builders[] = new TypesBuilder($this);
-            $this->builders[] = new BaseTypeClassBuilder($this);
             $this->builders[] = new BaseTypeInterfaceBuilder($this);
+            $this->builders[] = new TypeInterfaceBuilder($this);
+            $this->builders[] = new BaseTypeClassBuilder($this);
             $this->builders[] = new TypeClassBuilder($this);
             $this->builders[] = new TypeTableBuilder($this);
 
