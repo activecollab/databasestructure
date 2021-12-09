@@ -32,7 +32,10 @@ class JsonFieldTest extends TestCase
      */
     public function testCastingUsesJsonDecode()
     {
-        $this->assertContains('json_encode', (new JsonField('test_field'))->getCastingCode('value'));
+        $this->assertStringContainsString(
+            'json_encode',
+            (new JsonField('test_field'))->getCastingCode('value')
+        );
     }
 
     public function testGetValueExtractors()

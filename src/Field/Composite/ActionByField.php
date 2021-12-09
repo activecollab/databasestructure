@@ -20,9 +20,6 @@ use ActiveCollab\User\UserInterface;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Composite
- */
 class ActionByField extends CompositeField implements AddIndexInterface, RequiredInterface
 {
     use AddIndexInterfaceImplementation, RequiredInterfaceImplementation;
@@ -123,7 +120,7 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
      * @param string $indent
      * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result): void
+    public function getBaseClassMethods(string $indent, array &$result): void
     {
         $id_getter_name = 'get' . Inflector::classify($this->name);
         $id_setter_name = 'set' . Inflector::classify($this->name);
@@ -205,6 +202,55 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
             $methods[] = '';
             $methods[] = '    return $this;';
             $methods[] = '}';
+        }
+
+        foreach ($methods as $line) {
+            if ($line) {
+                $result[] = "$indent$line";
+            } else {
+                $result[] = '';
+            }
+        }
+    }
+
+    /**
+     * Return methods that this field needs to inject in base class.
+     *
+     * @param string $indent
+     * @param array  $result
+     */
+    public function getBaseInterfaceMethods(string $indent, array &$result): void
+    {
+        $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
+        $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
+
+        $type_hint = '\\' . UserInterface::class . '|' . $this->identified_visitor_class_name . '|' . $this->user_class_name . '|null';
+
+        $methods = [];
+
+        $methods[] = '/**';
+        $methods[] = ' * @param  bool' . str_pad('$use_cache', strlen($type_hint) + 7, ' ', STR_PAD_LEFT);
+        $methods[] = ' * @return ' . $type_hint;
+        $methods[] = ' */';
+        $methods[] = 'public function ' . $instance_getter_name . '($use_cache = true);';
+        $methods[] = '';
+
+        if ($this->isRequired()) {
+            $methods[] = '/**';
+            $methods[] = ' * Set ' . $this->action_name . '.';
+            $methods[] = ' *';
+            $methods[] = ' * @param  \\' . UserInterface::class . '|' . $this->user_class_name .' $value';
+            $methods[] = ' * @return $this';
+            $methods[] = ' */';
+            $methods[] = 'public function &' . $instance_setter_name . '(\\' . UserInterface::class . ' $value);';
+        } else {
+            $methods[] = '/**';
+            $methods[] = ' * Set ' . $this->action_name . '.';
+            $methods[] = ' *';
+            $methods[] = ' * @param  ' . $type_hint . ' $value';
+            $methods[] = ' * @return $this';
+            $methods[] = ' */';
+            $methods[] = 'public function &' . $instance_setter_name . '(\\' . UserInterface::class . ' $value = null);';
         }
 
         foreach ($methods as $line) {

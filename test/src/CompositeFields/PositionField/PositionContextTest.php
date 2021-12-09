@@ -15,6 +15,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\PositionContext\PositionContextStructure;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * Purpose of this test is to see if files and tables are properly build from BlogStructure.
@@ -50,7 +51,7 @@ class PositionContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->createMock(LoggerInterface::class));
         $this->position_context_structure = new PositionContextStructure();
 
         if (!class_exists($this->head_type_class_name, false) && !class_exists($this->tail_type_class_name, false)) {

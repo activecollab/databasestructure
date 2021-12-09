@@ -24,6 +24,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
 use Doctrine\Common\Inflector\Inflector;
+use Throwable;
 
 class BaseTypeInterfaceBuilder extends FileSystemBuilder
 {
@@ -99,7 +100,7 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$base_interface_name, $base_interface_build_path]);
+        $this->triggerEvent('on_interface_built', [$base_interface_name, $base_interface_build_path]);
     }
 
     public function buildInterfaceDeclaration(
@@ -320,16 +321,15 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
         }
     }
 
-    /**
-     * @param FieldInterface[] $fields
-     * @param string           $indent
-     * @param array            $result
-     */
-    private function buildCompositeFieldMethods($fields, $indent, array &$result)
+    private function buildCompositeFieldMethods(
+        iterable $fields,
+        string $indent,
+        array &$result
+    ): void
     {
         foreach ($fields as $field) {
             if ($field instanceof CompositeField) {
-                $field->getBaseClassMethods($indent, $result);
+                $field->getBaseInterfaceMethods($indent, $result);
             }
         }
     }
@@ -361,12 +361,6 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
         if ($field instanceof BooleanField && $this->useShortGetterName($field->getName())) {
             $short_getter = $this->getShortGetterName($field->getName());
 
-            $lines[] = '';
-            $lines[] = '/**';
-            $lines[] = ' * Return value of ' . $field->getName() . ' field.';
-            $lines[] = ' *';
-            $lines[] = ' * @return ' . $type_for_doc_block;
-            $lines[] = ' */';
             $lines[] = sprintf(
                 'public function %s()%s%s;',
                 $short_getter,
@@ -375,17 +369,12 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             );
         }
 
-        $lines[] = '';
-        $lines[] = '/**';
-        $lines[] = ' * Return value of ' . $field->getName() . ' field.';
-        $lines[] = ' *';
-        $lines[] = ' * @return ' . $type_for_doc_block;
-
         if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
+            $lines[] = '/**';
             $lines[] = " * @deprecated use $short_getter()";
+            $lines[] = ' */';
         }
 
-        $lines[] = ' */';
         $lines[] = 'public function ' . $this->getGetterName($field->getName()) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code . ';';
 
         if (!$field->getProtectSetter()) {

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Composite;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -13,31 +15,23 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Field\Scalar
- */
 abstract class CompositeField implements CompositeFieldInterface
 {
     use ProtectSetterInterfaceImplementation;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFields(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseClassMethods($indent, array &$result): void
+    public function getBaseClassMethods(string $indent, array &$result): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getBaseInterfaceMethods(string $indent, array &$result): void
+    {
+    }
+
     public function getValidatorLines($indent, array &$result)
     {
     }

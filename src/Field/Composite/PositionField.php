@@ -149,11 +149,8 @@ class PositionField extends CompositeField implements AddIndexInterface
 
     /**
      * Return methods that this field needs to inject in base class.
-     *
-     * @param string $indent
-     * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result): void
+    public function getBaseClassMethods(string $indent, array &$result): void
     {
         $methods = [];
 
@@ -183,6 +180,41 @@ class PositionField extends CompositeField implements AddIndexInterface
             return var_export($field_name, true);
         }, $this->getContext())) . '];';
         $methods[] = '}';
+
+        foreach ($methods as $line) {
+            if ($line) {
+                $result[] = "$indent$line";
+            } else {
+                $result[] = '';
+            }
+        }
+    }
+
+    /**
+     * Return methods that this field needs to inject in base class.
+     */
+    public function getBaseInterfaceMethods(string $indent, array &$result): void
+    {
+        $methods = [];
+
+        $methods[] = '/**';
+        $methods[] = ' * Return position mode.';
+        $methods[] = ' *';
+        $methods[] = ' * There are two modes:';
+        $methods[] = ' *';
+        $methods[] = ' * * head for new records to be added in front of the other records, or';
+        $methods[] = ' * * tail when new records are added after existing records.';
+        $methods[] = ' *';
+        $methods[] = ' * @return string';
+        $methods[] = ' */';
+        $methods[] = 'public function getPositionMode();';
+        $methods[] = '';
+        $methods[] = '/**';
+        $methods[] = ' * Return context in which position should be set.';
+        $methods[] = ' *';
+        $methods[] = ' * @return array';
+        $methods[] = ' */';
+        $methods[] = 'public function getPositionContext();';
 
         foreach ($methods as $line) {
             if ($line) {

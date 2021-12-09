@@ -16,6 +16,7 @@ use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Builder\TriggersBuilder;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Triggers\TriggersStructure;
+use Psr\Log\LoggerInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -44,7 +45,7 @@ class TriggersTest extends TestCase
     {
         parent::setUp();
 
-        $this->pool = new Pool($this->connection);
+        $this->pool = new Pool($this->connection, $this->createMock(LoggerInterface::class));
         $this->triggers_structure = new TriggersStructure();
 
         if (!class_exists($this->type_class_name, false)) {

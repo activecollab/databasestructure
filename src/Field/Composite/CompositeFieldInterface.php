@@ -21,11 +21,13 @@ interface CompositeFieldInterface extends FieldInterface
 
     /**
      * Return methods that this field needs to inject in base class.
-     *
-     * @param string $indent
-     * @param array  $result
      */
-    public function getBaseClassMethods($indent, array &$result): void;
+    public function getBaseClassMethods(string $indent, array &$result): void;
+
+    /**
+     * Return methods that this field needs to inject in base class.
+     */
+    public function getBaseInterfaceMethods(string $indent, array &$result): void;
 
     /**
      * @param string $indent
