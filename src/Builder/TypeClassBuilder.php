@@ -23,7 +23,6 @@ class TypeClassBuilder extends FileSystemBuilder
     public function buildType(TypeInterface $type)
     {
         $class_name = $type->getClassName();
-        $base_class_name = 'Base\\' . $class_name;
 
         $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$class_name.php" : null;
 
@@ -51,7 +50,16 @@ class TypeClassBuilder extends FileSystemBuilder
             $result[] = '';
         }
 
-        $result[] = 'class ' . $class_name . ' extends ' . $base_class_name;
+        $result[] = '';
+        $result[] = sprintf(
+            'use %s\\Base\\%s as Base%s;',
+            $this->getStructure()->getNamespace(),
+            $class_name,
+            $class_name
+        );
+        $result[] = '';
+
+        $result[] = sprintf('class %s extends Base%s', $class_name, $class_name);
         $result[] = '{';
         $result[] = '}';
         $result[] = '';

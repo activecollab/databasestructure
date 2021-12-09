@@ -67,6 +67,12 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             $base_interface_extends,
         ];
 
+        foreach (array_keys($type->getTraits()) as $interface) {
+            if ($interface !== '--just-paste-trait--') {
+                $interfaces[] = '\\' . ltrim($interface, '\\');
+            }
+        }
+
         $this->buildInterfaceDeclaration($base_interface_name, $interfaces, '', $result);
 
         $result[] = '{';

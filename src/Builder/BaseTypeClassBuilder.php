@@ -16,7 +16,6 @@ use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
@@ -30,9 +29,6 @@ use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Builder
- */
 class BaseTypeClassBuilder extends FileSystemBuilder
 {
     /**
@@ -40,6 +36,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      */
     public function buildType(TypeInterface $type)
     {
+        $interface_name = sprintf('%sInterface', $type->getClassName());
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
         $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
 
@@ -62,28 +59,31 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
+
+        $result[] = sprintf(
+            'use %s\\%s;',
+            $this->getStructure()->getNamespace(),
+            $interface_name
+        );
+        $result[] = '';
+
         $result[] = '/**';
 
         $this->buildBaseClassDocBlockProperties('', $result);
 
-        $result[] = ' * @package ' . $base_class_namespace;
         $result[] = ' */';
 
-        $interfaces = $traits = [];
+        $traits = [];
 
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-
-            if (count($implementations)) {
+        foreach ($type->getTraits() as $implementations) {
+            if (!empty($implementations)) {
                 foreach ($implementations as $implementation) {
                     $traits[] = '\\' . ltrim($implementation, '\\');
                 }
             }
         }
 
-        $this->buildClassDeclaration($base_class_name, $base_class_extends, $interfaces, '', $result);
+        $this->buildClassDeclaration($base_class_name, $base_class_extends, $interface_name, '', $result);
 
         $result[] = '{';
 
@@ -271,22 +271,18 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     public function buildClassDeclaration(
         string $base_class_name,
         string $base_class_extends,
-        array $interfaces,
+        string $interface_name,
         string $indent,
         array &$result
     ): void
     {
-        $result[] = $indent . 'abstract class ' . $base_class_name . ' extends ' . $base_class_extends;
-
-        if (!empty($interfaces)) {
-            $result[count($result) - 1] .= ' implements';
-
-            foreach ($interfaces as $interface) {
-                $result[] = $indent . '    ' . $interface . ',';
-            }
-
-            $this->removeCommaFromLastLine($result);
-        }
+        $result[] = sprintf(
+            '%sabstract class %s extends %s implements %s',
+            $indent,
+            $base_class_name,
+            $base_class_extends,
+            $interface_name
+        );
     }
 
     private function buildClassTraits(TypeInterface $type, array $traits, string $indent, array &$result): void
