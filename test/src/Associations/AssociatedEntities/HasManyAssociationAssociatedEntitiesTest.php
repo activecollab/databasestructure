@@ -12,6 +12,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooks\WriterHasManyBooksStructure;
 use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
+use InvalidArgumentException;
 
 final class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
 {
@@ -25,24 +26,22 @@ final class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
         return dirname(dirname(__DIR__)) . '/Fixtures/Association/WriterHasManyBooks';
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of entities expected.
-     */
     public function testNonIterableAttribute()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A list of entities expected.");
+
         $this->pool->produce($this->type_entity_class_names['writers'], [
             'name' => 'Leo Tolstoy',
             'books' => 123,
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of entities expected.
-     */
     public function testInvalidAttributeInstance()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A list of entities expected.");
+
         $this->pool->produce($this->type_entity_class_names['writers'], [
             'name' => 'Leo Tolstoy',
             'books' => [new \stdClass],
@@ -122,12 +121,11 @@ final class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
         $this->assertSame(2, $writer->countBooks());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of ID-s expected.
-     */
     public function testNonIterableIdsAttribute()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A list of ID-s expected.");
+
         $this->pool->produce($this->type_entity_class_names['writers'], [
             'name' => 'Leo Tolstoy',
             'book_ids' => 123,

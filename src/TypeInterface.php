@@ -49,6 +49,13 @@ interface TypeInterface
     public function getBaseClassExtends(): string;
 
     /**
+     * Return name of a class that base type class should extend.
+     *
+     * @return string
+     */
+    public function getBaseInterfaceExtends(): string;
+
+    /**
      * Return manager class name.
      *
      * @return string

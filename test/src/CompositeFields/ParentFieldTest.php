@@ -17,33 +17,31 @@ use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test\CompositeFields
  */
 class ParentFieldTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNameMustNotBeEmpty()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new ParentField('');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNameMustEndWithId()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new ParentField('wooops');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testOnlyIdAsFieldNameIsNotAccepted()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         new ParentField('_id');
     }
 
@@ -76,7 +74,7 @@ class ParentFieldTest extends TestCase
 
         $fields = $parent_id->getFields();
 
-        $this->assertInternalType('array', $fields);
+        $this->assertIsArray($fields);
         $this->assertCount(2, $fields);
 
         $this->assertInstanceOf(StringField::class, $fields[0]);

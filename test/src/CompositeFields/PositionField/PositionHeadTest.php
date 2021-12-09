@@ -40,7 +40,7 @@ class PositionHeadTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -69,7 +69,7 @@ class PositionHeadTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('position_head_entries')) {
             $this->connection->dropTable('position_head_entries');

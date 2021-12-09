@@ -45,7 +45,7 @@ class ForeignKeyFieldTest extends TestCase
 
         $fields = $fk->getFields();
 
-        $this->assertInternalType('array', $fields);
+        $this->assertIsArray($fields);
         $this->assertCount(1, $fields);
 
         /** @var IntegerField $fk_field */

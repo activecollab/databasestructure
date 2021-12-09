@@ -46,7 +46,7 @@ class PositionContextTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -84,7 +84,7 @@ class PositionContextTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('position_context_head_entries')) {
             $this->connection->dropTable('position_context_head_entries');

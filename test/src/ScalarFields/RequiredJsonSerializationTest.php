@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Test\ScalarFields;
 
+use ActiveCollab\DatabaseObject\Exception\ValidationException;
 use ActiveCollab\DatabaseObject\Pool;
 use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
@@ -38,7 +39,7 @@ class RequiredJsonSerializationTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -67,7 +68,7 @@ class RequiredJsonSerializationTest extends TestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->connection->tableExists('required_key_values')) {
             $this->connection->dropTable('required_key_values');
@@ -88,12 +89,11 @@ class RequiredJsonSerializationTest extends TestCase
         $this->assertTrue($value_field->isRequired());
     }
 
-    /**
-     * @expectedException \ActiveCollab\DatabaseObject\Exception\ValidationException
-     * @expectedExceptionMessage Validation failed: Value of 'value' is required
-     */
     public function testValueCantBeNull()
     {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Validation failed: Value of 'value' is required");
+
         $this->pool->produce($this->type_class_name, ['name' => 'xyz']);
     }
 

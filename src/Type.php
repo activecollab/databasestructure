@@ -18,6 +18,7 @@ use ActiveCollab\DatabaseStructure\Behaviour\PolymorphInterface\Implementation a
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface\Implementation as ProtectedFieldsInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Entity\Entity;
+use ActiveCollab\DatabaseStructure\Entity\EntityInterface;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField as CompositeField;
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
@@ -255,6 +256,23 @@ class Type implements TypeInterface
         }
 
         return $this->base_class_extends;
+    }
+
+    /**
+     * @var string
+     */
+    private $base_interface_extends;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseInterfaceExtends(): string
+    {
+        if (empty($this->base_interface_extends)) {
+            $this->base_interface_extends = EntityInterface::class;
+        }
+
+        return $this->base_interface_extends;
     }
 
     /**

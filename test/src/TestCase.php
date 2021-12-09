@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
@@ -35,7 +37,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -51,17 +53,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->connection = new MysqliConnection($this->link);
 
-        if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
-            foreach ($triggers as $trigger) {
-                $this->connection->execute('DROP TRIGGER ' . $this->connection->escapeFieldName($trigger['Trigger']));
-            }
-        }
-
-        $this->connection->execute('SET foreign_key_checks = 0;');
-        foreach ($this->connection->getTableNames() as $table_name) {
-            $this->connection->dropTable($table_name);
-        }
-        $this->connection->execute('SET foreign_key_checks = 1;');
+        $this->dropTablesAndTriggers();
 
         $this->setNow(new DateTimeValue());
     }
@@ -69,7 +61,19 @@ abstract class TestCase extends BaseTestCase
     /**
      * Tear down test environment.
      */
-    public function tearDown()
+    public function tearDown(): void
+    {
+        $this->dropTablesAndTriggers();
+
+        $this->connection = null;
+        $this->link->close();
+
+        $this->setNow(null);
+
+        parent::tearDown();
+    }
+
+    private function dropTablesAndTriggers(): void
     {
         if ($triggers = $this->connection->execute('SHOW TRIGGERS')) {
             foreach ($triggers as $trigger) {
@@ -82,13 +86,6 @@ abstract class TestCase extends BaseTestCase
             $this->connection->dropTable($table_name);
         }
         $this->connection->execute('SET foreign_key_checks = 1;');
-
-        $this->connection = null;
-        $this->link->close();
-
-        $this->setNow(null);
-
-        parent::tearDown();
     }
 
     /**

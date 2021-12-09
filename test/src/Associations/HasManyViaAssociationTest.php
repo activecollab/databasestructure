@@ -12,15 +12,15 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations;
 
 use ActiveCollab\DatabaseStructure\Association\HasManyViaAssociation;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use InvalidArgumentException;
 
 class HasManyViaAssociationTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Value '' is not a valid type name
-     */
     public function testIntermediaryTypeNameIsRequired()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Value '' is not a valid type name");
+
         new HasManyViaAssociation('users', '');
     }
 

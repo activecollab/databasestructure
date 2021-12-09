@@ -12,6 +12,7 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooksRequired\WriterHasManyBooksRequiredStructure;
 use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
+use RuntimeException;
 
 final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
 {
@@ -33,7 +34,7 @@ final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredT
         return dirname(dirname(__DIR__)) . '/Fixtures/Association/WriterHasManyBooksRequired';
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -75,11 +76,12 @@ final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredT
      * @dataProvider provideAttributesForReleaseTest
      * @param string $attribute_name
      * @param mixed  $attribute_value
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Can't release associated entity #1 because it can only be reassigned, not released.
      */
     public function testExceptionOnReleaseForRequiredAssociation(string $attribute_name, $attribute_value)
     {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage("Can't release associated entity #1 because it can only be reassigned, not released.");
+
         $this->pool->modify($this->writer, [
             $attribute_name => $attribute_value,
         ]);

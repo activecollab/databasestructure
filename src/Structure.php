@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
@@ -15,6 +17,7 @@ use ActiveCollab\DatabaseStructure\Builder\BaseDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeClassBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeCollectionBuilder;
+use ActiveCollab\DatabaseStructure\Builder\BaseTypeInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\BaseTypeManagerBuilder;
 use ActiveCollab\DatabaseStructure\Builder\CollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
@@ -323,12 +326,12 @@ abstract class Structure implements StructureInterface
     /**
      * Return a list of prepared builder instances.
      *
-     * @param  string|null         $build_path
-     * @param  ConnectionInterface $connection
-     * @param  array               $event_handlers
+     * @param  string|null              $build_path
+     * @param  ConnectionInterface|null $connection
+     * @param  array                    $event_handlers
      * @return BuilderInterface[]
      */
-    private function getBuilders($build_path, ConnectionInterface $connection = null, array $event_handlers)
+    private function getBuilders($build_path, ?ConnectionInterface $connection, array $event_handlers): array
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDirBuilder($this);
@@ -336,6 +339,7 @@ abstract class Structure implements StructureInterface
 
             $this->builders[] = new TypesBuilder($this);
             $this->builders[] = new BaseTypeClassBuilder($this);
+            $this->builders[] = new BaseTypeInterfaceBuilder($this);
             $this->builders[] = new TypeClassBuilder($this);
             $this->builders[] = new TypeTableBuilder($this);
 

@@ -43,7 +43,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -60,7 +60,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->connection->dropTable('stats_snapshots');
 
@@ -71,7 +71,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
     {
         $generated_fields = $this->stats_snapshot_base_class_reflection->getDefaultProperties()['generated_fields'];
 
-        $this->assertInternalType('array', $generated_fields);
+        $this->assertIsArray($generated_fields);
         $this->assertContains('number_of_active_users', $generated_fields);
     }
 

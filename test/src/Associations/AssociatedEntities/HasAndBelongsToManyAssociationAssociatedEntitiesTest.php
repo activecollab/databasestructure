@@ -12,6 +12,8 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasAndBelongsToManyBooks\WriterHasAndBelongsToManyBooksStructure;
 use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
+use InvalidArgumentException;
+use stdClass;
 
 final class HasAndBelongsToManyAssociationAssociatedEntitiesTest extends StructuredTestCase
 {
@@ -25,40 +27,43 @@ final class HasAndBelongsToManyAssociationAssociatedEntitiesTest extends Structu
         return dirname(dirname(__DIR__)) . '/Fixtures/Association/WriterHasAndBelongsToManyBooks';
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of entities expected.
-     */
     public function testNonIterableAttribute()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A list of entities expected.");
+
         $this->pool->produce($this->type_entity_class_names['writers'], [
             'name' => 'Leo Tolstoy',
             'books' => 123,
         ]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of entities expected.
-     */
     public function testInvalidAttributeInstance()
     {
-        $this->pool->produce($this->type_entity_class_names['writers'], [
-            'name' => 'Leo Tolstoy',
-            'books' => [new \stdClass],
-        ]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A list of entities expected.");
+
+        $this->pool->produce(
+            $this->type_entity_class_names['writers'],
+            [
+                'name' => 'Leo Tolstoy',
+                'books' => [new stdClass],
+            ]
+        );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A list of ID-s expected.
-     */
     public function testNonIterableIdsAttribute()
     {
-        $this->pool->produce($this->type_entity_class_names['writers'], [
-            'name' => 'Leo Tolstoy',
-            'book_ids' => 123,
-        ]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("A list of ID-s expected.")
+        ;
+        $this->pool->produce(
+            $this->type_entity_class_names['writers'],
+            [
+                'name' => 'Leo Tolstoy',
+                'book_ids' => 123,
+            ]
+        );
     }
 
     public function testAssociatedEntitiesAttributeOnInsert()

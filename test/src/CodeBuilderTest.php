@@ -46,7 +46,7 @@ class CodeBuilderTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -313,7 +313,7 @@ class CodeBuilderTest extends TestCase
     {
         $order_by = $this->base_writer_reflection->getDefaultProperties()['order_by'];
 
-        $this->assertInternalType('array', $order_by);
+        $this->assertIsArray($order_by);
         $this->assertCount(1, $order_by);
         $this->assertEquals('name', $order_by[0]);
     }
@@ -325,7 +325,7 @@ class CodeBuilderTest extends TestCase
     {
         $order_by = $this->base_book_reflection->getDefaultProperties()['order_by'];
 
-        $this->assertInternalType('array', $order_by);
+        $this->assertIsArray($order_by);
         $this->assertCount(1, $order_by);
         $this->assertEquals('id', $order_by[0]);
     }
@@ -337,7 +337,7 @@ class CodeBuilderTest extends TestCase
     {
         $order_by = $this->base_chapter_reflection->getDefaultProperties()['order_by'];
 
-        $this->assertInternalType('array', $order_by);
+        $this->assertIsArray($order_by);
         $this->assertCount(1, $order_by);
         $this->assertEquals('position', $order_by[0]);
     }

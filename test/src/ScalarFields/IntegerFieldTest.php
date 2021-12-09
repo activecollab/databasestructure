@@ -12,6 +12,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\NumberField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
+use InvalidArgumentException;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Test
@@ -58,11 +59,10 @@ class IntegerFieldTest extends TestCase
         $this->assertEquals(FieldInterface::SIZE_TINY, (new IntegerField('int'))->size(FieldInterface::SIZE_TINY)->getSize());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testExceptionOnIncorrectSize()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         (new IntegerField('int'))->size('Invalid Value');
     }
 }

@@ -15,18 +15,15 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\Test\TestCase;
 use ActiveCollab\DatabaseStructure\Type;
+use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Test\CompositeFields
- */
 class AddressFieldTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Name of the address field should be 'address' or end with '_address'
-     */
     public function testErrorWhenFieldNameDoesNotEndWithAddress()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Name of the address field should be 'address' or end with '_address'");
+
         new AddressField('does not end with address');
     }
 

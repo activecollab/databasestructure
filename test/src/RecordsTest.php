@@ -36,7 +36,7 @@ class RecordsTest extends TestCase
     /**
      * Set up test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -74,7 +74,7 @@ class RecordsTest extends TestCase
 
         $names = $this->connection->executeFirstColumn('SELECT `name` FROM `records`');
 
-        $this->assertInternalType('array', $names);
+        $this->assertIsArray($names);
         $this->assertCount(3, $names);
 
         $this->assertContains('Leo Tolstoy', $names);
