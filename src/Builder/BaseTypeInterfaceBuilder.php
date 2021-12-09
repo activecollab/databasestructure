@@ -391,18 +391,16 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             $lines[] = ' * @param  ' . str_pad($type_for_doc_block, 5, ' ', STR_PAD_RIGHT) . ' $value';
             $lines[] = ' * @return $this';
             $lines[] = ' */';
-            $lines[] = 'public function &' . $this->getSetterName($field->getName()) . '(' . $type_for_executable_code . ($type_for_executable_code ? ' ' : '') . '$value)' . ';';
+            $lines[] = 'public function ' . $this->getSetterName($field->getName()) . '(' . $type_for_executable_code . ($type_for_executable_code ? ' ' : '') . '$value)' . ';';
 
             if ($field instanceof JsonFieldInterface) {
                 $lines[] = '';
                 $lines[] = '/**';
                 $lines[] = ' * Modify value of ' . $field->getName() . ' field.';
                 $lines[] = ' *';
-                $lines[] = ' * @param  callable $callback';
-                $lines[] = ' * @param  bool     $force_array';
                 $lines[] = ' * @return $this';
                 $lines[] = ' */';
-                $lines[] = 'public function &' . $this->getModifierName($field->getName()) . '(callable $callback, bool $force_array = false)' . ';';
+                $lines[] = 'public function ' . $this->getModifierName($field->getName()) . '(callable $callback, bool $force_array = false)' . ';';
             }
         }
 

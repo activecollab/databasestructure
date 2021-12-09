@@ -49,7 +49,6 @@ class TypeInterfaceBuilder extends FileSystemBuilder
             $result[] = '';
         }
 
-        $result[] = '';
         $result[] = sprintf(
             'use %s\\Base\\%s as Base%s;',
             $this->getStructure()->getNamespace(),

@@ -639,7 +639,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = ' * @param  ' . str_pad($type_for_doc_block, 5, ' ', STR_PAD_RIGHT) . ' $value';
         $lines[] = ' * @return $this';
         $lines[] = ' */';
-        $lines[] = $setter_access_level . ' function &' . $this->getSetterName($field->getName()) . '(' . $type_for_executable_code . ($type_for_executable_code ? ' ' : '') . '$value)';
+        $lines[] = $setter_access_level . ' function ' . $this->getSetterName($field->getName()) . '(' . $type_for_executable_code . ($type_for_executable_code ? ' ' : '') . '$value)';
         $lines[] = '{';
         $lines[] = '    $this->setFieldValue(' . var_export($field->getName(), true) . ', $value);';
         $lines[] = '';
@@ -671,7 +671,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = ' * @param  bool     $force_array';
         $lines[] = ' * @return $this';
         $lines[] = ' */';
-        $lines[] = $setter_access_level . ' function &' . $this->getModifierName($field->getName()) . '(callable $callback, bool $force_array = false)';
+        $lines[] = $setter_access_level . ' function ' . $this->getModifierName($field->getName()) . '(callable $callback, bool $force_array = false)';
         $lines[] = '{';
         $lines[] = '    $value = $this->' . $getter_name . '();';
         $lines[] = '';
