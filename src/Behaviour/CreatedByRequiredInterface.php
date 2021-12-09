@@ -25,5 +25,5 @@ interface CreatedByRequiredInterface extends CreatedByInterface
      * @param  UserInterface $user
      * @return $this
      */
-    public function &setCreatedBy(UserInterface $user);
+    public function setCreatedBy(UserInterface $user);
 }

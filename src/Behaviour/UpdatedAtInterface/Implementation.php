@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\UpdatedAtInterface;
 
 use ActiveCollab\DateValue\DateTimeValue;
@@ -39,6 +41,5 @@ trait Implementation
     abstract protected function registerEventHandler($event, callable $handler);
 
     abstract public function getUpdatedAt(): DateTimeValueInterface;
-
-    abstract public function &setUpdatedAt(DateTimeValueInterface $value);
+    abstract public function setUpdatedAt(DateTimeValueInterface $value);
 }

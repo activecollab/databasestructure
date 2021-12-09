@@ -25,5 +25,5 @@ interface CreatedByOptionalInterface extends CreatedByInterface
      * @param  UserInterface|null $user
      * @return $this
      */
-    public function &setCreatedBy(UserInterface $user = null);
+    public function setCreatedBy(UserInterface $user = null);
 }

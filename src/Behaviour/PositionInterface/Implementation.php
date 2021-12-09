@@ -8,12 +8,14 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
+use ActiveCollab\DatabaseObject\PoolInterface;
 use ActiveCollab\DatabaseStructure\Behaviour\PositionInterface;
 
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\PositionInterface
- * @property \ActiveCollab\DatabaseConnection\ConnectionInterface $connection
- * @property \ActiveCollab\DatabaseObject\PoolInterface $pool
+ * @property ConnectionInterface $connection
+ * @property PoolInterface $pool
  */
 trait Implementation
 {
@@ -79,7 +81,7 @@ trait Implementation
      * @param  int   $value
      * @return $this
      */
-    abstract public function &setPosition(int $value);
+    abstract public function setPosition(int $value);
 
     /**
      * Return position mode.

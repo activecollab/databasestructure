@@ -29,10 +29,8 @@ interface AddIndexInterface extends FieldTraitInterface
 
     /**
      * Return add index type.
-     *
-     * @return string
      */
-    public function getAddIndexType();
+    public function getAddIndexType(): string;
 
     /**
      * @param  bool       $add_index

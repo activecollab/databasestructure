@@ -29,7 +29,7 @@ interface PositionInterface
      * @param  int   $value
      * @return $this
      */
-    public function &setPosition(int $value);
+    public function setPosition(int $value);
 
     /**
      * Return position mode.

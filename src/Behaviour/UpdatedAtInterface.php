@@ -26,5 +26,5 @@ interface UpdatedAtInterface
      * @param  DateTimeValueInterface $value
      * @return $this
      */
-    public function &setUpdatedAt(DateTimeValueInterface $value);
+    public function setUpdatedAt(DateTimeValueInterface $value);
 }

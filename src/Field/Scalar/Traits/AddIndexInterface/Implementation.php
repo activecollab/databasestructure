@@ -23,12 +23,12 @@ trait Implementation
     /**
      * @var array
      */
-    private $add_index_context;
+    private $add_index_context = [];
 
     /**
      * @var string
      */
-    private $add_index_type;
+    private $add_index_type = IndexInterface::INDEX;
 
     /**
      * Return whether we should add an index for this field or not, defualt is FALSE.
@@ -50,10 +50,8 @@ trait Implementation
 
     /**
      * Return add index type.
-     *
-     * @return string
      */
-    public function getAddIndexType()
+    public function getAddIndexType(): string
     {
         return $this->add_index_type;
     }

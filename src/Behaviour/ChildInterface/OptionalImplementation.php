@@ -23,16 +23,16 @@ trait OptionalImplementation
     {
         if ($id = $this->getParentId()) {
             return $this->pool->getById($this->getParentType(), $id, $use_cache);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
      * @param  EntityInterface|null $value
      * @return ChildInterface|$this
      */
-    public function &setParent(?EntityInterface $value): ChildInterface
+    public function setParent(?EntityInterface $value): ChildInterface
     {
         if ($value === null) {
             $this->setParentType(null);

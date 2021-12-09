@@ -45,7 +45,7 @@ trait Implementation
      * @param  array|null                          $value
      * @return AdditionalPropertiesInterface|$this
      */
-    public function &setAdditionalProperties(array $value = null): AdditionalPropertiesInterface
+    public function setAdditionalProperties(array $value = null): AdditionalPropertiesInterface
     {
         $this->decoded_additional_properties = null; // Reset...
 
@@ -75,7 +75,7 @@ trait Implementation
      * @param  mixed                               $value
      * @return $this|AdditionalPropertiesInterface
      */
-    public function &setAdditionalProperty(string $name, $value): AdditionalPropertiesInterface
+    public function setAdditionalProperty(string $name, $value): AdditionalPropertiesInterface
     {
         $additional_properties = $this->getAdditionalProperties();
 
@@ -92,10 +92,6 @@ trait Implementation
         return $this;
     }
 
-    // ---------------------------------------------------
-    //  Expectations
-    // ---------------------------------------------------
-
     /**
      * Get raw additional properties value.
      *
@@ -109,5 +105,5 @@ trait Implementation
      * @param null|string $value
      * @return $this
      */
-    abstract public function &setRawAdditionalProperties(?string $value);
+    abstract public function setRawAdditionalProperties(?string $value);
 }

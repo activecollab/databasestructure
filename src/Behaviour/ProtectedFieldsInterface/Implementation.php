@@ -14,9 +14,6 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
  */
 trait Implementation
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getProtectedFields()
     {
         return property_exists($this, 'protected_fields') ? $this->protected_fields : [];

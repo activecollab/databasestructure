@@ -26,7 +26,7 @@ interface AdditionalPropertiesInterface
      * @param  array|null                          $value
      * @return $this|AdditionalPropertiesInterface
      */
-    public function &setAdditionalProperties(array $value = null): AdditionalPropertiesInterface;
+    public function setAdditionalProperties(array $value = null): AdditionalPropertiesInterface;
 
     /**
      * Returna attribute value.
@@ -44,5 +44,5 @@ interface AdditionalPropertiesInterface
      * @param  mixed                               $value
      * @return $this|AdditionalPropertiesInterface
      */
-    public function &setAdditionalProperty(string $name, $value): AdditionalPropertiesInterface;
+    public function setAdditionalProperty(string $name, $value): AdditionalPropertiesInterface;
 }

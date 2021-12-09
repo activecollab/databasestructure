@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\PermissionsInterface;
 
 use ActiveCollab\User\UserInterface;
@@ -15,33 +17,21 @@ use ActiveCollab\User\UserInterface;
  */
 trait RestrictiveImplementation
 {
-    /**
-     * {@inheritdoc}
-     */
     public function canCreate(UserInterface $user)
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canView(UserInterface $user)
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canEdit(UserInterface $user)
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canDelete(UserInterface $user)
     {
         return false;

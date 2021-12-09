@@ -28,10 +28,6 @@ trait Implementation
         });
     }
 
-    // ---------------------------------------------------
-    //  Expectations
-    // ---------------------------------------------------
-
     /**
      * Register an internal event handler.
      *
@@ -41,6 +37,5 @@ trait Implementation
     abstract protected function registerEventHandler($event, callable $handler);
 
     abstract public function getFieldValue($field, $default = null);
-
-    abstract public function &setCreatedAt(DateTimeValueInterface $value);
+    abstract public function setCreatedAt(DateTimeValueInterface $value);
 }

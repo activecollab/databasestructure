@@ -6,11 +6,10 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Behaviour;
 
-/**
- * @package ActiveCollab\DatabaseStructure\Behaviour
- */
 interface CreatedByInterface
 {
 }

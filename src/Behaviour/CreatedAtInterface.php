@@ -24,5 +24,5 @@ interface CreatedAtInterface extends ObjectInterface
      * @param  DateTimeValueInterface $value
      * @return $this
      */
-    public function &setCreatedAt(DateTimeValueInterface $value);
+    public function setCreatedAt(DateTimeValueInterface $value);
 }

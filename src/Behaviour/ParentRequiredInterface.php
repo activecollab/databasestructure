@@ -16,7 +16,7 @@ interface ParentRequiredInterface extends ChildInterface
 {
     public function getParent(bool $use_cache = true): EntityInterface;
 
-    public function &setParent(EntityInterface $value): ChildInterface;
+    public function setParent(EntityInterface $value): ChildInterface;
 
     public function getParentType(): string;
 

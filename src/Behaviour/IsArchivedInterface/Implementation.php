@@ -8,9 +8,11 @@
 
 namespace ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
+
 /**
  * @package ActiveCollab\DatabaseStructure\Behaviour\IsArchivedInterface
- * @property \ActiveCollab\DatabaseConnection\ConnectionInterface $connection
+ * @property ConnectionInterface $connection
  */
 trait Implementation
 {
