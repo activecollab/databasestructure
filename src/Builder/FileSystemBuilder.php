@@ -19,21 +19,13 @@ abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInt
 
     /**
      * Return build path.
-     *
-     * @return string
      */
-    public function getBuildPath()
+    public function getBuildPath(): ?string
     {
         return $this->build_path;
     }
 
-    /**
-     * Set build path. If empty, class will be built in memory.
-     *
-     * @param  string $value
-     * @return $this
-     */
-    public function &setBuildPath($value)
+    public function setBuildPath(?string $value): FileSystemBuilderInterface
     {
         $this->build_path = $value;
 

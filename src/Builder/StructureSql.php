@@ -75,9 +75,6 @@ trait StructureSql
             file_put_contents($file_path, $current_content . $statement);
         }
     }
-
-    /**
-     * @return string
-     */
-    abstract public function getBuildPath();
+    
+    abstract public function getBuildPath(): ?string;
 }
