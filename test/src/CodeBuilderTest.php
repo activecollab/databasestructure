@@ -203,7 +203,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testWriterClassFields()
     {
-        $this->assertEquals(['id', 'name', 'birthday', 'is_awesome'], $this->base_writer_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'name', 'birthday', 'is_awesome'], $this->base_writer_reflection->getDefaultProperties()['entity_fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_writer_reflection->getMethod('setId'));
@@ -227,7 +227,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testBookClassFields()
     {
-        $this->assertEquals(['id', 'author_id', 'title'], $this->base_book_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'author_id', 'title'], $this->base_book_reflection->getDefaultProperties()['entity_fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_book_reflection->getMethod('setId'));
@@ -242,7 +242,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testChapterClassFields()
     {
-        $this->assertEquals(['id', 'book_id', 'title', 'raw_additional_properties','position'], $this->base_chapter_reflection->getDefaultProperties()['fields']);
+        $this->assertEquals(['id', 'book_id', 'title', 'raw_additional_properties','position'], $this->base_chapter_reflection->getDefaultProperties()['entity_fields']);
 
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('getId'));
         $this->assertInstanceOf(ReflectionMethod::class, $this->base_chapter_reflection->getMethod('setId'));
@@ -257,7 +257,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testWriterClassDefaultFieldValues()
     {
-        $default_field_values = $this->base_writer_reflection->getDefaultProperties()['default_field_values'];
+        $default_field_values = $this->base_writer_reflection->getDefaultProperties()['default_entity_field_values'];
 
         $this->assertCount(2, $default_field_values);
 
@@ -273,7 +273,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testBookClassDefaultFieldValues()
     {
-        $default_field_values = $this->base_book_reflection->getDefaultProperties()['default_field_values'];
+        $default_field_values = $this->base_book_reflection->getDefaultProperties()['default_entity_field_values'];
 
         $this->assertCount(2, $default_field_values);
 
@@ -289,7 +289,7 @@ class CodeBuilderTest extends TestCase
      */
     public function testChapterClassDefaultFieldValues()
     {
-        $default_field_values = $this->base_chapter_reflection->getDefaultProperties()['default_field_values'];
+        $default_field_values = $this->base_chapter_reflection->getDefaultProperties()['default_entity_field_values'];
 
         $this->assertCount(3, $default_field_values);
 

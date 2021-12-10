@@ -339,7 +339,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = $indent . ' *';
         $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $fields = [';
+        $result[] = $indent . 'protected $entity_fields = [';
 
         foreach ($stringified_field_names as $stringified_field_name) {
             $result[] = $indent . '    ' . $stringified_field_name . ',';
@@ -354,7 +354,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = $indent . ' *';
             $result[] = $indent . ' * @var array';
             $result[] = $indent . ' */';
-            $result[] = $indent . 'protected $default_field_values = [';
+            $result[] = $indent . 'protected $default_entity_field_values = [';
 
             foreach ($fields_with_default_value as $field_name => $default_value) {
                 $result[] = $indent . '   ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
@@ -379,7 +379,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = $indent . ' *';
         $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $generated_fields = [' . implode(', ', array_map(function ($field_name) {
+        $result[] = $indent . 'protected $generated_entity_fields = [' . implode(', ', array_map(function ($field_name) {
             return var_export($field_name, true);
         }, $generated_field_names)) . '];';
     }

@@ -16,6 +16,12 @@
             "email": "ilija.studen@activecollab.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "/Users/ilijastuden/Projects/Components/databaseobject"
+        }
+    ],
     "require": {
         "php": ">=7.3",
         "ext-mysqli": "*",

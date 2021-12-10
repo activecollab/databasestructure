@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d00ddccf6de8c60932468afa665cc397",
+    "content-hash": "2a6483982955a78e43c61e6aea891fd5",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -118,14 +118,8 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "7cdcbf80fc9293fa808118ec34dcf7ead09afe05"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/7cdcbf80fc9293fa808118ec34dcf7ead09afe05",
-                "reference": "7cdcbf80fc9293fa808118ec34dcf7ead09afe05",
-                "shasum": ""
+                "url": "/Users/ilijastuden/Projects/Components/databaseobject",
+                "reference": "b2b0fc96372c81267e7e2f4d3599642b4a2c9215"
             },
             "require": {
                 "activecollab/databaseconnection": "^3.0||^4.0",
@@ -149,7 +143,11 @@
                     "ActiveCollab\\DatabaseObject\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "ActiveCollab\\DatabaseObject\\Test\\": "test/src"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -166,11 +164,7 @@
                 "mysql",
                 "persistence"
             ],
-            "support": {
-                "issues": "https://github.com/activecollab/databaseobject/issues",
-                "source": "https://github.com/activecollab/databaseobject/tree/5.0.5"
-            },
-            "time": "2021-08-16T08:58:46+00:00"
+            "time": "2021-12-10T11:34:50+00:00"
         },
         {
             "name": "activecollab/datevalue",

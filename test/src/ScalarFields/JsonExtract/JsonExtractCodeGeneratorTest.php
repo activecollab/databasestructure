@@ -66,7 +66,7 @@ class JsonExtractCodeGeneratorTest extends TestCase
 
     public function testGeneratedFieldsPropertyIsSet()
     {
-        $generated_fields = $this->stats_snapshot_base_class_reflection->getDefaultProperties()['generated_fields'];
+        $generated_fields = $this->stats_snapshot_base_class_reflection->getDefaultProperties()['generated_entity_fields'];
 
         $this->assertIsArray($generated_fields);
         $this->assertContains('number_of_active_users', $generated_fields);
