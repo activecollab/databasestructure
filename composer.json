@@ -19,7 +19,7 @@
     "require": {
         "php": ">=7.3",
         "ext-mysqli": "*",
-        "activecollab/databaseobject": "^5.0",
+        "activecollab/databaseobject": "dev-master",
         "activecollab/filesystem": "^0.10",
         "activecollab/user": "^4.0",
         "doctrine/inflector": "^1.0"

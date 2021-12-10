@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edb145dfc54c03d39e44b2269acc8ebf",
+    "content-hash": "d00ddccf6de8c60932468afa665cc397",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -115,7 +115,7 @@
         },
         {
             "name": "activecollab/databaseobject",
-            "version": "5.0.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
@@ -142,6 +142,7 @@
                 "phpunit/phpunit": "~9.0",
                 "pimple/pimple": "~3.0.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5038,14 +5039,15 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "activecollab/databaseobject": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.3"
-    },
-    "platform-dev": {
+        "php": ">=7.3",
         "ext-mysqli": "*"
     },
+    "platform-dev": [],
     "plugin-api-version": "2.1.0"
 }
