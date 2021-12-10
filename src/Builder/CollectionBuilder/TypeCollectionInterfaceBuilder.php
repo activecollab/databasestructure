@@ -70,6 +70,12 @@ class TypeCollectionInterfaceBuilder extends FileSystemBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_interface_built', [$collection_interface_name, $class_build_path]);
+        $this->triggerEvent(
+            'on_interface_built',
+            [
+                $collection_interface_name,
+                $class_build_path,
+            ]
+        );
     }
 }

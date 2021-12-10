@@ -19,7 +19,6 @@ class BaseTypeCollectionInterfaceBuilder extends FileSystemBuilder
     public function buildType(TypeInterface $type): void
     {
         $base_collection_interface_name = $type->getCollectionInterfaceName();
-        $type_class_name = $type->getEntityClassName();
 
         $base_class_build_path = $this->getBuildPath()
             ? "{$this->getBuildPath()}/Collection/Base/$base_collection_interface_name.php"
@@ -40,7 +39,6 @@ class BaseTypeCollectionInterfaceBuilder extends FileSystemBuilder
 
         if ($this->getStructure()->getNamespace()) {
             $base_class_namespace = $this->getStructure()->getNamespace() . '\\Collection\\Base';
-            $type_class_name = '\\' . ltrim($this->getStructure()->getNamespace(), '\\') . '\\' . $type_class_name;
         } else {
             $base_class_namespace = 'Collection\\Base';
         }

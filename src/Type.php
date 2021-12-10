@@ -275,6 +275,11 @@ class Type implements TypeInterface
         return Inflector::classify($this->getName());
     }
 
+    public function getManagerInterfaceName(): string
+    {
+        return sprintf('%sInterface', $this->getManagerClassName());
+    }
+
     public function getCollectionClassName(): string
     {
         return Inflector::classify($this->getName());

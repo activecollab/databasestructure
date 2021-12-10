@@ -52,8 +52,8 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
-        $result[] = sprintf('use %s;', $collection_interface_fqn);
         $result[] = 'use ActiveCollab\DatabaseObject\Collection\Type as TypeCollection;';
+        $result[] = sprintf('use %s;', $collection_interface_fqn);
         $result[] = '';
         $result[] = sprintf('abstract class %s extends TypeCollection implements %s', $base_collection_class_name, $type->getCollectionInterfaceName());
         $result[] = '{';

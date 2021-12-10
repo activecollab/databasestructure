@@ -55,6 +55,8 @@ interface TypeInterface
      */
     public function getManagerClassName(): string;
 
+    public function getManagerInterfaceName(): string;
+
     /**
      * Return collection class name.
      */
