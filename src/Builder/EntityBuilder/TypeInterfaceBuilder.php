@@ -17,7 +17,7 @@ class TypeInterfaceBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $interface_name = $type->getClassName() . 'Interface';
+        $interface_name = $type->getEntityClassName() . 'Interface';
 
         $interface_build_path = $this->getBuildPath() ?
             sprintf("%s/%s.php", $this->getBuildPath(), $interface_name)

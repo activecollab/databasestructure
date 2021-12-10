@@ -22,7 +22,7 @@ class TypeDefinitionTest extends TestCase
      */
     public function testTypeInheritsDatabaseObjectByDefault()
     {
-        $this->assertEquals(Entity::class, (new Type('writers'))->getBaseClassExtends());
+        $this->assertEquals(Entity::class, (new Type('writers'))->getBaseEntityClassExtends());
     }
 
     /**
@@ -31,7 +31,7 @@ class TypeDefinitionTest extends TestCase
     public function testBaseClassCanExtendObjectClassDescendent()
     {
         $type = (new Type('writers'))->setBaseClassExtends(ObjectClassDescendent::class);
-        $this->assertEquals(ObjectClassDescendent::class, $type->getBaseClassExtends());
+        $this->assertEquals(ObjectClassDescendent::class, $type->getBaseEntityClassExtends());
     }
 
     public function testBaseClassCantExtendNonObjectClassDescendent()

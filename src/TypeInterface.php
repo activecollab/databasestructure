@@ -32,25 +32,21 @@ interface TypeInterface
     public function &setTableName($table_name);
 
     /**
-     * Return type class name.
-     *
-     * @return string
+     * Return entity class name.
      */
-    public function getClassName(): string;
+    public function getEntityClassName(): string;
+
+    /**
+     * Return name of a class that base type class should extend.
+     */
+    public function getBaseEntityClassExtends(): string;
 
     /**
      * Return name of a class that base type class should extend.
      *
      * @return string
      */
-    public function getBaseClassExtends(): string;
-
-    /**
-     * Return name of a class that base type class should extend.
-     *
-     * @return string
-     */
-    public function getBaseInterfaceExtends(): string;
+    public function getBaseEntityInterfaceExtends(): string;
 
     /**
      * Return manager class name.
@@ -61,10 +57,13 @@ interface TypeInterface
 
     /**
      * Return collection class name.
-     *
-     * @return string
      */
     public function getCollectionClassName(): string;
+
+    /**
+     * Return collection class name.
+     */
+    public function getCollectionInterfaceName(): string;
 
     /**
      * Set name of a class that base type class should extend.

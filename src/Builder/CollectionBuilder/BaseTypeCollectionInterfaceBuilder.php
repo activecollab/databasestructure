@@ -12,15 +12,18 @@ namespace ActiveCollab\DatabaseStructure\Builder\CollectionBuilder;
 
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
+use Doctrine\Common\Inflector\Inflector;
 
-class BaseTypeCollectionBuilder extends FileSystemBuilder
+class BaseTypeCollectionInterfaceBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $base_collection_class_name = $type->getCollectionClassName();
+        $base_collection_interface_name = $type->getCollectionInterfaceName();
         $type_class_name = $type->getEntityClassName();
 
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/Base/$base_collection_class_name.php" : null;
+        $base_class_build_path = $this->getBuildPath()
+            ? "{$this->getBuildPath()}/Collection/Base/$base_collection_interface_name.php"
+            : null;
 
         $result = [];
 
@@ -44,20 +47,16 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
-        $result[] = 'use ActiveCollab\DatabaseObject\Collection\Type as TypeCollection;';
+        $result[] = 'use ActiveCollab\DatabaseObject\CollectionInterface;';
         $result[] = '';
-
-        $result[] = 'abstract class ' . $base_collection_class_name . ' extends TypeCollection';
+        $result[] = sprintf('interface %s extends CollectionInterface', $base_collection_interface_name);
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this collection works with.';
         $result[] = '     *';
         $result[] = '     * @return string';
         $result[] = '     */';
-        $result[] = '    public function getType()';
-        $result[] = '    {';
-        $result[] = '        return ' . var_export($type_class_name, true) . ';';
-        $result[] = '    }';
+        $result[] = '    public function getType();';
         $result[] = '}';
         $result[] = '';
 
@@ -70,8 +69,8 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         }
 
         $this->triggerEvent(
-            'on_class_built', [
-                $base_collection_class_name,
+            'on_interface_built', [
+                $base_collection_interface_name,
                 $base_class_build_path,
             ]
         );

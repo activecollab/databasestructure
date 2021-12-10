@@ -22,7 +22,7 @@ class BaseClassExtendsTest extends TestCase
         $structure = new BaseClassExtendsStructure();
         $this->assertEmpty($structure->getConfig('base_class_extends'));
 
-        $this->assertEquals(Entity::class, $structure->getType('writers')->getBaseClassExtends());
+        $this->assertEquals(Entity::class, $structure->getType('writers')->getBaseEntityClassExtends());
     }
 
     /**
@@ -33,6 +33,6 @@ class BaseClassExtendsTest extends TestCase
         $structure = new BaseClassExtendsStructure(ExtendThisObject::class);
         $this->assertEquals(ExtendThisObject::class, $structure->getConfig('base_class_extends'));
 
-        $this->assertEquals(ExtendThisObject::class, $structure->getType('writers')->getBaseClassExtends());
+        $this->assertEquals(ExtendThisObject::class, $structure->getType('writers')->getBaseEntityClassExtends());
     }
 }

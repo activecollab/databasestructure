@@ -34,7 +34,7 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             '%sInterface',
             Inflector::classify(Inflector::singularize($type->getName()))
         );
-        $base_interface_extends = '\\' . ltrim($type->getBaseInterfaceExtends(), '\\');
+        $base_interface_extends = '\\' . ltrim($type->getBaseEntityInterfaceExtends(), '\\');
 
         $base_interface_build_path = $this->getBuildPath()
             ? "{$this->getBuildPath()}/Base/$base_interface_name.php"

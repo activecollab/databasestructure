@@ -17,7 +17,7 @@ class TypeClassBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $class_name = $type->getClassName();
+        $class_name = $type->getEntityClassName();
 
         $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/$class_name.php" : null;
 

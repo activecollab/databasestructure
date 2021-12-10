@@ -27,6 +27,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use BadMethodCallException;
 use Doctrine\Common\Inflector\Inflector;
 use InvalidArgumentException;
+use ReflectionClass;
 
 class Type implements TypeInterface
 {
@@ -35,10 +36,7 @@ class Type implements TypeInterface
      */
     private $name;
 
-    /**
-     * @param string $name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
@@ -236,7 +234,7 @@ class Type implements TypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getClassName(): string
+    public function getEntityClassName(): string
     {
         return Inflector::classify(Inflector::singularize($this->getName()));
     }
@@ -249,7 +247,7 @@ class Type implements TypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseClassExtends(): string
+    public function getBaseEntityClassExtends(): string
     {
         if (empty($this->base_class_extends)) {
             $this->base_class_extends = Entity::class;
@@ -263,10 +261,7 @@ class Type implements TypeInterface
      */
     private $base_interface_extends;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseInterfaceExtends(): string
+    public function getBaseEntityInterfaceExtends(): string
     {
         if (empty($this->base_interface_extends)) {
             $this->base_interface_extends = EntityInterface::class;
@@ -275,20 +270,19 @@ class Type implements TypeInterface
         return $this->base_interface_extends;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getManagerClassName(): string
     {
         return Inflector::classify($this->getName());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCollectionClassName(): string
     {
         return Inflector::classify($this->getName());
+    }
+
+    public function getCollectionInterfaceName(): string
+    {
+        return sprintf('%sInterface', $this->getCollectionClassName());
     }
 
     /**
@@ -303,7 +297,7 @@ class Type implements TypeInterface
     {
         if ($class_name
             && class_exists($class_name)
-            && (new \ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
+            && (new ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
         } else {
             throw new InvalidArgumentException("Class name '$class_name' is not valid");
         }

@@ -34,9 +34,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $interface_name = sprintf('%sInterface', $type->getClassName());
+        $interface_name = sprintf('%sInterface', $type->getEntityClassName());
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
-        $base_class_extends = '\\' . ltrim($type->getBaseClassExtends(), '\\');
+        $base_class_extends = '\\' . ltrim($type->getBaseEntityClassExtends(), '\\');
 
         $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Base/$base_class_name.php" : null;
 
