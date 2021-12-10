@@ -44,7 +44,7 @@ class BaseTypeManagerInterfaceBuilder extends FileSystemBuilder
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
         $result[] = 'use ActiveCollab\DatabaseObject\Entity\ManagerInterface;';
-
+        $result[] = '';
         $result[] = sprintf('interface %s extends ManagerInterface', $base_manager_interface_name);
         $result[] = '{';
         $result[] = '}';

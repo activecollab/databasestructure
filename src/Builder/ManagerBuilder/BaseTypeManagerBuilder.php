@@ -56,9 +56,6 @@ class BaseTypeManagerBuilder extends FileSystemBuilder
         $result[] = '';
         $result[] = sprintf('abstract class %s extends Manager implements %s', $base_manager_class_name, $type->getManagerInterfaceName());
         $result[] = '{';
-        $result[] = '    /**';
-        $result[] = '     * Return type that this manager works with.';
-        $result[] = '     */';
         $result[] = '    public function getType(): string';
         $result[] = '    {';
         $result[] = '        return ' . var_export($type_class_name, true) . ';';
