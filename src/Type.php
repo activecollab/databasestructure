@@ -231,12 +231,14 @@ class Type implements TypeInterface
      */
     private $fields = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEntityClassName(): string
     {
         return Inflector::classify(Inflector::singularize($this->getName()));
+    }
+
+    public function getEntityInterfaceName(): string
+    {
+        return sprintf('%sInterface', $this->getEntityClassName());
     }
 
     /**

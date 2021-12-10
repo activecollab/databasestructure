@@ -34,11 +34,14 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $interface_name = sprintf('%sInterface', $type->getEntityClassName());
-        $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));
-        $base_class_extends = '\\' . ltrim($type->getBaseEntityClassExtends(), '\\');
+        $base_class_name = $type->getEntityClassName();
+        $interface_name = $type->getEntityInterfaceName();
+        $base_class_extends_fqn = ltrim($type->getBaseEntityClassExtends(), '\\');
+        $base_class_extends_alias = $this->getBaseClassExtendsAlias($base_class_extends_fqn);
 
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Base/$base_class_name.php" : null;
+        $base_class_build_path = $this->getBuildPath()
+            ? "{$this->getBuildPath()}/Base/$base_class_name.php"
+            : null;
 
         $result = [];
 
@@ -63,13 +66,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $this->getStructure()->getNamespace(),
             $interface_name
         );
+        $result[] = sprintf('use %s as %s;', $base_class_extends_fqn, $base_class_extends_alias);
         $result[] = '';
 
-        $result[] = '/**';
-
-        $this->buildBaseClassDocBlockProperties('', $result);
-
-        $result[] = ' */';
+        $this->buildBaseClassDocBlockProperties($result);
 
         $traits = [];
 
@@ -81,7 +81,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
         }
 
-        $this->buildClassDeclaration($base_class_name, $base_class_extends, $interface_name, '', $result);
+        $this->buildClassDeclaration($base_class_name, $base_class_extends_alias, $interface_name, '', $result);
 
         $result[] = '{';
 
@@ -253,16 +253,18 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $this->triggerEvent('on_class_built', [$base_class_name, $base_class_build_path]);
     }
 
-    private function buildBaseClassDocBlockProperties(string $indent, array &$result): void
+    private function buildBaseClassDocBlockProperties(array &$result): void
     {
         $base_class_doc_block_properties = $this->getStructure()->getConfig('base_class_doc_block_properties');
 
         if (is_array($base_class_doc_block_properties) && !empty($base_class_doc_block_properties)) {
+            $result[] = '/**';
+
             foreach ($base_class_doc_block_properties as $property => $property_type) {
-                $result[] = $indent . " * @property {$property_type} \${$property}";
+                $result[] = " * @property {$property_type} \${$property}";
             }
 
-            $result[] = $indent . ' *';
+            $result[] = ' */';
         }
     }
 
@@ -999,5 +1001,12 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     private function getModifierName($field_name): string
     {
         return 'modify' . Inflector::classify($field_name);
+    }
+
+    private function getBaseClassExtendsAlias(string $base_class_extends_fqn): string
+    {
+        $fqn_bits = explode('\\', $base_class_extends_fqn);
+
+        return sprintf('Base%s', $fqn_bits[count($fqn_bits) - 1]);
     }
 }

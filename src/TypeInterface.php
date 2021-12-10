@@ -31,10 +31,8 @@ interface TypeInterface
      */
     public function &setTableName($table_name);
 
-    /**
-     * Return entity class name.
-     */
     public function getEntityClassName(): string;
+    public function getEntityInterfaceName(): string;
 
     /**
      * Return name of a class that base type class should extend.
