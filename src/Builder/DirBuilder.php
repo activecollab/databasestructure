@@ -45,9 +45,6 @@ abstract class DirBuilder extends FileSystemBuilder
 
     /**
      * Return full path of directory that needs to be built.
-     *
-     * @param  string $build_path
-     * @return string
      */
-    abstract protected function getDirToBuildPath($build_path);
+    abstract protected function getDirToBuildPath(string $build_path): string;
 }
