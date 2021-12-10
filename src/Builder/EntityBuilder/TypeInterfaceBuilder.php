@@ -8,8 +8,9 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\EntityBuilder;
 
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class TypeInterfaceBuilder extends FileSystemBuilder
