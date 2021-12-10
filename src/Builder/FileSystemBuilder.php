@@ -31,4 +31,38 @@ abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInt
 
         return $this;
     }
+
+    protected function openPhpFile(): array
+    {
+        $result = [
+            '<?php',
+            '',
+        ];
+
+        if ($this->getStructure()->getConfig('header_comment')) {
+            $result = array_merge(
+                $result,
+                explode("\n", $this->getStructure()->getConfig('header_comment'))
+            );
+            $result[] = '';
+        }
+
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
+
+        return $result;
+    }
+
+    protected function writeOrEval(?string $path, array $result): ?string
+    {
+        $result = implode("\n", $result);
+
+        if ($this->getBuildPath()) {
+            file_put_contents($path, $result);
+        } else {
+            eval(ltrim($result, '<?php'));
+        }
+
+        return $path;
+    }
 }

@@ -29,18 +29,7 @@ class TypeInterfaceBuilder extends FileSystemBuilder
             return;
         }
 
-        $result = [];
-
-        $result[] = '<?php';
-        $result[] = '';
-
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
-
-        $result[] = 'declare(strict_types=1);';
-        $result[] = '';
+        $result = $this->openPhpFile();
 
         if ($this->getStructure()->getNamespace()) {
             $result[] = 'namespace ' . $this->getStructure()->getNamespace() . ';';
@@ -60,14 +49,12 @@ class TypeInterfaceBuilder extends FileSystemBuilder
         $result[] = '}';
         $result[] = '';
 
-        $result = implode("\n", $result);
-
-        if ($this->getBuildPath()) {
-            file_put_contents($interface_build_path, $result);
-        } else {
-            eval(ltrim($result, '<?php'));
-        }
-
-        $this->triggerEvent('on_class_built', [$interface_name, $interface_build_path]);
+        $this->triggerEvent(
+            'on_class_built',
+            [
+                $interface_name,
+                $this->writeOrEval($interface_build_path, $result),
+            ]
+        );
     }
 }

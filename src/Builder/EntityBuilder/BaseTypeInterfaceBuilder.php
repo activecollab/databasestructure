@@ -40,18 +40,7 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             ? "{$this->getBuildPath()}/Base/$base_interface_name.php"
             : null;
 
-        $result = [];
-
-        $result[] = '<?php';
-        $result[] = '';
-
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
-
-        $result[] = 'declare(strict_types=1);';
-        $result[] = '';
+        $result = $this->openPhpFile();
 
         $base_interface_namespace = $this->getStructure()->getNamespace()
             ? $this->getStructure()->getNamespace() . '\\Base'
@@ -95,15 +84,13 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
         $result[] = '}';
         $result[] = '';
 
-        $result = implode("\n", $result);
-
-        if ($this->getBuildPath()) {
-            file_put_contents($base_interface_build_path, $result);
-        } else {
-            eval(ltrim($result, '<?php'));
-        }
-
-        $this->triggerEvent('on_interface_built', [$base_interface_name, $base_interface_build_path]);
+        $this->triggerEvent(
+            'on_interface_built',
+            [
+                $base_interface_name,
+                $this->writeOrEval($base_interface_build_path, $result),
+            ]
+        );
     }
 
     public function buildInterfaceDeclaration(

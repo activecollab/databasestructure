@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder\ManagerBuilder;
 
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
@@ -36,18 +38,7 @@ class TypeManagerInterfaceBuilder extends FileSystemBuilder
             ? $this->getStructure()->getNamespace() . '\\Manager'
             : 'Manager';
 
-        $result = [];
-
-        $result[] = '<?php';
-        $result[] = '';
-
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
-
-        $result[] = 'declare(strict_types=1);';
-        $result[] = '';
+        $result = $this->openPhpFile();
 
         if ($this->getStructure()->getNamespace()) {
             $result[] = "namespace $manager_interface_namespace;";
@@ -61,19 +52,11 @@ class TypeManagerInterfaceBuilder extends FileSystemBuilder
         $result[] = '}';
         $result[] = '';
 
-        $result = implode("\n", $result);
-
-        if ($this->getBuildPath()) {
-            file_put_contents($class_build_path, $result);
-        } else {
-            eval(ltrim($result, '<?php'));
-        }
-
         $this->triggerEvent(
             'on_interface_built',
             [
                 $manager_interface_name,
-                $class_build_path
+                $this->writeOrEval($class_build_path, $result),
             ]
         );
     }

@@ -28,18 +28,7 @@ class TypeManagerBuilder extends FileSystemBuilder
 
         $manager_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Manager' : 'Manager';
 
-        $result = [];
-
-        $result[] = '<?php';
-        $result[] = '';
-
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
-
-        $result[] = 'declare(strict_types=1);';
-        $result[] = '';
+        $result = $this->openPhpFile();
 
         if ($this->getStructure()->getNamespace()) {
             $result[] = "namespace $manager_class_namespace;";
@@ -51,14 +40,12 @@ class TypeManagerBuilder extends FileSystemBuilder
         $result[] = '}';
         $result[] = '';
 
-        $result = implode("\n", $result);
-
-        if ($this->getBuildPath()) {
-            file_put_contents($class_build_path, $result);
-        } else {
-            eval(ltrim($result, '<?php'));
-        }
-
-        $this->triggerEvent('on_class_built', [$manager_class_name, $class_build_path]);
+        $this->triggerEvent(
+            'on_class_built',
+            [
+                $manager_class_name,
+                $this->writeOrEval($class_build_path, $result),
+            ]
+        );
     }
 }

@@ -30,18 +30,7 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
             ? "{$this->getBuildPath()}/Collection/Base/$base_collection_class_name.php"
             : null;
 
-        $result = [];
-
-        $result[] = '<?php';
-        $result[] = '';
-
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
-
-        $result[] = 'declare(strict_types=1);';
-        $result[] = '';
+        $result = $this->openPhpFile();
 
         if ($this->getStructure()->getNamespace()) {
             $base_class_namespace = $this->getStructure()->getNamespace() . '\\Collection\\Base';
@@ -69,18 +58,10 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         $result[] = '}';
         $result[] = '';
 
-        $result = implode("\n", $result);
-
-        if ($this->getBuildPath()) {
-            file_put_contents($base_class_build_path, $result);
-        } else {
-            eval(ltrim($result, '<?php'));
-        }
-
         $this->triggerEvent(
             'on_class_built', [
                 $base_collection_class_name,
-                $base_class_build_path,
+                $this->writeOrEval($base_class_build_path, $result),
             ]
         );
     }

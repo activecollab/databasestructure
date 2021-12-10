@@ -23,15 +23,7 @@ class BaseTypeManagerInterfaceBuilder extends FileSystemBuilder
             ? "{$this->getBuildPath()}/Manager/Base/$base_manager_interface_name.php"
             : null;
 
-        $result = [];
-
-        $result[] = '<?php';
-        $result[] = '';
-
-        if ($this->getStructure()->getConfig('header_comment')) {
-            $result = array_merge($result, explode("\n", $this->getStructure()->getConfig('header_comment')));
-            $result[] = '';
-        }
+        $result = $this->openPhpFile();
 
         if ($this->getStructure()->getNamespace()) {
             $base_class_namespace = $this->getStructure()->getNamespace() . '\\Manager\\Base';
@@ -39,8 +31,6 @@ class BaseTypeManagerInterfaceBuilder extends FileSystemBuilder
             $base_class_namespace = 'Manager\\Base';
         }
 
-        $result[] = 'declare(strict_types=1);';
-        $result[] = '';
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
         $result[] = 'use ActiveCollab\DatabaseObject\Entity\ManagerInterface;';
@@ -50,19 +40,11 @@ class BaseTypeManagerInterfaceBuilder extends FileSystemBuilder
         $result[] = '}';
         $result[] = '';
 
-        $result = implode("\n", $result);
-
-        if ($this->getBuildPath()) {
-            file_put_contents($base_manager_interface_build_path, $result);
-        } else {
-            eval(ltrim($result, '<?php'));
-        }
-
         $this->triggerEvent(
             'on_interface_built',
             [
                 $base_manager_interface_name,
-                $base_manager_interface_build_path
+                $this->writeOrEval($base_manager_interface_build_path, $result),
             ]
         );
     }
