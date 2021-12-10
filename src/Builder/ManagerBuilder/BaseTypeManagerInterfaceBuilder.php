@@ -59,7 +59,7 @@ class BaseTypeManagerInterfaceBuilder extends FileSystemBuilder
         }
 
         $this->triggerEvent(
-            'on_class_built',
+            'on_interface_built',
             [
                 $base_manager_interface_name,
                 $base_manager_interface_build_path

@@ -16,10 +16,18 @@ class BaseTypeManagerBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $base_manager_class_name = Inflector::classify($type->getName());
-        $type_class_name = Inflector::classify(Inflector::singularize($type->getName()));
+        $base_manager_class_name = $type->getManagerClassName();
+        $type_class_name = $type->getEntityClassName();
 
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Manager/Base/$base_manager_class_name.php" : null;
+        $manager_interface_fqn = sprintf(
+            '%s\\Manager\\%s',
+            $this->getStructure()->getNamespace(),
+            $type->getManagerInterfaceName()
+        );
+
+        $base_class_build_path = $this->getBuildPath()
+            ? "{$this->getBuildPath()}/Manager/Base/$base_manager_class_name.php"
+            : null;
 
         $result = [];
 
@@ -31,6 +39,9 @@ class BaseTypeManagerBuilder extends FileSystemBuilder
             $result[] = '';
         }
 
+        $result[] = 'declare(strict_types=1);';
+        $result[] = '';
+
         if ($this->getStructure()->getNamespace()) {
             $base_class_namespace = $this->getStructure()->getNamespace() . '\\Manager\\Base';
             $type_class_name = '\\' . ltrim($this->getStructure()->getNamespace(), '\\') . '\\' . $type_class_name;
@@ -40,23 +51,10 @@ class BaseTypeManagerBuilder extends FileSystemBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
-
-        $interfaces = [];
-        $traits = [];
-
-        foreach ($type->getTraits() as $interface => $implementations) {
-            if ($interface != '--just-paste-trait--') {
-                $interfaces[] = '\\' . ltrim($interface, '\\');
-            }
-
-            if (count($implementations)) {
-                foreach ($implementations as $implementation) {
-                    $traits[] = '\\' . ltrim($implementation, '\\');
-                }
-            }
-        }
-
-        $result[] = 'abstract class ' . $base_manager_class_name . ' extends \ActiveCollab\DatabaseObject\Entity\Manager';
+        $result[] = 'use ActiveCollab\DatabaseObject\Entity\Manager;';
+        $result[] = sprintf('use %s;', $manager_interface_fqn);
+        $result[] = '';
+        $result[] = sprintf('abstract class %s extends Manager implements %s', $base_manager_class_name, $type->getManagerInterfaceName());
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this manager works with.';
