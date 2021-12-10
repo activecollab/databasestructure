@@ -45,10 +45,7 @@ class RecordsBuilder extends DatabaseBuilder implements FileSystemBuilderInterfa
         return $this;
     }
 
-    /**
-     * Execute after types are built.
-     */
-    public function postBuild()
+    public function postBuild(): void
     {
         /** @var RecordInterface $record */
         foreach ($this->getStructure()->getRecords() as $record) {

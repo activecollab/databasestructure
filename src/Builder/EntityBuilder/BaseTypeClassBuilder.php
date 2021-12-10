@@ -32,10 +32,7 @@ use Doctrine\Common\Inflector\Inflector;
 
 class BaseTypeClassBuilder extends FileSystemBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
         $interface_name = sprintf('%sInterface', $type->getClassName());
         $base_class_name = Inflector::classify(Inflector::singularize($type->getName()));

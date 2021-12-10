@@ -45,10 +45,7 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
         return $this;
     }
 
-    /**
-     * @param TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
         foreach ($type->getTriggers() as $trigger) {
             $create_trigger_statement = $this->prepareCreateTriggerStatement($type, $trigger);

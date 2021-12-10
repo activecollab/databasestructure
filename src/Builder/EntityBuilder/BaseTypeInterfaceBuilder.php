@@ -28,10 +28,7 @@ use Doctrine\Common\Inflector\Inflector;
 
 class BaseTypeInterfaceBuilder extends FileSystemBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
         $base_interface_name = sprintf(
             '%sInterface',

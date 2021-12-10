@@ -6,22 +6,20 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\ManagerBuilder;
 
+use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Common\Inflector\Inflector;
 
-class BaseTypeCollectionBuilder extends FileSystemBuilder
+class BaseTypeManagerBuilder extends FileSystemBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
-        $base_collection_class_name = Inflector::classify($type->getName());
+        $base_manager_class_name = Inflector::classify($type->getName());
         $type_class_name = Inflector::classify(Inflector::singularize($type->getName()));
 
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/Base/$base_collection_class_name.php" : null;
+        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Manager/Base/$base_manager_class_name.php" : null;
 
         $result = [];
 
@@ -34,10 +32,10 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         }
 
         if ($this->getStructure()->getNamespace()) {
-            $base_class_namespace = $this->getStructure()->getNamespace() . '\\Collection\\Base';
+            $base_class_namespace = $this->getStructure()->getNamespace() . '\\Manager\\Base';
             $type_class_name = '\\' . ltrim($this->getStructure()->getNamespace(), '\\') . '\\' . $type_class_name;
         } else {
-            $base_class_namespace = 'Collection\\Base';
+            $base_class_namespace = 'Manager\\Base';
         }
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
@@ -58,14 +56,12 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
             }
         }
 
-        $result[] = 'abstract class ' . $base_collection_class_name . ' extends \ActiveCollab\DatabaseObject\Collection\Type';
+        $result[] = 'abstract class ' . $base_manager_class_name . ' extends \ActiveCollab\DatabaseObject\Entity\Manager';
         $result[] = '{';
         $result[] = '    /**';
-        $result[] = '     * Return type that this collection works with.';
-        $result[] = '     *';
-        $result[] = '     * @return string';
+        $result[] = '     * Return type that this manager works with.';
         $result[] = '     */';
-        $result[] = '    public function getType()';
+        $result[] = '    public function getType(): string';
         $result[] = '    {';
         $result[] = '        return ' . var_export($type_class_name, true) . ';';
         $result[] = '    }';
@@ -80,6 +76,6 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$base_collection_class_name, $base_class_build_path]);
+        $this->triggerEvent('on_class_built', [$base_manager_class_name, $base_class_build_path]);
     }
 }

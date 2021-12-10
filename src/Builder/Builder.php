@@ -30,10 +30,7 @@ abstract class Builder implements BuilderInterface
         $this->structure = $structure;
     }
 
-    /**
-     * @return StructureInterface
-     */
-    public function getStructure()
+    public function getStructure(): StructureInterface
     {
         return $this->structure;
     }
@@ -45,59 +42,36 @@ abstract class Builder implements BuilderInterface
      */
     private $event_handlers = [];
 
-    /**
-     * Execute prior to type build.
-     */
-    public function preBuild()
+    public function preBuild(): void
     {
     }
 
-    /**
-     * Build type.
-     *
-     * @param \ActiveCollab\DatabaseStructure\TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
     }
 
-    /**
-     * Execute after types are built.
-     */
-    public function postBuild()
+    public function postBuild(): void
     {
     }
 
-    /**
-     * Register an internal event handler.
-     *
-     * @param string   $event
-     * @param callable $handler
-     */
-    public function registerEventHandler($event, callable $handler)
+    public function registerEventHandler(string $event, callable $handler): void
     {
         if (empty($event)) {
             throw new InvalidArgumentException('Event name is required');
         }
 
-        if (is_callable($handler)) {
-            if (empty($this->event_handlers[$event])) {
-                $this->event_handlers[$event] = [];
-            }
-
-            $this->event_handlers[$event][] = $handler;
-        } else {
+        if (!is_callable($handler)) {
             throw new InvalidArgumentException('Handler not callable');
         }
+
+        if (empty($this->event_handlers[$event])) {
+            $this->event_handlers[$event] = [];
+        }
+
+        $this->event_handlers[$event][] = $handler;
     }
 
-    /**
-     * Trigger an internal event.
-     *
-     * @param string $event
-     * @param array  $event_parameters
-     */
-    protected function triggerEvent($event, array $event_parameters = [])
+    protected function triggerEvent(string $event, array $event_parameters = []): void
     {
         if (isset($this->event_handlers[$event])) {
             if (empty($event_parameters)) {

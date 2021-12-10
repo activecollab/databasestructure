@@ -8,7 +8,9 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\ManagerBuilder;
+
+use ActiveCollab\DatabaseStructure\Builder\DirBuilder;
 
 class BaseManagerDirBuilder extends DirBuilder
 {

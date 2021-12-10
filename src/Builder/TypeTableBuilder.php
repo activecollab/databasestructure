@@ -67,10 +67,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $this;
     }
 
-    /**
-     * Execute prior to type build.
-     */
-    public function preBuild()
+    public function preBuild(): void
     {
         $structure_sql_path = $this->getStructureSqlPath();
         $initial_data_sql_path = $this->getInitialDataSqlPath();
@@ -91,10 +88,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         }
     }
 
-    /**
-     * @param TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
         if ($this->getConnection()) {
             $create_table_statement = $this->prepareCreateTableStatement($type);
@@ -140,7 +134,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
         $result[] = 'CREATE TABLE IF NOT EXISTS ' . $this->getConnection()->escapeTableName($type->getName()) . ' (';
 
-        $generaterd_field_indexes = [];
+        $generated_field_indexes = [];
 
         foreach ($type->getAllFields() as $field) {
             if ($field instanceof ScalarField) {
@@ -152,7 +146,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                     $result[] = '    ' . $this->prepareGeneratedFieldStatement($field, $value_extractor) . ',';
 
                     if ($value_extractor->getAddIndex()) {
-                        $generaterd_field_indexes[] = new Index($value_extractor->getFieldName());
+                        $generated_field_indexes[] = new Index($value_extractor->getFieldName());
                     }
                 }
             }
@@ -160,8 +154,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
         $indexes = $type->getAllIndexes();
 
-        if (!empty($generaterd_field_indexes)) {
-            $indexes = array_merge($indexes, $generaterd_field_indexes);
+        if (!empty($generated_field_indexes)) {
+            $indexes = array_merge($indexes, $generated_field_indexes);
         }
 
         foreach ($indexes as $index) {

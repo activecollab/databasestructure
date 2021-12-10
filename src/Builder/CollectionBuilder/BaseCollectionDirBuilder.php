@@ -8,12 +8,14 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+namespace ActiveCollab\DatabaseStructure\Builder\CollectionBuilder;
 
-class CollectionDirBuilder extends DirBuilder
+use ActiveCollab\DatabaseStructure\Builder\DirBuilder;
+
+class BaseCollectionDirBuilder extends DirBuilder
 {
     protected function getDirToBuildPath(string $build_path): string
     {
-        return "$build_path/Collection";
+        return "$build_path/Collection/Base";
     }
 }

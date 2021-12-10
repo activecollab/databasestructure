@@ -15,10 +15,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class TypeClassBuilder extends FileSystemBuilder
 {
-    /**
-     * @param TypeInterface $type
-     */
-    public function buildType(TypeInterface $type)
+    public function buildType(TypeInterface $type): void
     {
         $class_name = $type->getClassName();
 

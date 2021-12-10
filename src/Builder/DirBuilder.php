@@ -13,10 +13,7 @@ use RuntimeException;
 
 abstract class DirBuilder extends FileSystemBuilder
 {
-    /**
-     * Execute prior to type build.
-     */
-    public function preBuild()
+    public function preBuild(): void
     {
         $build_path = $this->getBuildPath();
 

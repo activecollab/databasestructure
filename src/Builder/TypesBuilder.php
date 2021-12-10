@@ -14,7 +14,7 @@ use Doctrine\Common\Inflector\Inflector;
 
 class TypesBuilder extends FileSystemBuilder
 {
-    public function postBuild()
+    public function postBuild(): void
     {
         $types_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/types.php" : null;
 
