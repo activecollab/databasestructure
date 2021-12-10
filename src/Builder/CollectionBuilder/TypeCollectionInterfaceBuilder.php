@@ -13,22 +13,30 @@ namespace ActiveCollab\DatabaseStructure\Builder\CollectionBuilder;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
-class TypeCollectionBuilder extends FileSystemBuilder
+class TypeCollectionInterfaceBuilder extends FileSystemBuilder
 {
     public function buildType(TypeInterface $type): void
     {
-        $collection_class_name = $type->getCollectionClassName();
-        $base_class_name = 'Base\\' . $collection_class_name;
+        $collection_interface_name = $type->getCollectionInterfaceName();
+        $base_collection_interface_fqn = sprintf(
+            '%s\\Collection\\Base\\%s',
+            $this->getStructure()->getNamespace(),
+            $collection_interface_name
+        );
 
-        $class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/$collection_class_name.php" : null;
+        $class_build_path = $this->getBuildPath()
+            ? "{$this->getBuildPath()}/Collection/$collection_interface_name.php"
+            : null;
 
         if ($class_build_path && is_file($class_build_path)) {
-            $this->triggerEvent('on_class_build_skipped', [$collection_class_name, $class_build_path]);
+            $this->triggerEvent('on_interface_build_skipped', [$collection_interface_name, $class_build_path]);
 
             return;
         }
 
-        $collection_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Collection' : 'Collection';
+        $collection_interface_namespace = $this->getStructure()->getNamespace()
+            ? $this->getStructure()->getNamespace() . '\\Collection'
+            : 'Collection';
 
         $result = [];
 
@@ -44,11 +52,12 @@ class TypeCollectionBuilder extends FileSystemBuilder
         $result[] = '';
 
         if ($this->getStructure()->getNamespace()) {
-            $result[] = "namespace $collection_class_namespace;";
+            $result[] = "namespace $collection_interface_namespace;";
             $result[] = '';
         }
-
-        $result[] = 'class ' . $collection_class_name . ' extends ' . $base_class_name;
+        $result[] = sprintf('use %s as Base%s;', $base_collection_interface_fqn, $collection_interface_name);
+        $result[] = '';
+        $result[] = sprintf('interface %s extends Base%s', $collection_interface_name, $collection_interface_name);
         $result[] = '{';
         $result[] = '}';
         $result[] = '';
@@ -61,6 +70,6 @@ class TypeCollectionBuilder extends FileSystemBuilder
             eval(ltrim($result, '<?php'));
         }
 
-        $this->triggerEvent('on_class_built', [$collection_class_name, $class_build_path]);
+        $this->triggerEvent('on_interface_built', [$collection_interface_name, $class_build_path]);
     }
 }

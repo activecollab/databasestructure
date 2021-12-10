@@ -14,6 +14,7 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Builder\AssociationsBuilder;
 use ActiveCollab\DatabaseStructure\Builder\CollectionBuilder\BaseCollectionDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\CollectionBuilder\BaseTypeCollectionInterfaceBuilder;
+use ActiveCollab\DatabaseStructure\Builder\CollectionBuilder\TypeCollectionInterfaceBuilder;
 use ActiveCollab\DatabaseStructure\Builder\EntityBuilder\BaseDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\ManagerBuilder\BaseManagerDirBuilder;
 use ActiveCollab\DatabaseStructure\Builder\EntityBuilder\BaseTypeClassBuilder;
@@ -356,6 +357,7 @@ abstract class Structure implements StructureInterface
             $this->builders[] = new BaseCollectionDirBuilder($this);
 
             $this->builders[] = new BaseTypeCollectionInterfaceBuilder($this);
+            $this->builders[] = new TypeCollectionInterfaceBuilder($this);
             $this->builders[] = new BaseTypeCollectionBuilder($this);
             $this->builders[] = new TypeCollectionBuilder($this);
 

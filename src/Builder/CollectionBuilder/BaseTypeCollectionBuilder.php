@@ -20,7 +20,15 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
         $base_collection_class_name = $type->getCollectionClassName();
         $type_class_name = $type->getEntityClassName();
 
-        $base_class_build_path = $this->getBuildPath() ? "{$this->getBuildPath()}/Collection/Base/$base_collection_class_name.php" : null;
+        $collection_interface_fqn = sprintf(
+            '%s\\Collection\\%s',
+            $this->getStructure()->getNamespace(),
+            $type->getCollectionInterfaceName()
+        );
+
+        $base_class_build_path = $this->getBuildPath()
+            ? "{$this->getBuildPath()}/Collection/Base/$base_collection_class_name.php"
+            : null;
 
         $result = [];
 
@@ -44,10 +52,10 @@ class BaseTypeCollectionBuilder extends FileSystemBuilder
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
+        $result[] = sprintf('use %s;', $collection_interface_fqn);
         $result[] = 'use ActiveCollab\DatabaseObject\Collection\Type as TypeCollection;';
         $result[] = '';
-
-        $result[] = 'abstract class ' . $base_collection_class_name . ' extends TypeCollection';
+        $result[] = sprintf('abstract class %s extends TypeCollection implements %s', $base_collection_class_name, $type->getCollectionInterfaceName());
         $result[] = '{';
         $result[] = '    /**';
         $result[] = '     * Return type that this collection works with.';
