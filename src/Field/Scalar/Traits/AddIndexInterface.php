@@ -15,11 +15,9 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 interface AddIndexInterface extends FieldTraitInterface
 {
     /**
-     * Return whether we should add an index for this field or not, defualt is FALSE.
-     *
-     * @return string
+     * Return whether we should add an index for this field or not, default is FALSE.
      */
-    public function getAddIndex();
+    public function getAddIndex(): bool;
 
     /**
      * @return array|null

@@ -17,7 +17,7 @@ trait Implementation
     /**
      * @var bool
      */
-    private $add_index = false;
+    private bool $add_index = false;
 
     /**
      * @var array
@@ -30,11 +30,9 @@ trait Implementation
     private $add_index_type = IndexInterface::INDEX;
 
     /**
-     * Return whether we should add an index for this field or not, defualt is FALSE.
-     *
-     * @return string
+     * Return whether we should add an index for this field or not, default is FALSE.
      */
-    public function getAddIndex()
+    public function getAddIndex(): bool
     {
         return $this->add_index;
     }

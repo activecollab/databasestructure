@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.0",
         "ext-mysqli": "*",
         "activecollab/databaseobject": "dev-master",
         "activecollab/filesystem": "^0.10",

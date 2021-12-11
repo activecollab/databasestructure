@@ -125,10 +125,7 @@ class ValueExtractor implements ValueExtractorInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAddIndex()
+    public function getAddIndex(): bool
     {
         return $this->add_index;
     }

@@ -49,10 +49,7 @@ interface ValueExtractorInterface
      */
     public function storeValue($store_value = true);
 
-    /**
-     * @return bool
-     */
-    public function getAddIndex();
+    public function getAddIndex(): bool;
 
     /**
      * @param  bool  $add_index

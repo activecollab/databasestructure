@@ -15,15 +15,8 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 
 trait Implementation
 {
-    /**
-     * @var bool
-     */
-    private $is_unique = false;
-
-    /**
-     * @var array
-     */
-    private $uniqueness_context = [];
+    private bool $is_unique = false;
+    private array $uniqueness_context = [];
 
     public function isUnique(): bool
     {
@@ -35,7 +28,7 @@ trait Implementation
         return $this->uniqueness_context;
     }
 
-    public function &unique(string ...$context)
+    public function unique(string ...$context): static
     {
         $this->is_unique = true;
         $this->uniqueness_context = $context;
