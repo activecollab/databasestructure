@@ -109,26 +109,10 @@ interface TypeInterface
 
     /**
      * Return a list of protected fields.
-     *
-     * @return array
      */
-    public function getProtectedFields();
-
-    /**
-     * Protect given fields.
-     *
-     * @param  string[] ...$fields
-     * @return $this
-     */
-    public function &protectFields(...$fields);
-
-    /**
-     * Unprotect a list of protected fields.
-     *
-     * @param  string[] ...$fields
-     * @return $this
-     */
-    public function &unprotectFields(...$fields);
+    public function getProtectedFields(): array;
+    public function protectFields(string ...$fields): static;
+    public function unprotectFields(string ...$fields): static;
 
     /**
      * Get expected dataset size.

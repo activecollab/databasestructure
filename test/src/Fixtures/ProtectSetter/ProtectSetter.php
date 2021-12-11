@@ -15,9 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class ProtectSetter extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
+    
     protected function configure()
     {
         $this->addType('users')->addFields([

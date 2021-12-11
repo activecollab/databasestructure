@@ -14,9 +14,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class JsonSerializationStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
+    
     public function configure()
     {
         $this->addType('key_values')->addFields([

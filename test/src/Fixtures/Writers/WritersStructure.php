@@ -20,9 +20,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class WritersStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
+    
     public function configure()
     {
         $this->addType('writers')->addFields([

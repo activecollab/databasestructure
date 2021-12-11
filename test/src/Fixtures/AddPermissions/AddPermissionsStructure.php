@@ -28,9 +28,7 @@ class AddPermissionsStructure extends Structure
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    
     public function configure()
     {
         if ($this->add_permissions) {

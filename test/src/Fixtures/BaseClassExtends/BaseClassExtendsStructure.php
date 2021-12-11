@@ -12,10 +12,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class BaseClassExtendsStructure extends Structure
 {
-    /**
-     * @param string|null $base_class_extends
-     */
-    public function __construct($base_class_extends = null)
+    public function __construct(string $base_class_extends = null)
     {
         if ($base_class_extends) {
             $this->setConfig('base_class_extends', $base_class_extends);
@@ -24,9 +21,7 @@ class BaseClassExtendsStructure extends Structure
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    
     public function configure()
     {
         $this->addType('writers');

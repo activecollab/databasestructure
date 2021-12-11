@@ -23,13 +23,10 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\Structure;
 
 /**
- * Blog structure is used for testing how builers are doing their job.
+ * Blog structure is used for testing how builders are doing their job.
  */
 class BlogStructure extends Structure
 {
-    /**
-     * Configure the structure.
-     */
     public function configure()
     {
         $this->addType('categories')->expectedDatasetSize(FieldInterface::SIZE_SMALL)->addFields([

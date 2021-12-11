@@ -13,7 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Behaviour\ProtectedFieldsInterface;
  */
 trait Implementation
 {
-    public function getProtectedFields()
+    public function getProtectedFields(): array
     {
         return property_exists($this, 'protected_fields') ? $this->protected_fields : [];
     }

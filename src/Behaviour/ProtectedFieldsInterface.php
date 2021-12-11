@@ -12,8 +12,6 @@ interface ProtectedFieldsInterface
 {
     /**
      * Return a list of fields that should be protected from public creation and update.
-     *
-     * @return array
      */
-    public function getProtectedFields();
+    public function getProtectedFields(): array;
 }

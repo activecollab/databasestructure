@@ -6,15 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\ProtectedFields;
 
 use ActiveCollab\DatabaseStructure\Structure;
 
 class ProtectedFieldsStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure()
     {
         $this->addType('no_protected_fields');

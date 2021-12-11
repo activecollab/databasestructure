@@ -21,9 +21,6 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class JsonFieldStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure()
     {
         $this->addType('stats_snapshots')->addFields([

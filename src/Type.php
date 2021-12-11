@@ -167,23 +167,14 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @var array
-     */
-    private $protected_fields = [];
+    private array $protected_fields = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProtectedFields()
+    public function getProtectedFields(): array
     {
         return $this->protected_fields;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &protectFields(...$fields)
+    public function protectFields(string ...$fields): static
     {
         foreach ($fields as $field) {
             if ($field && !in_array($field, $this->protected_fields)) {
@@ -201,10 +192,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &unprotectFields(...$fields)
+    public function unprotectFields(string ...$fields): static
     {
         foreach ($fields as $field) {
             $index = array_search($field, $this->protected_fields);

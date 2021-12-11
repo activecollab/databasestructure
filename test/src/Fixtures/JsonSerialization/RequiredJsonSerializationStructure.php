@@ -14,9 +14,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class RequiredJsonSerializationStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
+    
     public function configure()
     {
         $this->addType('required_key_values')->addFields([

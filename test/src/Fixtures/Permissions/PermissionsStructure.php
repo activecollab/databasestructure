@@ -12,9 +12,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class PermissionsStructure extends Structure
 {
-    /**
-     * {@inheritdoc}
-     */
+    
     public function configure()
     {
         $this->addType('elements')->permissions();
