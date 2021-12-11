@@ -6,32 +6,22 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use InvalidArgumentException;
 
 class EnumField extends ScalarFieldWithDefaultValue
 {
-    /**
-     * @var string[]
-     */
-    private $possibilities = [];
+    private array $possibilities = [];
 
-    /**
-     * @return string[]
-     */
-    public function getPossibilities()
+    public function getPossibilities(): array
     {
         return $this->possibilities;
     }
 
-    /**
-     * Set a list of possible values.
-     *
-     * @param  string[] $possibilities
-     * @return $this
-     */
-    public function &possibilities(...$possibilities)
+    public function &possibilities(string ...$possibilities): static
     {
         if ($this->getDefaultValue() !== null && !in_array($this->getDefaultValue(), $possibilities)) {
             throw new InvalidArgumentException('Default value ' . var_export($this->getDefaultValue(), true) . ' needs to be in the list of possibilities');
@@ -42,9 +32,6 @@ class EnumField extends ScalarFieldWithDefaultValue
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'string';

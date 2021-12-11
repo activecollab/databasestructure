@@ -6,15 +6,13 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 class MoneyField extends DecimalField
 {
-    /**
-     * @param string $name
-     * @param float  $default_value
-     */
-    public function __construct($name, $default_value = null)
+    public function __construct(string $name, float $default_value = null)
     {
         parent::__construct($name, $default_value);
 

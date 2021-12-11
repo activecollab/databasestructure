@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\SizeInterface;
@@ -15,9 +17,6 @@ class TextField extends ScalarField implements SizeInterface
 {
     use SizeInterfaceImplementation;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'string';

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\GeneratedFieldsInterface;
@@ -17,26 +19,14 @@ interface JsonFieldInterface extends ScalarFieldInterface, GeneratedFieldsInterf
     /**
      * @return ValueExtractorInterface[]
      */
-    public function getValueExtractors();
-
-    /**
-     * Add value.
-     *
-     * @param  ValueExtractorInterface $extractor
-     * @return $this
-     */
-    public function &addValueExtractor(ValueExtractorInterface $extractor);
-
-    /**
-     * Shortcut method that builds extractor instance from the (long) list of arguments.
-     *
-     * @param  string     $extract_as_field
-     * @param  string     $expression
-     * @param  mixed|null $default_value
-     * @param  string     $extractor_type
-     * @param  bool       $is_stored
-     * @param  bool       $is_indexed
-     * @return $this
-     */
-    public function &extractValue($extract_as_field, $expression, $default_value = null, $extractor_type = ValueExtractor::class, $is_stored = true, $is_indexed = false);
+    public function getValueExtractors(): array;
+    public function addValueExtractor(ValueExtractorInterface $extractor): static;
+    public function extractValue(
+        string $extract_as_field,
+        string $expression,
+        mixed $default_value = null,
+        string $extractor_type = ValueExtractor::class,
+        bool $is_stored = true,
+        bool $is_indexed = false
+    ): static;
 }

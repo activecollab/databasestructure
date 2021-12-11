@@ -14,26 +14,12 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 
 interface AddIndexInterface extends FieldTraitInterface
 {
-    /**
-     * Return whether we should add an index for this field or not, default is FALSE.
-     */
     public function getAddIndex(): bool;
-
-    /**
-     * @return array|null
-     */
-    public function getAddIndexContext();
-
-    /**
-     * Return add index type.
-     */
+    public function getAddIndexContext(): array;
     public function getAddIndexType(): string;
-
-    /**
-     * @param  bool       $add_index
-     * @param  array|null $context
-     * @param  string     $type
-     * @return $this
-     */
-    public function &addIndex($add_index = true, array $context = [], $type = IndexInterface::INDEX);
+    public function addIndex(
+        bool $add_index = true,
+        array $context = [],
+        string $type = IndexInterface::INDEX
+    ): static;
 }

@@ -15,9 +15,6 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 
 class UniqueTraitTest extends TestCase
 {
-    /**
-     * Test unique automatically adds index.
-     */
     public function testUniqueAutomaticallyAddsIndex()
     {
         $non_unique = new NameField();
@@ -28,9 +25,6 @@ class UniqueTraitTest extends TestCase
         $this->assertEquals(IndexInterface::UNIQUE, $unique->getAddIndexType());
     }
 
-    /**
-     * Test if index inehrits key's unique context.
-     */
     public function testIndexUsesUniqueContext()
     {
         $unique = (new NameField())->unique();

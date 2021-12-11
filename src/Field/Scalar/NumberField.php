@@ -6,32 +6,20 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 abstract class NumberField extends ScalarFieldWithDefaultValue
 {
-    /**
-     * @var bool
-     */
-    private $unsigned = false;
+    private bool $unsigned = false;
 
-    /**
-     * Return unsigned.
-     *
-     * @return bool
-     */
-    public function isUnsigned()
+    public function isUnsigned(): bool
     {
         return $this->unsigned;
     }
 
-    /**
-     * Set unsigned column flag.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function &unsigned($value = true)
+    public function &unsigned(bool $value = true): static
     {
         $this->unsigned = (bool) $value;
 

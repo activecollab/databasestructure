@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -19,21 +21,13 @@ class StringField extends ScalarFieldWithDefaultValue implements AddIndexInterfa
 {
     use AddIndexInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation;
 
-    /**
-     * @param string      $name
-     * @param string|null $default_value
-     * @param bool        $add_index
-     */
-    public function __construct($name, $default_value = null, $add_index = false)
+    public function __construct(string $name, string $default_value = null, bool $add_index = false)
     {
         parent::__construct($name, $default_value);
 
         $this->addIndex($add_index);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'string';

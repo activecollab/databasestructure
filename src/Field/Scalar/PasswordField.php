@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 class PasswordField extends ScalarField
@@ -17,9 +19,6 @@ class PasswordField extends ScalarField
         $this->required(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'string';

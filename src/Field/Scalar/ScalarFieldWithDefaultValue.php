@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface\Implementation as DefaultValueInterfaceImplementation;
@@ -15,12 +17,7 @@ abstract class ScalarFieldWithDefaultValue extends ScalarField implements Scalar
 {
     use DefaultValueInterfaceImplementation;
 
-    /**
-     * @param  string                   $name
-     * @param  mixed                    $default_value
-     * @throws InvalidArgumentException
-     */
-    public function __construct($name, $default_value = null)
+    public function __construct(string $name, mixed $default_value = null)
     {
         parent::__construct($name);
 

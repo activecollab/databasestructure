@@ -12,9 +12,6 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class NameField extends StringField
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($name = 'name', $default_value = null, $add_index = false)
     {
         parent::__construct($name, $default_value, $add_index);
@@ -23,10 +20,7 @@ class NameField extends StringField
             $this->modifier('trim');
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
+    
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);

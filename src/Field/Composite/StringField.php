@@ -17,6 +17,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface\Implementation as LengthInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\ModifierInterface\Implementation as ModifierInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\OnlyOneInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\OnlyOneInterface\Implementation as OnlyOneInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
@@ -25,21 +27,17 @@ use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use InvalidArgumentException;
 
-abstract class StringField extends CompositeField implements DefaultValueInterface, RequiredInterface, UniqueInterface, LengthInterface, ModifierInterface, AddIndexInterface
+abstract class StringField extends CompositeField implements DefaultValueInterface, RequiredInterface, UniqueInterface, OnlyOneInterface, LengthInterface, ModifierInterface, AddIndexInterface
 {
-    use DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
+    use DefaultValueInterfaceImplementation, RequiredInterfaceImplementation, UniqueInterfaceImplementation, OnlyOneInterfaceImplementation, LengthInterfaceImplementation, ModifierInterfaceImplementation, AddIndexInterfaceImplementation;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @param string      $name
-     * @param string|null $default_value
-     * @param bool        $add_index
-     */
-    public function __construct($name, $default_value = null, $add_index = false)
+    public function __construct(
+        string $name,
+        string $default_value = null,
+        bool $add_index = false
+    )
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid field name");

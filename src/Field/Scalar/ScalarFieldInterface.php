@@ -6,14 +6,17 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\OnlyOneInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 
-interface ScalarFieldInterface extends FieldInterface, GeneratedInterface, RequiredInterface, UniqueInterface
+interface ScalarFieldInterface extends FieldInterface, GeneratedInterface, OnlyOneInterface, RequiredInterface, UniqueInterface
 {
     /**
      * Return PHP native type.

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
@@ -13,25 +15,16 @@ use ActiveCollab\DateValue\DateTimeValueInterface;
 
 class DateTimeField extends ScalarField
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return '\\' . DateTimeValueInterface::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_DATETIME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCastingCode($variable_name): string
     {
         return '$this->getDateTimeValueInstanceFrom($' . $variable_name . ')';

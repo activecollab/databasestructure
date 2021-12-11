@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
@@ -60,25 +62,16 @@ class FloatField extends NumberField
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'float';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_FLOAT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCastingCode($variable_name): string
     {
         return '(float) $' . $variable_name;

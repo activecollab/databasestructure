@@ -6,11 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface\Implementation as GeneratedInterfaceImplementation;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\OnlyOneInterface\Implementation as OnlyOneInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Implementation as RequiredInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface\Implementation as UniqueInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Index;
@@ -22,6 +25,7 @@ abstract class ScalarField implements ScalarFieldInterface
 {
     use
         GeneratedInterfaceImplementation,
+        OnlyOneInterfaceImplementation,
         ProtectSetterInterfaceImplementation,
         RequiredInterfaceImplementation,
         UniqueInterfaceImplementation;

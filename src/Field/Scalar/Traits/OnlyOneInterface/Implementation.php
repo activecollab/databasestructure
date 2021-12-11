@@ -14,48 +14,42 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 
 trait Implementation
 {
-    private ?string $only_one_field = null;
-    private mixed $only_one_value = null;
-    private array $only_one_context = [];
+    private bool $allow_only_one = false;
+    private mixed $only_one_with_value = null;
+    private array $only_one_in_context = [];
 
     public function allowsOnlyOne(): bool
     {
-        return !empty($this->only_one_field);
+        return $this->allow_only_one;
     }
 
-    public function getOnlyOneField(): ?string
+    public function getOnlyOneWithValue(): mixed
     {
-        return $this->only_one_field;
+        return $this->only_one_with_value;
     }
 
-    public function getOnlyOneValue(): mixed
+    public function getOnlyOneInContext(): array
     {
-        return $this->only_one_value;
-    }
-
-    public function getOnlyOneContext(): array
-    {
-        return $this->only_one_context;
+        return $this->only_one_in_context;
     }
 
     public function onlyOne(
-        string $only_one_field,
-        mixed $only_one_value,
-        string ...$only_one_context
+        mixed $only_with_value,
+        string ...$only_one_in_in_context
     ): static
     {
-        $this->only_one_field = $only_one_field;
-        $this->only_one_value = $only_one_value;
-        $this->only_one_context = $only_one_context;
+        $this->allow_only_one = true;
+        $this->only_one_with_value = $only_with_value;
+        $this->only_one_in_context = $only_one_in_in_context;
 
         if ($this instanceof AddIndexInterface) {
             $this->addIndex(
                 true,
                 array_merge(
                     [
-                        $only_one_field,
+                        $this->getName(),
                     ],
-                    $only_one_context
+                    $only_one_in_in_context
                 )
             );
         }

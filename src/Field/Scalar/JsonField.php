@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
@@ -17,33 +19,21 @@ use ReflectionClass;
 
 class JsonField extends ScalarField implements JsonFieldInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDeserializingCode($variable_name): string
     {
         return 'json_decode($' . $variable_name . ', true)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_JSON;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCastingCode($variable_name): string
     {
         return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGeneratedFields()
     {
         $result = [];
@@ -58,20 +48,14 @@ class JsonField extends ScalarField implements JsonFieldInterface
     /**
      * @var ValueExtractorInterface[]
      */
-    private $value_extractors = [];
+    private array $value_extractors = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValueExtractors()
+    public function getValueExtractors(): array
     {
         return $this->value_extractors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &addValueExtractor(ValueExtractorInterface $extractor)
+    public function addValueExtractor(ValueExtractorInterface $extractor): static
     {
         $extract_as_field = $extractor->getFieldName();
 
@@ -86,10 +70,14 @@ class JsonField extends ScalarField implements JsonFieldInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &extractValue($extract_as_field, $expression, $default_value = null, $extractor_type = ValueExtractor::class, $is_stored = true, $is_indexed = false)
+    public function extractValue(
+        string $extract_as_field,
+        string $expression,
+        mixed $default_value = null,
+        string $extractor_type = ValueExtractor::class,
+        bool $is_stored = true,
+        bool $is_indexed = false
+    ): static
     {
         if (!empty($this->value_extractors[$extract_as_field])) {
             throw new InvalidArgumentException("Field name '$extract_as_field' is taken");

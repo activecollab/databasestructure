@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
@@ -18,25 +20,16 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
 {
     use RequiredInterfaceImplementation, SizeInterfaceImplementation;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'int';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_INT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCastingCode($variable_name): string
     {
         return '(int) $' . $variable_name;
