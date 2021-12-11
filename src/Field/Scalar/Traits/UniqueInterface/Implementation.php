@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
@@ -21,31 +23,22 @@ trait Implementation
     /**
      * @var array
      */
-    private $uniquness_context = [];
+    private $uniqueness_context = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isUnique()
+    public function isUnique(): bool
     {
         return $this->is_unique;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUniquenessContext()
+    public function getUniquenessContext(): array
     {
-        return $this->uniquness_context;
+        return $this->uniqueness_context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &unique(...$context)
+    public function &unique(string ...$context)
     {
         $this->is_unique = true;
-        $this->uniquness_context = $context;
+        $this->uniqueness_context = $context;
 
         if ($this instanceof AddIndexInterface) {
             $this->addIndex(true, $context, IndexInterface::UNIQUE);

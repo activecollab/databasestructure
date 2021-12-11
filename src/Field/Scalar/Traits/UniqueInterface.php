@@ -6,29 +6,26 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 interface UniqueInterface extends FieldTraitInterface
 {
     /**
      * Return true if this field should be unique.
-     *
-     * @return bool
      */
-    public function isUnique();
+    public function isUnique(): bool;
 
     /**
      * Return uniqueness context.
-     *
-     * @return array
      */
-    public function getUniquenessContext();
+    public function getUniquenessContext(): array;
 
     /**
      * Value of this column needs to be unique (in the given context).
      *
-     * @param  string[] $context
      * @return $this
      */
-    public function &unique(...$context);
+    public function &unique(string ...$context);
 }

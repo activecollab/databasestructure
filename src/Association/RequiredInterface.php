@@ -13,6 +13,5 @@ use ActiveCollab\DatabaseStructure\AssociationInterface;
 interface RequiredInterface
 {
     public function isRequired(): bool;
-
-    public function &required($value = true): AssociationInterface;
+    public function &required(bool $value = true): AssociationInterface;
 }

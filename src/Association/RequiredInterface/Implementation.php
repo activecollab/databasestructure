@@ -28,7 +28,7 @@ trait Implementation
      * @param  bool                       $value
      * @return AssociationInterface|$this
      */
-    public function &required($value = true): AssociationInterface
+    public function &required(bool $value = true): AssociationInterface
     {
         $this->is_required = (bool) $value;
 

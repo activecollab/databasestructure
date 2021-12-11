@@ -6,22 +6,21 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 interface RequiredInterface extends FieldTraitInterface
 {
     /**
      * Return true if this field is required.
-     *
-     * @return bool
      */
-    public function isRequired();
+    public function isRequired(): bool;
 
     /**
      * Value of this column is required.
      *
-     * @param  bool  $value
      * @return $this
      */
-    public function &required($value = true);
+    public function &required(bool $value = true);
 }

@@ -21,10 +21,7 @@ class BooleanField extends ScalarFieldWithDefaultValue
         parent::__construct($name, $default_value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &unique(...$context)
+    public function &unique(string ...$context)
     {
         throw new LogicException('Boolean columns cant be made unique');
     }
