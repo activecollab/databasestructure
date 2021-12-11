@@ -19,6 +19,7 @@ use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
@@ -863,47 +864,40 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
     /**
      * Build validate lines for scalar fields.
-     *
-     * @param ScalarField $field
-     * @param string      $line_indent
-     * @param array       $validator_lines
      */
-    private function buildValidatePresenceLinesForScalarField(ScalarField $field, $line_indent, array &$validator_lines)
+    private function buildValidatePresenceLinesForScalarField(
+        ScalarFieldInterface $field,
+        string $line_indent,
+        array &$validator_lines
+    )
     {
-        if ($field instanceof RequiredInterface && $field instanceof UniqueInterface) {
-            if ($field->isRequired() && $field->isUnique()) {
-                $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
-            } elseif ($field->isRequired()) {
-                $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
-            } elseif ($field->isUnique()) {
-                $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
-            }
-        } elseif ($field instanceof RequiredInterface && $field->isRequired()) {
+        if ($field->isRequired() && $field->isUnique()) {
+            $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
+            return;
+        }
+
+        if ($field->isRequired()) {
             $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
-        } elseif ($field instanceof UniqueInterface && $field->isUnique()) {
+            return;
+        }
+
+        if ($field->isUnique()) {
             $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
         }
     }
 
     /**
      * Build validator value presence line.
-     *
-     * @param  string $field_name
-     * @return string
      */
-    private function buildValidatePresenceLine($field_name)
+    private function buildValidatePresenceLine(string $field_name): string
     {
         return '$validator->present(' . var_export($field_name, true) . ');';
     }
 
     /**
      * Build validator uniqueness line.
-     *
-     * @param  string $field_name
-     * @param  array  $context
-     * @return string
      */
-    private function buildValidateUniquenessLine($field_name, array $context)
+    private function buildValidateUniquenessLine(string $field_name, array $context): string
     {
         $field_names = [var_export($field_name, true)];
 
@@ -916,14 +910,12 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
     /**
      * Build validator uniqueness line.
-     *
-     * @param  string $field_name
-     * @param  array  $context
-     * @return string
      */
-    private function buildValidatePresenceAndUniquenessLine($field_name, array $context)
+    private function buildValidatePresenceAndUniquenessLine(string $field_name, array $context): string
     {
-        $field_names = [var_export($field_name, true)];
+        $field_names = [
+            var_export($field_name, true),
+        ];
 
         foreach ($context as $v) {
             $field_names[] = var_export($v, true);
@@ -932,21 +924,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         return '$validator->presentAndUnique(' . implode(', ', $field_names) . ');';
     }
 
-    /**
-     * @var array
-     */
-    private $getter_names = [];
+    private array $getter_names = [];
+    private array $setter_names = [];
 
-    /**
-     * @var array
-     */
-    private $setter_names = [];
-
-    /**
-     * @param  string $field_name
-     * @return string
-     */
-    private function getGetterName($field_name)
+    private function getGetterName(string $field_name): string
     {
         if (empty($this->getter_names[$field_name])) {
             $camelized_field_name = Inflector::classify($field_name);
@@ -960,20 +941,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
     /**
      * Return short getter name, without get bit.
-     *
-     * @param  string $field_name
-     * @return string
      */
-    private function getShortGetterName($field_name)
+    private function getShortGetterName(string $field_name): string
     {
         return lcfirst(Inflector::classify($field_name));
     }
 
-    /**
-     * @param  string $field_name
-     * @return string
-     */
-    private function getSetterName($field_name)
+    private function getSetterName(string $field_name): string
     {
         if (empty($this->setter_names[$field_name])) {
             $camelized_field_name = Inflector::classify($field_name);
