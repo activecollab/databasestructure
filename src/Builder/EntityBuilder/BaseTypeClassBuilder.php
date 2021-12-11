@@ -372,7 +372,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * @param string   $indent
      * @param array    $result
      */
-    public function buildGeneratedFields(array $generated_field_names, $indent, array &$result)
+    private function buildGeneratedFields(
+        array $generated_field_names,
+        string $indent,
+        array &$result
+    ): void
     {
         $result[] = '';
         $result[] = $indent . '/**';

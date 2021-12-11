@@ -119,14 +119,14 @@
             "source": {
                 "type": "git",
                 "url": "/Users/ilijastuden/Projects/Components/databaseobject",
-                "reference": "b2b0fc96372c81267e7e2f4d3599642b4a2c9215"
+                "reference": "62659485356f43b7b3374b81807c7618d09b9e85"
             },
             "require": {
                 "activecollab/databaseconnection": "^3.0||^4.0",
                 "activecollab/etag": "^1.0",
                 "activecollab/object": "^1.0",
                 "doctrine/inflector": "^1.0",
-                "php": ">=7.3",
+                "php": ">=8.0",
                 "psr/log": "^1.0.0"
             },
             "require-dev": {
@@ -164,7 +164,7 @@
                 "mysql",
                 "persistence"
             ],
-            "time": "2021-12-10T11:34:50+00:00"
+            "time": "2021-12-11T18:25:02+00:00"
         },
         {
             "name": "activecollab/datevalue",
