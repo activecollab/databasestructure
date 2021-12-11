@@ -42,16 +42,8 @@ trait Implementation
         $this->only_one_with_value = $only_with_value;
         $this->only_one_in_context = $only_one_in_in_context;
 
-        if ($this instanceof AddIndexInterface) {
-            $this->addIndex(
-                true,
-                array_merge(
-                    [
-                        $this->getName(),
-                    ],
-                    $only_one_in_in_context
-                )
-            );
+        if ($this instanceof AddIndexInterface && !$this->getAddIndex()) {
+            $this->addIndex(true, $only_one_in_in_context);
         }
 
         return $this;

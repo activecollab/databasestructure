@@ -15,24 +15,30 @@ use ActiveCollab\DatabaseStructure\IndexInterface;
 
 class OnlyOneTraitTest extends TestCase
 {
-    public function testUniqueAutomaticallyAddsIndex()
+    public function testOnlyOneAutomaticallyAddsIndex(): void
     {
         $not_only_one = new NameField();
         $this->assertFalse($not_only_one->getAddIndex());
 
         $only_one = (new NameField())->onlyOne('123');
         $this->assertTrue($only_one->getAddIndex());
-        $this->assertEquals(IndexInterface::UNIQUE, $only_one->getAddIndexType());
+        $this->assertEquals(IndexInterface::INDEX, $only_one->getAddIndexType());
     }
 
-    public function testIndexUsesUniqueContext()
+    public function testIndexUsesOnlyOneContext(): void
     {
         $only_one = (new NameField())->onlyOne('123');
         $this->assertTrue($only_one->getAddIndex());
         $this->assertSame([], $only_one->getAddIndexContext());
 
-        $only_one = (new NameField())->onlyOne('one', 'two', 'three');
+        $only_one = (new NameField())->onlyOne('123', 'one', 'two', 'three');
         $this->assertTrue($only_one->getAddIndex());
         $this->assertSame(['one', 'two', 'three'], $only_one->getAddIndexContext());
+    }
+
+    public function testOnlyOneWillNotOverrideExistingIndex(): void
+    {
+        $unique_and_only_one = (new NameField())->unique()->onlyOne('123');
+        $this->assertEquals(IndexInterface::UNIQUE, $unique_and_only_one->getAddIndexType());
     }
 }

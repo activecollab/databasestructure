@@ -28,13 +28,13 @@ trait Implementation
         return $this->uniqueness_context;
     }
 
-    public function unique(string ...$context): static
+    public function unique(string ...$uniqueness_context): static
     {
         $this->is_unique = true;
-        $this->uniqueness_context = $context;
+        $this->uniqueness_context = $uniqueness_context;
 
         if ($this instanceof AddIndexInterface) {
-            $this->addIndex(true, $context, IndexInterface::UNIQUE);
+            $this->addIndex(true, $uniqueness_context, IndexInterface::UNIQUE);
         }
 
         return $this;

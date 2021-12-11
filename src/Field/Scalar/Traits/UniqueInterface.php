@@ -25,5 +25,5 @@ interface UniqueInterface extends FieldTraitInterface
     /**
      * Value of this column needs to be unique (in the given context).
      */
-    public function unique(string ...$context): static;
+    public function unique(string ...$uniqueness_context): static;
 }
