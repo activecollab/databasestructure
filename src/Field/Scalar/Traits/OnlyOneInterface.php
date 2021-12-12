@@ -12,7 +12,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 interface OnlyOneInterface
 {
-    public function allowsOnlyOne(): bool;
+    public function isOnlyOne(): bool;
     public function getOnlyOneWithValue(): mixed;
     public function getOnlyOneInContext(): array;
 

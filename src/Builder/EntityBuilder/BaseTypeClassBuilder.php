@@ -818,10 +818,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     /**
      * @param FieldInterface[]       $fields
      * @param AssociationInterface[] $associations
-     * @param string                 $indent
-     * @param array                  $result
      */
-    private function buildValidate(array $fields, array $associations, $indent, array &$result)
+    private function buildValidate(
+        array $fields,
+        array $associations,
+        string $indent,
+        array &$result
+    ): void
     {
         $fields_to_validate = $fields;
 
@@ -840,20 +843,26 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
                 foreach ($field->getFields() as $subfield) {
                     if ($subfield instanceof ScalarField && $subfield->getShouldBeAddedToModel()) {
-                        $this->buildValidatePresenceLinesForScalarField($subfield, $line_indent, $validator_lines);
+                        $this->buildValidatePresenceLinesForScalarField(
+                            $subfield,
+                            $line_indent,
+                            $validator_lines
+                        );
                     }
                 }
             } elseif ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
-                $this->buildValidatePresenceLinesForScalarField($field, $line_indent, $validator_lines);
+                $this->buildValidatePresenceLinesForScalarField(
+                    $field,
+                    $line_indent,
+                    $validator_lines
+                );
             }
         }
 
-        if (count($validator_lines)) {
+        if (!empty($validator_lines)) {
             $result[] = '';
             $result[] = $indent . '/**';
             $result[] = $indent . ' * Validate object properties before object is saved.';
-            $result[] = $indent . ' *';
-            $result[] = $indent . ' * @param \ActiveCollab\DatabaseObject\ValidatorInterface $validator';
             $result[] = $indent . ' */';
             $result[] = $indent . 'public function validate(\ActiveCollab\DatabaseObject\ValidatorInterface &$validator)';
             $result[] = $indent . '{';
@@ -876,17 +885,30 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     )
     {
         if ($field->isRequired() && $field->isUnique()) {
-            $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine($field->getName(), $field->getUniquenessContext());
+            $validator_lines[] = $line_indent . $this->buildValidatePresenceAndUniquenessLine(
+                $field->getName(),
+                $field->getUniquenessContext()
+            );
             return;
         }
 
         if ($field->isRequired()) {
             $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
-            return;
         }
 
         if ($field->isUnique()) {
-            $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine($field->getName(), $field->getUniquenessContext());
+            $validator_lines[] = $line_indent . $this->buildValidateUniquenessLine(
+                $field->getName(),
+                $field->getUniquenessContext()
+            );
+        }
+
+        if ($field->isOnlyOne()) {
+            $validator_lines[] = $line_indent . $this->buildValidateOnlyOneLine(
+                $field->getName(),
+                $field->getOnlyOneWithValue(),
+                $field->getOnlyOneInContext()
+            );
         }
     }
 
@@ -903,13 +925,32 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      */
     private function buildValidateUniquenessLine(string $field_name, array $context): string
     {
-        $field_names = [var_export($field_name, true)];
+        $field_names = [
+            var_export($field_name, true),
+        ];
 
         foreach ($context as $v) {
             $field_names[] = var_export($v, true);
         }
 
         return '$validator->unique(' . implode(', ', $field_names) . ');';
+    }
+
+    /**
+     * Build validator uniqueness line.
+     */
+    private function buildValidateOnlyOneLine(string $field_name, mixed $field_value, array $context): string
+    {
+        $validator_arguments = [
+            var_export($field_name, true),
+            var_export($field_value, true),
+        ];
+
+        foreach ($context as $v) {
+            $validator_arguments[] = var_export($v, true);
+        }
+
+        return '$validator->onlyOne(' . implode(', ', $validator_arguments) . ');';
     }
 
     /**
@@ -934,10 +975,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     private function getGetterName(string $field_name): string
     {
         if (empty($this->getter_names[$field_name])) {
-            $camelized_field_name = Inflector::classify($field_name);
+            $classified_field_name = Inflector::classify($field_name);
 
-            $this->getter_names[$field_name] = "get{$camelized_field_name}";
-            $this->setter_names[$field_name] = "set{$camelized_field_name}";
+            $this->getter_names[$field_name] = "get{$classified_field_name}";
+            $this->setter_names[$field_name] = "set{$classified_field_name}";
         }
 
         return $this->getter_names[$field_name];
@@ -954,10 +995,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     private function getSetterName(string $field_name): string
     {
         if (empty($this->setter_names[$field_name])) {
-            $camelized_field_name = Inflector::classify($field_name);
+            $classified_field_name = Inflector::classify($field_name);
 
-            $this->getter_names[$field_name] = "get{$camelized_field_name}";
-            $this->setter_names[$field_name] = "set{$camelized_field_name}";
+            $this->getter_names[$field_name] = "get{$classified_field_name}";
+            $this->setter_names[$field_name] = "set{$classified_field_name}";
         }
 
         return $this->setter_names[$field_name];

@@ -14,13 +14,13 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 
 trait Implementation
 {
-    private bool $allow_only_one = false;
+    private bool $is_only_one = false;
     private mixed $only_one_with_value = null;
     private array $only_one_in_context = [];
 
-    public function allowsOnlyOne(): bool
+    public function isOnlyOne(): bool
     {
-        return $this->allow_only_one;
+        return $this->is_only_one;
     }
 
     public function getOnlyOneWithValue(): mixed
@@ -38,7 +38,7 @@ trait Implementation
         string ...$only_one_in_in_context
     ): static
     {
-        $this->allow_only_one = true;
+        $this->is_only_one = true;
         $this->only_one_with_value = $only_with_value;
         $this->only_one_in_context = $only_one_in_in_context;
 
