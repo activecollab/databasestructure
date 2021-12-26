@@ -797,12 +797,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     {
         if (count($serialize)) {
             $result[] = '';
-            $result[] = $indent . '/**';
-            $result[] = $indent . ' * Prepare object properties so they can be serialized to JSON.';
-            $result[] = $indent . ' *';
-            $result[] = $indent . ' * @return array';
-            $result[] = $indent . ' */';
-            $result[] = $indent . 'public function jsonSerialize()';
+            $result[] = $indent . 'public function jsonSerialize(): mixed';
             $result[] = $indent . '{';
             $result[] = $indent . '    return array_merge(parent::jsonSerialize(), [';
 

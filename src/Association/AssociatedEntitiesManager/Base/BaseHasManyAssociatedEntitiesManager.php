@@ -28,7 +28,7 @@ abstract class BaseHasManyAssociatedEntitiesManager extends AssociatedEntitiesMa
      */
     private $associated_entity_ids;
 
-    protected $target_entity_class_name;
+    protected string $target_entity_class_name;
 
     public function __construct(
         ConnectionInterface $connection,

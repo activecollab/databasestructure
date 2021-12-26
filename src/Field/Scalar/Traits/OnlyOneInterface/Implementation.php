@@ -35,15 +35,15 @@ trait Implementation
 
     public function onlyOne(
         mixed $only_with_value,
-        string ...$only_one_in_in_context
+        string ...$only_one_in_context
     ): static
     {
         $this->is_only_one = true;
         $this->only_one_with_value = $only_with_value;
-        $this->only_one_in_context = $only_one_in_in_context;
+        $this->only_one_in_context = $only_one_in_context;
 
         if ($this instanceof AddIndexInterface && !$this->getAddIndex()) {
-            $this->addIndex(true, $only_one_in_in_context);
+            $this->addIndex(true, $only_one_in_context);
         }
 
         return $this;
