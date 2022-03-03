@@ -16,16 +16,10 @@
             "email": "ilija.studen@activecollab.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "/Users/ilijastuden/Projects/Components/databaseobject"
-        }
-    ],
     "require": {
         "php": ">=8.0",
         "ext-mysqli": "*",
-        "activecollab/databaseobject": "dev-master",
+        "activecollab/databaseobject": "^6.0",
         "activecollab/filesystem": "^0.10",
         "activecollab/user": "^4.0",
         "doctrine/inflector": "^1.0"
