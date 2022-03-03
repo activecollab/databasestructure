@@ -107,7 +107,11 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
             $objects_to_add_param_doscs .= '|' . $target_instance_class . '[]';
         }
 
-        $longest_docs_param_type_name = max(strlen($objects_to_add_param_doscs), 'array|null', '$this');
+        $longest_docs_param_type_name = max(
+            strlen($objects_to_add_param_doscs),
+            strlen('array|null'),
+            strlen('$this')
+        );
 
         $result[] = '';
         $result[] = '    /**';
@@ -215,7 +219,7 @@ class HasManyViaAssociation extends HasManyAssociation implements AssociationInt
         $result[] = '                }';
         $result[] = '            });';
         $result[] = '';
-        $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', $object_ids);';
+        $result[] = '            $this->pool->forget(' . var_export($intermediary_instance_class, true) . ', ...$object_ids);';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';

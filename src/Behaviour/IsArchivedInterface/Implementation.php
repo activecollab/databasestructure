@@ -88,7 +88,7 @@ trait Implementation
      * @param  bool $value
      * @return bool
      */
-    abstract public function setIsArchived($value);
+    abstract public function &setIsArchived(bool $value);
 
     /**
      * Save to database.
