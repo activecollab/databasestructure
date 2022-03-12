@@ -20,9 +20,12 @@ trait Implementation
      */
     public function ActiveCollabDatabaseStructureBehaviourIsArchivedInterfaceImplementation()
     {
-        $this->registerEventHandler('on_json_serialize', function (array &$result) {
-            $result['is_archived'] = $this->getIsArchived();
-        });
+        $this->registerEventHandler(
+            'on_json_serialize',
+            function (array &$result) {
+                $result['is_archived'] = $this->getIsArchived();
+            }
+        );
     }
 
     /**
@@ -32,18 +35,20 @@ trait Implementation
      */
     public function moveToArchive($bulk = false)
     {
-        $this->connection->transact(function () use ($bulk) {
-            $this->triggerEvent('on_before_move_to_archive', [$bulk]);
+        $this->connection->transact(
+            function () use ($bulk) {
+                $this->triggerEvent('on_before_move_to_archive', [$bulk]);
 
-            if ($bulk && method_exists($this, 'setOriginalIsArchived')) {
-                $this->setOriginalIsArchived($this->getIsArchived());
+                if ($bulk && method_exists($this, 'setOriginalIsArchived')) {
+                    $this->setOriginalIsArchived($this->getIsArchived());
+                }
+
+                $this->setIsArchived(true);
+                $this->save();
+
+                $this->triggerEvent('on_after_move_to_archive', [$bulk]);
             }
-
-            $this->setIsArchived(true);
-            $this->save();
-
-            $this->triggerEvent('on_after_move_to_archive', [$bulk]);
-        });
+        );
     }
 
     /**
@@ -53,8 +58,12 @@ trait Implementation
      */
     public function restoreFromArchive($bulk = false)
     {
-        if ($this->getIsArchived()) {
-            $this->connection->transact(function () use ($bulk) {
+        if (!$this->getIsArchived()) {
+            return;
+        }
+
+        $this->connection->transact(
+            function () use ($bulk) {
                 $this->triggerEvent('on_before_restore_from_archive', [$bulk]);
 
                 if ($bulk && method_exists($this, 'getOriginalIsArchived') && method_exists($this, 'setOriginalIsArchived')) {
@@ -67,28 +76,22 @@ trait Implementation
                 $this->save();
 
                 $this->triggerEvent('on_after_restore_from_archive', [$bulk]);
-            });
-        }
+            }
+        );
     }
 
     // ---------------------------------------------------
     //  Expectations
     // ---------------------------------------------------
 
-    /**
-     * Return true if parent object is archived.
-     *
-     * @return bool
-     */
-    abstract public function getIsArchived();
+    abstract public function getIsArchived(): bool;
 
     /**
      * Set value of is_archived field.
      *
-     * @param  bool $value
      * @return bool
      */
-    abstract public function &setIsArchived(bool $value);
+    abstract public function setIsArchived(bool $value);
 
     /**
      * Save to database.

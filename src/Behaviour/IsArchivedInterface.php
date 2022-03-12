@@ -12,10 +12,8 @@ interface IsArchivedInterface
 {
     /**
      * Return true if parent object is archived.
-     *
-     * @return bool
      */
-    public function getIsArchived();
+    public function getIsArchived(): bool;
 
     /**
      * Move to archive.
