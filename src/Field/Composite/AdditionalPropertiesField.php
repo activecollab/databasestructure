@@ -55,7 +55,10 @@ class AdditionalPropertiesField extends CompositeField
         parent::onAddedToType($type);
 
         $type
-            ->addTrait(AdditionalPropertiesInterface::class, AdditionalPropertiesInterfaceImplementation::class)
+            ->addTrait(
+                AdditionalPropertiesInterface::class,
+                AdditionalPropertiesInterfaceImplementation::class
+            )
             ->protectFields($this->getName());
     }
 }
