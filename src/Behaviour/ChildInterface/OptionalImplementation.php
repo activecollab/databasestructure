@@ -50,10 +50,7 @@ trait OptionalImplementation
     }
 
     abstract public function getParentType(): ?string;
-
-    abstract public function &setParentType(?string $value);
-
+    abstract public function setParentType(?string $value);
     abstract public function getParentId(): ?int;
-
-    abstract public function &setParentId(?int $value);
+    abstract public function setParentId(?int $value);
 }
