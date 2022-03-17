@@ -21,7 +21,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 class BaseTypeInterfaceBuilder extends FileSystemBuilder
 {
@@ -29,7 +30,7 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
     {
         $base_interface_name = sprintf(
             '%sInterface',
-            Inflector::classify(Inflector::singularize($type->getName()))
+            $this->getInflector()->classify($this->getInflector()->singularize($type->getName()))
         );
         $base_interface_extends = '\\' . ltrim($type->getBaseEntityInterfaceExtends(), '\\');
 
@@ -304,7 +305,7 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
     private function getGetterName(string $field_name): string
     {
         if (empty($this->getter_names[$field_name])) {
-            $camelized_field_name = Inflector::classify($field_name);
+            $camelized_field_name = $this->getInflector()->classify($field_name);
 
             $this->getter_names[$field_name] = "get{$camelized_field_name}";
             $this->setter_names[$field_name] = "set{$camelized_field_name}";
@@ -315,13 +316,13 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
 
     private function getShortGetterName(string $field_name): string
     {
-        return lcfirst(Inflector::classify($field_name));
+        return lcfirst($this->getInflector()->classify($field_name));
     }
 
     private function getSetterName(string $field_name): string
     {
         if (empty($this->setter_names[$field_name])) {
-            $camelized_field_name = Inflector::classify($field_name);
+            $camelized_field_name = $this->getInflector()->classify($field_name);
 
             $this->getter_names[$field_name] = "get{$camelized_field_name}";
             $this->setter_names[$field_name] = "set{$camelized_field_name}";
@@ -332,6 +333,17 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
 
     private function getModifierName($field_name): string
     {
-        return 'modify' . Inflector::classify($field_name);
+        return 'modify' . $this->getInflector()->classify($field_name);
+    }
+
+    private ?Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

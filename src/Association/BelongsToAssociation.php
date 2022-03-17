@@ -19,7 +19,8 @@ use ActiveCollab\DatabaseStructure\ProtectSetterInterface;
 use ActiveCollab\DatabaseStructure\ProtectSetterInterface\Implementation as ProtectSetterInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use InvalidArgumentException;
 
 class BelongsToAssociation extends Association implements
@@ -53,7 +54,7 @@ class BelongsToAssociation extends Association implements
         }
 
         if (empty($target_type_name)) {
-            $target_type_name = Inflector::pluralize($name);
+            $target_type_name = $this->getInflector()->pluralize($name);
         }
 
         $this->name = $name;
@@ -106,7 +107,7 @@ class BelongsToAssociation extends Association implements
      */
     public function getVerboseConstraintName()
     {
-        return Inflector::singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
+        return $this->getInflector()->singularize($this->getSourceTypeName()) . '_' . $this->getName() . '_constraint';
     }
 
     public function getAttributes(): array
@@ -131,20 +132,22 @@ class BelongsToAssociation extends Association implements
         array &$result
     )
     {
+        $inflector = $this->getInflector();
+
         $namespace = $structure->getNamespace();
 
         if ($namespace) {
             $namespace = '\\' . ltrim($namespace, '\\');
         }
 
-        $target_instance_class = $namespace . '\\' . Inflector::classify(Inflector::singularize($target_type->getName()));
+        $target_instance_class = $namespace . '\\' . $inflector->classify($inflector->singularize($target_type->getName()));
 
         $returns_and_accepts = $target_instance_class;
         if ($this->getAccepts()) {
             $returns_and_accepts = '\\' . ltrim($this->getAccepts(), '\\');
         }
 
-        $classified_association_name = Inflector::classify($this->getName());
+        $classified_association_name = $inflector->classify($this->getName());
 
         $getter_name = "get{$classified_association_name}";
         $setter_name = "set{$classified_association_name}";
@@ -153,7 +156,7 @@ class BelongsToAssociation extends Association implements
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
+        $result[] = '     * Return ' . $inflector->singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null');
         $result[] = '     */';
@@ -174,7 +177,7 @@ class BelongsToAssociation extends Association implements
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Set ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
+        $result[] = '     * Set ' . $inflector->singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @param  ' . $returns_and_accepts . ($this->isRequired() ? '' : '|null') . ' $value';
         $result[] = '     * @return $this';
@@ -201,5 +204,16 @@ class BelongsToAssociation extends Association implements
         }
 
         $result[] = '    }';
+    }
+
+    private ?Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

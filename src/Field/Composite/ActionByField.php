@@ -17,7 +17,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface\Impleme
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\User\IdentifiedVisitor;
 use ActiveCollab\User\UserInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use InvalidArgumentException;
 
 class ActionByField extends CompositeField implements AddIndexInterface, RequiredInterface
@@ -95,9 +96,6 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
         return $this->identified_visitor_class_name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFields(): array
     {
         $id_field = (new IntegerField($this->getName(), 0))
@@ -122,17 +120,19 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
      */
     public function getBaseClassMethods(string $indent, array &$result): void
     {
-        $id_getter_name = 'get' . Inflector::classify($this->name);
-        $id_setter_name = 'set' . Inflector::classify($this->name);
+        $inflector = $this->getInflector();
 
-        $email_getter_name = 'get' . Inflector::classify($this->getActionName() . '_by_email');
-        $email_setter_name = 'set' . Inflector::classify($this->getActionName() . '_by_email');
+        $id_getter_name = 'get' . $inflector->classify($this->name);
+        $id_setter_name = 'set' . $inflector->classify($this->name);
 
-        $name_getter_name = 'get' . Inflector::classify($this->getActionName() . '_by_name');
-        $name_setter_name = 'set' . Inflector::classify($this->getActionName() . '_by_name');
+        $email_getter_name = 'get' . $inflector->classify($this->getActionName() . '_by_email');
+        $email_setter_name = 'set' . $inflector->classify($this->getActionName() . '_by_email');
 
-        $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
-        $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
+        $name_getter_name = 'get' . $inflector->classify($this->getActionName() . '_by_name');
+        $name_setter_name = 'set' . $inflector->classify($this->getActionName() . '_by_name');
+
+        $instance_getter_name = 'get' . $inflector->classify(substr($this->name, 0, strlen($this->name) - 3));
+        $instance_setter_name = 'set' . $inflector->classify(substr($this->name, 0, strlen($this->name) - 3));
 
         $type_hint = '\\' . UserInterface::class . '|' . $this->identified_visitor_class_name . '|' . $this->user_class_name . '|null';
 
@@ -221,8 +221,10 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
      */
     public function getBaseInterfaceMethods(string $indent, array &$result): void
     {
-        $instance_getter_name = 'get' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
-        $instance_setter_name = 'set' . Inflector::classify(substr($this->name, 0, strlen($this->name) - 3));
+        $inflector = $this->getInflector();
+
+        $instance_getter_name = 'get' . $inflector->classify(substr($this->name, 0, strlen($this->name) - 3));
+        $instance_setter_name = 'set' . $inflector->classify(substr($this->name, 0, strlen($this->name) - 3));
 
         $type_hint = '\\' . UserInterface::class . '|' . $this->identified_visitor_class_name . '|' . $this->user_class_name . '|null';
 
@@ -280,14 +282,21 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
 
         return $this->action_name;
     }
-
-    /**
-     * {@inheritdoc}
-     */
     public function onAddedToType(TypeInterface &$type)
     {
         parent::onAddedToType($type);
 
         $type->serialize($this->name);
+    }
+
+    private ?Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

@@ -15,7 +15,8 @@ use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\HasAndB
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 class HasAndBelongsToManyAssociation extends HasManyAssociation implements AssociationInterface
 {
@@ -26,7 +27,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      */
     public function getLeftFieldName()
     {
-        return Inflector::singularize($this->getSourceTypeName()) . '_id';
+        return $this->getInflector()->singularize($this->getSourceTypeName()) . '_id';
     }
 
     /**
@@ -36,7 +37,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      */
     public function getRightFieldName()
     {
-        return Inflector::singularize($this->getTargetTypeName()) . '_id';
+        return $this->getInflector()->singularize($this->getTargetTypeName()) . '_id';
     }
 
     /**
@@ -132,7 +133,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
     {
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
+        $result[] = '     * Return ' . $this->getInflector()->singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
         $result[] = '     * @return \\' . FinderInterface::class;
         $result[] = '     */';
@@ -172,9 +173,11 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
             strlen('$this')
         );
 
+        $inflector = $this->getInflector();
+
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Create connection between this ' . Inflector::singularize($source_type->getName()) . ' and one or more $objects_to_add.';
+        $result[] = '     * Create connection between this ' . $inflector->singularize($source_type->getName()) . ' and one or more $objects_to_add.';
         $result[] = '     *';
         $result[] = '     * @param  ' . str_pad($objects_to_add_param_doscs, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $objects_to_add';
         $result[] = '     * @return $this';
@@ -182,7 +185,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '    public function &add' . $this->getClassifiedAssociationName() . '(' . $returns_and_accepts . ' ...$objects_to_add)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
-        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst($inflector->singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        $batch = new \\' . BatchInsert::class . '(';
@@ -195,7 +198,7 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '';
         $result[] = '        foreach ($objects_to_add as $object_to_add) {';
         $result[] = '            if ($object_to_add->isNew()) {';
-        $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
+        $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', $inflector->singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '            }';
         $result[] = '';
         $result[] = '            $batch->insert($this->getId(), $object_to_add->getId());';
@@ -229,9 +232,11 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
             strlen('$this')
         );
 
+        $inflector = $this->getInflector();
+
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Drop connection between this ' . Inflector::singularize($source_type->getName()) . ' and $object_to_remove.';
+        $result[] = '     * Drop connection between this ' . $inflector->singularize($source_type->getName()) . ' and $object_to_remove.';
         $result[] = '     *';
         $result[] = '     * @param  ' . str_pad($objects_to_remove_param_doscs, $longest_docs_param_type_name, ' ', STR_PAD_RIGHT) . ' $objects_to_remove';
         $result[] = '     * @return $this';
@@ -239,14 +244,14 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
         $result[] = '    public function &remove' . $this->getClassifiedAssociationName() . '(' . $returns_and_accepts . ' ...$objects_to_remove)';
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
-        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst($inflector->singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        $ids_to_remove = [];';
         $result[] = '';
         $result[] = '        foreach ($objects_to_remove as $object_to_remove) {';
         $result[] = '            if ($object_to_remove->isNew()) {';
-        $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', Inflector::singularize($target_type->getName())) . ' needs to be saved first\');';
+        $result[] = '                throw new \RuntimeException(\'All ' . str_replace('_', ' ', $inflector->singularize($target_type->getName())) . ' needs to be saved first\');';
         $result[] = '            }';
         $result[] = '';
         $result[] = '            $ids_to_remove[] = $object_to_remove->getId();';
@@ -265,21 +270,34 @@ class HasAndBelongsToManyAssociation extends HasManyAssociation implements Assoc
      */
     public function buildClearRelatedObjectsMethod(StructureInterface $structure, TypeInterface $source_type, TypeInterface $target_type, $namespace, array &$result)
     {
+        $inflector = $this->getInflector();
+
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . Inflector::singularize($source_type->getName()) . '.';
+        $result[] = '     * Drop all connections between ' . str_replace('_', ' ', $target_type->getName()) . ' and this ' . $inflector->singularize($source_type->getName()) . '.';
         $result[] = '     *';
         $result[] = '     * @return $this';
         $result[] = '     */';
         $result[] = "    public function &clear{$this->getClassifiedAssociationName()}()";
         $result[] = '    {';
         $result[] = '        if ($this->isNew()) {';
-        $result[] = '            throw new \RuntimeException(\'' . ucfirst(Inflector::singularize($source_type->getName())) . ' needs to be saved first\');';
+        $result[] = '            throw new \RuntimeException(\'' . ucfirst($inflector->singularize($source_type->getName())) . ' needs to be saved first\');';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        $this->connection->execute(\'DELETE FROM `' . $this->getConnectionTableName() . '` WHERE `' . $this->getFkFieldNameFrom($source_type) . '` = ?\', $this->getId());';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
+    }
+
+    private ?Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

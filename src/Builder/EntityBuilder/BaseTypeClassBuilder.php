@@ -23,13 +23,12 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\UniqueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 class BaseTypeClassBuilder extends FileSystemBuilder
 {
@@ -970,7 +969,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     private function getGetterName(string $field_name): string
     {
         if (empty($this->getter_names[$field_name])) {
-            $classified_field_name = Inflector::classify($field_name);
+            $classified_field_name = $this->getInflector()->classify($field_name);
 
             $this->getter_names[$field_name] = "get{$classified_field_name}";
             $this->setter_names[$field_name] = "set{$classified_field_name}";
@@ -984,13 +983,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      */
     private function getShortGetterName(string $field_name): string
     {
-        return lcfirst(Inflector::classify($field_name));
+        return lcfirst($this->getInflector()->classify($field_name));
     }
 
     private function getSetterName(string $field_name): string
     {
         if (empty($this->setter_names[$field_name])) {
-            $classified_field_name = Inflector::classify($field_name);
+            $classified_field_name = $this->getInflector()->classify($field_name);
 
             $this->getter_names[$field_name] = "get{$classified_field_name}";
             $this->setter_names[$field_name] = "set{$classified_field_name}";
@@ -1001,7 +1000,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
     private function getModifierName($field_name): string
     {
-        return 'modify' . Inflector::classify($field_name);
+        return sprintf('modify%s', $this->getInflector()->classify($field_name));
     }
 
     private function getBaseClassExtendsAlias(string $base_class_extends_fqn): string
@@ -1009,5 +1008,16 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $fqn_bits = explode('\\', $base_class_extends_fqn);
 
         return sprintf('Base%s', $fqn_bits[count($fqn_bits) - 1]);
+    }
+
+    private ?Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

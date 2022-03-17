@@ -15,7 +15,8 @@ use ActiveCollab\DatabaseStructure\Association\RequiredInterface\Implementation 
 use ActiveCollab\DatabaseStructure\AssociationInterface;
 use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use InvalidArgumentException;
 
 class HasManyAssociation extends Association implements
@@ -73,7 +74,7 @@ class HasManyAssociation extends Association implements
     {
         return [
             $this->getName(),
-            Inflector::singularize($this->getName()) . '_ids',
+            $this->getInflector()->singularize($this->getName()) . '_ids',
         ];
     }
 
@@ -159,9 +160,11 @@ class HasManyAssociation extends Association implements
             $getter_returns .= '|' . $target_instance_class . '[]';
         }
 
+        $inflector = $this->getInflector();
+
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
+        $result[] = '     * Return ' . $inflector->singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return ' . $getter_returns;
         $result[] = '     */';
@@ -172,18 +175,18 @@ class HasManyAssociation extends Association implements
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . Inflector::singularize($this->getName()) . ' ID-s.';
+        $result[] = '     * Return ' . $inflector->singularize($source_type->getName()) . ' ' . $inflector->singularize($this->getName()) . ' ID-s.';
         $result[] = '     *';
         $result[] = '     * @return iterable|null|int[]';
         $result[] = '     */';
-        $result[] = '    public function get' . Inflector::classify(Inflector::singularize($this->getName())) . 'Ids(): ?iterable';
+        $result[] = '    public function get' . $inflector->classify($inflector->singularize($this->getName())) . 'Ids(): ?iterable';
         $result[] = '    {';
         $result[] = '        return $this->' . $this->getFinderMethodName() . '()->ids();';
         $result[] = '    }';
 
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return number of ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . '.';
+        $result[] = '     * Return number of ' . $inflector->singularize($source_type->getName()) . ' ' . $this->getName() . '.';
         $result[] = '     *';
         $result[] = '     * @return int';
         $result[] = '     */';
@@ -208,7 +211,7 @@ class HasManyAssociation extends Association implements
     {
         $result[] = '';
         $result[] = '    /**';
-        $result[] = '     * Return ' . Inflector::singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
+        $result[] = '     * Return ' . $this->getInflector()->singularize($source_type->getName()) . ' ' . $this->getName() . ' finder instance.';
         $result[] = '     *';
         $result[] = '     * @return \\' . FinderInterface::class;
         $result[] = '     */';
@@ -273,7 +276,7 @@ class HasManyAssociation extends Association implements
     protected function getClassifiedAssociationName()
     {
         if (empty($this->classified_association_name)) {
-            $this->classified_association_name = Inflector::classify($this->getName());
+            $this->classified_association_name = $this->getInflector()->classify($this->getName());
         }
 
         return $this->classified_association_name;
@@ -290,7 +293,9 @@ class HasManyAssociation extends Association implements
     protected function getClassifiedSingleAssociationName()
     {
         if (empty($this->classified_single_association_name)) {
-            $this->classified_single_association_name = Inflector::classify(Inflector::singularize($this->getName()));
+            $this->classified_single_association_name = $this->getInflector()->classify(
+                $this->getInflector()->singularize($this->getName())
+            );
         }
 
         return $this->classified_single_association_name;
@@ -320,7 +325,7 @@ class HasManyAssociation extends Association implements
      */
     protected function getFkFieldNameFrom(TypeInterface $type)
     {
-        return Inflector::singularize($type->getName()) . '_id';
+        return $this->getInflector()->singularize($type->getName()) . '_id';
     }
 
     /**
@@ -332,6 +337,17 @@ class HasManyAssociation extends Association implements
      */
     protected function getInstanceClassFrom($namespace, TypeInterface $type)
     {
-        return $namespace . '\\' . Inflector::classify(Inflector::singularize($type->getName()));
+        return $namespace . '\\' . $this->getInflector()->classify($this->getInflector()->singularize($type->getName()));
+    }
+
+    private ?\Doctrine\Inflector\Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

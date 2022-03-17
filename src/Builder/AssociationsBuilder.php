@@ -12,7 +12,8 @@ use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
@@ -56,27 +57,31 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
 
     private function postBuildBelongsToAssociation(TypeInterface $type, BelongsToAssociation $association)
     {
+        $inflector = $this->getInflector();
+
         $create_constraint_statement = $this->prepareBelongsToConstraintStatement($type, $association);
         $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
 
         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
-            $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . Inflector::singularize($association->getTargetTypeName())]);
+            $this->triggerEvent('on_association_exists', [$type->getName() . ' belongs to ' . $inflector->singularize($association->getTargetTypeName())]);
         } else {
             $this->getConnection()->execute($create_constraint_statement);
-            $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . Inflector::singularize($association->getTargetTypeName())]);
+            $this->triggerEvent('on_association_created', [$type->getName() . ' belongs to ' . $inflector->singularize($association->getTargetTypeName())]);
         }
     }
 
     private function postBuildHasOneAssociation(TypeInterface $type, HasOneAssociation $association)
     {
+        $inflector = $this->getInflector();
+
         $create_constraint_statement = $this->prepareHasOneConstraintStatement($type, $association);
         $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
 
         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
-            $this->triggerEvent('on_association_exists', [$type->getName() . ' has one ' . Inflector::singularize($association->getTargetTypeName())]);
+            $this->triggerEvent('on_association_exists', [$type->getName() . ' has one ' . $inflector->singularize($association->getTargetTypeName())]);
         } else {
             $this->getConnection()->execute($create_constraint_statement);
-            $this->triggerEvent('on_association_created', [$type->getName() . ' has one ' . Inflector::singularize($association->getTargetTypeName())]);
+            $this->triggerEvent('on_association_created', [$type->getName() . ' has one ' . $inflector->singularize($association->getTargetTypeName())]);
         }
     }
 
@@ -94,18 +99,20 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
 
         $this->appendToStructureSql($create_right_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint');
 
+        $inflector = $this->getInflector();
+
         if ($this->constraintExists($association->getLeftConstraintName(), $association->getSourceTypeName())) {
-            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
+            $this->triggerEvent('on_association_skipped', [$inflector->singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
         } else {
             $this->getConnection()->execute($create_left_field_constraint_statement);
-            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
+            $this->triggerEvent('on_association_created', [$inflector->singularize($association->getSourceTypeName()) . ' has many ' . $association->getTargetTypeName()]);
         }
 
         if ($this->constraintExists($association->getRightConstraintName(), $association->getTargetTypeName())) {
-            $this->triggerEvent('on_association_skipped', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
+            $this->triggerEvent('on_association_skipped', [$inflector->singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
         } else {
             $this->getConnection()->execute($create_right_field_constraint_statement);
-            $this->triggerEvent('on_association_created', [Inflector::singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
+            $this->triggerEvent('on_association_created', [$inflector->singularize($association->getTargetTypeName()) . ' has many ' . $association->getSourceTypeName()]);
         }
     }
 
@@ -188,5 +195,16 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     private function constraintExists($constraint_name, $referencing_table)
     {
         return (bool) $this->getConnection()->executeFirstCell('SELECT COUNT(*) AS "row_count" FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_NAME = ? AND REFERENCED_TABLE_NAME = ?;', $constraint_name, $referencing_table);
+    }
+
+    private ?\Doctrine\Inflector\Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }

@@ -25,16 +25,14 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField as IntegerField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use BadMethodCallException;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use InvalidArgumentException;
 use ReflectionClass;
 
 class Type implements TypeInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     public function __construct(string $name)
     {
@@ -221,7 +219,9 @@ class Type implements TypeInterface
 
     public function getEntityClassName(): string
     {
-        return Inflector::classify(Inflector::singularize($this->getName()));
+        $inflector = $this->getInflector();
+
+        return $inflector->classify($inflector->singularize($this->getName()));
     }
 
     public function getEntityInterfaceName(): string
@@ -262,7 +262,7 @@ class Type implements TypeInterface
 
     public function getManagerClassName(): string
     {
-        return Inflector::classify($this->getName());
+        return $this->getInflector()->classify($this->getName());
     }
 
     public function getManagerInterfaceName(): string
@@ -272,7 +272,7 @@ class Type implements TypeInterface
 
     public function getCollectionClassName(): string
     {
-        return Inflector::classify($this->getName());
+        return $this->getInflector()->classify($this->getName());
     }
 
     public function getCollectionInterfaceName(): string
@@ -820,5 +820,16 @@ class Type implements TypeInterface
         }
 
         return $this;
+    }
+
+    private ?Inflector $inflector = null;
+
+    private function getInflector(): Inflector
+    {
+        if ($this->inflector === null) {
+            $this->inflector = InflectorFactory::create()->build();
+        }
+
+        return $this->inflector;
     }
 }
