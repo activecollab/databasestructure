@@ -35,13 +35,13 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
         $base_interface_extends = '\\' . ltrim($type->getBaseEntityInterfaceExtends(), '\\');
 
         $base_interface_build_path = $this->getBuildPath()
-            ? "{$this->getBuildPath()}/Base/$base_interface_name.php"
+            ? sprintf("%s/Base/%s.php", $this->getBuildPath(), $base_interface_name)
             : null;
 
         $result = $this->openPhpFile();
 
         $base_interface_namespace = $this->getStructure()->getNamespace()
-            ? $this->getStructure()->getNamespace() . '\\Base'
+            ? sprintf('%s\\Base', $this->getStructure()->getNamespace())
             : 'Base';
 
         $result[] = 'namespace ' . $base_interface_namespace . ';';
@@ -119,12 +119,11 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
         }
     }
 
-    /**
-     * @param ScalarField $field
-     * @param string      $indent
-     * @param array       $result
-     */
-    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result): void
+    private function buildFieldGetterAndSetter(
+        ScalarField $field,
+        string $indent,
+        array &$result
+    ): void
     {
         $lines = [];
 
