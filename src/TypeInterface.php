@@ -127,7 +127,7 @@ interface TypeInterface
     /**
      * @return FieldInterface[]
      */
-    public function getFields();
+    public function getFields(): array;
 
     /**
      * Return ID field for this type.
@@ -167,7 +167,7 @@ interface TypeInterface
     /**
      * @return IndexInterface[]
      */
-    public function getIndexes();
+    public function getIndexes(): array;
 
     /**
      * @param  IndexInterface[] $indexes

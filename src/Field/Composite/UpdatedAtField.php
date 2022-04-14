@@ -44,9 +44,6 @@ class UpdatedAtField extends CompositeField implements AddIndexInterface
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFields(): array
     {
         return [

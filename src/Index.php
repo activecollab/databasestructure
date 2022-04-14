@@ -58,10 +58,7 @@ class Index implements IndexInterface
         return $this->name;
     }
 
-    /**
-     * @return array
-     */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }

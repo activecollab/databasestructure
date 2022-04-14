@@ -19,11 +19,7 @@ interface IndexInterface
     const FULLTEXT = 'FULLTEXT';
 
     public function getName(): string;
-
-    /**
-     * @return array
-     */
-    public function getFields();
+    public function getFields(): array;
 
     /**
      * @return string

@@ -17,5 +17,5 @@ interface InjectIndexesInsterface
      *
      * @return IndexInterface[]
      */
-    public function getIndexes();
+    public function getIndexes(): array;
 }

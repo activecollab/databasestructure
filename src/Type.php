@@ -336,7 +336,7 @@ class Type implements TypeInterface
     /**
      * @return FieldInterface[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -476,12 +476,12 @@ class Type implements TypeInterface
     /**
      * @var Index[]
      */
-    private $indexes = [];
+    private array $indexes = [];
 
     /**
      * @return IndexInterface[]
      */
-    public function getIndexes()
+    public function getIndexes(): array
     {
         return $this->indexes;
     }
