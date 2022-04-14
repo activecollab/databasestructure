@@ -16,10 +16,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class AdditionalPropertiesField extends CompositeField
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'raw_additional_properties';
     }

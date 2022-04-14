@@ -65,10 +65,7 @@ class ParentField extends CompositeField implements AddIndexInterface, RequiredI
         $this->addIndex($add_index);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

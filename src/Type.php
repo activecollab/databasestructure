@@ -39,12 +39,7 @@ class Type implements TypeInterface
         $this->name = $name;
     }
 
-    /**
-     * Return type name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

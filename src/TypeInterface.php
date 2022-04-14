@@ -13,12 +13,7 @@ use InvalidArgumentException;
 
 interface TypeInterface
 {
-    /**
-     * Return type name.
-     *
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return string

@@ -48,10 +48,7 @@ abstract class StringField extends CompositeField implements DefaultValueInterfa
         $this->addIndex($add_index);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

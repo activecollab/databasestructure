@@ -21,44 +21,20 @@ class AddressField extends CompositeField implements RequiredInterface
 {
     use RequiredInterfaceImplementation;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private string $field_name_prefix = '';
+    private bool $index_on_city;
+    private bool $index_on_zip_code;
+    private bool $index_on_region;
+    private bool $index_on_country;
 
-    /**
-     * @var string
-     */
-    private $field_name_prefix = '';
-
-    /**
-     * @var bool
-     */
-    private $index_on_city;
-
-    /**
-     * @var bool
-     */
-    private $index_on_zip_code;
-
-    /**
-     * @var bool
-     */
-    private $index_on_region;
-
-    /**
-     * @var bool
-     */
-    private $index_on_country;
-
-    /**
-     * @param string $name
-     * @param bool   $index_on_city
-     * @param bool   $index_on_zip_code
-     * @param bool   $index_on_region
-     * @param bool   $index_on_country
-     */
-    public function __construct($name = 'address', $index_on_city = false, $index_on_zip_code = false, $index_on_region = false, $index_on_country = false)
+    public function __construct(
+        string $name = 'address',
+        bool $index_on_city = false,
+        bool $index_on_zip_code = false,
+        bool $index_on_region = false,
+        bool $index_on_country = false
+    )
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid field name");
@@ -81,10 +57,7 @@ class AddressField extends CompositeField implements RequiredInterface
         $this->index_on_country = $index_on_country;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

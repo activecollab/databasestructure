@@ -53,10 +53,7 @@ class Index implements IndexInterface
         $this->index_type = $index_type;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

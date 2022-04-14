@@ -15,10 +15,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class IsArchivedField extends CompositeField
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'is_archived';
     }

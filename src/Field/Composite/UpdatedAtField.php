@@ -39,10 +39,7 @@ class UpdatedAtField extends CompositeField implements AddIndexInterface
         $this->addIndex($add_index);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

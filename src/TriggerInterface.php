@@ -17,10 +17,7 @@ interface TriggerInterface
     const UPDATE = 'update';
     const DELETE = 'delete';
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return string

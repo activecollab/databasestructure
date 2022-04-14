@@ -52,10 +52,7 @@ class PositionField extends CompositeField implements AddIndexInterface
         $this->addIndex($add_index);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

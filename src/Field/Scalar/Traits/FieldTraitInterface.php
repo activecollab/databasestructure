@@ -12,10 +12,5 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 interface FieldTraitInterface
 {
-    /**
-     * Return field name.
-     *
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 }

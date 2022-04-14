@@ -18,10 +18,7 @@ interface IndexInterface
     const UNIQUE = 'UNIQUE';
     const FULLTEXT = 'FULLTEXT';
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return array

@@ -10,12 +10,7 @@ namespace ActiveCollab\DatabaseStructure;
 
 interface AssociationInterface
 {
-    /**
-     * Get association name, in underscore notation.
-     *
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Return name of the target type.

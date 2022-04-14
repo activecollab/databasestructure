@@ -41,10 +41,7 @@ class ForeignKeyField extends CompositeField implements AddIndexInterface, Requi
         $this->required();
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
