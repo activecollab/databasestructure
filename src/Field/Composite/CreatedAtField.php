@@ -59,7 +59,7 @@ class CreatedAtField extends CompositeField implements AddIndexInterface
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

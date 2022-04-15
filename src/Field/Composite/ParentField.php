@@ -102,7 +102,7 @@ class ParentField extends CompositeField implements AddIndexInterface, RequiredI
     /**
      * {@inheritdoc}
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

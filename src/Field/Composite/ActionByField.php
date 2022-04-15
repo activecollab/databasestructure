@@ -279,7 +279,7 @@ class ActionByField extends CompositeField implements AddIndexInterface, Require
 
         return $this->action_name;
     }
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

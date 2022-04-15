@@ -141,7 +141,7 @@ class AddressField extends CompositeField implements RequiredInterface
     /**
      * {@inheritdoc}
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

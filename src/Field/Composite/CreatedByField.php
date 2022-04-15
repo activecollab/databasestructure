@@ -29,7 +29,7 @@ class CreatedByField extends ActionByField
     /**
      * {@inheritdoc}
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

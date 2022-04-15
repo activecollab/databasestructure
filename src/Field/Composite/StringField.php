@@ -85,7 +85,7 @@ abstract class StringField extends CompositeField implements DefaultValueInterfa
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 
