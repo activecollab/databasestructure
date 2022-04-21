@@ -12,17 +12,13 @@ namespace ActiveCollab\DatabaseStructure\Test\Base;
 
 use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
-use ActiveCollab\DateValue\DateTimeValue;
-use ActiveCollab\DateValue\DateTimeValueInterface;
 use mysqli;
 use RuntimeException;
-use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class DbTestCase extends BaseTestCase
+abstract class DbTestCase extends TestCase
 {
     protected mysqli $link;
     protected ?ConnectionInterface $connection = null;
-    protected ?DateTimeValueInterface $now = null;
 
     public function setUp(): void
     {
@@ -41,21 +37,14 @@ abstract class DbTestCase extends BaseTestCase
         $this->connection = new MysqliConnection($this->link);
 
         $this->dropTablesAndTriggers();
-
-        $this->setNow(new DateTimeValue());
     }
 
-    /**
-     * Tear down test environment.
-     */
     public function tearDown(): void
     {
         $this->dropTablesAndTriggers();
 
         $this->connection = null;
         $this->link->close();
-
-        $this->setNow(null);
 
         parent::tearDown();
     }
@@ -73,23 +62,6 @@ abstract class DbTestCase extends BaseTestCase
             $this->connection->dropTable($table_name);
         }
         $this->connection->execute('SET foreign_key_checks = 1;');
-    }
-
-    /**
-     * @return DateTimeValueInterface
-     */
-    protected function getNow()
-    {
-        return $this->now;
-    }
-
-    /**
-     * @param DateTimeValueInterface|null $now
-     */
-    protected function setNow(DateTimeValueInterface $now = null)
-    {
-        $this->now = $now;
-        DateTimeValue::setTestNow($this->now);
     }
 
     protected function getValidMySqlPassword(): string
