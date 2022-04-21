@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooks\WriterHasManyBooksStructure;
-use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
+use ActiveCollab\DatabaseStructure\Test\StructuredDbTestCase;
 use InvalidArgumentException;
 
-final class HasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
+final class HasManyAssociationAssociatedEntitiesTest extends StructuredDbTestCase
 {
     protected function getStructureClassName(): string
     {

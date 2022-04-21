@@ -12,9 +12,9 @@ namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
 use ActiveCollab\DatabaseStructure\Entity\EntityInterface;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBookIds\WriterHasManyBookIdsStructure;
-use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
+use ActiveCollab\DatabaseStructure\Test\StructuredDbTestCase;
 
-final class GetIdsFromAssociationAttributesTest extends StructuredTestCase
+final class GetIdsFromAssociationAttributesTest extends StructuredDbTestCase
 {
     protected function getStructureClassName(): string
     {
