@@ -28,4 +28,10 @@ class Coordinate implements CoordinateInterface
     {
         return $this->longitude;
     }
+
+    public function isSame(CoordinateInterface $coordinate): bool
+    {
+        return $coordinate->getLatitude()->getLatitude() === $this->getLatitude()->getLatitude() &&
+            $coordinate->getLongitude()->getLongitude() === $this->getLongitude()->getLongitude();
+    }
 }

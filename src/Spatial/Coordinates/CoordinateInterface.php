@@ -14,4 +14,5 @@ interface CoordinateInterface
 {
     public function getLatitude(): LatitudeInterface;
     public function getLongitude(): LongitudeInterface;
+    public function isSame(CoordinateInterface $coordinate): bool;
 }
