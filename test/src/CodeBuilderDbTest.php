@@ -9,6 +9,7 @@
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Structure;
+use ActiveCollab\DatabaseStructure\StructureInterface;
 use ActiveCollab\DatabaseStructure\Test\Base\DbTestCase;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Writers\WritersStructure;
 use ReflectionClass;
@@ -16,42 +17,37 @@ use ReflectionMethod;
 
 class CodeBuilderDbTest extends DbTestCase
 {
-    /**
-     * @var Structure
-     */
-    private $structure;
+    private string $namespace = '\\ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Writers\\';
 
-    /**
-     * @var string
-     */
-    private $namespace = '\\ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Writers\\';
+    private ReflectionClass $base_writers_manager_reflection;
+    private ReflectionClass $writers_manager_reflection;
+    private ReflectionClass $base_books_manager_reflection;
+    private ReflectionClass $books_manager_reflection;
+    private ReflectionClass $base_chapters_manager_reflection;
+    private ReflectionClass $chapters_manager_reflection;
 
-    /**
-     * @var ReflectionClass
-     */
-    private $base_writers_manager_reflection, $writers_manager_reflection, $base_books_manager_reflection, $books_manager_reflection, $base_chapters_manager_reflection, $chapters_manager_reflection;
+    private ReflectionClass $base_writers_collection_reflection;
+    private ReflectionClass $writers_collection_reflection;
+    private ReflectionClass $base_books_collection_reflection;
+    private ReflectionClass $books_collection_reflection;
+    private ReflectionClass $base_chapters_collection_reflection;
+    private ReflectionClass $chapters_collection_reflection;
 
-    /**
-     * @var ReflectionClass
-     */
-    private $base_writers_collection_reflection, $writers_collection_reflection, $base_books_collection_reflection, $books_collection_reflection, $base_chapters_collection_reflection, $chapters_collection_reflection;
+    private ReflectionClass $base_writer_reflection;
+    private ReflectionClass $writer_reflection;
+    private ReflectionClass $base_book_reflection;
+    private ReflectionClass $book_reflection;
+    private ReflectionClass $base_chapter_reflection;
+    private ReflectionClass $chapter_reflection;
 
-    /**
-     * @var ReflectionClass
-     */
-    private $base_writer_reflection, $writer_reflection, $base_book_reflection, $book_reflection, $base_chapter_reflection, $chapter_reflection;
-
-    /**
-     * Set up test environment.
-     */
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->structure = new WritersStructure();
+        $structure = new WritersStructure();
 
         if (!class_exists("{$this->namespace}Writer", false)) {
-            $this->structure->build();
+            $structure->build();
         }
 
         // Managers

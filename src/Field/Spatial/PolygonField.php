@@ -10,6 +10,17 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Spatial;
 
+use ActiveCollab\DatabaseStructure\Spatial\PolygonInterface;
+
 class PolygonField extends SpatialField
 {
+    public function getNativeType(): string
+    {
+        return PolygonInterface::class;
+    }
+
+    public function getCastingCode($variable_name): string
+    {
+        return '(bool) $' . $variable_name;
+    }
 }
