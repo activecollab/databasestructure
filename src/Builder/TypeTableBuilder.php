@@ -23,6 +23,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue;
+use ActiveCollab\DatabaseStructure\Field\Scalar\Spatial\PolygonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
@@ -195,29 +196,17 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Prepare type definition for the given field.
-     *
-     * @param  ScalarField $field
-     * @return string
      */
-    private function prepareTypeDefinition(ScalarField $field)
+    private function prepareTypeDefinition(ScalarField $field): string
     {
         if ($field instanceof IntegerField) {
-            switch ($field->getSize()) {
-                case FieldInterface::SIZE_TINY:
-                    $result = 'TINYINT';
-                    break;
-                case ScalarField::SIZE_SMALL:
-                    $result = 'SMALLINT';
-                    break;
-                case FieldInterface::SIZE_MEDIUM:
-                    $result = 'MEDIUMINT';
-                    break;
-                case FieldInterface::SIZE_BIG:
-                    $result = 'BIGINT';
-                    break;
-                default:
-                    $result = 'INT';
-            }
+            $result = match ($field->getSize()) {
+                FieldInterface::SIZE_TINY => 'TINYINT',
+                FieldInterface::SIZE_SMALL => 'SMALLINT',
+                FieldInterface::SIZE_MEDIUM => 'MEDIUMINT',
+                FieldInterface::SIZE_BIG => 'BIGINT',
+                default => 'INT',
+            };
 
             if ($field->isUnsigned()) {
                 $result .= ' UNSIGNED';
@@ -228,13 +217,21 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             }
 
             return $result;
-        } elseif ($field instanceof BooleanField) {
+        }
+
+        if ($field instanceof BooleanField) {
             return 'TINYINT(1) UNSIGNED';
-        } elseif ($field instanceof DateField) {
+        }
+
+        if ($field instanceof DateField) {
             return 'DATE';
-        } elseif ($field instanceof DateTimeField) {
+        }
+
+        if ($field instanceof DateTimeField) {
             return 'DATETIME';
-        } elseif ($field instanceof DecimalField) {
+        }
+
+        if ($field instanceof DecimalField) {
             $result = 'DECIMAL(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
             if ($field->isUnsigned()) {
@@ -242,11 +239,15 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             }
 
             return $result;
-        } elseif ($field instanceof EnumField) {
+        }
+
+        if ($field instanceof EnumField) {
             return 'ENUM(' . implode(',', array_map(function ($possibility) {
                 return $this->getConnection()->escapeValue($possibility);
             }, $field->getPossibilities())) . ')';
-        } elseif ($field instanceof FloatField) {
+        }
+
+        if ($field instanceof FloatField) {
             $result = 'FLOAT(' . $field->getLength() . ', ' . $field->getScale() . ')';
 
             if ($field->isUnsigned()) {
@@ -254,28 +255,40 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             }
 
             return $result;
-        } elseif ($field instanceof JsonField) {
-            return 'JSON';
-        } elseif ($field instanceof StringField) {
-            return 'VARCHAR(' . $field->getLength() . ')';
-        } elseif ($field instanceof PasswordField) {
-            return 'VARCHAR(191)';
-        } elseif ($field instanceof TextField) {
-            switch ($field->getSize()) {
-                case FieldInterface::SIZE_TINY:
-                    return 'TINYTEXT';
-                case ScalarField::SIZE_SMALL:
-                    return 'TEXT';
-                case FieldInterface::SIZE_MEDIUM:
-                    return 'MEDIUMTEXT';
-                default:
-                    return 'LONGTEXT';
-            }
-        } elseif ($field instanceof TimeField) {
-            return 'TIME';
-        } else {
-            throw new InvalidArgumentException('Field ' . get_class($field) . ' is not a support scalar field');
         }
+
+        if ($field instanceof JsonField) {
+            return 'JSON';
+        }
+
+        if ($field instanceof StringField) {
+            return 'VARCHAR(' . $field->getLength() . ')';
+        }
+
+        if ($field instanceof PasswordField) {
+            return 'VARCHAR(191)';
+        }
+
+        if ($field instanceof TextField) {
+            return match ($field->getSize()) {
+                FieldInterface::SIZE_TINY => 'TINYTEXT',
+                FieldInterface::SIZE_SMALL => 'TEXT',
+                FieldInterface::SIZE_MEDIUM => 'MEDIUMTEXT',
+                default => 'LONGTEXT',
+            };
+        }
+
+        if ($field instanceof TimeField) {
+            return 'TIME';
+        }
+
+        if ($field instanceof PolygonField) {
+            return 'POLYGON';
+        }
+
+        throw new InvalidArgumentException(
+            sprintf('Field %s is not a support scalar field.', $field::class)
+        );
     }
 
     /**
