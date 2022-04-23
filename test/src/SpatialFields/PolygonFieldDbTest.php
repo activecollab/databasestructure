@@ -12,6 +12,7 @@ namespace ActiveCollab\DatabaseStructure\Test\SpatialFields;
 
 use ActiveCollab\DatabaseStructure\Test\Base\DbTestCase;
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Spatial\SpatialStructure;
+use ReflectionMethod;
 
 class PolygonFieldDbTest extends DbTestCase
 {
@@ -28,7 +29,6 @@ class PolygonFieldDbTest extends DbTestCase
         }
     }
 
-
     public function testWillBuildSpatialFields(): void
     {
         $reflection = new \ReflectionClass("{$this->namespace}SpatialEntity");
@@ -37,5 +37,8 @@ class PolygonFieldDbTest extends DbTestCase
 
         $this->assertContains('id', $entity_fields);
         $this->assertContains('polygon', $entity_fields);
+
+        $this->assertInstanceOf(ReflectionMethod::class, $reflection->getMethod('getPolygon'));
+        $this->assertInstanceOf(ReflectionMethod::class, $reflection->getMethod('setPolygon'));
     }
 }

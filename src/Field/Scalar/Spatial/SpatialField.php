@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Field\Spatial;
+namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 
-use ActiveCollab\DatabaseStructure\FieldInterface;
+use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 
-interface SpatialFieldInterface extends FieldInterface
+abstract class SpatialField extends ScalarField
 {
 }

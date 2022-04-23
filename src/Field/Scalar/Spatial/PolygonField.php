@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace ActiveCollab\DatabaseStructure\Field\Spatial;
+namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 
-use ActiveCollab\DatabaseStructure\Spatial\PolygonInterface;
+use ActiveCollab\DatabaseConnection\Spatial\Polygon\PolygonInterface;
 
 class PolygonField extends SpatialField
 {

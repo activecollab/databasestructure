@@ -23,7 +23,6 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
-use ActiveCollab\DatabaseStructure\Field\Spatial\SpatialField;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
@@ -326,7 +325,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $fields_with_default_value = [];
 
         foreach ($fields as $field) {
-            if (($field instanceof ScalarField || $field instanceof SpatialField) && $field->getShouldBeAddedToModel()) {
+            if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
 
                 if ($field->getName() != 'id'
