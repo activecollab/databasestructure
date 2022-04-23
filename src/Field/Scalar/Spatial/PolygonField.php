@@ -21,6 +21,6 @@ class PolygonField extends SpatialField
 
     public function getCastingCode($variable_name): string
     {
-        return '(bool) $' . $variable_name;
+        return sprintf('$%s', $variable_name);
     }
 }
