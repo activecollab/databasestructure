@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
@@ -425,9 +427,8 @@ class Type implements TypeInterface
 
     /**
      * @param  IndexInterface[] $indexes
-     * @return $this
      */
-    public function &addIndexes(array $indexes)
+    public function addIndexes(array $indexes): static
     {
         foreach ($indexes as $index) {
             $this->addIndex($index);
@@ -436,11 +437,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @param  IndexInterface $index
-     * @return $this
-     */
-    public function &addIndex(IndexInterface $index)
+    public function addIndex(IndexInterface $index): static
     {
         if (empty($this->indexes[$index->getName()])) {
             $this->indexes[$index->getName()] = $index;
@@ -451,14 +448,11 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * Return all indexes.
-     *
-     * @return IndexInterface[]
-     */
-    public function getAllIndexes()
+    public function getAllIndexes(): array
     {
-        $result = [new Index('id', ['id'], IndexInterface::PRIMARY)];
+        $result = [
+            new Index('id', ['id'], IndexInterface::PRIMARY),
+        ];
 
         if ($this->getPolymorph()) {
             $result[] = new Index('type');
@@ -481,15 +475,9 @@ class Type implements TypeInterface
         return $result;
     }
 
-    /**
-     * @var TriggerInterface[]
-     */
-    private $triggers = [];
+    private array $triggers = [];
 
-    /**
-     * @return TriggerInterface[]
-     */
-    public function getTriggers()
+    public function getTriggers(): array
     {
         return $this->triggers;
     }
@@ -498,7 +486,7 @@ class Type implements TypeInterface
      * @param  TriggerInterface[] $triggers
      * @return $this
      */
-    public function &addTriggers(array $triggers)
+    public function addTriggers(array $triggers): static
     {
         foreach ($triggers as $trigger) {
             $this->addTrigger($trigger);
@@ -507,11 +495,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @param  TriggerInterface $trigger
-     * @return $this
-     */
-    public function &addTrigger(TriggerInterface $trigger)
+    public function addTrigger(TriggerInterface $trigger): static
     {
         if (empty($this->triggers[$trigger->getName()])) {
             $this->triggers[$trigger->getName()] = $trigger;
@@ -526,24 +510,14 @@ class Type implements TypeInterface
     //  Associations
     // ---------------------------------------------------
 
-    /**
-     * @var AssociationInterface[]
-     */
-    private $associations = [];
+    private array $associations = [];
 
-    /**
-     * @return AssociationInterface[]
-     */
-    public function getAssociations()
+    public function getAssociations(): array
     {
         return $this->associations;
     }
 
-    /**
-     * @param  AssociationInterface[] $associations
-     * @return $this
-     */
-    public function &addAssociations(array $associations)
+    public function addAssociations(array $associations): static
     {
         foreach ($associations as $association) {
             $this->addAssociation($association);
@@ -552,11 +526,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @param  AssociationInterface $association
-     * @return $this
-     */
-    public function &addAssociation(AssociationInterface $association)
+    public function addAssociation(AssociationInterface $association): static
     {
         if (empty($this->associations[$association->getName()])) {
             $association->setSourceTypeName($this->getName());
@@ -573,50 +543,32 @@ class Type implements TypeInterface
     //  Traits
     // ---------------------------------------------------
 
-    /**
-     * Traits.
-     *
-     * @var array
-     */
-    private $traits = [];
+    private array $traits = [];
 
-    /**
-     * Return traits.
-     *
-     * @return array
-     */
-    public function getTraits()
+    public function getTraits(): array
     {
         return $this->traits;
     }
 
-    /**
-     * Implement an interface or add a trait (or both).
-     *
-     * @return $this
-     */
-    public function &addTrait(string $interface = null, string $implementation = null)
+    public function addTrait(
+        string $interface = null,
+        string $implementation = null
+    ): static
     {
-        if (is_array($interface)) {
-            foreach ($interface as $k => $v) {
-                $this->addTrait($k, $v);
-            }
-        } else {
-            if ($interface || $implementation) {
-                if (empty($interface)) {
-                    $interface = '--just-paste-trait--';
-                }
+        if (empty($interface) && empty($implementation)) {
+            throw new InvalidArgumentException('Interface or implementation are required');
+        }
 
-                if (empty($this->traits[$interface])) {
-                    $this->traits[$interface] = [];
-                }
+        if (empty($interface)) {
+            $interface = '--just-paste-trait--';
+        }
 
-                if ($implementation && array_search($implementation, $this->traits[$interface]) === false) {
-                    $this->traits[$interface][] = $implementation;
-                }
-            } else {
-                throw new InvalidArgumentException('Interface or implementation are required');
-            }
+        if (empty($this->traits[$interface])) {
+            $this->traits[$interface] = [];
+        }
+
+        if ($implementation && !in_array($implementation, $this->traits[$interface])) {
+            $this->traits[$interface][] = $implementation;
         }
 
         return $this;
@@ -657,72 +609,41 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * Trait conflict resolutions.
-     *
-     * @var array
-     */
-    private $trait_tweaks = [];
+    private array $trait_tweaks = [];
 
-    /**
-     * Return trait tweaks.
-     */
     public function getTraitTweaks(): array
     {
         return $this->trait_tweaks;
     }
 
-    /**
-     * Resolve trait conflict.
-     *
-     * @param  string $tweak
-     * @return $this
-     */
-    public function &addTraitTweak($tweak)
+    public function addTraitTweak(string $tweak): static
     {
         $this->trait_tweaks[] = $tweak;
 
         return $this;
     }
 
-    /**
-     * @var array|string
-     */
-    private $order_by = ['id'];
+    private array $order_by = [
+        'id',
+    ];
 
-    /**
-     * Return how records of this type should be ordered by default.
-     *
-     * @return string|array
-     */
-    public function getOrderBy()
+    public function getOrderBy(): array
     {
         return $this->order_by;
     }
 
-    /**
-     * Set how records of this type should be ordered by default.
-     *
-     * @param  string|array $order_by
-     * @return $this
-     */
-    public function &orderBy($order_by)
+    public function orderBy(string ...$order_by): static
     {
         if (empty($order_by)) {
             throw new InvalidArgumentException('Order by value is required');
-        } elseif (!is_string($order_by) && !is_array($order_by)) {
-            throw new InvalidArgumentException('Order by can be string or array');
         }
 
-        $this->order_by = (array) $order_by;
+        $this->order_by = $order_by;
 
         return $this;
     }
 
-    /**
-     * @var array
-     */
-    private $serialize = [];
+    private array $serialize = [];
 
     /**
      * Return a list of additional fields that will be included during object serialization.
@@ -732,12 +653,7 @@ class Type implements TypeInterface
         return $this->serialize;
     }
 
-    /**
-     * Set a list of fields that will be included during object serialization.
-     *
-     * @return $this
-     */
-    public function &serialize(string ...$fields)
+    public function serialize(string ...$fields): static
     {
         if (!empty($fields)) {
             $this->serialize = array_unique(array_merge($this->serialize, $fields));

@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test;
 
 use ActiveCollab\DatabaseStructure\Entity\Entity;
@@ -96,18 +98,11 @@ class TypeDefinitionDbTest extends DbTestCase
         $this->assertEquals(['id'], (new Type('writers'))->getOrderBy());
     }
 
-    public function testOrderByNeedsToBeAnArray()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        (new Type('writers'))->orderBy(false);
-    }
-
     public function testOrderByCantBeEmpty()
     {
         $this->expectException(InvalidArgumentException::class);
 
-        (new Type('writers'))->orderBy([]);
+        (new Type('writers'))->orderBy();
     }
 
     /**
@@ -115,6 +110,12 @@ class TypeDefinitionDbTest extends DbTestCase
      */
     public function testOrderByCanBeChanged()
     {
-        $this->assertEquals(['!name', 'id'], (new Type('writers'))->orderBy(['!name', 'id'])->getOrderBy());
+        $this->assertEquals(
+            [
+                '!name',
+                'id',
+            ],
+            (new Type('writers'))->orderBy('!name', 'id')->getOrderBy()
+        );
     }
 }

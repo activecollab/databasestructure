@@ -10,8 +10,6 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure;
 
-use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-
 interface TypeInterface
 {
     public function getName(): string;
@@ -126,70 +124,47 @@ interface TypeInterface
 
     /**
      * @param  IndexInterface[] $indexes
-     * @return $this
      */
-    public function &addIndexes(array $indexes);
-
-    /**
-     * @param  IndexInterface $index
-     * @return $this
-     */
-    public function &addIndex(IndexInterface $index);
+    public function addIndexes(array $indexes): static;
+    public function addIndex(IndexInterface $index): static;
 
     /**
      * @return TriggerInterface[]
      */
-    public function getTriggers();
+    public function getTriggers(): array;
 
     /**
      * @param  TriggerInterface[] $triggers
-     * @return $this
      */
-    public function &addTriggers(array $triggers);
-
-    /**
-     * @param  TriggerInterface $trigger
-     * @return $this
-     */
-    public function &addTrigger(TriggerInterface $trigger);
+    public function addTriggers(array $triggers): static;
+    public function addTrigger(TriggerInterface $trigger): static;
 
     /**
      * Return all indexes.
      *
      * @return IndexInterface[]
      */
-    public function getAllIndexes();
+    public function getAllIndexes(): array;
 
     /**
      * @return AssociationInterface[]
      */
-    public function getAssociations();
-
-    /**
-     * @param  AssociationInterface[] $associations
-     * @return $this
-     */
-    public function &addAssociations(array $associations);
-
-    /**
-     * @param  AssociationInterface $association
-     * @return $this
-     */
-    public function &addAssociation(AssociationInterface $association);
+    public function getAssociations(): array;
+    public function addAssociations(array $associations): static;
+    public function addAssociation(AssociationInterface $association): static;
 
     /**
      * Return traits.
-     *
-     * @return array
      */
-    public function getTraits();
+    public function getTraits(): array;
 
     /**
      * Implement an interface or add a trait (or both).
-     *
-     * @return $this
      */
-    public function &addTrait(string $interface = null, string $implementation = null);
+    public function addTrait(
+        string $interface = null,
+        string $implementation = null
+    ): static;
 
     /**
      * Return trait tweaks.
@@ -198,26 +173,18 @@ interface TypeInterface
 
     /**
      * Resolve trait conflict.
-     *
-     * @param  string $tweak
-     * @return $this
      */
-    public function &addTraitTweak($tweak);
+    public function addTraitTweak(string $tweak): static;
 
     /**
      * Return how records of this type should be ordered by default.
-     *
-     * @return string|array
      */
-    public function getOrderBy();
+    public function getOrderBy(): array;
 
     /**
      * Set how records of this type should be ordered by default.
-     *
-     * @param  string|array $order_by
-     * @return $this
      */
-    public function &orderBy($order_by);
+    public function orderBy(string ...$order_by): static;
 
     /**
      * Return a list of additional fields that will be included during object serialization.
@@ -226,8 +193,6 @@ interface TypeInterface
 
     /**
      * Set a list of fields that will be included during object serialization.
-     *
-     * @return $this
      */
-    public function &serialize(string ...$fields);
+    public function serialize(string ...$fields): static;
 }
