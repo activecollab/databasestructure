@@ -59,7 +59,7 @@ interface ScalarFieldInterface extends FieldInterface, GeneratedInterface, OnlyO
     /**
      * Get field statement for SELECT query, usually just escaped field name.
      */
-    public function getSqlReadStatement(ConnectionInterface $connection): string;
+    public function getSqlReadStatement(): string;
 
     /**
      * Return true if this field should be part of the model, or does it do its work in background.

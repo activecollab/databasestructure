@@ -10,7 +10,21 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
+
 abstract class DatabaseBuilder extends Builder implements DatabaseBuilderInterface
 {
-    use DatabaseBuilderTrait;
+    private ?ConnectionInterface $connection = null;
+
+    public function getConnection(): ?ConnectionInterface
+    {
+        return $this->connection;
+    }
+
+    public function setConnection(ConnectionInterface $connection): static
+    {
+        $this->connection = $connection;
+
+        return $this;
+    }
 }

@@ -71,9 +71,9 @@ abstract class ScalarField implements ScalarFieldInterface
 
     abstract public function getSqlTypeDefinition(ConnectionInterface $connection): string;
 
-    public function getSqlReadStatement(ConnectionInterface $connection): string
+    public function getSqlReadStatement(): string
     {
-        return $connection->escapeFieldName($this->getName());
+        return sprintf('`%s`', $this->getName());
     }
 
     /**
