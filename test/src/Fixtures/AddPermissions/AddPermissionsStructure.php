@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Test\Fixtures\AddPermissions;
 
 use ActiveCollab\DatabaseStructure\Field\Composite\NameField;

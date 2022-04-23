@@ -51,4 +51,9 @@ abstract class SpatialField implements SpatialFieldInterface
             );
         }
     }
+
+    public function getShouldBeAddedToModel(): bool
+    {
+        return true;
+    }
 }

@@ -10,17 +10,32 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Test\SpatialFields;
 
-use ActiveCollab\DatabaseStructure\Field\Spatial\PolygonField;
-use ActiveCollab\DatabaseStructure\Spatial\PolygonInterface;
 use ActiveCollab\DatabaseStructure\Test\Base\DbTestCase;
+use ActiveCollab\DatabaseStructure\Test\Fixtures\Spatial\SpatialStructure;
 
 class PolygonFieldDbTest extends DbTestCase
 {
-    public function testWillUsePolygonsAsNativeType(): void
+    private string $namespace = '\\ActiveCollab\\DatabaseStructure\\Test\\Fixtures\\Spatial\\';
+
+    public function setUp(): void
     {
-        $this->assertSame(
-            PolygonInterface::class,
-            (new PolygonField('polygon'))->getNativeType()
-        );
+        parent::setUp();
+
+        $structure = new SpatialStructure();
+
+        if (!class_exists("{$this->namespace}SpatialEntity", false)) {
+            $structure->build();
+        }
+    }
+
+
+    public function testWillBuildSpatialFields(): void
+    {
+        $reflection = new \ReflectionClass("{$this->namespace}SpatialEntity");
+
+        $entity_fields = $reflection->getProperty('entity_fields')->getDefaultValue();
+
+        $this->assertContains('id', $entity_fields);
+        $this->assertContains('polygon', $entity_fields);
     }
 }
