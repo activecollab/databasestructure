@@ -18,9 +18,4 @@ class PolygonField extends SpatialField
     {
         return PolygonInterface::class;
     }
-
-    public function getCastingCode($variable_name): string
-    {
-        return sprintf('$%s', $variable_name);
-    }
 }

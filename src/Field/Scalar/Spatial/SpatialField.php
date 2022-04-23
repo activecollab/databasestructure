@@ -14,4 +14,8 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 
 abstract class SpatialField extends ScalarField
 {
+    public function getCastingCode($variable_name): string
+    {
+        return sprintf('$%s', $variable_name);
+    }
 }
