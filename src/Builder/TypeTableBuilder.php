@@ -29,10 +29,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Build path. If empty, class will be built to memory.
-     *
-     * @var string
      */
-    private $build_path;
+    private ?string $build_path = null;
 
     public function getBuildPath(): ?string
     {
@@ -55,7 +53,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             $sql_dir = dirname($structure_sql_path);
 
             if (!is_dir($sql_dir)) {
-                $old_mask = umask();
+                umask();
                 mkdir($sql_dir);
             }
 
@@ -103,11 +101,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Prepare CREATE TABLE statement for the given type.
-     *
-     * @param  TypeInterface $type
-     * @return string
      */
-    public function prepareCreateTableStatement(TypeInterface $type)
+    public function prepareCreateTableStatement(TypeInterface $type): string
     {
         $result = [];
 
@@ -171,7 +166,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $result;
     }
 
-    private function hasDefaultValue(FieldInterface $field)
+    private function hasDefaultValue(FieldInterface $field): bool
     {
         if ($field instanceof IntegerField && $field->getName() == 'id') {
             return false;
@@ -302,8 +297,12 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         $left_field_name = $association->getLeftFieldName();
         $right_field_name = $association->getRightFieldName();
 
-        $left_field = (new IntegerField($left_field_name, 0))->unsigned(true)->size($source->getIdField()->getSize());
-        $right_field = (new IntegerField($right_field_name, 0))->unsigned(true)->size($target->getIdField()->getSize());
+        $left_field = (new IntegerField($left_field_name, 0))
+            ->unsigned()
+            ->size($source->getIdField()->getSize());
+        $right_field = (new IntegerField($right_field_name, 0))
+            ->unsigned()
+            ->size($target->getIdField()->getSize());
 
         $result[] = '    ' . $this->prepareFieldStatement($left_field) . ',';
         $result[] = '    ' . $this->prepareFieldStatement($right_field) . ',';

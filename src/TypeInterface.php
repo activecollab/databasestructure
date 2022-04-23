@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure;
 
+use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
+
 interface TypeInterface
 {
     public function getName(): string;
@@ -93,7 +96,8 @@ interface TypeInterface
     /**
      * Return ID field for this type.
      */
-    public function getIdField(): FieldInterface;
+    public function getIdField(): IntegerField;
+    public function getTypeField(): StringField;
     public function addFields(FieldInterface ...$fields): static;
 
     /**

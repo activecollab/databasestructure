@@ -296,7 +296,7 @@ class Type implements TypeInterface
     /**
      * Return ID field for this type.
      */
-    public function getIdField(): FieldInterface
+    public function getIdField(): IntegerField
     {
         if (empty($this->id_field)) {
             $this->id_field = (new IntegerField('id', 0))
@@ -307,25 +307,19 @@ class Type implements TypeInterface
         return $this->id_field;
     }
 
-    /**
-     * @var StringField
-     */
-    private $type_field;
+    private ?StringField $type_field = null;
 
-    /**
-     * @return StringField
-     */
-    public function getTypeField()
+    public function getTypeField(): StringField
     {
-        if ($this->getPolymorph()) {
-            if (empty($this->type_field)) {
-                $this->type_field = (new StringField('type', ''))->required();
-            }
-
-            return $this->type_field;
-        } else {
+        if (!$this->getPolymorph()) {
             throw new BadMethodCallException(__METHOD__ . ' is available only for polymorph types');
         }
+
+        if (empty($this->type_field)) {
+            $this->type_field = (new StringField('type', ''))->required();
+        }
+
+        return $this->type_field;
     }
 
     public function addFields(FieldInterface ...$fields): static
