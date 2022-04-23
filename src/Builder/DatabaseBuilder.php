@@ -6,33 +6,11 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
-namespace ActiveCollab\DatabaseStructure\Builder;
+declare(strict_types=1);
 
-use ActiveCollab\DatabaseConnection\ConnectionInterface;
+namespace ActiveCollab\DatabaseStructure\Builder;
 
 abstract class DatabaseBuilder extends Builder implements DatabaseBuilderInterface
 {
-    /**
-     * @var ConnectionInterface
-     */
-    private $connection;
-
-    /**
-     * @return ConnectionInterface
-     */
-    public function getConnection()
-    {
-        return $this->connection;
-    }
-
-    /**
-     * @param  ConnectionInterface $connection
-     * @return $this
-     */
-    public function &setConnection(ConnectionInterface $connection)
-    {
-        $this->connection = $connection;
-
-        return $this;
-    }
+    use DatabaseBuilderTrait;
 }

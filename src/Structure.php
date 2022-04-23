@@ -292,16 +292,11 @@ abstract class Structure implements StructureInterface
     //  Class Builder
     // ---------------------------------------------------
 
-    /**
-     * Build model at the given path.
-     *
-     * If $build_path is null, classes will be generated, evaled and loaded into the memory.
-     *
-     * @param string|null         $build_path
-     * @param ConnectionInterface $connection
-     * @param array|null          $event_handlers
-     */
-    public function build($build_path = null, ConnectionInterface $connection = null, array $event_handlers = [])
+    public function build(
+        string $build_path = null,
+        ConnectionInterface $connection = null,
+        array $event_handlers = []
+    ): void
     {
         $builders = $this->getBuilders($build_path, $connection, $event_handlers);
 
@@ -323,17 +318,18 @@ abstract class Structure implements StructureInterface
     /**
      * @var BuilderInterface[]|FileSystemBuilderInterface[]|DatabaseBuilderInterface[]
      */
-    private $builders = [];
+    private array $builders = [];
 
     /**
      * Return a list of prepared builder instances.
      *
-     * @param  string|null              $build_path
-     * @param  ConnectionInterface|null $connection
-     * @param  array                    $event_handlers
      * @return BuilderInterface[]
      */
-    private function getBuilders($build_path, ?ConnectionInterface $connection, array $event_handlers): array
+    private function getBuilders(
+        ?string $build_path,
+        ?ConnectionInterface $connection,
+        array $event_handlers
+    ): array
     {
         if (empty($this->builders)) {
             $this->builders[] = new BaseDirBuilder($this);

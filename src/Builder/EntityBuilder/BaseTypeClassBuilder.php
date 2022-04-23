@@ -14,6 +14,8 @@ use ActiveCollab\DatabaseConnection\Record\ValueCaster;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
 use ActiveCollab\DatabaseStructure\AssociationInterface;
+use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderInterface;
+use ActiveCollab\DatabaseStructure\Builder\DatabaseBuilderTrait;
 use ActiveCollab\DatabaseStructure\Builder\FileSystemBuilder;
 use ActiveCollab\DatabaseStructure\Field\Composite\CompositeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
@@ -30,8 +32,10 @@ use ActiveCollab\DateValue\DateValueInterface;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 
-class BaseTypeClassBuilder extends FileSystemBuilder
+class BaseTypeClassBuilder extends FileSystemBuilder implements DatabaseBuilderInterface
 {
+    use DatabaseBuilderTrait;
+
     public function buildType(TypeInterface $type): void
     {
         $base_class_name = $type->getEntityClassName();
@@ -322,11 +326,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     private function buildFields(array $fields, $indent, array &$result)
     {
         $stringified_field_names = [];
+        $stringified_sql_read_statements = [];
         $fields_with_default_value = [];
 
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
+                $stringified_sql_read_statements[] = var_export($field->getSqlReadStatement($this->getConnection()), true);
 
                 if ($field->getName() != 'id'
                     && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
@@ -345,6 +351,20 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         foreach ($stringified_field_names as $stringified_field_name) {
             $result[] = $indent . '    ' . $stringified_field_name . ',';
+        }
+
+        $result[] = $indent . '];';
+
+        $result[] = '';
+        $result[] = $indent . '/**';
+        $result[] = $indent . ' * Table fields prepared for SELECT SQL query.';
+        $result[] = $indent . ' *';
+        $result[] = $indent . ' * @var array';
+        $result[] = $indent . ' */';
+        $result[] = $indent . 'protected $sql_read_statements = [';
+
+        foreach ($stringified_sql_read_statements as $stringified_sql_read_statement) {
+            $result[] = $indent . '    ' . $stringified_sql_read_statement . ',';
         }
 
         $result[] = $indent . '];';

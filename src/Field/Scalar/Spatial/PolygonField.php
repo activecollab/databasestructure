@@ -24,4 +24,13 @@ class PolygonField extends SpatialField
     {
         return 'POLYGON';
     }
+
+    public function getSqlReadStatement(ConnectionInterface $connection): string
+    {
+        return sprintf(
+            "ST_GEOMFROMTEXT(%s) AS '%s'",
+            $connection->escapeFieldName($this->getName()),
+            $this->getName()
+        );
+    }
 }
