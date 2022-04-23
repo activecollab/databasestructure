@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\OnlyOneInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\RequiredInterface;
@@ -49,6 +50,16 @@ interface ScalarFieldInterface extends FieldInterface, GeneratedInterface, OnlyO
      * @return string
      */
     public function getCastingCode($variable_name): string;
+
+    /**
+     * Return field type definition for CREATE TABLE statement.
+     */
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string;
+
+    /**
+     * Get field statement for SELECT query, usually just escaped field name.
+     */
+    public function getSqlReadStatement(): string;
 
     /**
      * Return true if this field should be part of the model, or does it do its work in background.

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface\Implementation as AddIndexInterfaceImplementation;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\LengthInterface;
@@ -32,4 +33,11 @@ class StringField extends ScalarFieldWithDefaultValue implements AddIndexInterfa
     {
         return 'string';
     }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return sprintf('VARCHAR(%d)', $this->getLength());
+    }
+
+
 }

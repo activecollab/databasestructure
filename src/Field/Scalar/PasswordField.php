@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
+
 class PasswordField extends ScalarField
 {
     public function __construct($name = 'password')
@@ -22,5 +24,10 @@ class PasswordField extends ScalarField
     public function getNativeType(): string
     {
         return 'string';
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return 'VARCHAR(191)';
     }
 }

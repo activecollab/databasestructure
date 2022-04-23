@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface\Implementation as GeneratedInterfaceImplementation;
@@ -66,6 +67,13 @@ abstract class ScalarField implements ScalarFieldInterface
     public function getCastingCode($variable_name): string
     {
         return '(string) $' . $variable_name;
+    }
+
+    abstract public function getSqlTypeDefinition(ConnectionInterface $connection): string;
+
+    public function getSqlReadStatement(): string
+    {
+        return sprintf('`%s`', $this->getName());
     }
 
     /**

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Spatial\Polygon\PolygonInterface;
 
 class PolygonField extends SpatialField
@@ -17,5 +18,10 @@ class PolygonField extends SpatialField
     public function getNativeType(): string
     {
         return PolygonInterface::class;
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return 'POLYGON';
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractor;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
@@ -32,6 +33,11 @@ class JsonField extends ScalarField implements JsonFieldInterface
     public function getCastingCode($variable_name): string
     {
         return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return 'JSON';
     }
 
     public function getGeneratedFields(): array
