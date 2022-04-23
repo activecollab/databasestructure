@@ -23,29 +23,29 @@ class WritersStructure extends Structure
     
     public function configure()
     {
-        $this->addType('writers')->addFields([
+        $this->addType('writers')->addFields(
             new NameField('name', ''),
             (new DateField('birthday'))->required(),
             new BooleanField('is_awesome', true),
-        ])->addIndexes([
+        )->addIndexes(
             new Index('birthday'),
-        ])->addAssociations([
+        )->addAssociations(
             new HasManyAssociation('books'),
-        ])->orderBy('name')->serialize('name', 'birthday');
+        )->orderBy('name')->serialize('name', 'birthday');
 
-        $this->addType('books')->addFields([
+        $this->addType('books')->addFields(
             (new NameField('title', '', true))->required()->unique('writer_id'),
-        ])->addAssociations([
+        )->addAssociations(
             new BelongsToAssociation('author', 'writers'),
             new HasManyAssociation('chapters'),
-        ]);
+        );
 
-        $this->addType('chapters')->addFields([
+        $this->addType('chapters')->addFields(
             (new NameField('title', '', true))->required()->unique('book_id'),
             new AdditionalPropertiesField(),
             new PositionField(),
-        ])->addAssociations([
+        )->addAssociations(
             new BelongsToAssociation('book'),
-        ])->orderBy('position');
+        )->orderBy('position');
     }
 }

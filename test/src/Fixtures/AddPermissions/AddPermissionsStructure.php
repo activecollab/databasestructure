@@ -35,6 +35,6 @@ class AddPermissionsStructure extends Structure
             $this->setConfig('add_permissions', $this->add_permissions);
         }
 
-        $this->addType('elements')->addFields([new NameField()]);
+        $this->addType('elements')->addFields(new NameField());
     }
 }

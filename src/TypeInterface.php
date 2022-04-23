@@ -94,11 +94,7 @@ interface TypeInterface
      * Return ID field for this type.
      */
     public function getIdField(): FieldInterface;
-
-    /**
-     * @param FieldInterface[] $fields
-     */
-    public function addFields(array $fields): static;
+    public function addFields(FieldInterface ...$fields): static;
 
     /**
      * Add a single field to the type.
@@ -121,22 +117,14 @@ interface TypeInterface
      * @return IndexInterface[]
      */
     public function getIndexes(): array;
-
-    /**
-     * @param  IndexInterface[] $indexes
-     */
-    public function addIndexes(array $indexes): static;
+    public function addIndexes(IndexInterface ...$indexes): static;
     public function addIndex(IndexInterface $index): static;
 
     /**
      * @return TriggerInterface[]
      */
     public function getTriggers(): array;
-
-    /**
-     * @param  TriggerInterface[] $triggers
-     */
-    public function addTriggers(array $triggers): static;
+    public function addTriggers(TriggerInterface ...$triggers): static;
     public function addTrigger(TriggerInterface $trigger): static;
 
     /**
@@ -150,7 +138,7 @@ interface TypeInterface
      * @return AssociationInterface[]
      */
     public function getAssociations(): array;
-    public function addAssociations(array $associations): static;
+    public function addAssociations(AssociationInterface ...$associations): static;
     public function addAssociation(AssociationInterface $association): static;
 
     /**

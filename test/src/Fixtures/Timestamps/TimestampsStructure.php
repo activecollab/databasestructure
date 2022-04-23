@@ -17,10 +17,10 @@ class TimestampsStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('timestamped_entries')->addFields([
+        $this->addType('timestamped_entries')->addFields(
             new NameField(),
             new CreatedAtField(),
             new UpdatedAtField(),
-        ]);
+        );
     }
 }

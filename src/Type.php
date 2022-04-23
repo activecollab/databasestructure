@@ -328,10 +328,7 @@ class Type implements TypeInterface
         }
     }
 
-    /**
-     * @param FieldInterface[] $fields
-     */
-    public function addFields(array $fields): static
+    public function addFields(FieldInterface ...$fields): static
     {
         foreach ($fields as $field) {
             $this->addField($field);
@@ -425,10 +422,7 @@ class Type implements TypeInterface
         return $this->indexes;
     }
 
-    /**
-     * @param  IndexInterface[] $indexes
-     */
-    public function addIndexes(array $indexes): static
+    public function addIndexes(IndexInterface ...$indexes): static
     {
         foreach ($indexes as $index) {
             $this->addIndex($index);
@@ -482,11 +476,7 @@ class Type implements TypeInterface
         return $this->triggers;
     }
 
-    /**
-     * @param  TriggerInterface[] $triggers
-     * @return $this
-     */
-    public function addTriggers(array $triggers): static
+    public function addTriggers(TriggerInterface ...$triggers): static
     {
         foreach ($triggers as $trigger) {
             $this->addTrigger($trigger);
@@ -517,7 +507,7 @@ class Type implements TypeInterface
         return $this->associations;
     }
 
-    public function addAssociations(array $associations): static
+    public function addAssociations(AssociationInterface ...$associations): static
     {
         foreach ($associations as $association) {
             $this->addAssociation($association);
@@ -528,13 +518,14 @@ class Type implements TypeInterface
 
     public function addAssociation(AssociationInterface $association): static
     {
-        if (empty($this->associations[$association->getName()])) {
-            $association->setSourceTypeName($this->getName());
-
-            $this->associations[$association->getName()] = $association;
-        } else {
-            throw new InvalidArgumentException("Association '" . $association->getName() . "' already exists in this type");
+        if (!empty($this->associations[$association->getName()])) {
+            throw new InvalidArgumentException(
+                sprintf("Association '%s' already exists in this type.", $association->getName())
+            );
         }
+
+        $association->setSourceTypeName($this->getName());
+        $this->associations[$association->getName()] = $association;
 
         return $this;
     }
