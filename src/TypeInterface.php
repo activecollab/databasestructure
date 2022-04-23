@@ -6,25 +6,17 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use InvalidArgumentException;
 
 interface TypeInterface
 {
     public function getName(): string;
-
-    /**
-     * @return string
-     */
-    public function getTableName();
-
-    /**
-     * @param  string $table_name
-     * @return $this
-     */
-    public function &setTableName($table_name);
+    public function getTableName(): string;
+    public function setTableName(string $table_name): static;
 
     public function getEntityClassName(): string;
     public function getEntityInterfaceName(): string;
@@ -43,11 +35,8 @@ interface TypeInterface
 
     /**
      * Return manager class name.
-     *
-     * @return string
      */
     public function getManagerClassName(): string;
-
     public function getManagerInterfaceName(): string;
 
     /**
@@ -63,44 +52,23 @@ interface TypeInterface
     /**
      * Set name of a class that base type class should extend.
      *
-     * Note: This class needs to descened from Object class of DatabaseObject package
-     *
-     * @param  string $class_name
-     * @return $this
+     * Note: This class needs to descend from Object class of DatabaseObject package
      */
-    public function &setBaseClassExtends($class_name);
+    public function setBaseClassExtends(string $class_name): static;
 
-    /**
-     * @return bool
-     */
-    public function getPolymorph();
+    public function getPolymorph(): bool;
 
     /**
      * Set this model to be polymorph (type field is added and used to store instance's class name).
-     *
-     * @param  bool  $value
-     * @return $this
      */
-    public function &polymorph($value = true);
-
-    /**
-     * @return bool
-     */
-    public function getPermissions();
-
-    /**
-     * @return bool
-     */
-    public function getPermissionsArePermissive();
+    public function polymorph(bool $value = true): static;
+    public function getPermissions(): bool;
+    public function getPermissionsArePermissive(): bool;
 
     /**
      * Add permissions interface to this model.
-     *
-     * @param  bool  $value
-     * @param  bool  $permissions_are_permissive
-     * @return $this
      */
-    public function &permissions($value = true, $permissions_are_permissive = true);
+    public function permissions(bool $value = true, bool $permissions_are_permissive = true): static;
 
     /**
      * Return a list of protected fields.
@@ -111,18 +79,13 @@ interface TypeInterface
 
     /**
      * Get expected dataset size.
-     *
-     * @return string
      */
-    public function getExpectedDatasetSize();
+    public function getExpectedDatasetSize(): string;
 
     /**
-     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
-     *
-     * @param  string $size
-     * @return $this
+     * Set expected dataset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
      */
-    public function &expectedDatasetSize($size);
+    public function expectedDatasetSize(string $size): static;
 
     /**
      * @return FieldInterface[]
@@ -131,38 +94,30 @@ interface TypeInterface
 
     /**
      * Return ID field for this type.
-     *
-     * @return IntegerField
      */
-    public function getIdField();
+    public function getIdField(): FieldInterface;
 
     /**
-     * @param  FieldInterface[] $fields
-     * @return $this
+     * @param FieldInterface[] $fields
      */
-    public function &addFields(array $fields);
+    public function addFields(array $fields): static;
 
     /**
      * Add a single field to the type.
-     *
-     * @param  FieldInterface $field
-     * @return $this
      */
-    public function &addField(FieldInterface $field);
+    public function addField(FieldInterface $field): static;
 
     /**
      * Return all fields, flatten to one array.
      *
      * @return FieldInterface[]
      */
-    public function getAllFields();
+    public function getAllFields(): array;
 
     /**
      * Return an array of generated fields. Key is the field name, value is the caster.
-     *
-     * @return array
      */
-    public function getGeneratedFields();
+    public function getGeneratedFields(): array;
 
     /**
      * @return IndexInterface[]
@@ -232,19 +187,14 @@ interface TypeInterface
     /**
      * Implement an interface or add a trait (or both).
      *
-     * @param  string                   $interface
-     * @param  string                   $implementation
      * @return $this
-     * @throws InvalidArgumentException
      */
-    public function &addTrait($interface = null, $implementation = null);
+    public function &addTrait(string $interface = null, string $implementation = null);
 
     /**
      * Return trait tweaks.
-     *
-     * @return array
      */
-    public function getTraitTweaks();
+    public function getTraitTweaks(): array;
 
     /**
      * Resolve trait conflict.
@@ -271,16 +221,13 @@ interface TypeInterface
 
     /**
      * Return a list of additional fields that will be included during object serialization.
-     *
-     * @return array
      */
-    public function getSerialize();
+    public function getSerialize(): array;
 
     /**
      * Set a list of fields that will be included during object serialization.
      *
-     * @param  string[] ...$fields
      * @return $this
      */
-    public function &serialize(...$fields);
+    public function &serialize(string ...$fields);
 }

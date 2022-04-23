@@ -100,13 +100,7 @@ trait Implementation
      * @return array
      */
     abstract public function getPositionContext();
-
-    /**
-     * Return value of table name.
-     *
-     * @return string
-     */
-    abstract public function getTableName();
+    abstract public function getTableName(): string;
 
     /**
      * Return value of specific field and typecast it...

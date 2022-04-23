@@ -6,14 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Field;
 
 interface GeneratedFieldsInterface
 {
     /**
      * Return an array of generated fields that parent field adds to the type.
-     *
-     * @return array
      */
-    public function getGeneratedFields();
+    public function getGeneratedFields(): array;
 }

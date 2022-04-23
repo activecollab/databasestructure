@@ -34,7 +34,7 @@ class JsonField extends ScalarField implements JsonFieldInterface
         return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
     }
 
-    public function getGeneratedFields()
+    public function getGeneratedFields(): array
     {
         $result = [];
 
