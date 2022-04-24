@@ -24,14 +24,4 @@ class PolygonField extends SpatialField
     {
         return 'POLYGON';
     }
-
-    public function getSqlReadStatement(string $table_name): string
-    {
-        return sprintf(
-            "ST_ASTEXT(`%s`.`%s`) AS '%s'",
-            $table_name,
-            $this->getName(),
-            $this->getName()
-        );
-    }
 }
