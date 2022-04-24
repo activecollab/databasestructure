@@ -8,6 +8,8 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ParseError;
+
 abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInterface
 {
     /**
@@ -60,7 +62,12 @@ abstract class FileSystemBuilder extends Builder implements FileSystemBuilderInt
         if ($this->getBuildPath()) {
             file_put_contents($path, $result);
         } else {
-            eval(ltrim($result, '<?php'));
+            try {
+                eval(ltrim($result, '<?php'));
+            } catch (ParseError $e) {
+                var_dump($result);
+                throw $e;
+            }
         }
 
         return $path;

@@ -108,7 +108,12 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }, $type->getOrderBy())) . '];';
         }
 
-        $this->buildConfigureMethod($type->getGeneratedFields(), '    ', $result);
+        $this->buildConfigureMethod(
+            $type->getFields(),
+            $type->getGeneratedFields(),
+            '    ',
+            $result
+        );
 
         $this->buildAssociatedEntitiesManagers($type, '    ', $result);
         $this->buildSetAttributes($type, '    ', $result);
@@ -396,52 +401,73 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     {
         $result[] = '';
         $result[] = $indent . '/**';
-        $result[] = $indent . ' * Generated fields that are loaded, but not managed by the entity..';
+        $result[] = $indent . ' * Generated fields that are loaded, but not managed by the entity.';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected array $generated_entity_fields = [' . implode(', ', array_map(function ($field_name) {
-            return var_export($field_name, true);
-        }, $generated_field_names)) . '];';
+        $result[] = $indent . 'protected array $generated_entity_fields = [';
+
+        foreach ($generated_field_names as $generated_field_name) {
+            $result[] = sprintf('%s    %s,',
+                $indent,
+                var_export($generated_field_name, true)
+            );
+        }
+
+        $result[] = $indent . '];';
     }
 
-    public function buildConfigureMethod(array $generated_fields, $indent, array &$result)
+    /**
+     * @param FieldInterface[] $fields
+     */
+    private function buildConfigureMethod(
+        array $fields,
+        array $generated_fields,
+        string $indent,
+        array &$result
+    ): void
     {
+        $field_casters = [];
+
+        foreach ($fields as $field) {
+            if ($field instanceof ScalarField) {
+                $field_casters[$field->getName()] = $field->getValueCaster();
+            }
+        }
+
         if (!empty($generated_fields)) {
+            $field_casters = array_merge($field_casters, $generated_fields);
+        }
+
+        if (!empty($field_casters)) {
             $result[] = '';
-            $result[] = $indent . '/**';
-            $result[] = $indent . ' * {@inheritdoc}';
-            $result[] = $indent . ' */';
             $result[] = $indent . 'protected function configure()';
             $result[] = $indent . '{';
-            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(new \\' . ValueCaster::class . '([';
+            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(';
+            $result[] = $indent . '        new \\' . ValueCaster::class . '(';
+            $result[] = $indent . '            [';
 
-            foreach ($generated_fields as $field_name => $caster) {
-                switch ($caster) {
-                    case ValueCasterInterface::CAST_INT:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_INT';
-                        break;
-                    case ValueCasterInterface::CAST_FLOAT:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_FLOAT';
-                        break;
-                    case ValueCasterInterface::CAST_BOOL:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_BOOL';
-                        break;
-                    case ValueCasterInterface::CAST_DATE:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_DATE';
-                        break;
-                    case ValueCasterInterface::CAST_DATETIME:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_DATETIME';
-                        break;
-                    case ValueCasterInterface::CAST_JSON:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_JSON';
-                        break;
-                    default:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_STRING';
-                }
+            foreach ($field_casters as $field_name => $caster) {
+                $full_caster = match ($caster) {
+                    ValueCasterInterface::CAST_INT => '\\' . ValueCasterInterface::class . '::CAST_INT',
+                    ValueCasterInterface::CAST_FLOAT => '\\' . ValueCasterInterface::class . '::CAST_FLOAT',
+                    ValueCasterInterface::CAST_BOOL => '\\' . ValueCasterInterface::class . '::CAST_BOOL',
+                    ValueCasterInterface::CAST_DATE => '\\' . ValueCasterInterface::class . '::CAST_DATE',
+                    ValueCasterInterface::CAST_DATETIME => '\\' . ValueCasterInterface::class . '::CAST_DATETIME',
+                    ValueCasterInterface::CAST_JSON => '\\' . ValueCasterInterface::class . '::CAST_JSON',
+                    ValueCasterInterface::CAST_SPATIAL => '\\' . ValueCasterInterface::class . '::CAST_SPATIAL',
+                    default => '\\' . ValueCasterInterface::class . '::CAST_STRING',
+                };
 
-                $result[] = $indent . '        ' . var_export($field_name, true) . ' => ' . $full_caster . ',';
+                $result[] = sprintf(
+                    '%s                %s => %s,',
+                    $indent,
+                    var_export($field_name, true),
+                    $full_caster
+                );
             }
 
-            $result[] = $indent . '    ]));';
+            $result[] = $indent . '            ]';
+            $result[] = $indent . '        )';
+            $result[] = $indent . '    );';
             $result[] = $indent . '}';
         }
     }
