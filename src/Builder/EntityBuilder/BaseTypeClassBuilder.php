@@ -80,24 +80,20 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result[] = '    /**';
         $result[] = '     * Name of the table where records are stored.';
-        $result[] = '     *';
-        $result[] = '     * @var string';
         $result[] = '     */';
-        $result[] = '    protected $table_name = ' . var_export($type->getTableName(), true) . ';';
+        $result[] = '    protected string $table_name = ' . var_export($type->getTableName(), true) . ';';
 
         $fields = $type->getAllFields();
 
-        $this->buildFields($fields, '    ', $result);
+        $this->buildFields($type->getTableName(), $fields, '    ', $result);
         $this->buildGeneratedFields(array_keys($type->getGeneratedFields()), '    ', $result);
 
         if (count($type->getProtectedFields())) {
             $result[] = '';
             $result[] = '    /**';
             $result[] = '     * List of protected fields.';
-            $result[] = '     *';
-            $result[] = '     * @var array';
             $result[] = '     */';
-            $result[] = '    protected $protected_fields = [' . implode(', ', array_map(function ($field) {
+            $result[] = '    protected array $protected_fields = [' . implode(', ', array_map(function ($field) {
                 return var_export($field, true);
             }, $type->getProtectedFields())) . '];';
         }
@@ -107,7 +103,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '    /**';
             $result[] = '     * @var string[]';
             $result[] = '     */';
-            $result[] = '    protected $order_by = [' . implode(', ', array_map(function ($value) {
+            $result[] = '    protected array $order_by = [' . implode(', ', array_map(function ($value) {
                 return var_export($value, true);
             }, $type->getOrderBy())) . '];';
         }
@@ -315,11 +311,17 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     /**
      * Build field definitions.
      *
+     * @param string           $table_name
      * @param FieldInterface[] $fields
      * @param string           $indent
      * @param array            $result
      */
-    private function buildFields(array $fields, $indent, array &$result)
+    private function buildFields(
+        string $table_name,
+        array $fields,
+        string $indent,
+        array &$result
+    )
     {
         $stringified_field_names = [];
         $stringified_sql_read_statements = [];
@@ -328,7 +330,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
-                $stringified_sql_read_statements[] = var_export($field->getSqlReadStatement(), true);
+                $stringified_sql_read_statements[] = var_export(
+                    $field->getSqlReadStatement($table_name),
+                    true
+                );
 
                 if ($field->getName() != 'id'
                     && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
@@ -340,10 +345,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '';
         $result[] = $indent . '/**';
         $result[] = $indent . ' * Table fields that are managed by this entity.';
-        $result[] = $indent . ' *';
-        $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $entity_fields = [';
+        $result[] = $indent . 'protected array $entity_fields = [';
 
         foreach ($stringified_field_names as $stringified_field_name) {
             $result[] = $indent . '    ' . $stringified_field_name . ',';
@@ -354,10 +357,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '';
         $result[] = $indent . '/**';
         $result[] = $indent . ' * Table fields prepared for SELECT SQL query.';
-        $result[] = $indent . ' *';
-        $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $sql_read_statements = [';
+        $result[] = $indent . 'protected array $sql_read_statements = [';
 
         foreach ($stringified_sql_read_statements as $stringified_sql_read_statement) {
             $result[] = $indent . '    ' . $stringified_sql_read_statement . ',';
@@ -369,10 +370,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '';
             $result[] = $indent . '/**';
             $result[] = $indent . ' * List of default field values.';
-            $result[] = $indent . ' *';
-            $result[] = $indent . ' * @var array';
             $result[] = $indent . ' */';
-            $result[] = $indent . 'protected $default_entity_field_values = [';
+            $result[] = $indent . 'protected array $default_entity_field_values = [';
 
             foreach ($fields_with_default_value as $field_name => $default_value) {
                 $result[] = $indent . '   ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
@@ -398,10 +397,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '';
         $result[] = $indent . '/**';
         $result[] = $indent . ' * Generated fields that are loaded, but not managed by the entity..';
-        $result[] = $indent . ' *';
-        $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $generated_entity_fields = [' . implode(', ', array_map(function ($field_name) {
+        $result[] = $indent . 'protected array $generated_entity_fields = [' . implode(', ', array_map(function ($field_name) {
             return var_export($field_name, true);
         }, $generated_field_names)) . '];';
     }
