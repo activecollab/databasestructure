@@ -17,7 +17,7 @@ class PolygonField extends SpatialField
 {
     public function getNativeType(): string
     {
-        return PolygonInterface::class;
+        return '\\' . PolygonInterface::class;
     }
 
     public function getSqlTypeDefinition(ConnectionInterface $connection): string

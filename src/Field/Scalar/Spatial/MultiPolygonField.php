@@ -17,7 +17,7 @@ class MultiPolygonField extends SpatialField
 {
     public function getNativeType(): string
     {
-        return MultiPolygonInterface::class;
+        return '\\' . MultiPolygonInterface::class;
     }
 
     public function getSqlTypeDefinition(ConnectionInterface $connection): string
