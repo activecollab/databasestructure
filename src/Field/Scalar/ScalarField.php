@@ -64,7 +64,7 @@ abstract class ScalarField implements ScalarFieldInterface
         return ValueCasterInterface::CAST_STRING;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(string) $' . $variable_name;
     }

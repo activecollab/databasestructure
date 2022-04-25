@@ -30,9 +30,13 @@ class JsonField extends ScalarField implements JsonFieldInterface
         return ValueCasterInterface::CAST_JSON;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
-        return '$this->isLoading() ? $' . $variable_name . ' : json_encode($' . $variable_name . ')';
+        return sprintf(
+            '$this->isLoading() ? $%s : json_encode($%s)',
+            $variable_name,
+            $variable_name
+        );
     }
 
     public function getSqlTypeDefinition(ConnectionInterface $connection): string

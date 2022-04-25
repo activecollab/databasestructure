@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
+use ActiveCollab\DatabaseConnection\Spatial\WktParser\WktParser;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 
 abstract class SpatialField extends ScalarField
@@ -20,9 +21,15 @@ abstract class SpatialField extends ScalarField
         return ValueCasterInterface::CAST_SPATIAL;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
-        return sprintf('$%s', $variable_name);
+        return sprintf(
+            '$this->isLoading() && $%s !== null ? (new \\%s)->geomFromText($%s) : $%s',
+            $variable_name,
+            WktParser::class,
+            $variable_name,
+            $variable_name,
+        );
     }
 
     public function getSqlReadStatement(string $table_name): string

@@ -45,11 +45,8 @@ interface ScalarFieldInterface extends FieldInterface, GeneratedInterface, OnlyO
 
     /**
      * Return value casting code, that is called when value is set for a field.
-     *
-     * @param  string $variable_name
-     * @return string
      */
-    public function getCastingCode($variable_name): string;
+    public function getCastingCode(string $variable_name): string;
 
     /**
      * Return field type definition for CREATE TABLE statement.

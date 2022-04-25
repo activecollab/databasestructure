@@ -30,7 +30,7 @@ class BooleanField extends ScalarFieldWithDefaultValue
         return 'bool';
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(bool) $' . $variable_name;
     }

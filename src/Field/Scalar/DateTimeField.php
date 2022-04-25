@@ -26,7 +26,7 @@ class DateTimeField extends ScalarField
         return ValueCasterInterface::CAST_DATETIME;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '$this->getDateTimeValueInstanceFrom($' . $variable_name . ')';
     }

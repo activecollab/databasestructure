@@ -32,7 +32,7 @@ class IntegerField extends NumberField implements RequiredInterface, SizeInterfa
         return ValueCasterInterface::CAST_INT;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(int) $' . $variable_name;
     }

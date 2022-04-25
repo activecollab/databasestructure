@@ -73,7 +73,7 @@ class FloatField extends NumberField
         return ValueCasterInterface::CAST_FLOAT;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(float) $' . $variable_name;
     }
