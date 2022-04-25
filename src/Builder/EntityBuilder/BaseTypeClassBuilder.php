@@ -221,8 +221,6 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '';
         $result[] = '                throw new \\InvalidArgumentException("Field $field does not exist in this table");';
         $result[] = '        }';
-        $result[] = '';
-        $result[] = '        return $this;';
         $result[] = '    }';
 
         $this->buildJsonSerialize($type->getSerialize(), '    ', $result);
