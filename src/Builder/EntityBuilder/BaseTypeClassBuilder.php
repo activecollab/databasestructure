@@ -161,20 +161,20 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '';
             $result[] = '        if ($value === null) {';
             $result[] = '            return null;';
-            $result[] = '        } else {';
-            $result[] = '            switch ($field) {';
+            $result[] = '        }';
+            $result[] = '';
+            $result[] = '        switch ($field) {';
 
             foreach ($fields as $field) {
                 if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && !empty($field->getDeserializingCode('value'))) {
-                    $result[] = '                case ' . var_export($field->getName(), true) . ':';
-                    $result[] = '                    return ' . $field->getDeserializingCode('value') . ';';
+                    $result[] = '            case ' . var_export($field->getName(), true) . ':';
+                    $result[] = '                return ' . $field->getDeserializingCode('value') . ';';
                 }
             }
 
-            $result[] = '            }';
-            $result[] = '';
-            $result[] = '            return $value;';
             $result[] = '        }';
+            $result[] = '';
+            $result[] = '        return $value;';
             $result[] = '    }';
         }
 
@@ -186,8 +186,10 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '    {';
         $result[] = '        if ($value === null) {';
         $result[] = '            parent::setFieldValue($name, null);';
-        $result[] = '        } else {';
-        $result[] = '            switch ($name) {';
+        $result[] = '            return $this;';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        switch ($name) {';
 
         $casters = [];
 
@@ -205,24 +207,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         foreach ($casters as $caster_code => $casted_field_names) {
             foreach ($casted_field_names as $casted_field_name) {
-                $result[] = '                case ' . var_export($casted_field_name, true) . ':';
+                $result[] = '            case ' . var_export($casted_field_name, true) . ':';
             }
 
-            $result[] = '                    return parent::setFieldValue($name, ' . $caster_code . ');';
+            $result[] = '                return parent::setFieldValue($name, ' . $caster_code . ');';
         }
 
-        $result[] = '                default:';
-        $result[] = '                    if ($this->isLoading()) {';
-        $result[] = '                        return parent::setFieldValue($name, $value);';
+        $result[] = '            default:';
+        $result[] = '                if ($this->isLoading()) {';
+        $result[] = '                    return parent::setFieldValue($name, $value);';
+        $result[] = '                } else {';
+        $result[] = '                    if ($this->isGeneratedField($name)) {';
+        $result[] = '                        throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
         $result[] = '                    } else {';
-        $result[] = '                        if ($this->isGeneratedField($name)) {';
-        $result[] = '                            throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
-        $result[] = '                        } else {';
-        $result[] = '                            throw new \\InvalidArgumentException("Field $name does not exist in this table");';
-        $result[] = '                        }';
+        $result[] = '                        throw new \\InvalidArgumentException("Field $name does not exist in this table");';
         $result[] = '                    }';
+        $result[] = '                }';
         $result[] = '            }';
-        $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
@@ -745,38 +746,25 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
     /**
      * Build getter for generated field.
-     *
-     * @param string $field_name
-     * @param string $caster
-     * @param string $indent
-     * @param array  $result
      */
-    private function buildGeneratedFieldGetter($field_name, $caster, $indent, array &$result)
+    private function buildGeneratedFieldGetter(
+        string $field_name,
+        string $caster,
+        string $indent,
+        array &$result
+    ): void
     {
         $short_getter = null;
 
-        switch ($caster) {
-            case ValueCasterInterface::CAST_INT:
-                $return_type = 'int';
-                break;
-            case ValueCasterInterface::CAST_FLOAT:
-                $return_type = 'float';
-                break;
-            case ValueCasterInterface::CAST_BOOL:
-                $return_type = 'bool';
-                break;
-            case ValueCasterInterface::CAST_DATE:
-                $return_type = '\\' . DateValueInterface::class;
-                break;
-            case ValueCasterInterface::CAST_DATETIME:
-                $return_type = '\\' . DateTimeValueInterface::class;
-                break;
-            case ValueCasterInterface::CAST_JSON:
-                $return_type = 'mixed';
-                break;
-            default:
-                $return_type = 'string';
-        }
+        $return_type = match ($caster) {
+            ValueCasterInterface::CAST_INT => 'int',
+            ValueCasterInterface::CAST_FLOAT => 'float',
+            ValueCasterInterface::CAST_BOOL => 'bool',
+            ValueCasterInterface::CAST_DATE => '\\' . DateValueInterface::class,
+            ValueCasterInterface::CAST_DATETIME => '\\' . DateTimeValueInterface::class,
+            ValueCasterInterface::CAST_JSON => 'mixed',
+            default => 'string',
+        };
 
         if ($this->useShortGetterName($field_name)) {
             $short_getter = $this->getShortGetterName($field_name);
