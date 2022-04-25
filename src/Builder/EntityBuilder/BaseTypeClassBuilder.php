@@ -179,14 +179,14 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $result[] = '';
-        $result[] = '    public function setFieldValue(string $name, mixed $value): static';
+        $result[] = '    public function setFieldValue(string $field, mixed $value): static';
         $result[] = '    {';
         $result[] = '        if ($value === null) {';
-        $result[] = '            parent::setFieldValue($name, null);';
+        $result[] = '            parent::setFieldValue($field, null);';
         $result[] = '            return $this;';
         $result[] = '        }';
         $result[] = '';
-        $result[] = '        switch ($name) {';
+        $result[] = '        switch ($field) {';
 
         $casters = [];
 
@@ -207,19 +207,19 @@ class BaseTypeClassBuilder extends FileSystemBuilder
                 $result[] = '            case ' . var_export($casted_field_name, true) . ':';
             }
 
-            $result[] = '                return parent::setFieldValue($name, ' . $caster_code . ');';
+            $result[] = '                return parent::setFieldValue($field, ' . $caster_code . ');';
         }
 
         $result[] = '            default:';
         $result[] = '                if ($this->isLoading()) {';
-        $result[] = '                    return parent::setFieldValue($name, $value);';
+        $result[] = '                    return parent::setFieldValue($field, $value);';
         $result[] = '                }';
         $result[] = '';
-        $result[] = '                if ($this->isGeneratedField($name)) {';
-        $result[] = '                    throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
+        $result[] = '                if ($this->isGeneratedField($field)) {';
+        $result[] = '                    throw new \\LogicException("Generated field $field cannot be set by directly assigning a value");';
         $result[] = '                }';
         $result[] = '';
-        $result[] = '                throw new \\InvalidArgumentException("Field $name does not exist in this table");';
+        $result[] = '                throw new \\InvalidArgumentException("Field $field does not exist in this table");';
         $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';
