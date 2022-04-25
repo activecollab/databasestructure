@@ -24,7 +24,7 @@ abstract class SpatialField extends ScalarField
     public function getCastingCode(string $variable_name): string
     {
         return sprintf(
-            '$this->isLoading() && $%s !== null ? (new \\%s)->geomFromText($%s) : $%s',
+            '$this->isLoading() && $%s !== null ? (new \\%s)->parse($%s) : $%s',
             $variable_name,
             WktParser::class,
             $variable_name,
