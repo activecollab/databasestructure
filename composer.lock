@@ -116,16 +116,16 @@
         },
         {
             "name": "activecollab/databaseobject",
-            "version": "6.1.4",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "ec70acb3971eb9f9fcc87faeceaefacf3e17f358"
+                "reference": "6c2ad28eebd8252ecb0ca02c54c60d1f9e70ce4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/ec70acb3971eb9f9fcc87faeceaefacf3e17f358",
-                "reference": "ec70acb3971eb9f9fcc87faeceaefacf3e17f358",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/6c2ad28eebd8252ecb0ca02c54c60d1f9e70ce4f",
+                "reference": "6c2ad28eebd8252ecb0ca02c54c60d1f9e70ce4f",
                 "shasum": ""
             },
             "require": {
@@ -167,9 +167,9 @@
             ],
             "support": {
                 "issues": "https://github.com/activecollab/databaseobject/issues",
-                "source": "https://github.com/activecollab/databaseobject/tree/6.1.4"
+                "source": "https://github.com/activecollab/databaseobject/tree/6.2.0"
             },
-            "time": "2022-04-24T20:58:34+00:00"
+            "time": "2022-04-25T19:11:43+00:00"
         },
         {
             "name": "activecollab/datevalue",

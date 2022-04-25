@@ -179,10 +179,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * {@inheritdoc}';
-        $result[] = '     */';
-        $result[] = '    public function &setFieldValue($name, $value)';
+        $result[] = '    public function setFieldValue(string $name, mixed $value): static';
         $result[] = '    {';
         $result[] = '        if ($value === null) {';
         $result[] = '            parent::setFieldValue($name, null);';
@@ -216,14 +213,14 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '            default:';
         $result[] = '                if ($this->isLoading()) {';
         $result[] = '                    return parent::setFieldValue($name, $value);';
-        $result[] = '                } else {';
-        $result[] = '                    if ($this->isGeneratedField($name)) {';
-        $result[] = '                        throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
-        $result[] = '                    } else {';
-        $result[] = '                        throw new \\InvalidArgumentException("Field $name does not exist in this table");';
-        $result[] = '                    }';
         $result[] = '                }';
-        $result[] = '            }';
+        $result[] = '';
+        $result[] = '                if ($this->isGeneratedField($name)) {';
+        $result[] = '                    throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
+        $result[] = '                }';
+        $result[] = '';
+        $result[] = '                throw new \\InvalidArgumentException("Field $name does not exist in this table");';
+        $result[] = '        }';
         $result[] = '';
         $result[] = '        return $this;';
         $result[] = '    }';
