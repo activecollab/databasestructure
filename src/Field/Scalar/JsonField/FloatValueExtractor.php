@@ -12,10 +12,7 @@ use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 
 class FloatValueExtractor extends ValueExtractor
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getValueCaster()
+    public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_FLOAT;
     }

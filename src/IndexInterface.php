@@ -10,23 +10,14 @@ namespace ActiveCollab\DatabaseStructure;
 
 interface IndexInterface
 {
-    /**
-     * Index types.
-     */
     const INDEX = 'INDEX';
     const PRIMARY = 'PRIMARY';
     const UNIQUE = 'UNIQUE';
     const FULLTEXT = 'FULLTEXT';
+    const SPATIAL = 'SPATIAL';
 
-    /**
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @return array
-     */
-    public function getFields();
+    public function getName(): string;
+    public function getFields(): array;
 
     /**
      * @return string

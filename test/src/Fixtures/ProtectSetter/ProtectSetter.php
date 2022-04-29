@@ -18,20 +18,20 @@ class ProtectSetter extends Structure
     
     protected function configure()
     {
-        $this->addType('users')->addFields([
+        $this->addType('users')->addFields(
             new StringField('unprotected_setter'),
             (new StringField('protected_setter'))->protectSetter(),
-        ])->addAssociations([
+        )->addAssociations(
             new HasManyAssociation('books'),
             new HasManyAssociation('notes'),
-        ]);
+        );
 
-        $this->addType('books')->addAssociations([
+        $this->addType('books')->addAssociations(
             new BelongsToAssociation('user'),
-        ]);
+        );
 
-        $this->addType('notes')->addAssociations([
+        $this->addType('notes')->addAssociations(
             (new BelongsToAssociation('user'))->protectSetter(),
-        ]);
+        );
     }
 }

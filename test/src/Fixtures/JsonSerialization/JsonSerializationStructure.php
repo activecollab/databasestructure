@@ -17,9 +17,9 @@ class JsonSerializationStructure extends Structure
     
     public function configure()
     {
-        $this->addType('key_values')->addFields([
+        $this->addType('key_values')->addFields(
             (new NameField())->unique(),
             new JsonField('value'),
-        ]);
+        );
     }
 }

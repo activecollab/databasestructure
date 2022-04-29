@@ -17,5 +17,5 @@ interface InjectFieldsInsterface
      *
      * @return FieldInterface[]
      */
-    public function getFields();
+    public function getFields(): array;
 }

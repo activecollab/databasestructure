@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use LogicException;
 
 class BooleanField extends ScalarFieldWithDefaultValue
@@ -29,8 +30,13 @@ class BooleanField extends ScalarFieldWithDefaultValue
         return 'bool';
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(bool) $' . $variable_name;
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return 'TINYINT(1) UNSIGNED';
     }
 }

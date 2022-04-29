@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure\Test\Associations\AssociatedEntities;
 
 use ActiveCollab\DatabaseStructure\Test\Fixtures\Association\WriterHasManyBooksRequired\WriterHasManyBooksRequiredStructure;
-use ActiveCollab\DatabaseStructure\Test\StructuredTestCase;
+use ActiveCollab\DatabaseStructure\Test\StructuredDbTestCase;
 use RuntimeException;
 
-final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredTestCase
+final class RequiredHasManyAssociationAssociatedEntitiesTest extends StructuredDbTestCase
 {
     private $writer;
 

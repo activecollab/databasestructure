@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 
 class FloatField extends NumberField
@@ -72,8 +73,19 @@ class FloatField extends NumberField
         return ValueCasterInterface::CAST_FLOAT;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(float) $' . $variable_name;
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        $result = sprintf('FLOAT(%d, %d)', $this->getLength(), $this->getScale());
+
+        if ($this->isUnsigned()) {
+            $result .= ' UNSIGNED';
+        }
+
+        return $result;
     }
 }

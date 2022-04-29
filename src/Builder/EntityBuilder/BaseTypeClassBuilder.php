@@ -45,7 +45,9 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result = $this->openPhpFile();
 
-        $base_class_namespace = $this->getStructure()->getNamespace() ? $this->getStructure()->getNamespace() . '\\Base' : 'Base';
+        $base_class_namespace = $this->getStructure()->getNamespace()
+            ? $this->getStructure()->getNamespace() . '\\Base'
+            : 'Base';
 
         $result[] = 'namespace ' . $base_class_namespace . ';';
         $result[] = '';
@@ -78,24 +80,20 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         $result[] = '    /**';
         $result[] = '     * Name of the table where records are stored.';
-        $result[] = '     *';
-        $result[] = '     * @var string';
         $result[] = '     */';
-        $result[] = '    protected $table_name = ' . var_export($type->getTableName(), true) . ';';
+        $result[] = '    protected string $table_name = ' . var_export($type->getTableName(), true) . ';';
 
         $fields = $type->getAllFields();
 
-        $this->buildFields($fields, '    ', $result);
+        $this->buildFields($type->getTableName(), $fields, '    ', $result);
         $this->buildGeneratedFields(array_keys($type->getGeneratedFields()), '    ', $result);
 
         if (count($type->getProtectedFields())) {
             $result[] = '';
             $result[] = '    /**';
             $result[] = '     * List of protected fields.';
-            $result[] = '     *';
-            $result[] = '     * @var array';
             $result[] = '     */';
-            $result[] = '    protected $protected_fields = [' . implode(', ', array_map(function ($field) {
+            $result[] = '    protected array $protected_fields = [' . implode(', ', array_map(function ($field) {
                 return var_export($field, true);
             }, $type->getProtectedFields())) . '];';
         }
@@ -105,12 +103,17 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '    /**';
             $result[] = '     * @var string[]';
             $result[] = '     */';
-            $result[] = '    protected $order_by = [' . implode(', ', array_map(function ($value) {
+            $result[] = '    protected array $order_by = [' . implode(', ', array_map(function ($value) {
                 return var_export($value, true);
             }, $type->getOrderBy())) . '];';
         }
 
-        $this->buildConfigureMethod($type->getGeneratedFields(), '    ', $result);
+        $this->buildConfigureMethod(
+            $type->getFields(),
+            $type->getGeneratedFields(),
+            '    ',
+            $result
+        );
 
         $this->buildAssociatedEntitiesManagers($type, '    ', $result);
         $this->buildSetAttributes($type, '    ', $result);
@@ -158,33 +161,32 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '';
             $result[] = '        if ($value === null) {';
             $result[] = '            return null;';
-            $result[] = '        } else {';
-            $result[] = '            switch ($field) {';
+            $result[] = '        }';
+            $result[] = '';
+            $result[] = '        switch ($field) {';
 
             foreach ($fields as $field) {
                 if ($field instanceof ScalarField && $field->getShouldBeAddedToModel() && !empty($field->getDeserializingCode('value'))) {
-                    $result[] = '                case ' . var_export($field->getName(), true) . ':';
-                    $result[] = '                    return ' . $field->getDeserializingCode('value') . ';';
+                    $result[] = '            case ' . var_export($field->getName(), true) . ':';
+                    $result[] = '                return ' . $field->getDeserializingCode('value') . ';';
                 }
             }
 
-            $result[] = '            }';
-            $result[] = '';
-            $result[] = '            return $value;';
             $result[] = '        }';
+            $result[] = '';
+            $result[] = '        return $value;';
             $result[] = '    }';
         }
 
         $result[] = '';
-        $result[] = '    /**';
-        $result[] = '     * {@inheritdoc}';
-        $result[] = '     */';
-        $result[] = '    public function &setFieldValue($name, $value)';
+        $result[] = '    public function setFieldValue(string $field, mixed $value): static';
         $result[] = '    {';
         $result[] = '        if ($value === null) {';
-        $result[] = '            parent::setFieldValue($name, null);';
-        $result[] = '        } else {';
-        $result[] = '            switch ($name) {';
+        $result[] = '            parent::setFieldValue($field, null);';
+        $result[] = '            return $this;';
+        $result[] = '        }';
+        $result[] = '';
+        $result[] = '        switch ($field) {';
 
         $casters = [];
 
@@ -202,26 +204,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         foreach ($casters as $caster_code => $casted_field_names) {
             foreach ($casted_field_names as $casted_field_name) {
-                $result[] = '                case ' . var_export($casted_field_name, true) . ':';
+                $result[] = '            case ' . var_export($casted_field_name, true) . ':';
             }
 
-            $result[] = '                    return parent::setFieldValue($name, ' . $caster_code . ');';
+            $result[] = '                return parent::setFieldValue($field, ' . $caster_code . ');';
         }
 
-        $result[] = '                default:';
-        $result[] = '                    if ($this->isLoading()) {';
-        $result[] = '                        return parent::setFieldValue($name, $value);';
-        $result[] = '                    } else {';
-        $result[] = '                        if ($this->isGeneratedField($name)) {';
-        $result[] = '                            throw new \\LogicException("Generated field $name cannot be set by directly assigning a value");';
-        $result[] = '                        } else {';
-        $result[] = '                            throw new \\InvalidArgumentException("Field $name does not exist in this table");';
-        $result[] = '                        }';
-        $result[] = '                    }';
-        $result[] = '            }';
-        $result[] = '        }';
+        $result[] = '            default:';
+        $result[] = '                if ($this->isLoading()) {';
+        $result[] = '                    return parent::setFieldValue($field, $value);';
+        $result[] = '                }';
         $result[] = '';
-        $result[] = '        return $this;';
+        $result[] = '                if ($this->isGeneratedField($field)) {';
+        $result[] = '                    throw new \\LogicException("Generated field $field cannot be set by directly assigning a value");';
+        $result[] = '                }';
+        $result[] = '';
+        $result[] = '                throw new \\InvalidArgumentException("Field $field does not exist in this table");';
+        $result[] = '        }';
         $result[] = '    }';
 
         $this->buildJsonSerialize($type->getSerialize(), '    ', $result);
@@ -313,18 +312,29 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     /**
      * Build field definitions.
      *
+     * @param string           $table_name
      * @param FieldInterface[] $fields
      * @param string           $indent
      * @param array            $result
      */
-    private function buildFields(array $fields, $indent, array &$result)
+    private function buildFields(
+        string $table_name,
+        array $fields,
+        string $indent,
+        array &$result
+    )
     {
         $stringified_field_names = [];
+        $stringified_sql_read_statements = [];
         $fields_with_default_value = [];
 
         foreach ($fields as $field) {
             if ($field instanceof ScalarField && $field->getShouldBeAddedToModel()) {
                 $stringified_field_names[] = var_export($field->getName(), true);
+                $stringified_sql_read_statements[] = var_export(
+                    $field->getSqlReadStatement($table_name),
+                    true
+                );
 
                 if ($field->getName() != 'id'
                     && ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null)) {
@@ -336,13 +346,23 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $result[] = '';
         $result[] = $indent . '/**';
         $result[] = $indent . ' * Table fields that are managed by this entity.';
-        $result[] = $indent . ' *';
-        $result[] = $indent . ' * @var array';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $entity_fields = [';
+        $result[] = $indent . 'protected array $entity_fields = [';
 
         foreach ($stringified_field_names as $stringified_field_name) {
             $result[] = $indent . '    ' . $stringified_field_name . ',';
+        }
+
+        $result[] = $indent . '];';
+
+        $result[] = '';
+        $result[] = $indent . '/**';
+        $result[] = $indent . ' * Table fields prepared for SELECT SQL query.';
+        $result[] = $indent . ' */';
+        $result[] = $indent . 'protected array $sql_read_statements = [';
+
+        foreach ($stringified_sql_read_statements as $stringified_sql_read_statement) {
+            $result[] = $indent . '    ' . $stringified_sql_read_statement . ',';
         }
 
         $result[] = $indent . '];';
@@ -351,10 +371,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = '';
             $result[] = $indent . '/**';
             $result[] = $indent . ' * List of default field values.';
-            $result[] = $indent . ' *';
-            $result[] = $indent . ' * @var array';
             $result[] = $indent . ' */';
-            $result[] = $indent . 'protected $default_entity_field_values = [';
+            $result[] = $indent . 'protected array $default_entity_field_values = [';
 
             foreach ($fields_with_default_value as $field_name => $default_value) {
                 $result[] = $indent . '   ' . var_export($field_name, true) . ' => ' . var_export($default_value, true) . ',';
@@ -379,54 +397,73 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     {
         $result[] = '';
         $result[] = $indent . '/**';
-        $result[] = $indent . ' * Generated fields that are loaded, but not managed by the entity..';
-        $result[] = $indent . ' *';
-        $result[] = $indent . ' * @var array';
+        $result[] = $indent . ' * Generated fields that are loaded, but not managed by the entity.';
         $result[] = $indent . ' */';
-        $result[] = $indent . 'protected $generated_entity_fields = [' . implode(', ', array_map(function ($field_name) {
-            return var_export($field_name, true);
-        }, $generated_field_names)) . '];';
+        $result[] = $indent . 'protected array $generated_entity_fields = [';
+
+        foreach ($generated_field_names as $generated_field_name) {
+            $result[] = sprintf('%s    %s,',
+                $indent,
+                var_export($generated_field_name, true)
+            );
+        }
+
+        $result[] = $indent . '];';
     }
 
-    public function buildConfigureMethod(array $generated_fields, $indent, array &$result)
+    /**
+     * @param FieldInterface[] $fields
+     */
+    private function buildConfigureMethod(
+        array $fields,
+        array $generated_fields,
+        string $indent,
+        array &$result
+    ): void
     {
+        $field_casters = [];
+
+        foreach ($fields as $field) {
+            if ($field instanceof ScalarField) {
+                $field_casters[$field->getName()] = $field->getValueCaster();
+            }
+        }
+
         if (!empty($generated_fields)) {
+            $field_casters = array_merge($field_casters, $generated_fields);
+        }
+
+        if (!empty($field_casters)) {
             $result[] = '';
-            $result[] = $indent . '/**';
-            $result[] = $indent . ' * {@inheritdoc}';
-            $result[] = $indent . ' */';
             $result[] = $indent . 'protected function configure()';
             $result[] = $indent . '{';
-            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(new \\' . ValueCaster::class . '([';
+            $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(';
+            $result[] = $indent . '        new \\' . ValueCaster::class . '(';
+            $result[] = $indent . '            [';
 
-            foreach ($generated_fields as $field_name => $caster) {
-                switch ($caster) {
-                    case ValueCasterInterface::CAST_INT:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_INT';
-                        break;
-                    case ValueCasterInterface::CAST_FLOAT:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_FLOAT';
-                        break;
-                    case ValueCasterInterface::CAST_BOOL:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_BOOL';
-                        break;
-                    case ValueCasterInterface::CAST_DATE:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_DATE';
-                        break;
-                    case ValueCasterInterface::CAST_DATETIME:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_DATETIME';
-                        break;
-                    case ValueCasterInterface::CAST_JSON:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_JSON';
-                        break;
-                    default:
-                        $full_caster = '\\' . ValueCasterInterface::class . '::CAST_STRING';
-                }
+            foreach ($field_casters as $field_name => $caster) {
+                $full_caster = match ($caster) {
+                    ValueCasterInterface::CAST_INT => '\\' . ValueCasterInterface::class . '::CAST_INT',
+                    ValueCasterInterface::CAST_FLOAT => '\\' . ValueCasterInterface::class . '::CAST_FLOAT',
+                    ValueCasterInterface::CAST_BOOL => '\\' . ValueCasterInterface::class . '::CAST_BOOL',
+                    ValueCasterInterface::CAST_DATE => '\\' . ValueCasterInterface::class . '::CAST_DATE',
+                    ValueCasterInterface::CAST_DATETIME => '\\' . ValueCasterInterface::class . '::CAST_DATETIME',
+                    ValueCasterInterface::CAST_JSON => '\\' . ValueCasterInterface::class . '::CAST_JSON',
+                    ValueCasterInterface::CAST_SPATIAL => '\\' . ValueCasterInterface::class . '::CAST_SPATIAL',
+                    default => '\\' . ValueCasterInterface::class . '::CAST_STRING',
+                };
 
-                $result[] = $indent . '        ' . var_export($field_name, true) . ' => ' . $full_caster . ',';
+                $result[] = sprintf(
+                    '%s                %s => %s,',
+                    $indent,
+                    var_export($field_name, true),
+                    $full_caster
+                );
             }
 
-            $result[] = $indent . '    ]));';
+            $result[] = $indent . '            ]';
+            $result[] = $indent . '        )';
+            $result[] = $indent . '    );';
             $result[] = $indent . '}';
         }
     }
@@ -704,38 +741,25 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
     /**
      * Build getter for generated field.
-     *
-     * @param string $field_name
-     * @param string $caster
-     * @param string $indent
-     * @param array  $result
      */
-    private function buildGeneratedFieldGetter($field_name, $caster, $indent, array &$result)
+    private function buildGeneratedFieldGetter(
+        string $field_name,
+        string $caster,
+        string $indent,
+        array &$result
+    ): void
     {
         $short_getter = null;
 
-        switch ($caster) {
-            case ValueCasterInterface::CAST_INT:
-                $return_type = 'int';
-                break;
-            case ValueCasterInterface::CAST_FLOAT:
-                $return_type = 'float';
-                break;
-            case ValueCasterInterface::CAST_BOOL:
-                $return_type = 'bool';
-                break;
-            case ValueCasterInterface::CAST_DATE:
-                $return_type = '\\' . DateValueInterface::class;
-                break;
-            case ValueCasterInterface::CAST_DATETIME:
-                $return_type = '\\' . DateTimeValueInterface::class;
-                break;
-            case ValueCasterInterface::CAST_JSON:
-                $return_type = 'mixed';
-                break;
-            default:
-                $return_type = 'string';
-        }
+        $return_type = match ($caster) {
+            ValueCasterInterface::CAST_INT => 'int',
+            ValueCasterInterface::CAST_FLOAT => 'float',
+            ValueCasterInterface::CAST_BOOL => 'bool',
+            ValueCasterInterface::CAST_DATE => '\\' . DateValueInterface::class,
+            ValueCasterInterface::CAST_DATETIME => '\\' . DateTimeValueInterface::class,
+            ValueCasterInterface::CAST_JSON => 'mixed',
+            default => 'string',
+        };
 
         if ($this->useShortGetterName($field_name)) {
             $short_getter = $this->getShortGetterName($field_name);

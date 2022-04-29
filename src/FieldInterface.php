@@ -18,17 +18,6 @@ interface FieldInterface extends ProtectSetterInterface
     const SIZE_NORMAL = 'normal';
     const SIZE_BIG = 'big';
 
-    /**
-     * Return field name.
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * Method that is called when field is added to a type.
-     *
-     * @param TypeInterface $type
-     */
-    public function onAddedToType(TypeInterface &$type);
+    public function getName(): string;
+    public function onAddedToType(TypeInterface $type): void;
 }

@@ -39,10 +39,7 @@ class CreatedAtField extends CompositeField implements AddIndexInterface
         $this->addIndex($add_index);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -62,7 +59,7 @@ class CreatedAtField extends CompositeField implements AddIndexInterface
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

@@ -23,23 +23,23 @@ class RecordsStructure extends Structure
      */
     public function configure()
     {
-        $this->addType('records')->addFields([
+        $this->addType('records')->addFields(
             new NameField('name'),
             new DateField('birthday'),
             new BooleanField('was_awesome'),
             new CreatedAtField(),
             new UpdatedAtField(),
-        ]);
+        );
 
-        $this->addType('only_created_at_records')->addFields([
+        $this->addType('only_created_at_records')->addFields(
             new NameField('name'),
             new CreatedAtField(),
-        ]);
+        );
 
-        $this->addType('only_updated_at_records')->addFields([
+        $this->addType('only_updated_at_records')->addFields(
             new NameField('name'),
             new UpdatedAtField(),
-        ]);
+        );
 
         $this->addRecord('records', [
             'name' => 'Leo Tolstoy',

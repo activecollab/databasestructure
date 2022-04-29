@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\AddIndexInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface\Implementation as GeneratedInterfaceImplementation;
@@ -30,62 +31,49 @@ abstract class ScalarField implements ScalarFieldInterface
         RequiredInterfaceImplementation,
         UniqueInterfaceImplementation;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @param  string                   $name
-     * @throws InvalidArgumentException
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         if (empty($name)) {
-            throw new InvalidArgumentException("Value '$name' is not a valid field name");
+            throw new InvalidArgumentException(
+                sprintf("Value '%s' is not a valid field name.", $name)
+            );
         }
 
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNativeType(): string
     {
         return 'mixed';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDeserializingCode($variable_name): string
     {
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_STRING;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '(string) $' . $variable_name;
+    }
+
+    abstract public function getSqlTypeDefinition(ConnectionInterface $connection): string;
+
+    public function getSqlReadStatement(string $table_name): string
+    {
+        return sprintf('`%s`.`%s`', $table_name, $this->getName());
     }
 
     /**
@@ -93,35 +81,26 @@ abstract class ScalarField implements ScalarFieldInterface
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         if ($this instanceof AddIndexInterface && $this->getAddIndex()) {
             $type->addIndex(new Index($this->getName(), $this->getAddIndexContext(), $this->getAddIndexType()));
         }
     }
 
-    /**
-     * @var bool
-     */
-    private $should_be_added_to_model = true;
+    private bool $should_be_added_to_model = true;
 
     /**
      * Return true if this field should be part of the model, or does it do its work in background.
-     *
-     * @return bool
      */
     public function getShouldBeAddedToModel(): bool
     {
         return $this->should_be_added_to_model;
     }
 
-    /**
-     * @param  bool                       $value
-     * @return ScalarFieldInterface|$this
-     */
     public function &setShouldBeAddedToModel(bool $value): ScalarFieldInterface
     {
-        $this->should_be_added_to_model = (bool) $value;
+        $this->should_be_added_to_model = $value;
 
         return $this;
     }

@@ -17,8 +17,8 @@ class PositionHeadStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('position_head_entries')->addFields([
+        $this->addType('position_head_entries')->addFields(
             (new PositionField())->head(),
-        ]);
+        );
     }
 }

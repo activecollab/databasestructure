@@ -29,32 +29,32 @@ class BlogStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('categories')->expectedDatasetSize(FieldInterface::SIZE_SMALL)->addFields([
+        $this->addType('categories')->expectedDatasetSize(FieldInterface::SIZE_SMALL)->addFields(
             (new NameField())->unique(),
-        ])->addAssociations([
+        )->addAssociations(
             new HasAndBelongsToManyAssociation('posts'),
-        ]);
+        );
 
-        $this->addType('posts')->addFields([
+        $this->addType('posts')->addFields(
             new NameField(),
             new TextField('body'),
             new DateTimeField('created_at'),
             new DateTimeField('published_at'),
             new AdditionalPropertiesField(),
             (new EnumField('is_featured', 'no'))->possibilities('yes', 'no'),
-        ])->addIndexes([
+        )->addIndexes(
             new Index('published_at'),
-        ])->addAssociations([
+        )->addAssociations(
             new HasManyAssociation('comments'),
-        ]);
+        );
 
-        $this->addType('comments')->addFields([
+        $this->addType('comments')->addFields(
             new TextField('body'),
             new DateTimeField('created_at'),
-        ])->addIndexes([
+        )->addIndexes(
             new Index('created_at'),
-        ])->addAssociations([
+        )->addAssociations(
             new BelongsToAssociation('post'),
-        ]);
+        );
     }
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 
@@ -25,8 +26,13 @@ class DateTimeField extends ScalarField
         return ValueCasterInterface::CAST_DATETIME;
     }
 
-    public function getCastingCode($variable_name): string
+    public function getCastingCode(string $variable_name): string
     {
         return '$this->getDateTimeValueInstanceFrom($' . $variable_name . ')';
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return 'DATETIME';
     }
 }

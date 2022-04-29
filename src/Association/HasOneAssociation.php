@@ -54,10 +54,7 @@ class HasOneAssociation extends Association implements
         $this->target_type_name = $target_type_name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFields()
+    public function getFields(): array
     {
         return [
             (new ForeignKeyField($this->getFieldName()))
@@ -65,10 +62,7 @@ class HasOneAssociation extends Association implements
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexes()
+    public function getIndexes(): array
     {
         return [new Index($this->getFieldName())];
     }

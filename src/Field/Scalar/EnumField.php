@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Field\Scalar;
 
+use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use InvalidArgumentException;
 
 class EnumField extends ScalarFieldWithDefaultValue
@@ -35,5 +36,21 @@ class EnumField extends ScalarFieldWithDefaultValue
     public function getNativeType(): string
     {
         return 'string';
+    }
+
+    public function getSqlTypeDefinition(ConnectionInterface $connection): string
+    {
+        return sprintf(
+            'ENUM(%s)',
+            implode(
+                ',',
+                array_map(
+                    function ($possibility) use ($connection) {
+                        return $connection->escapeValue($possibility);
+                    },
+                    $this->getPossibilities()
+                )
+            )
+        );
     }
 }

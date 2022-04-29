@@ -16,10 +16,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class AdditionalPropertiesField extends CompositeField
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'raw_additional_properties';
     }
@@ -50,7 +47,7 @@ class AdditionalPropertiesField extends CompositeField
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 

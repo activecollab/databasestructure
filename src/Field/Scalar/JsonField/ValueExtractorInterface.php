@@ -25,10 +25,7 @@ interface ValueExtractorInterface
      */
     public function getDefaultValue();
 
-    /**
-     * @return string
-     */
-    public function getValueCaster();
+    public function getValueCaster(): string;
 
     /**
      * Set value caster.

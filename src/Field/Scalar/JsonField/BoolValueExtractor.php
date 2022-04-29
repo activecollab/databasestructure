@@ -12,7 +12,7 @@ use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 
 class BoolValueExtractor extends ValueExtractor
 {
-    public function getValueCaster()
+    public function getValueCaster(): string
     {
         return ValueCasterInterface::CAST_BOOL;
     }

@@ -46,7 +46,7 @@ abstract class CompositeField implements CompositeFieldInterface
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         if ($this instanceof AddIndexInterface && $this->getAddIndex() && $this->autoAddIndexWhenAddedToType()) {
             $type->addIndex(new Index($this->getName(), $this->getAddIndexContext(), $this->getAddIndexType()));

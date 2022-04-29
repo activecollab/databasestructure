@@ -38,9 +38,9 @@ new PasswordField('psswd_hash'); // Specify field name.
 JSON field add a JSON field to the type. It will be automatically serialized and deserialized on reads and writes:
 
 ```php
-$this->addType('stats_snapshots')->addFields([
+$this->addType('stats_snapshots')->addFields(
     new JsonField('stats')
-]);
+);
 ```
 
 On top of regular getters and setters, JSON fields add a `modify` method. This method receives a callback that will be called with decoded JSON value. Result of the callback is then stored in the field automatically:
@@ -76,11 +76,11 @@ $execution_time_extractor = (new FloatValueExtractor('execution_time', '$.exec_t
     ->storeValue()
     ->addIndex();
 
-$this->addType('stats_snapshots')->addFields([
+$this->addType('stats_snapshots')->addFields(
     new DateField('day'),
     (new JsonField('stats'))
         ->addValueExtractor($execution_time_extractor)
-]);
+);
 ```
 
 Second is by calling `extractValue` method, which uses provided arguments to construct the appropriate extractor, configure it and add it to the field. Method arguments:
@@ -95,13 +95,13 @@ Second is by calling `extractValue` method, which uses provided arguments to con
 Example:
 
 ```php
-$this->addType('stats_snapshots')->addFields([
+$this->addType('stats_snapshots')->addFields(
     new DateField('day'),
     (new JsonField('stats'))
         ->extractValue('plan_name', '$.plan_name', 'Unknown', ValueExtractor::class, true, true)
         ->extractValue('number_of_active_users', '$.users.num_active', 0, IntValueExtractor::class, true)
         ->extractValue('is_used_on_day', '$.is_used_on_day', null, BoolValueExtractor::class, false),
-]);
+);
 ```
 
 Getter methods are automatically added for all generated fields:
@@ -154,17 +154,17 @@ class HasManyExampleStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('writers')->addFields([
+        $this->addType('writers')->addFields(
             (new NameField('name', ''))->required(),
-        ])->addAssociations([
+        )->addAssociations(
             new HasManyAssociation('books'),
-        ]);
+        );
         
-        $this->addType('books')->addFields([
+        $this->addType('books')->addFields(
             (new NameField('name', ''))->required(),
-        ])->addAssociations([
+        )->addAssociations(
             new BelongsToAssociation('writer'),
-        ]);
+        );
     }
 }
 ```
@@ -252,17 +252,17 @@ class HasManyExampleStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('writers')->addFields([
+        $this->addType('writers')->addFields(
             (new NameField('name', ''))->required(),
-        ])->addAssociations([
+        )->addAssociations(
             new HasAndBelongsToManyAssociation('books'),
-        ]);
+        );
 
-        $this->addType('books')->addFields([
+        $this->addType('books')->addFields(
             (new NameField('name', ''))->required(),
-        ])->addAssociations([
+        )->addAssociations(
             new HasAndBelongsToManyAssociation('writers'),
-        ]);
+        );
     }
 }
 ```
@@ -413,9 +413,9 @@ class MyStructure extends Structure
     {
         $this->setConfig(‘add_permissions’, StructureInterface::ADD_RESTRICTIVE_PERMISSIONS);
         
-        $this->addType(‘reverted_elements’)->addFields([
-            …
-        ])->permissions(false);
+        $this->addType(‘reverted_elements’)
+            ->addFields()
+            ->permissions(false);
     }
 }
 ```

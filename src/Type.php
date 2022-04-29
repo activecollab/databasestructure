@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Association\InjectFieldsInsterface;
@@ -39,25 +41,14 @@ class Type implements TypeInterface
         $this->name = $name;
     }
 
-    /**
-     * Return type name.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @var string
-     */
-    private $table_name;
+    private ?string $table_name = null;
 
-    /**
-     * @return string
-     */
-    public function getTableName()
+    public function getTableName(): string
     {
         if (empty($this->table_name)) {
             $this->table_name = $this->getName();
@@ -66,11 +57,7 @@ class Type implements TypeInterface
         return $this->table_name;
     }
 
-    /**
-     * @param  string $table_name
-     * @return $this
-     */
-    public function &setTableName($table_name)
+    public function setTableName(string $table_name): static
     {
         if (empty($table_name)) {
             throw new InvalidArgumentException("Value '$table_name' is not a valid table name");
@@ -81,28 +68,16 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @var bool
-     */
-    private $polymorph = false;
+    private bool $polymorph = false;
 
-    /**
-     * @return bool
-     */
-    public function getPolymorph()
+    public function getPolymorph(): bool
     {
         return $this->polymorph;
     }
 
-    /**
-     * Set this model to be polymorph (type field is added and used to store instance's class name).
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function &polymorph($value = true)
+    public function polymorph(bool $value = true): static
     {
-        $this->polymorph = (bool) $value;
+        $this->polymorph = $value;
 
         if ($this->polymorph) {
             $this->addTrait(PolymorphInterface::class, PolymorphInterfaceImplementation::class);
@@ -111,36 +86,21 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @var bool
-     */
-    private $permissions = false;
+    private bool $permissions = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPermissions()
+    public function getPermissions(): bool
     {
         return $this->permissions;
     }
 
-    /**
-     * @var bool
-     */
-    private $permissions_are_permissive = false;
+    private bool $permissions_are_permissive = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPermissionsArePermissive()
+    public function getPermissionsArePermissive(): bool
     {
         return $this->permissions_are_permissive;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &permissions($value = true, $permissions_are_permissive = true)
+    public function permissions(bool $value = true, bool $permissions_are_permissive = true): static
     {
         $this->permissions = (bool) $value;
         $this->permissions_are_permissive = (bool) $permissions_are_permissive;
@@ -280,20 +240,9 @@ class Type implements TypeInterface
         return sprintf('%sInterface', $this->getCollectionClassName());
     }
 
-    /**
-     * Set name of a class that base type class should extend.
-     *
-     * Note: This class needs to descened from Object class of DatabaseObject package
-     *
-     * @param  string $class_name
-     * @return $this
-     */
-    public function &setBaseClassExtends($class_name)
+    public function setBaseClassExtends(string $class_name): static
     {
-        if ($class_name
-            && class_exists($class_name)
-            && (new ReflectionClass($class_name))->isSubclassOf(Entity::class)) {
-        } else {
+        if (!$this->isEntitySubclass($class_name)) {
             throw new InvalidArgumentException("Class name '$class_name' is not valid");
         }
 
@@ -302,28 +251,24 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @var string
-     */
-    private $expected_dataset_size = FieldInterface::SIZE_NORMAL;
+    private function isEntitySubclass(string $class_name): bool
+    {
+        return $class_name
+            && class_exists($class_name)
+            && (new ReflectionClass($class_name))->isSubclassOf(Entity::class);
+    }
+
+    private string $expected_dataset_size = FieldInterface::SIZE_NORMAL;
 
     /**
      * Get expected dataset size.
-     *
-     * @return string
      */
-    public function getExpectedDatasetSize()
+    public function getExpectedDatasetSize(): string
     {
         return $this->expected_dataset_size;
     }
 
-    /**
-     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
-     *
-     * @param  string $size
-     * @return $this
-     */
-    public function &expectedDatasetSize($size)
+    public function expectedDatasetSize(string $size): static
     {
         if (in_array($size, [FieldInterface::SIZE_TINY, FieldInterface::SIZE_SMALL, FieldInterface::SIZE_MEDIUM, FieldInterface::SIZE_NORMAL, FieldInterface::SIZE_BIG])) {
             $this->expected_dataset_size = $size;
@@ -341,56 +286,43 @@ class Type implements TypeInterface
     /**
      * @return FieldInterface[]
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }
 
-    /**
-     * @var IntegerField
-     */
-    private $id_field;
+    private ?FieldInterface $id_field = null;
 
     /**
      * Return ID field for this type.
-     *
-     * @return IntegerField
      */
-    public function getIdField()
+    public function getIdField(): IntegerField
     {
         if (empty($this->id_field)) {
-            $this->id_field = (new IntegerField('id', 0))->unsigned(true)->size($this->getExpectedDatasetSize());
+            $this->id_field = (new IntegerField('id', 0))
+                ->unsigned(true)
+                ->size($this->getExpectedDatasetSize());
         }
 
         return $this->id_field;
     }
 
-    /**
-     * @var StringField
-     */
-    private $type_field;
+    private ?StringField $type_field = null;
 
-    /**
-     * @return StringField
-     */
-    public function getTypeField()
+    public function getTypeField(): StringField
     {
-        if ($this->getPolymorph()) {
-            if (empty($this->type_field)) {
-                $this->type_field = (new StringField('type', ''))->required();
-            }
-
-            return $this->type_field;
-        } else {
+        if (!$this->getPolymorph()) {
             throw new BadMethodCallException(__METHOD__ . ' is available only for polymorph types');
         }
+
+        if (empty($this->type_field)) {
+            $this->type_field = (new StringField('type', ''))->required();
+        }
+
+        return $this->type_field;
     }
 
-    /**
-     * @param  FieldInterface[] $fields
-     * @return $this
-     */
-    public function &addFields(array $fields)
+    public function addFields(FieldInterface ...$fields): static
     {
         foreach ($fields as $field) {
             $this->addField($field);
@@ -401,26 +333,22 @@ class Type implements TypeInterface
 
     /**
      * Add a single field to the type.
-     *
-     * @param  FieldInterface $field
-     * @return $this
      */
-    public function &addField(FieldInterface $field)
+    public function addField(FieldInterface $field): static
     {
-        if (empty($this->fields[$field->getName()])) {
-            $this->fields[$field->getName()] = $field;
-            $field->onAddedToType($this); // Let the field register indexes, custom behaviour etc
-        } else {
-            throw new InvalidArgumentException("Field '" . $field->getName() . "' already exists in this type");
+        if (!empty($this->fields[$field->getName()])) {
+            throw new InvalidArgumentException(
+                sprintf("Field '%s' already exists in this type.", $field->getName())
+            );
         }
+
+        $this->fields[$field->getName()] = $field;
+        $field->onAddedToType($this); // Let the field register indexes, custom behaviour etc
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllFields()
+    public function getAllFields(): array
     {
         $result = [];
 
@@ -445,10 +373,7 @@ class Type implements TypeInterface
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getGeneratedFields()
+    public function getGeneratedFields(): array
     {
         $result = [];
 
@@ -481,21 +406,17 @@ class Type implements TypeInterface
     /**
      * @var Index[]
      */
-    private $indexes = [];
+    private array $indexes = [];
 
     /**
      * @return IndexInterface[]
      */
-    public function getIndexes()
+    public function getIndexes(): array
     {
         return $this->indexes;
     }
 
-    /**
-     * @param  IndexInterface[] $indexes
-     * @return $this
-     */
-    public function &addIndexes(array $indexes)
+    public function addIndexes(IndexInterface ...$indexes): static
     {
         foreach ($indexes as $index) {
             $this->addIndex($index);
@@ -504,11 +425,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @param  IndexInterface $index
-     * @return $this
-     */
-    public function &addIndex(IndexInterface $index)
+    public function addIndex(IndexInterface $index): static
     {
         if (empty($this->indexes[$index->getName()])) {
             $this->indexes[$index->getName()] = $index;
@@ -519,14 +436,11 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * Return all indexes.
-     *
-     * @return IndexInterface[]
-     */
-    public function getAllIndexes()
+    public function getAllIndexes(): array
     {
-        $result = [new Index('id', ['id'], IndexInterface::PRIMARY)];
+        $result = [
+            new Index('id', ['id'], IndexInterface::PRIMARY),
+        ];
 
         if ($this->getPolymorph()) {
             $result[] = new Index('type');
@@ -549,24 +463,14 @@ class Type implements TypeInterface
         return $result;
     }
 
-    /**
-     * @var TriggerInterface[]
-     */
-    private $triggers = [];
+    private array $triggers = [];
 
-    /**
-     * @return TriggerInterface[]
-     */
-    public function getTriggers()
+    public function getTriggers(): array
     {
         return $this->triggers;
     }
 
-    /**
-     * @param  TriggerInterface[] $triggers
-     * @return $this
-     */
-    public function &addTriggers(array $triggers)
+    public function addTriggers(TriggerInterface ...$triggers): static
     {
         foreach ($triggers as $trigger) {
             $this->addTrigger($trigger);
@@ -575,11 +479,7 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @param  TriggerInterface $trigger
-     * @return $this
-     */
-    public function &addTrigger(TriggerInterface $trigger)
+    public function addTrigger(TriggerInterface $trigger): static
     {
         if (empty($this->triggers[$trigger->getName()])) {
             $this->triggers[$trigger->getName()] = $trigger;
@@ -594,24 +494,14 @@ class Type implements TypeInterface
     //  Associations
     // ---------------------------------------------------
 
-    /**
-     * @var AssociationInterface[]
-     */
-    private $associations = [];
+    private array $associations = [];
 
-    /**
-     * @return AssociationInterface[]
-     */
-    public function getAssociations()
+    public function getAssociations(): array
     {
         return $this->associations;
     }
 
-    /**
-     * @param  AssociationInterface[] $associations
-     * @return $this
-     */
-    public function &addAssociations(array $associations)
+    public function addAssociations(AssociationInterface ...$associations): static
     {
         foreach ($associations as $association) {
             $this->addAssociation($association);
@@ -620,19 +510,16 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * @param  AssociationInterface $association
-     * @return $this
-     */
-    public function &addAssociation(AssociationInterface $association)
+    public function addAssociation(AssociationInterface $association): static
     {
-        if (empty($this->associations[$association->getName()])) {
-            $association->setSourceTypeName($this->getName());
-
-            $this->associations[$association->getName()] = $association;
-        } else {
-            throw new InvalidArgumentException("Association '" . $association->getName() . "' already exists in this type");
+        if (!empty($this->associations[$association->getName()])) {
+            throw new InvalidArgumentException(
+                sprintf("Association '%s' already exists in this type.", $association->getName())
+            );
         }
+
+        $association->setSourceTypeName($this->getName());
+        $this->associations[$association->getName()] = $association;
 
         return $this;
     }
@@ -641,53 +528,32 @@ class Type implements TypeInterface
     //  Traits
     // ---------------------------------------------------
 
-    /**
-     * Traits.
-     *
-     * @var array
-     */
-    private $traits = [];
+    private array $traits = [];
 
-    /**
-     * Return traits.
-     *
-     * @return array
-     */
-    public function getTraits()
+    public function getTraits(): array
     {
         return $this->traits;
     }
 
-    /**
-     * Implement an interface or add a trait (or both).
-     *
-     * @param  string                   $interface
-     * @param  string                   $implementation
-     * @return $this
-     * @throws InvalidArgumentException
-     */
-    public function &addTrait($interface = null, $implementation = null)
+    public function addTrait(
+        string $interface = null,
+        string $implementation = null
+    ): static
     {
-        if (is_array($interface)) {
-            foreach ($interface as $k => $v) {
-                $this->addTrait($k, $v);
-            }
-        } else {
-            if ($interface || $implementation) {
-                if (empty($interface)) {
-                    $interface = '--just-paste-trait--';
-                }
+        if (empty($interface) && empty($implementation)) {
+            throw new InvalidArgumentException('Interface or implementation are required');
+        }
 
-                if (empty($this->traits[$interface])) {
-                    $this->traits[$interface] = [];
-                }
+        if (empty($interface)) {
+            $interface = '--just-paste-trait--';
+        }
 
-                if ($implementation && array_search($implementation, $this->traits[$interface]) === false) {
-                    $this->traits[$interface][] = $implementation;
-                }
-            } else {
-                throw new InvalidArgumentException('Interface or implementation are required');
-            }
+        if (empty($this->traits[$interface])) {
+            $this->traits[$interface] = [];
+        }
+
+        if ($implementation && !in_array($implementation, $this->traits[$interface])) {
+            $this->traits[$interface][] = $implementation;
         }
 
         return $this;
@@ -728,92 +594,51 @@ class Type implements TypeInterface
         return $this;
     }
 
-    /**
-     * Trait conflict resolutions.
-     *
-     * @var array
-     */
-    private $trait_tweaks = [];
+    private array $trait_tweaks = [];
 
-    /**
-     * Return trait tweaks.
-     *
-     * @return array
-     */
-    public function getTraitTweaks()
+    public function getTraitTweaks(): array
     {
         return $this->trait_tweaks;
     }
 
-    /**
-     * Resolve trait conflict.
-     *
-     * @param  string $tweak
-     * @return $this
-     */
-    public function &addTraitTweak($tweak)
+    public function addTraitTweak(string $tweak): static
     {
         $this->trait_tweaks[] = $tweak;
 
         return $this;
     }
 
-    /**
-     * @var array|string
-     */
-    private $order_by = ['id'];
+    private array $order_by = [
+        'id',
+    ];
 
-    /**
-     * Return how records of this type should be ordered by default.
-     *
-     * @return string|array
-     */
-    public function getOrderBy()
+    public function getOrderBy(): array
     {
         return $this->order_by;
     }
 
-    /**
-     * Set how records of this type should be ordered by default.
-     *
-     * @param  string|array $order_by
-     * @return $this
-     */
-    public function &orderBy($order_by)
+    public function orderBy(string ...$order_by): static
     {
         if (empty($order_by)) {
             throw new InvalidArgumentException('Order by value is required');
-        } elseif (!is_string($order_by) && !is_array($order_by)) {
-            throw new InvalidArgumentException('Order by can be string or array');
         }
 
-        $this->order_by = (array) $order_by;
+        $this->order_by = $order_by;
 
         return $this;
     }
 
-    /**
-     * @var array
-     */
-    private $serialize = [];
+    private array $serialize = [];
 
     /**
      * Return a list of additional fields that will be included during object serialization.
-     *
-     * @return array
      */
-    public function getSerialize()
+    public function getSerialize(): array
     {
         return $this->serialize;
     }
 
-    /**
-     * Set a list of fields that will be included during object serialization.
-     *
-     * @param  string[] $fields
-     * @return $this
-     */
-    public function &serialize(...$fields)
+    public function serialize(string ...$fields): static
     {
         if (!empty($fields)) {
             $this->serialize = array_unique(array_merge($this->serialize, $fields));

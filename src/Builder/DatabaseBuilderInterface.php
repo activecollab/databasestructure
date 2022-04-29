@@ -6,20 +6,14 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 
 interface DatabaseBuilderInterface
 {
-    /**
-     * @return ConnectionInterface
-     */
-    public function getConnection();
-
-    /**
-     * @param  ConnectionInterface $connection
-     * @return $this
-     */
-    public function &setConnection(ConnectionInterface $connection);
+    public function getConnection(): ?ConnectionInterface;
+    public function setConnection(ConnectionInterface $connection): static;
 }

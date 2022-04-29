@@ -20,10 +20,7 @@ trait Implementation
      */
     private $target_type_name;
 
-    /**
-     * Return association name.
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -17,8 +17,8 @@ class PositionTailStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('position_tail_entries')->addFields([
+        $this->addType('position_tail_entries')->addFields(
             (new PositionField())->tail(),
-        ]);
+        );
     }
 }

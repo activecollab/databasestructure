@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseStructure\BuilderInterface;
@@ -15,16 +17,8 @@ use InvalidArgumentException;
 
 abstract class Builder implements BuilderInterface
 {
-    /**
-     * @var StructureInterface
-     */
-    private $structure;
+    private StructureInterface $structure;
 
-    /**
-     * Construct a new builder instance.
-     *
-     * @param StructureInterface $structure
-     */
     public function __construct(StructureInterface $structure)
     {
         $this->structure = $structure;
@@ -35,12 +29,7 @@ abstract class Builder implements BuilderInterface
         return $this->structure;
     }
 
-    /**
-     * Registered event handlers.
-     *
-     * @var array
-     */
-    private $event_handlers = [];
+    private array $event_handlers = [];
 
     public function preBuild(): void
     {

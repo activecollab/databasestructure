@@ -6,16 +6,13 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 interface AssociationInterface
 {
-    /**
-     * Get association name, in underscore notation.
-     *
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Return name of the target type.

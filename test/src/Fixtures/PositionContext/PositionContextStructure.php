@@ -19,16 +19,16 @@ class PositionContextStructure extends Structure
      */
     public function configure()
     {
-        $this->addType('position_context_tail_entries')->addFields([
+        $this->addType('position_context_tail_entries')->addFields(
             (new IntegerField('application_id', 0))->unsigned(),
             (new IntegerField('shard_id', 0))->unsigned(),
             (new PositionField())->context('application_id', 'shard_id')->tail(),
-        ]);
+        );
 
-        $this->addType('position_context_head_entries')->addFields([
+        $this->addType('position_context_head_entries')->addFields(
             (new IntegerField('application_id', 0))->unsigned(),
             (new IntegerField('shard_id', 0))->unsigned(),
             (new PositionField())->context('application_id', 'shard_id')->head(),
-        ]);
+        );
     }
 }

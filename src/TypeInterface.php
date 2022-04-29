@@ -6,30 +6,18 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure;
 
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use InvalidArgumentException;
+use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
 
 interface TypeInterface
 {
-    /**
-     * Return type name.
-     *
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @return string
-     */
-    public function getTableName();
-
-    /**
-     * @param  string $table_name
-     * @return $this
-     */
-    public function &setTableName($table_name);
+    public function getName(): string;
+    public function getTableName(): string;
+    public function setTableName(string $table_name): static;
 
     public function getEntityClassName(): string;
     public function getEntityInterfaceName(): string;
@@ -48,11 +36,8 @@ interface TypeInterface
 
     /**
      * Return manager class name.
-     *
-     * @return string
      */
     public function getManagerClassName(): string;
-
     public function getManagerInterfaceName(): string;
 
     /**
@@ -68,44 +53,23 @@ interface TypeInterface
     /**
      * Set name of a class that base type class should extend.
      *
-     * Note: This class needs to descened from Object class of DatabaseObject package
-     *
-     * @param  string $class_name
-     * @return $this
+     * Note: This class needs to descend from Object class of DatabaseObject package
      */
-    public function &setBaseClassExtends($class_name);
+    public function setBaseClassExtends(string $class_name): static;
 
-    /**
-     * @return bool
-     */
-    public function getPolymorph();
+    public function getPolymorph(): bool;
 
     /**
      * Set this model to be polymorph (type field is added and used to store instance's class name).
-     *
-     * @param  bool  $value
-     * @return $this
      */
-    public function &polymorph($value = true);
-
-    /**
-     * @return bool
-     */
-    public function getPermissions();
-
-    /**
-     * @return bool
-     */
-    public function getPermissionsArePermissive();
+    public function polymorph(bool $value = true): static;
+    public function getPermissions(): bool;
+    public function getPermissionsArePermissive(): bool;
 
     /**
      * Add permissions interface to this model.
-     *
-     * @param  bool  $value
-     * @param  bool  $permissions_are_permissive
-     * @return $this
      */
-    public function &permissions($value = true, $permissions_are_permissive = true);
+    public function permissions(bool $value = true, bool $permissions_are_permissive = true): static;
 
     /**
      * Return a list of protected fields.
@@ -116,176 +80,111 @@ interface TypeInterface
 
     /**
      * Get expected dataset size.
-     *
-     * @return string
      */
-    public function getExpectedDatasetSize();
+    public function getExpectedDatasetSize(): string;
 
     /**
-     * Set expected databaset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
-     *
-     * @param  string $size
-     * @return $this
+     * Set expected dataset size in following increments: TINY, SMALL, MEDIUM, NORMAL and BIG.
      */
-    public function &expectedDatasetSize($size);
+    public function expectedDatasetSize(string $size): static;
 
     /**
      * @return FieldInterface[]
      */
-    public function getFields();
+    public function getFields(): array;
 
     /**
      * Return ID field for this type.
-     *
-     * @return IntegerField
      */
-    public function getIdField();
-
-    /**
-     * @param  FieldInterface[] $fields
-     * @return $this
-     */
-    public function &addFields(array $fields);
+    public function getIdField(): IntegerField;
+    public function getTypeField(): StringField;
+    public function addFields(FieldInterface ...$fields): static;
 
     /**
      * Add a single field to the type.
-     *
-     * @param  FieldInterface $field
-     * @return $this
      */
-    public function &addField(FieldInterface $field);
+    public function addField(FieldInterface $field): static;
 
     /**
      * Return all fields, flatten to one array.
      *
      * @return FieldInterface[]
      */
-    public function getAllFields();
+    public function getAllFields(): array;
 
     /**
      * Return an array of generated fields. Key is the field name, value is the caster.
-     *
-     * @return array
      */
-    public function getGeneratedFields();
+    public function getGeneratedFields(): array;
 
     /**
      * @return IndexInterface[]
      */
-    public function getIndexes();
-
-    /**
-     * @param  IndexInterface[] $indexes
-     * @return $this
-     */
-    public function &addIndexes(array $indexes);
-
-    /**
-     * @param  IndexInterface $index
-     * @return $this
-     */
-    public function &addIndex(IndexInterface $index);
+    public function getIndexes(): array;
+    public function addIndexes(IndexInterface ...$indexes): static;
+    public function addIndex(IndexInterface $index): static;
 
     /**
      * @return TriggerInterface[]
      */
-    public function getTriggers();
-
-    /**
-     * @param  TriggerInterface[] $triggers
-     * @return $this
-     */
-    public function &addTriggers(array $triggers);
-
-    /**
-     * @param  TriggerInterface $trigger
-     * @return $this
-     */
-    public function &addTrigger(TriggerInterface $trigger);
+    public function getTriggers(): array;
+    public function addTriggers(TriggerInterface ...$triggers): static;
+    public function addTrigger(TriggerInterface $trigger): static;
 
     /**
      * Return all indexes.
      *
      * @return IndexInterface[]
      */
-    public function getAllIndexes();
+    public function getAllIndexes(): array;
 
     /**
      * @return AssociationInterface[]
      */
-    public function getAssociations();
-
-    /**
-     * @param  AssociationInterface[] $associations
-     * @return $this
-     */
-    public function &addAssociations(array $associations);
-
-    /**
-     * @param  AssociationInterface $association
-     * @return $this
-     */
-    public function &addAssociation(AssociationInterface $association);
+    public function getAssociations(): array;
+    public function addAssociations(AssociationInterface ...$associations): static;
+    public function addAssociation(AssociationInterface $association): static;
 
     /**
      * Return traits.
-     *
-     * @return array
      */
-    public function getTraits();
+    public function getTraits(): array;
 
     /**
      * Implement an interface or add a trait (or both).
-     *
-     * @param  string                   $interface
-     * @param  string                   $implementation
-     * @return $this
-     * @throws InvalidArgumentException
      */
-    public function &addTrait($interface = null, $implementation = null);
+    public function addTrait(
+        string $interface = null,
+        string $implementation = null
+    ): static;
 
     /**
      * Return trait tweaks.
-     *
-     * @return array
      */
-    public function getTraitTweaks();
+    public function getTraitTweaks(): array;
 
     /**
      * Resolve trait conflict.
-     *
-     * @param  string $tweak
-     * @return $this
      */
-    public function &addTraitTweak($tweak);
+    public function addTraitTweak(string $tweak): static;
 
     /**
      * Return how records of this type should be ordered by default.
-     *
-     * @return string|array
      */
-    public function getOrderBy();
+    public function getOrderBy(): array;
 
     /**
      * Set how records of this type should be ordered by default.
-     *
-     * @param  string|array $order_by
-     * @return $this
      */
-    public function &orderBy($order_by);
+    public function orderBy(string ...$order_by): static;
 
     /**
      * Return a list of additional fields that will be included during object serialization.
-     *
-     * @return array
      */
-    public function getSerialize();
+    public function getSerialize(): array;
 
     /**
      * Set a list of fields that will be included during object serialization.
-     *
-     * @param  string[] ...$fields
-     * @return $this
      */
-    public function &serialize(...$fields);
+    public function serialize(string ...$fields): static;
 }

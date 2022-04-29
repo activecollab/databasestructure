@@ -23,7 +23,7 @@ class JsonFieldStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('stats_snapshots')->addFields([
+        $this->addType('stats_snapshots')->addFields(
             new DateField('day'),
             (new JsonField('stats'))
                 ->extractValue('plan_name', '$.plan_name', null, ValueExtractor::class, true, true)
@@ -32,6 +32,6 @@ class JsonFieldStructure extends Structure
                 ->addValueExtractor(new FloatValueExtractor('execution_time', '$.exec_time', 0))
                 ->addValueExtractor(new DateValueExtractor('important_date_1', '$.important_date_1', '2013-10-02'))
                 ->addValueExtractor(new DateTimeValueExtractor('important_date_2_with_time', '$.important_date_2_with_time', '2016-05-09 09:11:00')),
-        ])->addIndex(new Index('day'));
+        )->addIndex(new Index('day'));
     }
 }

@@ -19,17 +19,17 @@ class WriterHasManyBookIdsStructure extends Structure
 {
     public function configure()
     {
-        $this->addType('writers')->addFields([
+        $this->addType('writers')->addFields(
             (new NameField('name', ''))->required(),
-        ])->addAssociations([
+        )->addAssociations(
             (new HasManyAssociation('books'))
                 ->required(false),
-        ]);
+        );
 
-        $this->addType('books')->addFields([
+        $this->addType('books')->addFields(
             (new NameField('name', ''))->required(),
-        ])->addAssociations([
+        )->addAssociations(
             (new BelongsToAssociation('writer'))->required(false),
-        ]);
+        );
     }
 }

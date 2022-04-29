@@ -89,10 +89,7 @@ class ValueExtractor implements ValueExtractorInterface
         return $this->default_value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValueCaster()
+    public function getValueCaster(): string
     {
         return $this->value_caster;
     }

@@ -10,28 +10,18 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
-use ActiveCollab\DatabaseStructure\Field\Scalar\BooleanField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\DecimalField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\EnumField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\FloatField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonField\ValueExtractorInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
-use ActiveCollab\DatabaseStructure\Field\Scalar\PasswordField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValue;
-use ActiveCollab\DatabaseStructure\Field\Scalar\StringField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\TextField;
-use ActiveCollab\DatabaseStructure\Field\Scalar\TimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\DefaultValueInterface;
 use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\Index;
 use ActiveCollab\DatabaseStructure\IndexInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
-use InvalidArgumentException;
 
 class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInterface
 {
@@ -39,10 +29,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Build path. If empty, class will be built to memory.
-     *
-     * @var string
      */
-    private $build_path;
+    private ?string $build_path = null;
 
     public function getBuildPath(): ?string
     {
@@ -65,7 +53,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
             $sql_dir = dirname($structure_sql_path);
 
             if (!is_dir($sql_dir)) {
-                $old_mask = umask();
+                umask();
                 mkdir($sql_dir);
             }
 
@@ -113,11 +101,8 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Prepare CREATE TABLE statement for the given type.
-     *
-     * @param  TypeInterface $type
-     * @return string
      */
-    public function prepareCreateTableStatement(TypeInterface $type)
+    public function prepareCreateTableStatement(TypeInterface $type): string
     {
         $result = [];
 
@@ -161,13 +146,14 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Prepare field statement based on the field settings.
-     *
-     * @param  ScalarField $field
-     * @return string
      */
-    private function prepareFieldStatement(ScalarField $field)
+    private function prepareFieldStatement(ScalarField $field): string
     {
-        $result = $this->getConnection()->escapeFieldName($field->getName()) . ' ' . $this->prepareTypeDefinition($field);
+        $result = sprintf(
+            '%s %s',
+            $this->getConnection()->escapeFieldName($field->getName()),
+            $field->getSqlTypeDefinition($this->getConnection())
+        );
 
         if ($field instanceof DefaultValueInterface && $field->getDefaultValue() !== null) {
             $result .= ' NOT NULL';
@@ -180,7 +166,7 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         return $result;
     }
 
-    private function hasDefaultValue(FieldInterface $field)
+    private function hasDefaultValue(FieldInterface $field): bool
     {
         if ($field instanceof IntegerField && $field->getName() == 'id') {
             return false;
@@ -194,97 +180,9 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
     }
 
     /**
-     * Prepare type definition for the given field.
-     *
-     * @param  ScalarField $field
-     * @return string
-     */
-    private function prepareTypeDefinition(ScalarField $field)
-    {
-        if ($field instanceof IntegerField) {
-            switch ($field->getSize()) {
-                case FieldInterface::SIZE_TINY:
-                    $result = 'TINYINT';
-                    break;
-                case ScalarField::SIZE_SMALL:
-                    $result = 'SMALLINT';
-                    break;
-                case FieldInterface::SIZE_MEDIUM:
-                    $result = 'MEDIUMINT';
-                    break;
-                case FieldInterface::SIZE_BIG:
-                    $result = 'BIGINT';
-                    break;
-                default:
-                    $result = 'INT';
-            }
-
-            if ($field->isUnsigned()) {
-                $result .= ' UNSIGNED';
-            }
-
-            if ($field->getName() == 'id') {
-                $result .= ' AUTO_INCREMENT';
-            }
-
-            return $result;
-        } elseif ($field instanceof BooleanField) {
-            return 'TINYINT(1) UNSIGNED';
-        } elseif ($field instanceof DateField) {
-            return 'DATE';
-        } elseif ($field instanceof DateTimeField) {
-            return 'DATETIME';
-        } elseif ($field instanceof DecimalField) {
-            $result = 'DECIMAL(' . $field->getLength() . ', ' . $field->getScale() . ')';
-
-            if ($field->isUnsigned()) {
-                $result .= ' UNSIGNED';
-            }
-
-            return $result;
-        } elseif ($field instanceof EnumField) {
-            return 'ENUM(' . implode(',', array_map(function ($possibility) {
-                return $this->getConnection()->escapeValue($possibility);
-            }, $field->getPossibilities())) . ')';
-        } elseif ($field instanceof FloatField) {
-            $result = 'FLOAT(' . $field->getLength() . ', ' . $field->getScale() . ')';
-
-            if ($field->isUnsigned()) {
-                $result .= ' UNSIGNED';
-            }
-
-            return $result;
-        } elseif ($field instanceof JsonField) {
-            return 'JSON';
-        } elseif ($field instanceof StringField) {
-            return 'VARCHAR(' . $field->getLength() . ')';
-        } elseif ($field instanceof PasswordField) {
-            return 'VARCHAR(191)';
-        } elseif ($field instanceof TextField) {
-            switch ($field->getSize()) {
-                case FieldInterface::SIZE_TINY:
-                    return 'TINYTEXT';
-                case ScalarField::SIZE_SMALL:
-                    return 'TEXT';
-                case FieldInterface::SIZE_MEDIUM:
-                    return 'MEDIUMTEXT';
-                default:
-                    return 'LONGTEXT';
-            }
-        } elseif ($field instanceof TimeField) {
-            return 'TIME';
-        } else {
-            throw new InvalidArgumentException('Field ' . get_class($field) . ' is not a support scalar field');
-        }
-    }
-
-    /**
      * Prepare default value.
-     *
-     * @param  ScalarFieldWithDefaultValue $field
-     * @return string
      */
-    public function prepareDefaultValue(ScalarFieldWithDefaultValue $field)
+    public function prepareDefaultValue(ScalarFieldWithDefaultValue $field): string
     {
         $default_value = $field->getDefaultValue();
 
@@ -297,47 +195,33 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
             if ($field instanceof DateTimeField) {
                 return $this->getConnection()->escapeValue(date('Y-m-d H:i:s', $timestamp));
-            } else {
-                return $this->getConnection()->escapeValue(date('Y-m-d', $timestamp));
             }
+
+            return $this->getConnection()->escapeValue(date('Y-m-d', $timestamp));
         }
 
         return $this->getConnection()->escapeValue($default_value);
     }
 
     /**
-     * Prpeare generated field statement.
-     *
-     * @param  FieldInterface          $source_field
-     * @param  ValueExtractorInterface $extractor
-     * @return string
+     * Prepare generated field statement.
      */
-    public function prepareGeneratedFieldStatement(FieldInterface $source_field, ValueExtractorInterface $extractor)
+    public function prepareGeneratedFieldStatement(
+        FieldInterface $source_field,
+        ValueExtractorInterface $extractor
+    ): string
     {
         $generated_field_name = $this->getConnection()->escapeFieldName($extractor->getFieldName());
 
-        switch ($extractor->getValueCaster()) {
-            case ValueCasterInterface::CAST_INT:
-                $field_type = 'INT';
-                break;
-            case ValueCasterInterface::CAST_FLOAT:
-                $field_type = 'DECIMAL(12, 2)';
-                break;
-            case ValueCasterInterface::CAST_BOOL:
-                $field_type = 'TINYINT(1) UNSIGNED';
-                break;
-            case ValueCasterInterface::CAST_DATE:
-                $field_type = 'DATE';
-                break;
-            case ValueCasterInterface::CAST_DATETIME:
-                $field_type = 'DATETIME';
-                break;
-            case ValueCasterInterface::CAST_JSON:
-                $field_type = 'JSON';
-                break;
-            default:
-                $field_type = 'VARCHAR(191)';
-        }
+        $field_type = match ($extractor->getValueCaster()) {
+            ValueCasterInterface::CAST_INT => 'INT',
+            ValueCasterInterface::CAST_FLOAT => 'DECIMAL(12, 2)',
+            ValueCasterInterface::CAST_BOOL => 'TINYINT(1) UNSIGNED',
+            ValueCasterInterface::CAST_DATE => 'DATE',
+            ValueCasterInterface::CAST_DATETIME => 'DATETIME',
+            ValueCasterInterface::CAST_JSON => 'JSON',
+            default => 'VARCHAR(191)',
+        };
 
         $expression = $this->prepareGeneratedFieldExpression(
             $this->getConnection()->escapeFieldName($source_field->getName()),
@@ -352,55 +236,37 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Prepare extraction statement based on expression.
-     *
-     * @param  string $escaped_field_name
-     * @param  string $escaped_expression
-     * @param  string $caster
-     * @param  mixed  $escaped_default_value
-     * @return string
      */
-    private function prepareGeneratedFieldExpression($escaped_field_name, $escaped_expression, $caster, $escaped_default_value)
+    private function prepareGeneratedFieldExpression(
+        string $escaped_field_name,
+        string $escaped_expression,
+        string $caster,
+        mixed $escaped_default_value
+    ): string
     {
         $value_extractor_expression = "JSON_UNQUOTE(JSON_EXTRACT({$escaped_field_name}, {$escaped_expression}))";
 
-        switch ($caster) {
-            case ValueCasterInterface::CAST_BOOL:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, IF({$value_extractor_expression} = 'true' OR ({$value_extractor_expression} REGEXP '^-?[0-9]+$' AND CAST({$value_extractor_expression} AS SIGNED) != 0), 1, 0))";
-            case ValueCasterInterface::CAST_DATE:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATE))";
-            case ValueCasterInterface::CAST_DATETIME:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATETIME))";
-            case ValueCasterInterface::CAST_INT:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS SIGNED INTEGER))";
-            case ValueCasterInterface::CAST_FLOAT:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DECIMAL(12, 2)))";
-            default:
-                return "IF({$value_extractor_expression} IS NULL, $escaped_default_value, {$value_extractor_expression})";
-        }
+        return match ($caster) {
+            ValueCasterInterface::CAST_BOOL => "IF({$value_extractor_expression} IS NULL, $escaped_default_value, IF({$value_extractor_expression} = 'true' OR ({$value_extractor_expression} REGEXP '^-?[0-9]+$' AND CAST({$value_extractor_expression} AS SIGNED) != 0), 1, 0))",
+            ValueCasterInterface::CAST_DATE => "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATE))",
+            ValueCasterInterface::CAST_DATETIME => "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DATETIME))",
+            ValueCasterInterface::CAST_INT => "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS SIGNED INTEGER))",
+            ValueCasterInterface::CAST_FLOAT => "IF({$value_extractor_expression} IS NULL, $escaped_default_value, CAST({$value_extractor_expression} AS DECIMAL(12, 2)))",
+            default => "IF({$value_extractor_expression} IS NULL, $escaped_default_value, {$value_extractor_expression})",
+        };
     }
 
     /**
      * Prepare index statement.
-     *
-     * @param  IndexInterface $index
-     * @return string
      */
-    public function prepareIndexStatement(IndexInterface $index)
+    public function prepareIndexStatement(IndexInterface $index): string
     {
-        switch ($index->getIndexType()) {
-            case IndexInterface::PRIMARY:
-                $result = 'PRIMARY KEY';
-                break;
-            case IndexInterface::UNIQUE:
-                $result = 'UNIQUE ' . $this->getConnection()->escapeFieldName($index->getName());
-                break;
-            case IndexInterface::FULLTEXT:
-                $result = 'FULLTEXT ' . $this->getConnection()->escapeFieldName($index->getName());
-                break;
-            default:
-                $result = 'INDEX ' . $this->getConnection()->escapeFieldName($index->getName());
-                break;
-        }
+        $result = match ($index->getIndexType()) {
+            IndexInterface::PRIMARY => 'PRIMARY KEY',
+            IndexInterface::UNIQUE => 'UNIQUE ' . $this->getConnection()->escapeFieldName($index->getName()),
+            IndexInterface::FULLTEXT => 'FULLTEXT ' . $this->getConnection()->escapeFieldName($index->getName()),
+            default => 'INDEX ' . $this->getConnection()->escapeFieldName($index->getName()),
+        };
 
         return $result . ' (' . implode(', ', array_map(function ($field_name) {
             return $this->getConnection()->escapeFieldName($field_name);
@@ -409,25 +275,20 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
 
     /**
      * Return name of the connection that will be created for has and belongs to many association.
-     *
-     * @param  TypeInterface $source
-     * @param  TypeInterface $target
-     * @return string
      */
-    private function getConnectionTableName(TypeInterface $source, TypeInterface $target)
+    private function getConnectionTableName(TypeInterface $source, TypeInterface $target): string
     {
         return $source->getName() . '_' . $target->getName();
     }
 
     /**
      * Prepare create connection table statement.
-     *
-     * @param  TypeInterface                  $source
-     * @param  TypeInterface                  $target
-     * @param  HasAndBelongsToManyAssociation $association
-     * @return string
      */
-    public function prepareConnectionCreateTableStatement(TypeInterface $source, TypeInterface $target, HasAndBelongsToManyAssociation $association)
+    public function prepareConnectionCreateTableStatement(
+        TypeInterface $source,
+        TypeInterface $target,
+        HasAndBelongsToManyAssociation $association
+    ): string
     {
         $result = [];
 
@@ -436,8 +297,12 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         $left_field_name = $association->getLeftFieldName();
         $right_field_name = $association->getRightFieldName();
 
-        $left_field = (new IntegerField($left_field_name, 0))->unsigned(true)->size($source->getIdField()->getSize());
-        $right_field = (new IntegerField($right_field_name, 0))->unsigned(true)->size($target->getIdField()->getSize());
+        $left_field = (new IntegerField($left_field_name, 0))
+            ->unsigned()
+            ->size($source->getIdField()->getSize());
+        $right_field = (new IntegerField($right_field_name, 0))
+            ->unsigned()
+            ->size($target->getIdField()->getSize());
 
         $result[] = '    ' . $this->prepareFieldStatement($left_field) . ',';
         $result[] = '    ' . $this->prepareFieldStatement($right_field) . ',';

@@ -15,10 +15,7 @@ use ActiveCollab\DatabaseStructure\TypeInterface;
 
 class IsArchivedField extends CompositeField
 {
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'is_archived';
     }
@@ -76,7 +73,7 @@ class IsArchivedField extends CompositeField
      *
      * @param TypeInterface $type
      */
-    public function onAddedToType(TypeInterface &$type)
+    public function onAddedToType(TypeInterface $type): void
     {
         parent::onAddedToType($type);
 
