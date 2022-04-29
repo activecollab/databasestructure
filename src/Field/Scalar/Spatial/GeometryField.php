@@ -11,17 +11,17 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
-use ActiveCollab\DatabaseConnection\Spatial\Point\PointInterface;
+use ActiveCollab\DatabaseConnection\Spatial\GeometryCollection\GeometryCollectionInterface;
 
-class PointField extends SpatialField
+class GeometryField extends SpatialField
 {
     public function getNativeType(): string
     {
-        return '\\' . PointInterface::class;
+        return '\\' . GeometryCollectionInterface::class;
     }
 
     public function getSqlTypeDefinition(ConnectionInterface $connection): string
     {
-        return 'POINT';
+        return 'GEOMETRY';
     }
 }

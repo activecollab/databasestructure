@@ -11,17 +11,17 @@ declare(strict_types=1);
 namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
-use ActiveCollab\DatabaseConnection\Spatial\LineString\LineStringInterface;
+use ActiveCollab\DatabaseConnection\Spatial\Point\PointInterface;
 
-class LineField extends SpatialField
+class PointField extends SpatialField
 {
     public function getNativeType(): string
     {
-        return '\\' . LineStringInterface::class;
+        return '\\' . PointInterface::class;
     }
 
     public function getSqlTypeDefinition(ConnectionInterface $connection): string
     {
-        return 'LINESTRING';
+        return 'POINT';
     }
 }

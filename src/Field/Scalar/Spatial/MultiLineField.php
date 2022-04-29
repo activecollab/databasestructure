@@ -13,7 +13,7 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Spatial;
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\DatabaseConnection\Spatial\LineString\LineStringInterface;
 
-class LineField extends SpatialField
+class MultiLineField extends SpatialField
 {
     public function getNativeType(): string
     {
@@ -22,6 +22,6 @@ class LineField extends SpatialField
 
     public function getSqlTypeDefinition(ConnectionInterface $connection): string
     {
-        return 'LINESTRING';
+        return 'MULTILINESTRING';
     }
 }
