@@ -34,9 +34,15 @@ trait Implementation
         $this->uniqueness_context = $uniqueness_context;
 
         if ($this instanceof AddIndexInterface) {
-            $this->addIndex(true, $uniqueness_context, IndexInterface::UNIQUE);
+            $this->addIndex(
+                true,
+                $uniqueness_context,
+                IndexInterface::UNIQUE,
+            );
         }
 
         return $this;
     }
+
+    abstract public function getName(): string;
 }
