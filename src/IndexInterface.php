@@ -16,11 +16,15 @@ interface IndexInterface
     const FULLTEXT = 'FULLTEXT';
     const SPATIAL = 'SPATIAL';
 
+    const INDEX_TYPES = [
+        self::INDEX,
+        self::PRIMARY,
+        self::UNIQUE,
+        self::FULLTEXT,
+        self::SPATIAL,
+    ];
+
     public function getName(): string;
     public function getFields(): array;
-
-    /**
-     * @return string
-     */
-    public function getIndexType();
+    public function getIndexType(): string;
 }

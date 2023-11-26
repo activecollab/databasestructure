@@ -12,39 +12,23 @@ use InvalidArgumentException;
 
 class Index implements IndexInterface
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
+    private array $fields;
+    private string $index_type;
 
-    /**
-     * @var array
-     */
-    private $fields;
-
-    /**
-     * @var string
-     */
-    private $index_type;
-
-    /**
-     * @param string     $name
-     * @param array|null $fields
-     * @param string     $index_type
-     */
-    public function __construct($name, array $fields = null, $index_type = self::INDEX)
+    public function __construct(
+        string $name,
+        array $fields = null,
+        string $index_type = self::INDEX,
+    )
     {
         if (empty($name)) {
             throw new InvalidArgumentException("Value '$name' is not a valid index name");
         }
 
-        if (is_array($fields) || $fields === null) {
-            $fields = empty($fields) ? [$name] : $fields;
-        } else {
-            throw new InvalidArgumentException('Fields value can be an array of field names or NULL');
-        }
+        $fields = empty($fields) ? [$name] : $fields;
 
-        if (!in_array($index_type, [self::PRIMARY, self::UNIQUE, self::INDEX, self::FULLTEXT])) {
+        if (!in_array($index_type, self::INDEX_TYPES)) {
             throw new InvalidArgumentException("Value '$index_type' is not a valid index type");
         }
 
@@ -63,10 +47,7 @@ class Index implements IndexInterface
         return $this->fields;
     }
 
-    /**
-     * @return string
-     */
-    public function getIndexType()
+    public function getIndexType(): string
     {
         return $this->index_type;
     }

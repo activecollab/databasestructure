@@ -84,7 +84,13 @@ abstract class ScalarField implements ScalarFieldInterface
     public function onAddedToType(TypeInterface $type): void
     {
         if ($this instanceof AddIndexInterface && $this->getAddIndex()) {
-            $type->addIndex(new Index($this->getName(), $this->getAddIndexContext(), $this->getAddIndexType()));
+            $type->addIndex(
+                new Index(
+                    $this->getName(),
+                    $this->getAddIndexContext(),
+                    $this->getAddIndexType()
+                ),
+            );
         }
     }
 
