@@ -15,43 +15,32 @@ use InvalidArgumentException;
 
 trait Implementation
 {
-    /**
-     * @var string
-     */
-    private $size = FieldInterface::SIZE_NORMAL;
+    private string $size = FieldInterface::SIZE_NORMAL;
 
-    /**
-     * Return size of the field, if set.
-     *
-     * @return string
-     */
-    public function getSize()
+    public function getSize(): string
     {
         return $this->size;
     }
 
-    /**
-     * @param  string $size
-     * @return $this
-     */
-    public function &size($size)
+    public function size(string $size): static
     {
-        if (in_array($size, $this->getSupportedSizes())) {
-            $this->size = $size;
-        } else {
+        if (!in_array($size, $this->getSupportedSizes())) {
             throw new InvalidArgumentException("Size '$size' is not supported");
         }
+
+        $this->size = $size;
 
         return $this;
     }
 
-    /**
-     * Return an array of supported sizes.
-     *
-     * @return array
-     */
-    protected function getSupportedSizes()
+    protected function getSupportedSizes(): array
     {
-        return [FieldInterface::SIZE_TINY, FieldInterface::SIZE_SMALL, FieldInterface::SIZE_MEDIUM, FieldInterface::SIZE_NORMAL, FieldInterface::SIZE_BIG];
+        return [
+            FieldInterface::SIZE_TINY,
+            FieldInterface::SIZE_SMALL,
+            FieldInterface::SIZE_MEDIUM,
+            FieldInterface::SIZE_NORMAL,
+            FieldInterface::SIZE_BIG,
+        ];
     }
 }

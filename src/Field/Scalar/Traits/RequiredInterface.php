@@ -12,15 +12,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 interface RequiredInterface extends FieldTraitInterface
 {
-    /**
-     * Return true if this field is required.
-     */
     public function isRequired(): bool;
-
-    /**
-     * Value of this column is required.
-     *
-     * @return $this
-     */
-    public function &required(bool $value = true);
+    public function required(bool $value = true): static;
 }

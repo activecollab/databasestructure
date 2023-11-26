@@ -14,32 +14,20 @@ use InvalidArgumentException;
 
 trait Implementation
 {
-    /**
-     * @var string
-     */
-    private $modifier;
+    private ?string $modifier = null;
 
-    /**
-     * Return name of the modifier, if set.
-     *
-     * @return string
-     */
-    public function getModifier()
+    public function getModifier(): ?string
     {
         return $this->modifier;
     }
 
-    /**
-     * @param  string $modifier
-     * @return $this
-     */
-    public function &modifier($modifier)
+    public function modifier(string $modifier): static
     {
-        if (function_exists($modifier)) {
-            $this->modifier = $modifier;
-        } else {
+        if (!function_exists($modifier)) {
             throw new InvalidArgumentException("Modifier function '$modifier' does not exist");
         }
+
+        $this->modifier = $modifier;
 
         return $this;
     }

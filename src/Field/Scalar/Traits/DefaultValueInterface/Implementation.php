@@ -15,26 +15,14 @@ use LogicException;
 
 trait Implementation
 {
-    /**
-     * @var mixed
-     */
-    private $default_value;
+    private mixed $default_value = null;
 
-    /**
-     * Return default field value.
-     *
-     * @return mixed
-     */
-    public function getDefaultValue()
+    public function getDefaultValue(): mixed
     {
         return $this->default_value;
     }
 
-    /**
-     * @param  mixed $value
-     * @return $this
-     */
-    public function &defaultValue($value)
+    public function defaultValue(mixed $value): static
     {
         if ($this instanceof RequiredInterface && $this->isRequired() && $value === null) {
             throw new LogicException("Default value can't NULL empty for required fields.");

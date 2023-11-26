@@ -12,16 +12,6 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 
 interface LengthInterface extends FieldTraitInterface
 {
-    /**
-     * Return length of the field, if set.
-     *
-     * @return int
-     */
-    public function getLength();
-
-    /**
-     * @param  int   $length
-     * @return $this
-     */
-    public function &length($length);
+    public function getLength(): int;
+    public function length(int $length): static;
 }

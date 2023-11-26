@@ -14,26 +14,15 @@ use InvalidArgumentException;
 
 trait Implementation
 {
-    /**
-     * @var string
-     */
-    private $length = 191;
+    private int $length = 191;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLength()
+    public function getLength(): int
     {
         return $this->length;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &length($length)
+    public function length(int $length): static
     {
-        $length = (int) $length;
-
         if ($length < $this->getMinLength()) {
             throw new InvalidArgumentException("Min length is {$this->getMinLength()}");
         }
@@ -47,18 +36,12 @@ trait Implementation
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    protected function getMinLength()
+    protected function getMinLength(): int
     {
         return 1;
     }
 
-    /**
-     * @return int
-     */
-    protected function getMaxLength()
+    protected function getMaxLength(): int
     {
         return 191;
     }

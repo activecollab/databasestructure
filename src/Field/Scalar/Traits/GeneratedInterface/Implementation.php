@@ -14,23 +14,14 @@ use ActiveCollab\DatabaseStructure\ProtectSetterInterface;
 
 trait Implementation
 {
-    /**
-     * @var bool
-     */
-    private $is_generated = false;
+    private bool $is_generated = false;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isGenerated()
+    public function isGenerated(): bool
     {
         return $this->is_generated;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function &generated($value = true)
+    public function generated(bool $value = true): static
     {
         $this->is_generated = (bool) $value;
 
