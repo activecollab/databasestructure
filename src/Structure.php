@@ -39,6 +39,7 @@ use ActiveCollab\DatabaseStructure\Builder\TypeTableBuilder;
 use ActiveCollab\DatabaseStructure\Field\Composite\CreatedAtField;
 use ActiveCollab\DatabaseStructure\Field\Composite\UpdatedAtField;
 use InvalidArgumentException;
+use ReflectionClass;
 
 abstract class Structure implements StructureInterface
 {
@@ -53,12 +54,12 @@ abstract class Structure implements StructureInterface
     /**
      * Configure types, fields and associations.
      */
-    abstract protected function configure();
+    abstract protected function configure(): void;
 
     /**
      * @var iterable|TypeInterface[]
      */
-    private $types = [];
+    private array $types = [];
 
     /**
      * {@inheritdoc}
@@ -75,9 +76,9 @@ abstract class Structure implements StructureInterface
     {
         if (isset($this->types[$type_name])) {
             return $this->types[$type_name];
-        } else {
-            throw new InvalidArgumentException("Type '$type_name' not found");
         }
+
+        throw new InvalidArgumentException("Type '$type_name' not found");
     }
 
     /**
@@ -103,15 +104,15 @@ abstract class Structure implements StructureInterface
             }
 
             return $this->types[$type_name];
-        } else {
-            throw new InvalidArgumentException("Type '$type_name' already added");
         }
+
+        throw new InvalidArgumentException("Type '$type_name' already added");
     }
 
     /**
-     * @var RecordInterface|array
+     * @var RecordInterface[]
      */
-    private $records = [];
+    private array $records = [];
 
     /**
      * {@inheritdoc}
@@ -176,15 +177,15 @@ abstract class Structure implements StructureInterface
 
     /**
      * Add a record to the initial data set.
-     *
-     * @param  string             $table_name
-     * @param  array              $record
-     * @param  string             $comment
-     * @param  bool               $auto_set_created_at
-     * @param  bool               $auto_set_updated_at
-     * @return StructureInterface
      */
-    private function &addTableRecord(string $table_name, array $record, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
+    private function &addTableRecord(
+        string $table_name,
+        array $record,
+        string $comment = '',
+        bool
+        $auto_set_created_at = false,
+        bool $auto_set_updated_at = false,
+    ): StructureInterface
     {
         $single_record = new SingleRecord($table_name, $record, $comment);
 
@@ -203,16 +204,15 @@ abstract class Structure implements StructureInterface
 
     /**
      * Add multiple records to the initial data set.
-     *
-     * @param  string             $table_name
-     * @param  array              $field_names
-     * @param  array              $records_to_add
-     * @param  string             $comment
-     * @param  bool               $auto_set_created_at
-     * @param  bool               $auto_set_updated_at
-     * @return StructureInterface
      */
-    private function &addTableRecords(string $table_name, array $field_names, array $records_to_add, string $comment = '', $auto_set_created_at = false, $auto_set_updated_at = false): StructureInterface
+    private function &addTableRecords(
+        string $table_name,
+        array $field_names,
+        array $records_to_add,
+        string $comment = '',
+        bool $auto_set_created_at = false,
+        bool $auto_set_updated_at = false,
+    ): StructureInterface
     {
         $multi_record = new MultiRecord($table_name, $field_names, $records_to_add, $comment);
 
@@ -229,22 +229,13 @@ abstract class Structure implements StructureInterface
         return $this;
     }
 
-    /**
-     * @var array
-     */
-    private $config = [];
+    private array $config = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfig(string $name, $default = null)
     {
         return array_key_exists($name, $this->config) ? $this->config[$name] : $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function &setConfig($name, $value): StructureInterface
     {
         $this->config[$name] = $value;
@@ -252,34 +243,20 @@ abstract class Structure implements StructureInterface
         return $this;
     }
 
-    /**
-     * @var string
-     */
-    private $namespace = null;
+    private ?string $namespace = null;
 
-    /**
-     * @return string
-     */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         if ($this->namespace === null) {
-            $this->namespace = (new \ReflectionClass(get_class($this)))->getNamespaceName();
+            $this->namespace = (new ReflectionClass(get_class($this)))->getNamespaceName();
         }
 
         return $this->namespace;
     }
 
-    /**
-     * @param  string|null $namespace
-     * @return $this
-     */
-    public function &setNamespace($namespace)
+    public function setNamespace(?string $namespace): static
     {
-        if ($namespace === null || is_string($namespace)) {
-            $this->namespace = $namespace;
-        } else {
-            throw new InvalidArgumentException("Namespace '$namespace' is not valid");
-        }
+        $this->namespace = $namespace;
 
         if ($this->namespace) {
             $this->namespace = trim($this->namespace, '\\');
@@ -379,7 +356,7 @@ abstract class Structure implements StructureInterface
             }
 
             foreach ($event_handlers as $event => $handler) {
-                foreach ($this->builders as $k => $v) {
+                foreach ($this->builders as $v) {
                     $v->registerEventHandler($event, $handler);
                 }
             }

@@ -36,17 +36,8 @@ interface StructureInterface
      * @return RecordInterface|array
      */
     public function getRecords(): array;
-
-    /**
-     * @return string
-     */
-    public function getNamespace();
-
-    /**
-     * @param  string|null $namespace
-     * @return $this
-     */
-    public function &setNamespace($namespace);
+    public function getNamespace(): string;
+    public function setNamespace(?string $namespace): static;
 
     /**
      * Return a config option value.
