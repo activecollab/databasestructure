@@ -15,7 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class SpatialStructure extends Structure
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addType('spatial_entities')

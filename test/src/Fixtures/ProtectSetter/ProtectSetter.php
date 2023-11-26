@@ -15,8 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class ProtectSetter extends Structure
 {
-    
-    protected function configure()
+    protected function configure(): void
     {
         $this->addType('users')->addFields(
             new StringField('unprotected_setter'),
