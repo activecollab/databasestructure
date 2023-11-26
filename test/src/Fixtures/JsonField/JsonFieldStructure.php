@@ -21,7 +21,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class JsonFieldStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('stats_snapshots')->addFields(
             new DateField('day'),

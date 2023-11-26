@@ -18,10 +18,7 @@ use ActiveCollab\DateValue\DateValue;
 
 class RecordsStructure extends Structure
 {
-    /**
-     * Configure the structure.
-     */
-    public function configure()
+    public function configure(): void
     {
         $this->addType('records')->addFields(
             new NameField('name'),

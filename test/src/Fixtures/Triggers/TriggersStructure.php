@@ -17,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Trigger\BeforeUpdateTrigger;
 
 class TriggersStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('triggers')->addFields(
             new IntegerField('num'),

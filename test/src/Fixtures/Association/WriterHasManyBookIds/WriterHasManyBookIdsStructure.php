@@ -17,7 +17,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class WriterHasManyBookIdsStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('writers')->addFields(
             (new NameField('name', ''))->required(),

@@ -17,7 +17,7 @@ class PositionContextStructure extends Structure
     /**
      * Configure the structure.
      */
-    public function configure()
+    public function configure(): void
     {
         $this->addType('position_context_tail_entries')->addFields(
             (new IntegerField('application_id', 0))->unsigned(),

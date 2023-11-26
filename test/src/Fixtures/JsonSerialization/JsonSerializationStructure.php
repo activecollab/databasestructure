@@ -15,7 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 class JsonSerializationStructure extends Structure
 {
     
-    public function configure()
+    public function configure(): void
     {
         $this->addType('key_values')->addFields(
             (new NameField())->unique(),

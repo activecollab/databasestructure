@@ -15,7 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class TimestampsStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('timestamped_entries')->addFields(
             new NameField(),

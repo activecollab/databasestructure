@@ -13,7 +13,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 class PermissionsStructure extends Structure
 {
     
-    public function configure()
+    public function configure(): void
     {
         $this->addType('elements')->permissions();
         $this->addType('restrictive_elements')->permissions(true, false);

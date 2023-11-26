@@ -15,7 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class PositionTailStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('position_tail_entries')->addFields(
             (new PositionField())->tail(),

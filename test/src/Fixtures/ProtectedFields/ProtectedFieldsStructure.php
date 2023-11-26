@@ -14,7 +14,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class ProtectedFieldsStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('no_protected_fields');
         $this->addType('has_protected_fields')->protectFields('field_1', 'field_2');

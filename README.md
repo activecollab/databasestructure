@@ -152,7 +152,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class HasManyExampleStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('writers')->addFields(
             (new NameField('name', ''))->required(),
@@ -250,7 +250,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class HasManyExampleStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('writers')->addFields(
             (new NameField('name', ''))->required(),
@@ -309,7 +309,7 @@ Structure object support config option setting via `setConfig()` method. This me
 ```php
 class MyStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setConfig('option_name', 'value');
     }
@@ -334,7 +334,7 @@ Example:
 ```php
 class MyStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setConfig(‘add_permissions’, StructureInterface::ADD_RESTRICTIVE_PERMISSIONS);
     }
@@ -348,7 +348,7 @@ Some editors read `@property` from DocBlock section of the class and know which 
 ```php
 class MyStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setConfig(‘base_class_doc_block_properties’, [
             'jobs' => '\\ActiveCollab\\JobsQueue\\Dispatcher'
@@ -409,7 +409,7 @@ Structure can be configured to apply permissions behaviour to types automaticall
 ```php
 class MyStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setConfig(‘add_permissions’, StructureInterface::ADD_RESTRICTIVE_PERMISSIONS);
         
@@ -427,7 +427,7 @@ This behaviour adds a simple list of proteected fields to the object (accessible
 ```php
 class MyStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('elements')->protectFields('created_at', 'created_by_id')->unprotectFields('created_by_id'); // will record ['created_at']
     }
@@ -439,7 +439,7 @@ class MyStructure extends Structure
 ```php
 class MyStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('elements')->protectFields('field_1', 'field_2')->protectFields('', '')->protectFields('field_2', 'field_3'); // will only record ['field_1', 'field_2', 'field_3']
     }

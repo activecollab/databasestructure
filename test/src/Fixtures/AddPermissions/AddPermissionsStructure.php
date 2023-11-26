@@ -31,7 +31,7 @@ class AddPermissionsStructure extends Structure
     }
 
     
-    public function configure()
+    public function configure(): void
     {
         if ($this->add_permissions) {
             $this->setConfig('add_permissions', $this->add_permissions);

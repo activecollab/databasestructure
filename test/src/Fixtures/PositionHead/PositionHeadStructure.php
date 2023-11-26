@@ -15,7 +15,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class PositionHeadStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('position_head_entries')->addFields(
             (new PositionField())->head(),

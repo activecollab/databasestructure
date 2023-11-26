@@ -20,8 +20,7 @@ use ActiveCollab\DatabaseStructure\Structure;
 
 class WritersStructure extends Structure
 {
-    
-    public function configure()
+    public function configure(): void
     {
         $this->addType('writers')->addFields(
             new NameField('name', ''),

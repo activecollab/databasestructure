@@ -22,7 +22,7 @@ class BaseClassExtendsStructure extends Structure
     }
 
     
-    public function configure()
+    public function configure(): void
     {
         $this->addType('writers');
     }

@@ -27,7 +27,7 @@ use ActiveCollab\DatabaseStructure\Structure;
  */
 class BlogStructure extends Structure
 {
-    public function configure()
+    public function configure(): void
     {
         $this->addType('categories')->expectedDatasetSize(FieldInterface::SIZE_SMALL)->addFields(
             (new NameField())->unique(),
