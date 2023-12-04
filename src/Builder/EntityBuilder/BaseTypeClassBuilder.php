@@ -127,8 +127,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             );
         }
 
+        $generated_fields = [];
+
         foreach ($fields as $field) {
             if ($field instanceof GeneratedInterface && $field->isGenerated()) {
+                $generated_fields[$field->getName()] = $field;
                 continue;
             }
 
@@ -137,8 +140,22 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             }
         }
 
+        foreach ($generated_fields as $generated_field) {
+            $this->buildGeneratedFieldGetter(
+                $generated_field,
+                $generated_field->getName(),
+                '',
+                '    ',
+                $result
+            );
+        }
+
         foreach ($type->getGeneratedFields() as $field_name => $caster) {
-            $this->buildGeneratedFieldGetter($field_name, $caster, '    ', $result);
+            if (array_key_exists($field_name, $generated_fields)) {
+                continue;
+            }
+
+            $this->buildGeneratedFieldGetter(null, $field_name, $caster, '    ', $result);
         }
 
         $build_custom_get_field_value = false;
@@ -580,12 +597,11 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
     }
 
-    /**
-     * @param ScalarField $field
-     * @param string      $indent
-     * @param array       $result
-     */
-    private function buildFieldGetterAndSetter(ScalarField $field, $indent, array &$result): void
+    private function buildFieldGetterAndSetter(
+        ScalarField $field,
+        string $indent,
+        array &$result,
+    ): void
     {
         $setter_access_level = $field->getProtectSetter() ? 'protected' : 'public';
 
@@ -743,6 +759,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
      * Build getter for generated field.
      */
     private function buildGeneratedFieldGetter(
+        ?FieldInterface $field,
         string $field_name,
         string $caster,
         string $indent,
@@ -751,15 +768,25 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     {
         $short_getter = null;
 
-        $return_type = match ($caster) {
-            ValueCasterInterface::CAST_INT => 'int',
-            ValueCasterInterface::CAST_FLOAT => 'float',
-            ValueCasterInterface::CAST_BOOL => 'bool',
-            ValueCasterInterface::CAST_DATE => '\\' . DateValueInterface::class,
-            ValueCasterInterface::CAST_DATETIME => '\\' . DateTimeValueInterface::class,
-            ValueCasterInterface::CAST_JSON => 'mixed',
-            default => 'string',
-        };
+        if ($field) {
+            $default_value = $field instanceof ScalarFieldWithDefaultValueInterface ? $field->getDefaultValue() : null;
+
+            $type_for_executable_code = $this->getTypeForExecutableCode(
+                $field->getNativeType(),
+                $default_value,
+                $field->isRequired()
+            );
+        } else {
+            $type_for_executable_code = '?' . match ($caster) {
+                ValueCasterInterface::CAST_INT => 'int',
+                ValueCasterInterface::CAST_FLOAT => 'float',
+                ValueCasterInterface::CAST_BOOL => 'bool',
+                ValueCasterInterface::CAST_DATE => '\\' . DateValueInterface::class,
+                ValueCasterInterface::CAST_DATETIME => '\\' . DateTimeValueInterface::class,
+                ValueCasterInterface::CAST_JSON => 'mixed',
+                default => 'string',
+            };
+        }
 
         if ($this->useShortGetterName($field_name)) {
             $short_getter = $this->getShortGetterName($field_name);
@@ -767,10 +794,8 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $lines[] = '';
             $lines[] = '/**';
             $lines[] = ' * Return value of ' . $field_name . ' field.';
-            $lines[] = ' *';
-            $lines[] = ' * @return ' . $return_type;
             $lines[] = ' */';
-            $lines[] = 'public function ' . $short_getter . '()';
+            $lines[] = 'public function ' . $short_getter . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
             $lines[] = '{';
             $lines[] = '    return $this->getFieldValue(' . var_export($field_name, true) . ');';
             $lines[] = '}';
@@ -779,15 +804,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         $lines[] = '';
         $lines[] = '/**';
         $lines[] = ' * Return value of ' . $field_name . ' field.';
-        $lines[] = ' *';
-        $lines[] = ' * @return ' . $return_type;
 
         if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
             $lines[] = " * @deprecated use $short_getter()";
         }
 
         $lines[] = ' */';
-        $lines[] = 'public function ' . $this->getGetterName($field_name) . '()';
+        $lines[] = 'public function ' . $this->getGetterName($field_name) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code;
         $lines[] = '{';
         $lines[] = '    return $this->getFieldValue(' . var_export($field_name, true) . ');';
         $lines[] = '}';
