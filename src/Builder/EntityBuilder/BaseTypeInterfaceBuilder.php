@@ -18,6 +18,7 @@ use ActiveCollab\DatabaseStructure\Field\Scalar\JsonFieldInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\ScalarFieldWithDefaultValueInterface;
 use ActiveCollab\DatabaseStructure\Field\Scalar\Traits\GeneratedInterface;
+use ActiveCollab\DatabaseStructure\FieldInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\DateValue\DateValueInterface;
@@ -63,8 +64,11 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
 
         $fields = $type->getAllFields();
 
+        $generated_fields = [];
+
         foreach ($fields as $field) {
             if ($field instanceof GeneratedInterface && $field->isGenerated()) {
+                $generated_fields[$field->getName()] = $field;
                 continue;
             }
 
@@ -73,8 +77,28 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             }
         }
 
+        foreach ($generated_fields as $generated_field) {
+            $this->buildGeneratedFieldGetter(
+                $generated_field,
+                $generated_field->getName(),
+                '',
+                '    ',
+                $result
+            );
+        }
+
         foreach ($type->getGeneratedFields() as $field_name => $caster) {
-            $this->buildGeneratedFieldGetter($field_name, $caster, '    ', $result);
+            if (array_key_exists($field_name, $generated_fields)) {
+                continue;
+            }
+
+            $this->buildGeneratedFieldGetter(
+                null,
+                $field_name,
+                $caster,
+                '    ',
+                $result
+            );
         }
 
         $this->buildCompositeFieldMethods($type->getFields(), '    ', $result);
@@ -217,37 +241,35 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
 
     /**
      * Build getter for generated field.
-     *
-     * @param string $field_name
-     * @param string $caster
-     * @param string $indent
-     * @param array  $result
      */
-    private function buildGeneratedFieldGetter($field_name, $caster, $indent, array &$result)
+    private function buildGeneratedFieldGetter(
+        ?FieldInterface $field,
+        string $field_name,
+        string $caster,
+        string $indent,
+        array &$result,
+    )
     {
         $short_getter = null;
 
-        switch ($caster) {
-            case ValueCasterInterface::CAST_INT:
-                $return_type = 'int';
-                break;
-            case ValueCasterInterface::CAST_FLOAT:
-                $return_type = 'float';
-                break;
-            case ValueCasterInterface::CAST_BOOL:
-                $return_type = 'bool';
-                break;
-            case ValueCasterInterface::CAST_DATE:
-                $return_type = '\\' . DateValueInterface::class;
-                break;
-            case ValueCasterInterface::CAST_DATETIME:
-                $return_type = '\\' . DateTimeValueInterface::class;
-                break;
-            case ValueCasterInterface::CAST_JSON:
-                $return_type = 'mixed';
-                break;
-            default:
-                $return_type = 'string';
+        if ($field) {
+            $default_value = $field instanceof ScalarFieldWithDefaultValueInterface ? $field->getDefaultValue() : null;
+
+            $type_for_executable_code = $this->getTypeForExecutableCode(
+                $field->getNativeType(),
+                $default_value,
+                $field->isRequired()
+            );
+        } else {
+            $type_for_executable_code = '?' . match ($caster) {
+                ValueCasterInterface::CAST_INT => 'int',
+                ValueCasterInterface::CAST_FLOAT => 'float',
+                ValueCasterInterface::CAST_BOOL => 'bool',
+                ValueCasterInterface::CAST_DATE => '\\' . DateValueInterface::class,
+                ValueCasterInterface::CAST_DATETIME => '\\' . DateTimeValueInterface::class,
+                ValueCasterInterface::CAST_JSON => 'mixed',
+                default => 'string',
+            };
         }
 
         if ($this->useShortGetterName($field_name)) {
@@ -256,24 +278,20 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
             $lines[] = '';
             $lines[] = '/**';
             $lines[] = ' * Return value of ' . $field_name . ' field.';
-            $lines[] = ' *';
-            $lines[] = ' * @return ' . $return_type;
             $lines[] = ' */';
-            $lines[] = 'public function ' . $short_getter . '();';
+            $lines[] = 'public function ' . $short_getter . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code . ';';
         }
 
         $lines[] = '';
         $lines[] = '/**';
         $lines[] = ' * Return value of ' . $field_name . ' field.';
-        $lines[] = ' *';
-        $lines[] = ' * @return ' . $return_type;
 
         if ($short_getter && $this->getStructure()->getConfig('deprecate_long_bool_field_getter')) {
             $lines[] = " * @deprecated use $short_getter()";
         }
 
         $lines[] = ' */';
-        $lines[] = 'public function ' . $this->getGetterName($field_name) . '();';
+        $lines[] = 'public function ' . $this->getGetterName($field_name) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code . ';';
 
         foreach ($lines as $line) {
             $result[] = $line ? $indent . $line : '';
