@@ -292,6 +292,7 @@ class BaseTypeInterfaceBuilder extends FileSystemBuilder
 
         $lines[] = ' */';
         $lines[] = 'public function ' . $this->getGetterName($field_name) . '()' . ($type_for_executable_code ? ': ' : '') . $type_for_executable_code . ';';
+        $lines[] = '';
 
         foreach ($lines as $line) {
             $result[] = $line ? $indent . $line : '';
