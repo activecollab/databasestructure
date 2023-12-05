@@ -48,7 +48,7 @@ class MoneyFieldDbTest extends DbTestCase
     {
         $amount = new MoneyField('amount');
 
-        $this->assertSame(12, $amount->getLength());
+        $this->assertSame(18, $amount->getLength());
         $this->assertSame(6, $amount->getScale());
     }
 }
