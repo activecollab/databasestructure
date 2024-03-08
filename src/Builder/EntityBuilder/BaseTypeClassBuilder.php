@@ -169,10 +169,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         if ($build_custom_get_field_value) {
             $result[] = '';
-            $result[] = '    /**';
-            $result[] = '     * {@inheritdoc}';
-            $result[] = '     */';
-            $result[] = '    public function getFieldValue($field, $default = null)';
+            $result[] = '    public function getFieldValue(string $field, mixed $default = null): mixed';
             $result[] = '    {';
             $result[] = '        $value = parent::getFieldValue($field, $default);';
             $result[] = '';
@@ -452,7 +449,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         if (!empty($field_casters)) {
             $result[] = '';
-            $result[] = $indent . 'protected function configure()';
+            $result[] = $indent . 'protected function configure(): void';
             $result[] = $indent . '{';
             $result[] = $indent . '    $this->setGeneratedFieldsValueCaster(';
             $result[] = $indent . '        new \\' . ValueCaster::class . '(';
@@ -565,10 +562,7 @@ class BaseTypeClassBuilder extends FileSystemBuilder
 
         if (!empty($attribute_interception_lines)) {
             $result[] = '';
-            $result[] = $indent . '/**';
-            $result[] = $indent . ' * {@inheritdoc}';
-            $result[] = $indent . ' */';
-            $result[] = $indent . 'public function &setAttribute($attribute, $value)';
+            $result[] = $indent . 'public function setAttribute(string $attribute, mixed $value): static';
             $result[] = $indent . '{';
             $result[] = $indent . '    switch ($attribute) {';
 
@@ -905,13 +899,13 @@ class BaseTypeClassBuilder extends FileSystemBuilder
             $result[] = $indent . '/**';
             $result[] = $indent . ' * Validate object properties before object is saved.';
             $result[] = $indent . ' */';
-            $result[] = $indent . 'public function validate(\ActiveCollab\DatabaseObject\ValidatorInterface &$validator)';
+            $result[] = $indent . 'public function validate(\ActiveCollab\DatabaseObject\ValidatorInterface $validator): \ActiveCollab\DatabaseObject\ValidatorInterface';
             $result[] = $indent . '{';
 
             $result = array_merge($result, $validator_lines);
 
             $result[] = '';
-            $result[] = $indent . '    parent::validate($validator);';
+            $result[] = $indent . '    return parent::validate($validator);';
             $result[] = $indent . '}';
         }
     }

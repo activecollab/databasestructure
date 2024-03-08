@@ -25,13 +25,7 @@ trait Implementation
         });
     }
 
-    /**
-     * Register an internal event handler.
-     *
-     * @param string $event
-     */
-    abstract protected function registerEventHandler($event, callable $handler);
-
+    abstract protected function registerEventHandler(string $event, callable $handler): void;
     abstract public function getFieldValue($field, $default = null);
     abstract public function setFieldValue(string $field, mixed $value): static;
     abstract protected function resolveCreatedById(): ?int;

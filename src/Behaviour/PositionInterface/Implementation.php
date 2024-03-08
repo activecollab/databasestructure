@@ -101,21 +101,6 @@ trait Implementation
      */
     abstract public function getPositionContext();
     abstract public function getTableName(): string;
-
-    /**
-     * Return value of specific field and typecast it...
-     *
-     * @param  string $field   Field value
-     * @param  mixed  $default Default value that is returned in case of any error
-     * @return mixed
-     */
-    abstract public function getFieldValue($field, $default = null);
-
-    /**
-     * Register an internal event handler.
-     *
-     * @param string   $event
-     * @param callable $handler
-     */
-    abstract protected function registerEventHandler($event, callable $handler);
+    abstract public function getFieldValue(string $field, mixed $default = null): mixed;
+    abstract protected function registerEventHandler(string $event, callable $handler): void;
 }

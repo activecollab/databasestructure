@@ -32,12 +32,5 @@ trait Implementation
      * @return $this
      */
     abstract public function setType(string $value);
-
-    /**
-     * Register an internal event handler.
-     *
-     * @param string   $event
-     * @param callable $handler
-     */
-    abstract protected function registerEventHandler($event, callable $handler);
+    abstract protected function registerEventHandler(string $event, callable $handler): void;
 }

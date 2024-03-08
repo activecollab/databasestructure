@@ -93,26 +93,7 @@ trait Implementation
      */
     abstract public function setIsArchived(bool $value);
 
-    /**
-     * Save to database.
-     *
-     * @return $this
-     */
-    abstract public function &save();
-
-    /**
-     * Register an internal event handler.
-     *
-     * @param string   $event
-     * @param callable $handler
-     */
-    abstract protected function registerEventHandler($event, callable $handler);
-
-    /**
-     * Trigger an internal event.
-     *
-     * @param string $event
-     * @param array  $event_parameters
-     */
-    abstract protected function triggerEvent($event, array $event_parameters = []);
+    abstract public function save(): static;
+    abstract protected function registerEventHandler(string $event, callable $handler): void;
+    abstract protected function triggerEvent(string $event, array $event_parameters = []): void;
 }

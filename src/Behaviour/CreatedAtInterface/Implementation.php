@@ -6,6 +6,8 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Behaviour\CreatedAtInterface;
 
 use ActiveCollab\DateValue\DateTimeValue;
@@ -13,9 +15,6 @@ use ActiveCollab\DateValue\DateTimeValueInterface;
 
 trait Implementation
 {
-    /**
-     * Say hello to the parent class.
-     */
     public function ActiveCollabDatabaseStructureBehaviourCreatedAtInterfaceImplementation()
     {
         $this->registerEventHandler('on_before_save', function () {
@@ -25,14 +24,7 @@ trait Implementation
         });
     }
 
-    /**
-     * Register an internal event handler.
-     *
-     * @param string   $event
-     * @param callable $handler
-     */
-    abstract protected function registerEventHandler($event, callable $handler);
-
-    abstract public function getFieldValue($field, $default = null);
+    abstract protected function registerEventHandler(string $event, callable $handler): void;
+    abstract public function getFieldValue(string $field, mixed $default = null): mixed;
     abstract public function setCreatedAt(DateTimeValueInterface $value);
 }

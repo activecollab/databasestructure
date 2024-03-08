@@ -14,6 +14,7 @@ use ActiveCollab\DatabaseObject\Entity\Entity as BaseEntity;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\AssociatedEntitiesManagerInterface;
 use ActiveCollab\DatabaseStructure\Association\AssociatedEntitiesManager\Base\BaseHasManyAssociatedEntitiesManager;
 use Exception;
+use LogicException;
 
 abstract class Entity extends BaseEntity implements EntityInterface
 {
@@ -27,17 +28,17 @@ abstract class Entity extends BaseEntity implements EntityInterface
         $manager = $this->getAssociatedEntitiesManagers()[$association_name] ?? null;
 
         if (!$manager instanceof AssociatedEntitiesManagerInterface) {
-            throw new \LogicException("Manager for '$association_name' association not found.");
+            throw new LogicException("Manager for '$association_name' association not found.");
         }
 
         if (!$manager instanceof BaseHasManyAssociatedEntitiesManager) {
-            throw new \LogicException("Association '$association_name' does not handle lists of associated entities.");
+            throw new LogicException("Association '$association_name' does not handle lists of associated entities.");
         }
 
         return $manager->getAssociatedEntityIds();
     }
 
-    public function &save()
+    public function save(): static
     {
         $is_new = $this->isNew();
         $is_modified = $this->isModified();
@@ -67,7 +68,7 @@ abstract class Entity extends BaseEntity implements EntityInterface
         return $this;
     }
 
-    public function &delete($bulk = false)
+    public function delete(bool $bulk = false): static
     {
         try {
             $this->connection->beginWork();
