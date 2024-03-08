@@ -26,7 +26,7 @@ trait Implementation
     }
 
     abstract protected function registerEventHandler(string $event, callable $handler): void;
-    abstract public function getFieldValue($field, $default = null);
+    abstract public function getFieldValue(string $field, mixed $default = null): mixed;
     abstract public function setFieldValue(string $field, mixed $value): static;
     abstract protected function resolveCreatedById(): ?int;
 }
