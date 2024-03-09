@@ -116,21 +116,21 @@
         },
         {
             "name": "activecollab/databaseobject",
-            "version": "7.0.0",
+            "version": "7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseobject.git",
-                "reference": "8a94aa16b6967b88b06c7d287b1e78767d99686f"
+                "reference": "7b802fed97a4490a8274a22a0ce02bc3cf715b7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/8a94aa16b6967b88b06c7d287b1e78767d99686f",
-                "reference": "8a94aa16b6967b88b06c7d287b1e78767d99686f",
+                "url": "https://api.github.com/repos/activecollab/databaseobject/zipball/7b802fed97a4490a8274a22a0ce02bc3cf715b7a",
+                "reference": "7b802fed97a4490a8274a22a0ce02bc3cf715b7a",
                 "shasum": ""
             },
             "require": {
                 "activecollab/databaseconnection": "^5.0",
-                "activecollab/etag": "^1.0",
+                "activecollab/etag": "^2.0",
                 "activecollab/object": "^1.0",
                 "doctrine/inflector": "^2.0",
                 "php": ">=8.2",
@@ -167,9 +167,9 @@
             ],
             "support": {
                 "issues": "https://github.com/activecollab/databaseobject/issues",
-                "source": "https://github.com/activecollab/databaseobject/tree/7.0.0"
+                "source": "https://github.com/activecollab/databaseobject/tree/7.0.1"
             },
-            "time": "2024-03-08T09:10:36+00:00"
+            "time": "2024-03-09T08:31:50+00:00"
         },
         {
             "name": "activecollab/datevalue",
@@ -226,23 +226,23 @@
         },
         {
             "name": "activecollab/etag",
-            "version": "1.0.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/etag.git",
-                "reference": "98d8ef105d00c722afa7424cfea80ae7d25a2984"
+                "reference": "b1d8882fb889a2854e23fc4397e7c2191a56809b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/etag/zipball/98d8ef105d00c722afa7424cfea80ae7d25a2984",
-                "reference": "98d8ef105d00c722afa7424cfea80ae7d25a2984",
+                "url": "https://api.github.com/repos/activecollab/etag/zipball/b1d8882fb889a2854e23fc4397e7c2191a56809b",
+                "reference": "b1d8882fb889a2854e23fc4397e7c2191a56809b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": ">=8.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8"
+                "phpunit/phpunit": "~10.0"
             },
             "type": "library",
             "autoload": {
@@ -269,9 +269,9 @@
             ],
             "support": {
                 "issues": "https://github.com/activecollab/etag/issues",
-                "source": "https://github.com/activecollab/etag/tree/master"
+                "source": "https://github.com/activecollab/etag/tree/2.0.0"
             },
-            "time": "2015-11-09T09:18:16+00:00"
+            "time": "2024-03-09T08:26:40+00:00"
         },
         {
             "name": "activecollab/filesystem",
