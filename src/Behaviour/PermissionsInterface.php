@@ -14,33 +14,21 @@ interface PermissionsInterface
 {
     /**
      * Return true if the given user can persist this object.
-     *
-     * @param  UserInterface $user
-     * @return bool
      */
-    public function canCreate(UserInterface $user);
+    public function canCreate(UserInterface $user): bool;
 
     /**
      * Return true if the given user can view this object.
-     *
-     * @param  UserInterface $user
-     * @return bool
      */
-    public function canView(UserInterface $user);
+    public function canView(UserInterface $user): bool;
 
     /**
      * Return true if the given user can edit this object.
-     *
-     * @param  UserInterface $user
-     * @return bool
      */
-    public function canEdit(UserInterface $user);
+    public function canEdit(UserInterface $user): bool;
 
     /**
      * Return true if the given user can delete this object.
-     *
-     * @param  UserInterface $user
-     * @return bool
      */
-    public function canDelete(UserInterface $user);
+    public function canDelete(UserInterface $user): bool;
 }

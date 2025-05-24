@@ -14,22 +14,22 @@ use ActiveCollab\User\UserInterface;
 
 trait RestrictiveImplementation
 {
-    public function canCreate(UserInterface $user)
+    public function canCreate(UserInterface $user): bool
     {
         return false;
     }
 
-    public function canView(UserInterface $user)
+    public function canView(UserInterface $user): bool
     {
         return false;
     }
 
-    public function canEdit(UserInterface $user)
+    public function canEdit(UserInterface $user): bool
     {
         return false;
     }
 
-    public function canDelete(UserInterface $user)
+    public function canDelete(UserInterface $user): bool
     {
         return false;
     }
