@@ -10,6 +10,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 
 use ActiveCollab\DatabaseConnection\Record\ValueCasterInterface;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
+use ActiveCollab\DatabaseStructure\Builder\SqlElement\Table;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\DateTimeField;
 use ActiveCollab\DatabaseStructure\Field\Scalar\IntegerField;
@@ -70,7 +71,11 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
         if ($this->getConnection()) {
             $create_table_statement = $this->prepareCreateTableStatement($type);
 
-            $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($type->getName()) . ' table');
+            $this->appendToStructureSql(
+                new Table($type->getTableName()),
+                $create_table_statement,
+                sprintf('Create %s table', $this->getConnection()->escapeTableName($type->getName())),
+            );
 
             if ($this->getConnection()->tableExists($type->getName())) {
                 $this->triggerEvent('on_table_exists', [$type->getName()]);
@@ -86,7 +91,11 @@ class TypeTableBuilder extends DatabaseBuilder implements FileSystemBuilderInter
                     $connection_table = $this->getConnectionTableName($type, $target_type);
 
                     $create_table_statement = $this->prepareConnectionCreateTableStatement($type, $this->getStructure()->getType($association->getTargetTypeName()), $association);
-                    $this->appendToStructureSql($create_table_statement, 'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table');
+                    $this->appendToStructureSql(
+                        new Table($connection_table),
+                        $create_table_statement,
+                        'Create ' . $this->getConnection()->escapeTableName($connection_table) . ' table',
+                    );
 
                     if ($this->getConnection()->tableExists($connection_table)) {
                         $this->triggerEvent('on_table_exists', [$connection_table]);

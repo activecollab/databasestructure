@@ -10,8 +10,12 @@ declare(strict_types=1);
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseStructure\Builder\SqlElement\SqlElementInterface;
+
 trait StructureSql
 {
+    private $sql_elemenets = [];
+
     public function getStructureSqlPath(): ?string
     {
         return $this->getBuildPath() ? "{$this->getBuildPath()}/SQL/structure.sql" : null;
@@ -22,9 +26,27 @@ trait StructureSql
         return $this->getBuildPath() ? "{$this->getBuildPath()}/SQL/initial_data.sql" : null;
     }
 
-    public function appendToStructureSql(string $statement, string $comment = ''): void
+    public function appendToStructureSql(
+        ?SqlElementInterface $sql_element,
+        string $statement,
+        string $comment = '',
+    ): void
     {
+        if ($sql_element) {
+            if (empty($this->sql_elemenets[$sql_element->getType()])) {
+                $this->sql_elemenets[$sql_element->getType()] = [];
+            }
+
+            if (in_array($sql_element->getName(), $this->sql_elemenets[$sql_element->getType()])) {
+                return;
+            }
+        }
+
         $this->appendToSqlFile($this->getStructureSqlPath(), $statement, $comment);
+
+        if ($sql_element) {
+            $this->sql_elemenets[$sql_element->getName()][] = $sql_element->getName();
+        }
     }
 
     public function appendToInitialDataSql(string $statement, string $comment = ''): void

@@ -8,6 +8,7 @@
 
 namespace ActiveCollab\DatabaseStructure\Builder;
 
+use ActiveCollab\DatabaseStructure\Builder\SqlElement\Trigger;
 use ActiveCollab\DatabaseStructure\TriggerInterface;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 
@@ -40,8 +41,16 @@ class TriggersBuilder extends DatabaseBuilder implements FileSystemBuilderInterf
             $create_trigger_statement = $this->prepareCreateTriggerStatement($type, $trigger);
             $drop_trigger_statement = $this->prepareDropTriggerStatement($trigger);
 
-            $this->appendToStructureSql($drop_trigger_statement, 'Drop trigger if it already exists');
-            $this->appendToStructureSql($create_trigger_statement, 'Create ' . $this->getConnection()->escapeTableName($trigger->getName()) . ' trigger');
+            $this->appendToStructureSql(
+                null,
+                $drop_trigger_statement,
+                'Drop trigger if it already exists',
+            );
+            $this->appendToStructureSql(
+                new Trigger($type->getTableName(), $trigger->getName()),
+                $create_trigger_statement,
+                sprintf('Create %s trigger', $this->getConnection()->escapeTableName($trigger->getName())),
+            );
 
             if ($this->triggerExists($trigger->getName())) {
                 $this->triggerEvent('on_trigger_exists', [$trigger->getName()]);

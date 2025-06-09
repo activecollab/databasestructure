@@ -11,6 +11,7 @@ namespace ActiveCollab\DatabaseStructure\Builder;
 use ActiveCollab\DatabaseStructure\Association\BelongsToAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasAndBelongsToManyAssociation;
 use ActiveCollab\DatabaseStructure\Association\HasOneAssociation;
+use ActiveCollab\DatabaseStructure\Builder\SqlElement\ForeignKey;
 use ActiveCollab\DatabaseStructure\TypeInterface;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
@@ -61,6 +62,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
 
         $create_constraint_statement = $this->prepareBelongsToConstraintStatement($type, $association);
         $this->appendToStructureSql(
+            new ForeignKey($type->getTableName(), $association->getConstraintName()),
             $create_constraint_statement,
             sprintf('Create %s constraint', $this->getConnection()->escapeTableName($association->getConstraintName())),
         );
@@ -88,7 +90,11 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
         $inflector = $this->getInflector();
 
         $create_constraint_statement = $this->prepareHasOneConstraintStatement($type, $association);
-        $this->appendToStructureSql($create_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getConstraintName()) . ' constraint');
+        $this->appendToStructureSql(
+            new ForeignKey($type->getTableName(), $association->getConstraintName()),
+            $create_constraint_statement,
+            sprintf('Create %s constraint', $this->getConnection()->escapeTableName($association->getConstraintName())),
+        );
 
         if ($this->constraintExists($association->getConstraintName(), $association->getTargetTypeName())) {
             $this->triggerEvent('on_association_exists', [$type->getName() . ' has one ' . $inflector->singularize($association->getTargetTypeName())]);
@@ -103,14 +109,32 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
         $connection_table = $association->getConnectionTableName();
 
         $left_field_name = $association->getLeftFieldName();
-        $create_left_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($type->getName(), $connection_table, $association->getLeftConstraintName(), $left_field_name);
+        $create_left_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement(
+            $type->getName(),
+            $connection_table,
+            $association->getLeftConstraintName(),
+            $left_field_name,
+        );
 
-        $this->appendToStructureSql($create_left_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getLeftConstraintName()) . ' constraint');
+        $this->appendToStructureSql(
+            new ForeignKey($connection_table, $association->getLeftConstraintName()),
+            $create_left_field_constraint_statement,
+            sprintf('Create %s constraint', $this->getConnection()->escapeTableName($association->getLeftConstraintName())),
+        );
 
         $right_field_name = $association->getRightFieldName();
-        $create_right_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement($association->getTargetTypeName(), $connection_table, $association->getRightConstraintName(), $right_field_name);
+        $create_right_field_constraint_statement = $this->prepareHasAndBelongsToManyConstraintStatement(
+            $association->getTargetTypeName(),
+            $connection_table,
+            $association->getRightConstraintName(),
+            $right_field_name,
+        );
 
-        $this->appendToStructureSql($create_right_field_constraint_statement, 'Create ' . $this->getConnection()->escapeTableName($association->getRightConstraintName()) . ' constraint');
+        $this->appendToStructureSql(
+            new ForeignKey($connection_table, $association->getRightConstraintName()),
+            $create_right_field_constraint_statement,
+            sprintf('Create %s constraint', $this->getConnection()->escapeTableName($association->getRightConstraintName())),
+        );
 
         $inflector = $this->getInflector();
 
@@ -164,7 +188,7 @@ class AssociationsBuilder extends DatabaseBuilder implements FileSystemBuilderIn
     {
         $result = [];
 
-        $result[] = 'ALTER TABLE ' . $this->getConnection()->escapeTableName($type->getName());
+        $result[] = 'ALTER TABLE ' . $this->getConnection()->escapeTableName($type->getTableName());
         $result[] = '    ADD CONSTRAINT ' . $this->getConnection()->escapeFieldName($association->getConstraintName());
         $result[] = '    FOREIGN KEY (' . $this->getConnection()->escapeFieldName($association->getFieldName()) . ') REFERENCES ' . $this->getConnection()->escapeTableName($association->getTargetTypeName()) . '(`id`)';
 
