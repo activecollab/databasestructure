@@ -6,48 +6,28 @@
  * (c) A51 doo <info@activecollab.com>. All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace ActiveCollab\DatabaseStructure\Builder;
 
 trait StructureSql
 {
-    /**
-     * Return expected structure.sql file path.
-     *
-     * @return null|string
-     */
-    public function getStructureSqlPath()
+    public function getStructureSqlPath(): ?string
     {
         return $this->getBuildPath() ? "{$this->getBuildPath()}/SQL/structure.sql" : null;
     }
 
-    /**
-     * Return expected initial_data.sql path.
-     *
-     * @return null|string
-     */
-    public function getInitialDataSqlPath()
+    public function getInitialDataSqlPath(): ?string
     {
         return $this->getBuildPath() ? "{$this->getBuildPath()}/SQL/initial_data.sql" : null;
     }
 
-    /**
-     * Append statement to structure.sql file.
-     *
-     * @param string $statement
-     * @param string $comment
-     */
-    public function appendToStructureSql($statement, $comment = '')
+    public function appendToStructureSql(string $statement, string $comment = ''): void
     {
         $this->appendToSqlFile($this->getStructureSqlPath(), $statement, $comment);
     }
 
-    /**
-     * Append statement to initial_data.sql file.
-     *
-     * @param string $statement
-     * @param string $comment
-     */
-    public function appendToInitialDataSql($statement, $comment = '')
+    public function appendToInitialDataSql(string $statement, string $comment = ''): void
     {
         $this->appendToSqlFile($this->getInitialDataSqlPath(), $statement, $comment);
     }
@@ -59,7 +39,11 @@ trait StructureSql
      * @param string $statement
      * @param string $comment
      */
-    private function appendToSqlFile($file_path, $statement, $comment)
+    private function appendToSqlFile(
+        string $file_path,
+        string $statement,
+        string $comment,
+    ): void
     {
         if ($file_path) {
             $current_content = file_get_contents($file_path);
