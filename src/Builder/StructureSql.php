@@ -45,7 +45,7 @@ trait StructureSql
         $this->appendToSqlFile($this->getStructureSqlPath(), $statement, $comment);
 
         if ($sql_element) {
-            $this->sql_elemenets[$sql_element->getName()][] = $sql_element->getName();
+            $this->sql_elemenets[$sql_element->getType()][] = $sql_element->getName();
         }
     }
 
