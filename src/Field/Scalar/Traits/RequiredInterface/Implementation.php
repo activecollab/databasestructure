@@ -16,19 +16,29 @@ use LogicException;
 trait Implementation
 {
     private bool $is_required = false;
+    private bool $is_allowing_empty = false;
 
     public function isRequired(): bool
     {
         return $this->is_required;
     }
 
-    public function required(bool $value = true): static
+    public function isAllowingEmpty(): bool
+    {
+        return $this->is_allowing_empty;
+    }
+
+    public function required(
+        bool $is_required = true,
+        bool $is_allowing_empty = false,
+    ): static
     {
         if ($this instanceof DefaultValueInterface && $this->getDefaultValue() === null) {
             throw new LogicException("Default value can't NULL empty for required fields.");
         }
 
-        $this->is_required = $value;
+        $this->is_required = $is_required;
+        $this->is_allowing_empty = $is_allowing_empty;
 
         return $this;
     }

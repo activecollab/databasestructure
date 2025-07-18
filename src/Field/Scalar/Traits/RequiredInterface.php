@@ -13,5 +13,9 @@ namespace ActiveCollab\DatabaseStructure\Field\Scalar\Traits;
 interface RequiredInterface extends FieldTraitInterface
 {
     public function isRequired(): bool;
-    public function required(bool $value = true): static;
+    public function isAllowingEmpty(): bool;
+    public function required(
+        bool $is_required = true,
+        bool $is_allowing_empty = false,
+    ): static;
 }

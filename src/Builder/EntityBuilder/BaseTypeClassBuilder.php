@@ -928,7 +928,14 @@ class BaseTypeClassBuilder extends FileSystemBuilder
         }
 
         if ($field->isRequired()) {
-            $validator_lines[] = $line_indent . $this->buildValidatePresenceLine($field->getName());
+            $validator_lines[] = sprintf(
+                '%s%s',
+                $line_indent,
+                $this->buildValidatePresenceLine(
+                    $field->getName(),
+                    $field->isAllowingEmpty(),
+                ),
+            );
         }
 
         if ($field->isUnique()) {
@@ -950,9 +957,16 @@ class BaseTypeClassBuilder extends FileSystemBuilder
     /**
      * Build validator value presence line.
      */
-    private function buildValidatePresenceLine(string $field_name): string
+    private function buildValidatePresenceLine(
+        string $field_name,
+        bool $allow_empty,
+    ): string
     {
-        return '$validator->present(' . var_export($field_name, true) . ');';
+        return sprintf(
+            '$validator->present(%s, %s);',
+            var_export($field_name, true),
+            var_export($allow_empty, true),
+        );
     }
 
     /**
